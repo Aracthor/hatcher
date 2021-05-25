@@ -37,6 +37,7 @@ BIN_DIRS=		$(NATIVE_BIN_DIR)	\
 
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror	\
 			-std=c++17		\
+			-I $(INC_DIR)		\
 
 CXX_RELEASE_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-O3
