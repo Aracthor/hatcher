@@ -8,7 +8,7 @@ namespace hatcher
 class EntityIDRegistry
 {
   private:
-    using TUnusedEntityIdStack = std::stack<Entity::IdType, std::vector<Entity::IdType>>;
+    using TUnusedEntityIDStack = std::stack<Entity::IDType, std::vector<Entity::IDType>>;
 };
 
 } // namespace hatcher
