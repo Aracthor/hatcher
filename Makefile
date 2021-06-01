@@ -182,10 +182,24 @@ fclean:
 
 re:	fclean native_release
 
+# I don't really like those,
+# but for now this is the best I found to detect a modification on a hatcher .cpp file.
+lib_native_release:
+	$(MAKE) native_release -C $(HATCHER_DIR)
+
+lib_native_debug:
+	$(MAKE) native_debug -C $(HATCHER_DIR)
+
+lib_webasm_release:
+	$(MAKE) webasm_release -C $(HATCHER_DIR)
+
+lib_webasm_debug:
+	$(MAKE) webasm_debug -C $(HATCHER_DIR)
+
 # aliases command
-native_release:	$(BIN_NATIVE_RELEASE)
-native_debug:	$(BIN_NATIVE_DEBUG)
-webasm_release:	$(BIN_WEBASM_RELEASE)
-webasm_debug:	$(BIN_WEBASM_DEBUG)
+native_release:	lib_native_release $(BIN_NATIVE_RELEASE)
+native_debug:	lib_native_debug $(BIN_NATIVE_DEBUG)
+webasm_release:	lib_webasm_release $(BIN_WEBASM_RELEASE)
+webasm_debug:	lib_webasm_debug $(BIN_WEBASM_DEBUG)
 
 .DEFAULT_GOAL=	native_release
