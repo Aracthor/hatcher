@@ -8,7 +8,15 @@ namespace hatcher
 class EntityIDRegistry
 {
   private:
-    using TUnusedEntityIDStack = std::stack<Entity::IDType, std::vector<Entity::IDType>>;
+    using EntityID = Entity::IDType;
+    using UnusedEntityIDStack = std::stack<EntityID, std::vector<EntityID>>;
+
+    UnusedEntityIDStack m_unusedEntityIDStack;
+    EntityID m_currentLargestEntityID = 0;
+
+  public:
+    EntityID getNewID();
+    void unregisterEntityID(EntityID entityID);
 };
 
 } // namespace hatcher
