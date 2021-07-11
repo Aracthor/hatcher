@@ -99,10 +99,7 @@ const onGlobalPageLoad = async () => {
             powerPreference: "high-performance",
         };
 
-        webglCtx = (
-            canvas.getContext("webgl", renderingContextAttribs) ||
-            canvas.getContext("experimental-webgl", renderingContextAttribs)
-        );
+        webglCtx = canvas.getContext("webgl2", renderingContextAttribs);
 
         if (!webglCtx)
             throw new Error("WebGL context failed (initialisation)");
