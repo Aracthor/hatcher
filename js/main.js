@@ -10,12 +10,23 @@ const onGlobalPageLoad = async () => {
     logger.log("[JS] page loaded");
 
     const onBasicGlobalPageError = (event) => {
-        logger.error(`[JS] exception, event=${event}`);
+        logger.error(`[JS] exception, event=${event.message}`);
     };
     window.addEventListener("error", onBasicGlobalPageError);
 
+    const errorText = document.querySelector("#errorText");
     const renderArea = document.querySelector("#renderArea");
     const canvas = document.querySelector("#emscriptenCanvas");
+
+    const showErrorText = (htmlText) => {
+        canvas.style.display = "none"; // hide
+        errorText.innerHTML = htmlText;
+        errorText.style.display = "block"; // show
+    };
+    const showCanvas = () => {
+        errorText.style.display = "none"; // hide
+        canvas.style.display = "block"; // show
+    };
 
 
     const onContextCreationError = (event) => {
@@ -142,10 +153,14 @@ const onGlobalPageLoad = async () => {
         await scriptLoadingUtility(`./js/bin/exec_release.js`)
 
         logger.log("[JS] wasm script: loading successful");
+
+        showCanvas();
     }
     catch (err) {
 
         logger.error(`[JS] wasm script: loading failed, err=${err.message}`);
+
+        showErrorText("Fatal error<br>consult logging for more information.");
     }
 };
 

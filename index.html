@@ -13,6 +13,18 @@
         height: 600px;
       }
 
+      #errorText {
+        font-size: 30px;
+        margin: 0px auto;
+        padding: 0px none;
+        border: 0px none;
+        color: white;
+        font-family: 'Lucida Console', Monaco, monospace;
+        text-align: center;
+        outline: none;
+        display: block;
+      }
+
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       #emscriptenCanvas {
         border: 0px none;
@@ -21,6 +33,7 @@
         display: block;
         width: 800px;
         height: 600px;
+        display: none;
       }
 
       #loggerOutput {
@@ -44,6 +57,7 @@
         <td>
           <div id="renderArea">
             <canvas id="emscriptenCanvas" width="800" height="600"></canvas>
+            <p id="errorText">Loading...</p>
           </div>
         </td>
       </tr>
