@@ -45,7 +45,6 @@ const onGlobalPageLoad = async () => {
 
     try {
 
-
         if (!window.Worker)
             throw new Error(`missing WebWorker feature`);
 
@@ -105,25 +104,6 @@ const onGlobalPageLoad = async () => {
             throw new Error("WebGL context failed (initialisation)");
 
         logger.log("[JS] WebGL context => initialised");
-
-        const webGLExtensions = webglCtx.getSupportedExtensions();
-
-        const mandatoryWebGLExtensions = []; // To fill when needed.
-
-        mandatoryWebGLExtensions.forEach((extensionName) => {
-
-            let extensionFound = false;
-            for (const webGLExtension of webGLExtensions)
-                if (webGLExtension.indexOf(extensionName)) {
-                    extensionFound = true;
-                    break;
-                }
-
-            if (!extensionFound)
-                throw new Error(`missing WebGL extension: ${extensionName}`);
-
-            logger.log(`[JS] WebGL extension "${extensionName}" => supported`);
-        });
     }
     catch (err) {
 
