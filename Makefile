@@ -6,7 +6,7 @@ RMDIR=	rm -fd
 
 JS_DIR=			js/
 SRCS_DIR=		srcs/
-INC_DIR=		inc/
+INC_DIR=		srcs/
 OBJS_DIR=		objs/
 HATCHER_DIR=		hatcher/
 BIN_DIR=		bin/
@@ -49,6 +49,7 @@ HATCHER_BINS=		$(HATCHER_NATIVE_RELEASE) $(HATCHER_NATIVE_DEBUG) $(HATCHER_WEBAS
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror		\
 			-std=c++17			\
 			-I $(INC_DIR)			\
+			-I $(HATCHER_DIR)$(INC_DIR)	\
 
 CXX_RELEASE_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-O3

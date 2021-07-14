@@ -7,8 +7,8 @@ RM=	rm -f
 RMDIR=	rm -fd
 
 JS_DIR=			js/
-SRCS_DIR=		srcs/
-INC_DIR=		inc/
+SRCS_DIR=		srcs/hatcher/
+INC_DIR=		srcs/
 OBJS_DIR=		objs/
 BIN_DIR=		bin/
 NATIVE_DIR=		native/
