@@ -9,13 +9,13 @@ namespace hatcher
 // but it could lead to abuse of entity AS a uint.
 class Entity
 {
-  public:
+public:
     using IDType = std::uint32_t;
 
-  private:
+private:
     IDType m_ID;
 
-  public:
+public:
     explicit Entity(IDType id) : m_ID(id) {}
 
     IDType ID() const { return m_ID; }
