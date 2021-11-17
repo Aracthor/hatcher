@@ -56,7 +56,10 @@ LD_WEBASM_DEBUG_FLAGS=
 
 
 SRCS_FILES=	EntityIDRegistry.cpp    \
-
+		GLContext.cpp		\
+		ShaderProgram.cpp	\
+		Window.cpp 		\
+		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 LIB_NAME=	libhatcher
