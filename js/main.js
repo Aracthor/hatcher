@@ -126,6 +126,8 @@ const onGlobalPageLoad = async () => {
         print: (text) => { logger.log(`[C++] ${text}`); },
         printErr: (text) => { logger.error(`[C++] ${text}`); },
 
+        locateFile: (path, prefix) => { return "http://localhost:4242/js/bin/" + path; },
+
         canvas: canvas,
         preinitializedWebGLContext: webglCtx,
         noExitRuntime: true,

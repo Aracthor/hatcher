@@ -78,6 +78,7 @@ LD_WEBASM_COMMON_FLAGS=	-s WASM=1	\
 			-s MIN_WEBGL_VERSION=2					\
 			-s MAX_WEBGL_VERSION=2					\
 			-s FULL_ES3=1 						\
+			--preload-file shaders/ 				\
 
 LD_WEBASM_RELEASE_FLAGS=$(HATCHER_WEBASM_RELEASE)	\
 			$(LD_WEBASM_COMMON_FLAGS)	\

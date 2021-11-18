@@ -8,7 +8,7 @@ namespace hatcher
 class ShaderProgram
 {
 public:
-    ShaderProgram(const char* parVertexShader, const char* parFragmentShader);
+    ShaderProgram(const char* parVertexShaderFileName, const char* parFragmentShaderFileName);
     ~ShaderProgram();
 
     void Use() const;

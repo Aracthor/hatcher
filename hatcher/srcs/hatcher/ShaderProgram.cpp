@@ -1,6 +1,7 @@
 #include "ShaderProgram.hpp"
 
 #include "gl.hpp"
+#include <fstream>
 #include <iostream>
 
 namespace hatcher
@@ -8,13 +9,29 @@ namespace hatcher
 namespace
 {
 
-GLuint CompileShader(const char* parShaderCode, GLenum parShaderType)
+GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
 {
+    std::ifstream ifs;
+
+    ifs.open(parShaderFileName, std::ifstream::in | std::ifstream::binary);
+    if (ifs.rdstate() & std::ios::failbit)
+    {
+        std::cerr << "Couldn't open file '" << parShaderFileName << "'." << std::endl;
+        std::terminate();
+    }
+
+    ifs.seekg(0, ifs.end);
+    unsigned int fileSize = ifs.tellg();
+    ifs.seekg(0, ifs.beg);
+    char* fileContent = new char[fileSize];
+    ifs.read(fileContent, fileSize);
+
     GLint compiled;
     GLuint shaderID = glCreateShader(parShaderType);
-    GL_CHECK(glShaderSource(shaderID, 1, &parShaderCode, NULL));
+    GL_CHECK(glShaderSource(shaderID, 1, &fileContent, NULL));
     GL_CHECK(glCompileShader(shaderID));
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
+    delete[] fileContent;
     if (!compiled)
     {
         GLint infoLen = 0;
@@ -23,12 +40,14 @@ GLuint CompileShader(const char* parShaderCode, GLenum parShaderType)
         {
             char* infoLog = new char[infoLen];
             glGetShaderInfoLog(shaderID, infoLen, NULL, infoLog);
-            std::cerr << "Error compiling vertex shader:" << std::endl << infoLog << std::endl;
+            std::cerr << "Error compiling shader '" << parShaderFileName << "':" << std::endl
+                      << infoLog << std::endl;
             delete[] infoLog;
         }
         else
         {
-            std::cerr << "Unknown compiling vertex shader." << std::endl;
+            std::cerr << "Unkown error compiling shader '" << parShaderFileName
+                      << "':" << std::endl;
         }
         std::terminate();
     }
@@ -38,10 +57,11 @@ GLuint CompileShader(const char* parShaderCode, GLenum parShaderType)
 
 } // namespace
 
-ShaderProgram::ShaderProgram(const char* parVertexShader, const char* parFragmentShader)
+ShaderProgram::ShaderProgram(const char* parVertexShaderFileName,
+                             const char* parFragmentShaderFileName)
 {
-    m_vertexShaderID = CompileShader(parVertexShader, GL_VERTEX_SHADER);
-    m_fragmentShaderID = CompileShader(parFragmentShader, GL_FRAGMENT_SHADER);
+    m_vertexShaderID = CompileShader(parVertexShaderFileName, GL_VERTEX_SHADER);
+    m_fragmentShaderID = CompileShader(parFragmentShaderFileName, GL_FRAGMENT_SHADER);
 
     m_programID = glCreateProgram();
     GL_CHECK(glAttachShader(m_programID, m_vertexShaderID));
