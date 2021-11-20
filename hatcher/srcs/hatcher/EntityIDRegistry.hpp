@@ -18,8 +18,8 @@ private:
     EntityID m_currentLargestEntityID = 0;
 
 public:
-    EntityID getNewID();
-    void unregisterEntityID(EntityID entityID);
+    EntityID GetNewID();
+    void UnregisterEntityID(EntityID entityID);
 };
 
 } // namespace hatcher

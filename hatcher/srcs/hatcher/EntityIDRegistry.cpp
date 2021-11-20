@@ -6,7 +6,7 @@
 namespace hatcher
 {
 
-EntityIDRegistry::EntityID EntityIDRegistry::getNewID()
+EntityIDRegistry::EntityID EntityIDRegistry::GetNewID()
 {
     if (!m_unusedEntityIDStack.empty())
     {
@@ -19,7 +19,7 @@ EntityIDRegistry::EntityID EntityIDRegistry::getNewID()
     return m_currentLargestEntityID;
 }
 
-void EntityIDRegistry::unregisterEntityID(EntityID entityID)
+void EntityIDRegistry::UnregisterEntityID(EntityID entityID)
 {
     m_unusedEntityIDStack.push(entityID);
 }
