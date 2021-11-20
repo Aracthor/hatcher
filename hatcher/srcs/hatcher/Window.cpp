@@ -20,12 +20,12 @@ Window::Window(const char* name, int width, int height)
     }
     m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,
                                 height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-    m_context = new GLContext(m_window);
+    m_context.reset(new GLContext(m_window));
 }
 
 Window::~Window()
 {
-    delete m_context;
+    m_context.release();
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }

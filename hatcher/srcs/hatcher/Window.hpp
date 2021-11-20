@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 class SDL_Window;
 
 namespace hatcher
@@ -19,7 +21,7 @@ private:
     int m_width;
     int m_height;
     SDL_Window* m_window;
-    GLContext* m_context;
+    std::unique_ptr<GLContext> m_context;
 };
 
 } // namespace hatcher
