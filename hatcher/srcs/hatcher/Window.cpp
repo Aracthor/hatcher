@@ -1,13 +1,17 @@
 #include "Window.hpp"
 
-#include "GLContext.hpp"
 #include <SDL2/SDL.h>
 #include <iostream>
+
+#include "GLContext.hpp"
+#include "gl.hpp"
 
 namespace hatcher
 {
 
 Window::Window(const char* name, int width, int height)
+    : m_width(width)
+    , m_height(height)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -24,6 +28,13 @@ Window::~Window()
     delete m_context;
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+}
+
+void Window::Clear()
+{
+    GL_CHECK(glViewport(0, 0, m_width, m_height));
+    GL_CHECK(glClearColor(0.f, 0.f, 0.f, 1.f));
+    GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 void Window::Refresh()
