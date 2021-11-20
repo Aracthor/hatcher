@@ -26,4 +26,9 @@ Window::~Window()
     SDL_Quit();
 }
 
+void Window::Refresh()
+{
+    SDL_GL_SwapWindow(m_window);
+}
+
 } // namespace hatcher
