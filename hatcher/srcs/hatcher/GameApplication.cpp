@@ -8,6 +8,8 @@
 
 #include "Graphics/Window.hpp"
 
+#include "World.hpp"
+
 namespace hatcher
 {
 
@@ -40,6 +42,17 @@ int GameApplication::Run()
     return 0;
 }
 
+std::shared_ptr<World> GameApplication::CreateNewWorld(const char* name)
+{
+    m_worlds.emplace_back(new World(name));
+    return m_worlds.back();
+}
+
+void GameApplication::SetWatchedWorld(std::shared_ptr<World> world)
+{
+    m_watchedWorld = world;
+}
+
 void GameApplication::Stop()
 {
     m_running = false;
@@ -51,7 +64,10 @@ void GameApplication::Stop()
 void GameApplication::Update()
 {
     m_window->Clear();
-    RenderUpdate();
+    if (m_watchedWorld)
+    {
+        m_watchedWorld->UpdateRendering();
+    }
     m_window->Refresh();
 }
 

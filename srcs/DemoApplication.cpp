@@ -1,24 +1,20 @@
 #include "DemoApplication.hpp"
 
-#include "hatcher/Graphics/ShaderProgram.hpp"
-#include "hatcher/Graphics/VertexArrayObject.hpp"
-#include "hatcher/Graphics/VertexBufferObject.hpp"
-
 #include <SDL2/SDL.h>
 #include <iostream>
+
+#include "hatcher/Entity.hpp"
+#include "hatcher/World.hpp"
+
+#include "SquareDisplayUpdater.hpp"
 
 DemoApplication::DemoApplication()
     : hatcher::GameApplication("hatcher - demo", 800, 600)
 {
-    float points[] = {0.0f, 0.5f, 0.0f, 0.5f, -0.5f, 0.0f, -0.5f, -0.5f, 0.0f};
-    m_vbo.reset(new hatcher::VertexBufferObject());
-    m_vbo->SetData(points, 9);
+    std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
+    world->AddRenderingUpdater(new SquareDisplayUpdater());
 
-    m_vao.reset(new hatcher::VertexArrayObject());
-    m_vao->AttribVBO(*m_vbo, 0);
-
-    m_program.reset(
-        new hatcher::ShaderProgram("shaders/hello_world.vert", "shaders/hello_world.frag"));
+    SetWatchedWorld(world);
 }
 
 DemoApplication::~DemoApplication() = default;
@@ -40,10 +36,4 @@ void DemoApplication::HandleEvents()
             }
         }
     }
-}
-
-void DemoApplication::RenderUpdate()
-{
-    m_program->Use();
-    m_vao->Draw();
 }

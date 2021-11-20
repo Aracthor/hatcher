@@ -58,7 +58,8 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-g3			\
 			-DNDEBUG		\
 
-EMXX_FLAGS=		-s WASM=1
+EMXX_FLAGS=		-s WASM=1 		\
+			-s USE_PTHREADS=1 	\
 
 LD_NATIVE_COMMON_FLAGS=	-lpthread -lSDL2 -lGL -lGLEW
 
@@ -92,8 +93,9 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 			-s GL_DEBUG=1 			\
 
 
-SRCS_FILES=	DemoApplication.cpp	\
-		main.cpp		\
+SRCS_FILES=	DemoApplication.cpp		\
+		SquareDisplayUpdater.cpp	\
+		main.cpp			\
 
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
