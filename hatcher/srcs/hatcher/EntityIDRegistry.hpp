@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stack>
+#include <vector>
+
 #include "Entity.hpp"
 
 namespace hatcher
