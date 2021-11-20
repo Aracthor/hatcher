@@ -3,8 +3,8 @@
 #include <fstream>
 #include <iostream>
 
-#include "basic_types.hpp"
 #include "gl.hpp"
+#include "hatcher/basic_types.hpp"
 
 namespace hatcher
 {

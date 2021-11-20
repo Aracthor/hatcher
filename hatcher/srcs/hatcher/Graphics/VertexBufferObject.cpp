@@ -1,7 +1,8 @@
 #include "VertexBufferObject.hpp"
 
-#include "assert.hpp"
 #include "gl.hpp"
+
+#include "hatcher/assert.hpp"
 
 namespace hatcher
 {

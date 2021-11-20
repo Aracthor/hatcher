@@ -1,7 +1,8 @@
 #pragma once
 
-#include "basic_types.hpp"
 #include "gl_types.hpp"
+
+#include "hatcher/basic_types.hpp"
 
 namespace hatcher
 {

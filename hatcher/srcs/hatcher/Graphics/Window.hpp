@@ -17,6 +17,8 @@ public:
     void Clear();
     void Refresh();
 
+    SDL_Window* window() { return m_window; }
+
 private:
     int m_width;
     int m_height;
