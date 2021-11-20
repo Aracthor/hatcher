@@ -58,6 +58,8 @@ LD_WEBASM_DEBUG_FLAGS=
 SRCS_FILES=	EntityIDRegistry.cpp    \
 		GLContext.cpp		\
 		ShaderProgram.cpp	\
+		VertexArrayObject.cpp	\
+		VertexBufferObject.cpp	\
 		Window.cpp 		\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
