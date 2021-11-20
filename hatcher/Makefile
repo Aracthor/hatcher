@@ -66,6 +66,7 @@ LD_WEBASM_DEBUG_FLAGS=
 
 
 SRCS_FILES=	EntityIDRegistry.cpp	    	\
+		GameApplication.cpp 		\
 						\
 		Graphics/GLContext.cpp		\
 		Graphics/ShaderProgram.cpp	\

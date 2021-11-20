@@ -1,8 +1,10 @@
-#include <iostream>
+#include "DemoApplication.hpp"
+
+#include "hatcher/Graphics/Window.hpp"
 
 int main()
 {
-    std::cout << "Hello world!" << std::endl;
+    DemoApplication demo;
 
-    return 0;
+    return demo.Run();
 }
