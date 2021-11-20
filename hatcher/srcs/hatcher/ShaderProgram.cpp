@@ -23,15 +23,15 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
     ifs.seekg(0, ifs.end);
     unsigned int fileSize = ifs.tellg();
     ifs.seekg(0, ifs.beg);
-    char* fileContent = new char[fileSize];
+    char* fileContent = new char[fileSize + 1];
     ifs.read(fileContent, fileSize);
+    fileContent[fileSize] = '\0';
 
     GLint compiled;
     GLuint shaderID = glCreateShader(parShaderType);
     GL_CHECK(glShaderSource(shaderID, 1, &fileContent, NULL));
     GL_CHECK(glCompileShader(shaderID));
     glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compiled);
-    delete[] fileContent;
     if (!compiled)
     {
         GLint infoLen = 0;
@@ -41,7 +41,8 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
             char* infoLog = new char[infoLen];
             glGetShaderInfoLog(shaderID, infoLen, NULL, infoLog);
             std::cerr << "Error compiling shader '" << parShaderFileName << "':" << std::endl
-                      << infoLog << std::endl;
+                      << infoLog << std::endl
+                      << fileContent << std::endl;
             delete[] infoLog;
         }
         else
@@ -51,6 +52,7 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
         }
         std::terminate();
     }
+    delete[] fileContent;
 
     return shaderID;
 }
