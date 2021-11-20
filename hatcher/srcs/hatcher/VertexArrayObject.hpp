@@ -1,5 +1,6 @@
 #pragma once
 
+#include "basic_types.hpp"
 #include "gl_types.hpp"
 
 namespace hatcher
@@ -18,7 +19,7 @@ public:
 
 private:
     GLuint m_id;
-    unsigned int m_elementCount = 0;
+    uint m_elementCount = 0;
 };
 
 } // namespace hatcher

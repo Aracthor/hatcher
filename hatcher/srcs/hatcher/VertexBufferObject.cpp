@@ -16,7 +16,7 @@ VertexBufferObject::~VertexBufferObject()
     GL_CHECK(glDeleteBuffers(1, &m_id));
 }
 
-void VertexBufferObject::SetData(float* data, unsigned int length)
+void VertexBufferObject::SetData(float* data, uint length)
 {
     GL_CHECK(glBindBuffer(GL_ARRAY_BUFFER, m_id));
     GL_CHECK(glBufferData(GL_ARRAY_BUFFER, length * sizeof(float), data, GL_STATIC_DRAW));

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "basic_types.hpp"
 #include "gl_types.hpp"
 
 namespace hatcher
@@ -11,14 +12,14 @@ public:
     VertexBufferObject();
     ~VertexBufferObject();
 
-    void SetData(float* data, unsigned int length);
+    void SetData(float* data, uint length);
 
     void Bind() const;
-    unsigned int ElementCount() const { return m_elementCount; }
+    uint ElementCount() const { return m_elementCount; }
 
 private:
     GLuint m_id;
-    unsigned int m_elementCount = 0;
+    uint m_elementCount = 0;
 };
 
 } // namespace hatcher

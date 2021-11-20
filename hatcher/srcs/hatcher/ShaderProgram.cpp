@@ -1,8 +1,10 @@
 #include "ShaderProgram.hpp"
 
-#include "gl.hpp"
 #include <fstream>
 #include <iostream>
+
+#include "basic_types.hpp"
+#include "gl.hpp"
 
 namespace hatcher
 {
@@ -21,7 +23,7 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
     }
 
     ifs.seekg(0, ifs.end);
-    unsigned int fileSize = ifs.tellg();
+    uint fileSize = ifs.tellg();
     ifs.seekg(0, ifs.beg);
     char* fileContent = new char[fileSize + 1];
     ifs.read(fileContent, fileSize);
