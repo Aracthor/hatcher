@@ -1,13 +1,13 @@
 #pragma once
 
-#include "hatcher/basic_types.hpp"
+#include "hatcher/Component.hpp"
 
 #include <glm/vec2.hpp>
 
 struct Position2DComponent
 {
 public:
-    static constexpr hatcher::uint Key = 42; // TODO hash something in constexpr.
+    static constexpr hatcher::uint Key = hatcher::ComponentKeyFromName("Position2DComponent");
 
     glm::vec2 Position;
 };
