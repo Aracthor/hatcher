@@ -46,9 +46,7 @@ HATCHER_WEBASM_DEBUG=	$(HATCHER_DIR)$(BIN_DIR)$(HATCHER_LIBNAME)_webasm_debug.a
 HATCHER_BINS=		$(HATCHER_NATIVE_RELEASE) $(HATCHER_NATIVE_DEBUG) $(HATCHER_WEBASM_RELEASE) $(HATCHER_WEBASM_DEBUG)
 
 
-# -Wno-volatile is necessary For glm.
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror		\
-			-Wno-volatile			\
 			-std=c++20			\
 			-I $(INC_DIR)			\
 			-I $(HATCHER_DIR)$(INC_DIR)	\
@@ -60,8 +58,12 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-g3			\
 			-DNDEBUG		\
 
-EMXX_FLAGS=		-s WASM=1 		\
-			-s USE_PTHREADS=1 	\
+# -Wno-volatile is necessary For glm.
+CXX_NATIVE_FLAGS=	-Wno-volatile
+
+EMXX_FLAGS=		-s WASM=1 			\
+			-s USE_PTHREADS=1 		\
+			-Wno-deprecated-volatile	\
 
 LD_NATIVE_COMMON_FLAGS=	-lpthread -lSDL2 -lGL -lGLEW
 
@@ -139,10 +141,10 @@ $(OBJS_NATIVE_DEBUG_DIR):	| $(OBJS_NATIVE_DIR)
 	$(MKDIR) $@
 
 $(OBJS_NATIVE_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_RELEASE_DIR)
-	$(CXX) $(CXX_RELEASE_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_RELEASE_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
 
 $(OBJS_NATIVE_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_DEBUG_DIR)
-	$(CXX) $(CXX_DEBUG_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_DEBUG_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
 
 $(OBJS_WEBASM_DIR):		| $(OBJS_DIR)
 	$(MKDIR) $@

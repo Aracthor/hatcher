@@ -43,9 +43,7 @@ OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBDIRS)	\
 			$(OBJS_WEBASM_DIR)		\
 			$(OBJS_DIR)			\
 
-# -Wno-volatile is necessary For glm.
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror	\
-			-Wno-volatile		\
 			-std=c++20		\
 			-I $(INC_DIR)		\
 
@@ -56,7 +54,11 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-g3			\
 			-DNDEBUG		\
 
-EMXX_FLAGS=		-s WASM=1 -s USE_PTHREADS=1
+# -Wno-volatile is necessary For glm.
+CXX_NATIVE_FLAGS=	-Wno-volatile
+
+EMXX_FLAGS=		-s WASM=1 -s USE_PTHREADS=1	\
+			-Wno-deprecated-volatile	\
 
 LD_NATIVE_RELEASE_FLAGS=
 
@@ -123,10 +125,10 @@ $(OBJS_NATIVE_DEBUG_DIR)%/:	| $(OBJS_NATIVE_DEBUG_DIR)
 	$(MKDIR) $@
 
 $(OBJS_NATIVE_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_RELEASE_DIR) $(OBJS_NATIVE_RELEASE_SUBDIRS)
-	$(CXX) $(CXX_RELEASE_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_RELEASE_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
 
 $(OBJS_NATIVE_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_DEBUG_DIR) $(OBJS_NATIVE_DEBUG_SUBDIRS)
-	$(CXX) $(CXX_DEBUG_FLAGS) -c $< -o $@
+	$(CXX) $(CXX_DEBUG_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
 
 $(OBJS_WEBASM_DIR):		| $(OBJS_DIR)
 	$(MKDIR) $@
