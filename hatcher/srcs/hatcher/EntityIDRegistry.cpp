@@ -15,8 +15,7 @@ EntityIDRegistry::EntityID EntityIDRegistry::GetNewID()
         return unusedEntityID;
     }
 
-    m_currentLargestEntityID++;
-    return m_currentLargestEntityID;
+    return m_currentLargestEntityID++;
 }
 
 void EntityIDRegistry::UnregisterEntityID(EntityID entityID)
