@@ -6,6 +6,8 @@
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 
+#include "Position2DComponent.hpp"
+
 SquareDisplayUpdater::SquareDisplayUpdater()
 {
     float points[] = {0.5f, 0.5f, 0.0f, 0.5f,  -0.5f, 0.0f, -0.5f, -0.5f, 0.0f,
@@ -24,11 +26,22 @@ SquareDisplayUpdater::~SquareDisplayUpdater() = default;
 
 void SquareDisplayUpdater::Update(hatcher::World& world)
 {
-    (void)world;
     m_program->Use();
     glm::mat4 viewMatrix = glm::mat4(1.f);
     viewMatrix[0][0] = 600.f / 800.f;
     m_program->SetMatrix4Uniform("uniViewMatrix", glm::value_ptr(viewMatrix));
 
-    m_vao->Draw();
+    glm::mat4 modelMatrix = glm::mat4(1.f);
+
+    for (const std::optional<Position2DComponent> component :
+         world.GetComponents<Position2DComponent>())
+    {
+        if (component)
+        {
+            modelMatrix[3][0] = component->Position.x;
+            modelMatrix[3][1] = component->Position.y;
+            m_program->SetMatrix4Uniform("uniModelMatrix", glm::value_ptr(modelMatrix));
+            m_vao->Draw();
+        }
+    }
 }

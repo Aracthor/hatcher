@@ -69,7 +69,8 @@ LD_WEBASM_RELEASE_FLAGS=
 LD_WEBASM_DEBUG_FLAGS=
 
 
-SRCS_FILES=	EntityIDRegistry.cpp	    	\
+SRCS_FILES=	ComponentManager.cpp		\
+		EntityIDRegistry.cpp	    	\
 		GameApplication.cpp 		\
 		World.cpp			\
 						\

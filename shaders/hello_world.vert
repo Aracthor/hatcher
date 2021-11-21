@@ -3,8 +3,9 @@
 layout(location = 0) in vec3 vp;
 
 uniform mat4 uniViewMatrix;
+uniform mat4 uniModelMatrix;
 
 void main()
 {
-    gl_Position = uniViewMatrix * vec4(vp, 1.0);
+    gl_Position = uniViewMatrix * uniModelMatrix * vec4(vp, 1.0);
 }
