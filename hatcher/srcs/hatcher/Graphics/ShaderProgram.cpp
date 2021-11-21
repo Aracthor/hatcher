@@ -119,7 +119,7 @@ void ShaderProgram::SetMatrix4Uniform(const char* name, float* matrixPtr) const
     // TODO cache uniform locations ?
     GLint uniformLocation;
     GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
-    HATCHER_ASSERT(uniformLocation >= 0);
+    HATCHER_ASSERT_MESSAGE(uniformLocation >= 0, "uniform name: " << name);
     GL_CHECK(glUniformMatrix4fv(uniformLocation, 1, false, matrixPtr));
 }
 
