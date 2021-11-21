@@ -96,9 +96,9 @@ ShaderProgram::ShaderProgram(const char* parVertexShaderFileName,
 
 ShaderProgram::~ShaderProgram()
 {
-    glDeleteProgram(m_programID);
-    glDeleteShader(m_vertexShaderID);
-    glDeleteShader(m_fragmentShaderID);
+    GL_CHECK(glDeleteProgram(m_programID));
+    GL_CHECK(glDeleteShader(m_vertexShaderID));
+    GL_CHECK(glDeleteShader(m_fragmentShaderID));
 }
 
 void ShaderProgram::Use() const
