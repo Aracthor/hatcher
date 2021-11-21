@@ -1,5 +1,8 @@
 #include "SquareDisplayUpdater.hpp"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "hatcher/Graphics/ShaderProgram.hpp"
 #include "hatcher/Graphics/VertexArrayObject.hpp"
 #include "hatcher/Graphics/VertexBufferObject.hpp"
@@ -25,5 +28,9 @@ void SquareDisplayUpdater::Update(hatcher::World& world)
 {
     (void)world;
     m_program->Use();
+    glm::mat4 viewMatrix = glm::mat4(1.f);
+    viewMatrix[0][0] = 600.f / 800.f;
+    m_program->SetMatrix4Uniform("uniViewMatrix", glm::value_ptr(viewMatrix));
+
     m_vao->Draw();
 }

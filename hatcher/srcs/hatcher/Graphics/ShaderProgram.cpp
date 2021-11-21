@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "gl.hpp"
+#include "hatcher/assert.hpp"
 #include "hatcher/basic_types.hpp"
 
 namespace hatcher
@@ -103,6 +104,23 @@ ShaderProgram::~ShaderProgram()
 void ShaderProgram::Use() const
 {
     GL_CHECK(glUseProgram(m_programID));
+}
+
+bool ShaderProgram::IsCurrentlyUsed() const
+{
+    GLint currentProgramID;
+    GL_CHECK(glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgramID));
+    return (currentProgramID == static_cast<GLint>(m_programID));
+}
+
+void ShaderProgram::SetMatrix4Uniform(const char* name, float* matrixPtr) const
+{
+    HATCHER_ASSERT(IsCurrentlyUsed());
+    // TODO cache uniform locations ?
+    GLint uniformLocation;
+    GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
+    HATCHER_ASSERT(uniformLocation >= 0);
+    GL_CHECK(glUniformMatrix4fv(uniformLocation, 1, false, matrixPtr));
 }
 
 } // namespace hatcher
