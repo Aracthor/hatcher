@@ -1,12 +1,10 @@
 #include "SquareDisplayUpdater.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include "hatcher/Graphics/ShaderProgram.hpp"
 #include "hatcher/Graphics/VertexArrayObject.hpp"
 #include "hatcher/Graphics/VertexBufferObject.hpp"
 #include "hatcher/World.hpp"
+#include "hatcher/glm_pure.hpp"
 
 SquareDisplayUpdater::SquareDisplayUpdater()
 {
