@@ -1,12 +1,12 @@
 #include "DemoApplication.hpp"
 
-#include <SDL2/SDL.h>
 #include <iostream>
 
 #include "hatcher/Entity.hpp"
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 
+#include "EventHandlerUpdater.hpp"
 #include "Position2DComponent.hpp"
 #include "SquareDisplayUpdater.hpp"
 
@@ -20,27 +20,9 @@ DemoApplication::DemoApplication()
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
     world->AttachComponent<Position2DComponent>(entity, position2D);
     world->AddRenderingUpdater(new SquareDisplayUpdater());
+    world->AddRenderingUpdater(new EventHandlerUpdater(this));
 
     SetWatchedWorld(world);
 }
 
 DemoApplication::~DemoApplication() = default;
-
-void DemoApplication::HandleEvents()
-{
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
-    {
-        if (event.type == SDL_QUIT)
-        {
-            Stop();
-        }
-        if (event.type == SDL_KEYDOWN)
-        {
-            if (event.key.keysym.sym == SDLK_ESCAPE)
-            {
-                Stop();
-            }
-        }
-    }
-}

@@ -24,7 +24,6 @@ int GameApplication::Run()
 {
     auto mainLoop = [](void* data) {
         GameApplication* game = reinterpret_cast<GameApplication*>(data);
-        game->HandleEvents();
         game->Update();
     };
 

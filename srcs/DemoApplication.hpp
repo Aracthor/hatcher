@@ -16,7 +16,4 @@ class DemoApplication final : public hatcher::GameApplication
 public:
     DemoApplication();
     ~DemoApplication();
-
-private:
-    void HandleEvents() override;
 };

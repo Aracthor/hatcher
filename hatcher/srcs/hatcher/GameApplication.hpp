@@ -24,9 +24,6 @@ public:
     void Stop();
 
 private:
-    // TODO use only updaters instead.
-    virtual void HandleEvents() = 0;
-
     void Update();
 
     std::vector<std::shared_ptr<World>> m_worlds;
