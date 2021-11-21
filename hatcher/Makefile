@@ -1,4 +1,4 @@
-CXX=	g++
+CXX=	g++-10
 EMXX=	em++
 ARXX=	ar rc
 EMARXX=	emar rc
@@ -43,8 +43,10 @@ OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBDIRS)	\
 			$(OBJS_WEBASM_DIR)		\
 			$(OBJS_DIR)			\
 
+# -Wno-volatile is necessary For glm.
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror	\
-			-std=c++17		\
+			-Wno-volatile		\
+			-std=c++20		\
 			-I $(INC_DIR)		\
 
 CXX_RELEASE_FLAGS=	$(CXX_COMMON_FLAGS)	\

@@ -1,4 +1,4 @@
-CXX=	g++
+CXX=	g++-10
 EMXX=	em++
 MKDIR=	mkdir
 RM=	rm -f
@@ -46,8 +46,10 @@ HATCHER_WEBASM_DEBUG=	$(HATCHER_DIR)$(BIN_DIR)$(HATCHER_LIBNAME)_webasm_debug.a
 HATCHER_BINS=		$(HATCHER_NATIVE_RELEASE) $(HATCHER_NATIVE_DEBUG) $(HATCHER_WEBASM_RELEASE) $(HATCHER_WEBASM_DEBUG)
 
 
+# -Wno-volatile is necessary For glm.
 CXX_COMMON_FLAGS=	-Wall -Wextra -Werror		\
-			-std=c++17			\
+			-Wno-volatile			\
+			-std=c++20			\
 			-I $(INC_DIR)			\
 			-I $(HATCHER_DIR)$(INC_DIR)	\
 
