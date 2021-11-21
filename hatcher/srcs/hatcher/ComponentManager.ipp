@@ -1,7 +1,6 @@
 #include "ComponentList.hpp"
 
 #include "assert.hpp"
-#include <iostream>
 
 namespace hatcher
 {
