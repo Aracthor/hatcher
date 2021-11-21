@@ -10,13 +10,16 @@ namespace hatcher
 class Entity
 {
 public:
-    using IDType = std::uint32_t;
+    using IDType = int;
 
 private:
     IDType m_ID;
 
 public:
-    explicit Entity(IDType id) : m_ID(id) {}
+    explicit Entity(IDType id)
+        : m_ID(id)
+    {
+    }
 
     IDType ID() const { return m_ID; }
 };
