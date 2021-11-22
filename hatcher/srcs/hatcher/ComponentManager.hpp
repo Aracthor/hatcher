@@ -9,6 +9,8 @@
 
 namespace hatcher
 {
+class Entity;
+class EntityIDRegistry;
 class IComponentList;
 
 class ComponentManager
@@ -17,18 +19,22 @@ public:
     ComponentManager();
     ~ComponentManager();
 
-    void AddEntities(int count);
+    Entity CreateNewEntity();
 
     template <class Component>
     void AddComponentType();
 
     template <class Component>
-    void AttachComponent(uint index, Component& component);
+    void AttachComponent(Entity entity, Component& component);
 
     template <class Component>
     std::span<const std::optional<Component>> GetComponents() const;
 
 private:
+    void AddEntities(int count);
+
+    int m_maxEntityCount = 0;
+    std::unique_ptr<EntityIDRegistry> m_entityIDRegistry;
     std::unordered_map<uint, IComponentList*> m_componentLists;
 };
 

@@ -1,9 +1,9 @@
 #include "SquareDisplayUpdater.hpp"
 
+#include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/ShaderProgram.hpp"
 #include "hatcher/Graphics/VertexArrayObject.hpp"
 #include "hatcher/Graphics/VertexBufferObject.hpp"
-#include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 
 #include "Position2DComponent.hpp"
@@ -24,7 +24,7 @@ SquareDisplayUpdater::SquareDisplayUpdater()
 
 SquareDisplayUpdater::~SquareDisplayUpdater() = default;
 
-void SquareDisplayUpdater::Update(hatcher::World& world)
+void SquareDisplayUpdater::Update(hatcher::ComponentManager* componentManager)
 {
     m_program->Use();
     glm::mat4 viewMatrix = glm::mat4(1.f);
@@ -34,7 +34,7 @@ void SquareDisplayUpdater::Update(hatcher::World& world)
     glm::mat4 modelMatrix = glm::mat4(1.f);
 
     for (const std::optional<Position2DComponent> component :
-         world.GetComponents<Position2DComponent>())
+         componentManager->GetComponents<Position2DComponent>())
     {
         if (component)
         {

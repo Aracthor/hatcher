@@ -2,14 +2,14 @@
 
 namespace hatcher
 {
-class World;
+class ComponentManager;
 
 class Updater
 {
 public:
     virtual ~Updater() {}
 
-    virtual void Update(World& world) = 0;
+    virtual void Update(ComponentManager* componentManager) = 0;
 };
 
 } // namespace hatcher

@@ -1,5 +1,5 @@
 #include "ComponentList.hpp"
-
+#include "Entity.hpp"
 #include "assert.hpp"
 
 namespace hatcher
@@ -17,14 +17,14 @@ void ComponentManager::AddComponentType()
 }
 
 template <class Component>
-void ComponentManager::AttachComponent(uint index, Component& component)
+void ComponentManager::AttachComponent(Entity entity, Component& component)
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 
     const uint key = Component::Key;
     IComponentList* componentList = m_componentLists[key];
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
-    realComponentList->AttachComponent(index, component);
+    realComponentList->AttachComponent(entity.ID(), component);
 }
 
 template <class Component>

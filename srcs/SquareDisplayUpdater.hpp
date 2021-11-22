@@ -18,7 +18,7 @@ public:
     SquareDisplayUpdater();
     ~SquareDisplayUpdater();
 
-    void Update(hatcher::World& world) override;
+    void Update(hatcher::ComponentManager* componentManager) override;
 
 private:
     std::unique_ptr<hatcher::VertexBufferObject> m_vbo;

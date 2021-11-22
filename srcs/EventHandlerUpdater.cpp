@@ -9,9 +9,9 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application)
 {
 }
 
-void EventHandlerUpdater::Update(hatcher::World& world)
+void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager)
 {
-    (void)world;
+    (void)componentManager;
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {

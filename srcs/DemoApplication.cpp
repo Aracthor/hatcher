@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "hatcher/ComponentManager.hpp"
 #include "hatcher/Entity.hpp"
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -14,11 +15,13 @@ DemoApplication::DemoApplication()
     : hatcher::GameApplication("hatcher - demo", 800, 600)
 {
     std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
+    hatcher::ComponentManager* componentManager = world->GetComponentManager();
 
-    world->AddComponentType<Position2DComponent>();
-    hatcher::Entity entity = world->CreateNewEntity();
+    componentManager->AddComponentType<Position2DComponent>();
+    hatcher::Entity entity = componentManager->CreateNewEntity();
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
-    world->AttachComponent<Position2DComponent>(entity, position2D);
+    componentManager->AttachComponent<Position2DComponent>(entity, position2D);
+
     world->AddRenderingUpdater(new SquareDisplayUpdater());
     world->AddRenderingUpdater(new EventHandlerUpdater(this));
 
