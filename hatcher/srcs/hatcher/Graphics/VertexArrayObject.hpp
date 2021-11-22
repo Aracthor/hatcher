@@ -16,7 +16,8 @@ public:
 
     void AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation);
 
-    void Draw() const;
+    void DrawArrays() const;
+    void DrawElements(int count) const;
 
 private:
     GLuint m_id;

@@ -22,6 +22,7 @@ public:
 
 private:
     std::unique_ptr<hatcher::VertexBufferObject> m_vbo;
+    std::unique_ptr<hatcher::VertexBufferObject> m_elements_vbo;
     std::unique_ptr<hatcher::VertexArrayObject> m_vao;
     std::unique_ptr<hatcher::ShaderProgram> m_program;
 };

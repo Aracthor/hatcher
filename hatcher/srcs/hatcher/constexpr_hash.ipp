@@ -50,7 +50,7 @@ constexpr unsigned int crc32<size_t(-1)>(const char* str)
 
 } // namespace
 
-template <typename T, size_t N = sizeof(T)>
+template <typename T, size_t N>
 constexpr unsigned int constexpr_hash(const T str)
 {
     return crc32<N - 2>(str) ^ 0xFFFFFFFF;
