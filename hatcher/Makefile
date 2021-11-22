@@ -117,6 +117,8 @@ BINS=			$(BIN_NATIVE_RELEASE)	\
 			$(BIN_WEBASM_DEBUG)	\
 
 
+.SECONDARY:
+
 $(OBJS_DIR):
 	$(MKDIR) $@
 
