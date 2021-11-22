@@ -6,7 +6,7 @@
 #include <emscripten.h>
 #endif
 
-#include "Graphics/Window.hpp"
+#include "Graphics/Core/Window.hpp"
 
 #include "World.hpp"
 

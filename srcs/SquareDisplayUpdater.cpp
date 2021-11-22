@@ -1,9 +1,9 @@
 #include "SquareDisplayUpdater.hpp"
 
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/ShaderProgram.hpp"
-#include "hatcher/Graphics/VertexArrayObject.hpp"
-#include "hatcher/Graphics/VertexBufferObject.hpp"
+#include "hatcher/Graphics/Core/ShaderProgram.hpp"
+#include "hatcher/Graphics/Core/VertexArrayObject.hpp"
+#include "hatcher/Graphics/Core/VertexBufferObject.hpp"
 #include "hatcher/glm_pure.hpp"
 
 #include "Position2DComponent.hpp"
