@@ -22,7 +22,7 @@ DemoApplication::DemoApplication()
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
     componentManager->AttachComponent<Position2DComponent>(entity, position2D);
 
-    world->AddRenderingUpdater(new SquareDisplayUpdater());
+    world->AddRenderingUpdater(new SquareDisplayUpdater(GetMeshBuilder()));
     world->AddRenderingUpdater(new EventHandlerUpdater(this));
 
     SetWatchedWorld(world);

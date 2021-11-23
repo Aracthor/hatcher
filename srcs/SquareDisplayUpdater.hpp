@@ -6,23 +6,19 @@
 
 namespace hatcher
 {
-class ShaderProgram;
-class VertexArrayObject;
-class VertexBufferObject;
+class Mesh;
+class MeshBuilder;
 class World;
 } // namespace hatcher
 
 class SquareDisplayUpdater final : public hatcher::Updater
 {
 public:
-    SquareDisplayUpdater();
+    SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~SquareDisplayUpdater();
 
     void Update(hatcher::ComponentManager* componentManager) override;
 
 private:
-    std::unique_ptr<hatcher::VertexBufferObject> m_vbo;
-    std::unique_ptr<hatcher::VertexBufferObject> m_elements_vbo;
-    std::unique_ptr<hatcher::VertexArrayObject> m_vao;
-    std::unique_ptr<hatcher::ShaderProgram> m_program;
+    std::unique_ptr<hatcher::Mesh> m_mesh;
 };

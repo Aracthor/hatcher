@@ -7,6 +7,7 @@
 
 namespace hatcher
 {
+class MeshBuilder;
 class Window;
 class World;
 
@@ -23,12 +24,16 @@ public:
 
     void Stop();
 
+protected:
+    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() { return m_meshBuilder; }
+
 private:
     void Update();
 
     std::vector<std::shared_ptr<World>> m_worlds;
     std::shared_ptr<World> m_watchedWorld;
 
+    std::unique_ptr<MeshBuilder> m_meshBuilder;
     std::unique_ptr<Window> m_window;
 
     uint m_renderFramerateLimit = 60;

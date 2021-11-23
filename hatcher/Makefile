@@ -89,6 +89,8 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/Core/VertexArrayObject.cpp	\
 		Graphics/Core/VertexBufferObject.cpp	\
 		Graphics/Core/Window.cpp 		\
+		Graphics/Mesh.cpp 			\
+		Graphics/MeshBuilder.cpp		\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 

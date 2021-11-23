@@ -7,6 +7,7 @@
 #endif
 
 #include "Graphics/Core/Window.hpp"
+#include "Graphics/MeshBuilder.hpp"
 
 #include "World.hpp"
 
@@ -16,6 +17,7 @@ namespace hatcher
 GameApplication::GameApplication(const char* name, int windowWidth, int windowHeight)
 {
     m_window.reset(new Window(name, windowWidth, windowHeight));
+    m_meshBuilder.reset(new MeshBuilder());
 }
 
 GameApplication::~GameApplication() = default;
