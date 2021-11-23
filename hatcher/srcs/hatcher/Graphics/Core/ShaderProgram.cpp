@@ -113,7 +113,7 @@ bool ShaderProgram::IsCurrentlyUsed() const
     return (currentProgramID == static_cast<GLint>(m_programID));
 }
 
-void ShaderProgram::SetMatrix4Uniform(const char* name, float* matrixPtr) const
+void ShaderProgram::SetMatrix4Uniform(const char* name, const float* matrixPtr) const
 {
     HATCHER_ASSERT(IsCurrentlyUsed());
     // TODO cache uniform locations ?

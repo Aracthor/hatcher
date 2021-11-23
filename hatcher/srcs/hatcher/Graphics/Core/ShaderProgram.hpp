@@ -14,7 +14,7 @@ public:
     void Use() const;
     bool IsCurrentlyUsed() const;
 
-    void SetMatrix4Uniform(const char* name, float* matrixPtr) const;
+    void SetMatrix4Uniform(const char* name, const float* matrixPtr) const;
 
 private:
     GLuint m_vertexShaderID;
