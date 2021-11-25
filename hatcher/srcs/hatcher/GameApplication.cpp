@@ -6,19 +6,14 @@
 #include <emscripten.h>
 #endif
 
-#include "Graphics/Core/Window.hpp"
-#include "Graphics/MeshBuilder.hpp"
+#include "Graphics/Rendering.hpp"
 
 #include "World.hpp"
 
 namespace hatcher
 {
 
-GameApplication::GameApplication(const char* name, int windowWidth, int windowHeight)
-{
-    m_window.reset(new Window(name, windowWidth, windowHeight));
-    m_meshBuilder.reset(new MeshBuilder());
-}
+GameApplication::GameApplication() = default;
 
 GameApplication::~GameApplication() = default;
 
@@ -62,14 +57,17 @@ void GameApplication::Stop()
 #endif
 }
 
+void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
+{
+    m_rendering = std::make_unique<Rendering>(name, windowWidth, windowHeight);
+}
+
 void GameApplication::Update()
 {
-    m_window->Clear();
-    if (m_watchedWorld)
+    if (m_watchedWorld && m_rendering)
     {
-        m_watchedWorld->UpdateRendering();
+        m_rendering->RenderWorld(m_watchedWorld.get());
     }
-    m_window->Refresh();
 }
 
 } // namespace hatcher

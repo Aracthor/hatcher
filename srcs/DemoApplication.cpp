@@ -4,6 +4,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Entity.hpp"
+#include "hatcher/Graphics/Rendering.hpp"
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 
@@ -12,7 +13,7 @@
 #include "SquareDisplayUpdater.hpp"
 
 DemoApplication::DemoApplication()
-    : hatcher::GameApplication("hatcher - demo", 800, 600)
+    : hatcher::GameApplication()
 {
     std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
     hatcher::ComponentManager* componentManager = world->GetComponentManager();
@@ -22,7 +23,9 @@ DemoApplication::DemoApplication()
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
     componentManager->AttachComponent<Position2DComponent>(entity, position2D);
 
-    world->AddRenderingUpdater(new SquareDisplayUpdater(GetMeshBuilder()));
+    StartRendering("hatcher - demo", 800, 600);
+
+    world->AddRenderingUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderingUpdater(new EventHandlerUpdater(this));
 
     SetWatchedWorld(world);

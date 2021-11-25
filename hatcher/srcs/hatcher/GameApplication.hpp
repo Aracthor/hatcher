@@ -7,14 +7,13 @@
 
 namespace hatcher
 {
-class MeshBuilder;
-class Window;
+class Rendering;
 class World;
 
 class GameApplication
 {
 public:
-    GameApplication(const char* name, int windowWidth, int windowHeight);
+    GameApplication();
     virtual ~GameApplication();
 
     std::shared_ptr<World> CreateNewWorld(const char* name);
@@ -25,7 +24,9 @@ public:
     void Stop();
 
 protected:
-    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() { return m_meshBuilder; }
+    void StartRendering(const char* name, int windowWidth, int windowHeight);
+
+    const std::unique_ptr<Rendering>& GetRendering() { return m_rendering; }
 
 private:
     void Update();
@@ -33,8 +34,7 @@ private:
     std::vector<std::shared_ptr<World>> m_worlds;
     std::shared_ptr<World> m_watchedWorld;
 
-    std::unique_ptr<MeshBuilder> m_meshBuilder;
-    std::unique_ptr<Window> m_window;
+    std::unique_ptr<Rendering> m_rendering;
 
     uint m_renderFramerateLimit = 60;
     bool m_running = false;
