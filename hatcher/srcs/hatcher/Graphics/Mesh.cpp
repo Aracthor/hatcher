@@ -18,7 +18,8 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* pos
     m_elementVBO->SetData(elements, elementCount);
 
     m_VAO = std::make_unique<VertexArrayObject>();
-    m_VAO->AttribVBO(*m_positionVBO, 0);
+    GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
+    m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
 }
 
 Mesh::~Mesh() = default;

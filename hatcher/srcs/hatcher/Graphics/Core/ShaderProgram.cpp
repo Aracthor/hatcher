@@ -123,4 +123,12 @@ void ShaderProgram::SetMatrix4Uniform(const char* name, const float* matrixPtr) 
     GL_CHECK(glUniformMatrix4fv(uniformLocation, 1, false, matrixPtr));
 }
 
+GLint ShaderProgram::GetAttribLocation(const char* name) const
+{
+    GLint attribLocation;
+    GL_CHECK(attribLocation = glGetAttribLocation(m_programID, name));
+    HATCHER_ASSERT_MESSAGE(attribLocation >= 0, "attrib name: " << name);
+    return attribLocation;
+}
+
 } // namespace hatcher
