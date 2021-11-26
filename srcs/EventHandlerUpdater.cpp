@@ -15,12 +15,13 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 {
     (void)componentManager;
 
-    const float width = 800.f;
-    const float height = 600.f;
-    const float right = width / 400.f;
-    const float left = -width / 400.f;
-    const float top = height / 400.f;
-    const float bottom = -height / 400.f;
+    const float halfWidth = m_windowWidth / 2.f * m_pixelSize;
+    const float halfHeight = m_windowHeight / 2.f * m_pixelSize;
+
+    const float right = m_fixedPosition.x + halfWidth;
+    const float left = m_fixedPosition.x - halfWidth;
+    const float top = m_fixedPosition.y + halfHeight;
+    const float bottom = m_fixedPosition.y - halfHeight;
     frameRenderer.SetProjectionMatrix(glm::ortho(left, right, top, bottom));
 
     SDL_Event event;
@@ -32,9 +33,34 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         }
         if (event.type == SDL_KEYDOWN)
         {
-            if (event.key.keysym.sym == SDLK_ESCAPE)
+            switch (event.key.keysym.sym)
             {
+            case SDLK_ESCAPE:
                 m_application->Stop();
+                break;
+
+            case SDLK_UP:
+            case SDLK_w:
+                m_fixedPosition.y -= 0.1f;
+                break;
+
+            case SDLK_DOWN:
+            case SDLK_s:
+                m_fixedPosition.y += 0.1f;
+                break;
+
+            case SDLK_RIGHT:
+            case SDLK_r:
+                m_fixedPosition.x += 0.1f;
+                break;
+
+            case SDLK_LEFT:
+            case SDLK_l:
+                m_fixedPosition.x -= 0.1f;
+                break;
+
+            default:
+                break;
             }
         }
     }
