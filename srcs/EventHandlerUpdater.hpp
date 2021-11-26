@@ -1,13 +1,13 @@
 #pragma once
 
-#include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/Graphics/IEventUpdater.hpp"
 
 namespace hatcher
 {
 class GameApplication;
 }
 
-class EventHandlerUpdater final : public hatcher::RenderUpdater
+class EventHandlerUpdater final : public hatcher::IEventUpdater
 {
 public:
     EventHandlerUpdater(hatcher::GameApplication* application);

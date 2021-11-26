@@ -7,6 +7,7 @@
 namespace hatcher
 {
 class ComponentManager;
+class IEventUpdater;
 class IFrameRenderer;
 class RenderUpdater;
 class Updater;
@@ -21,6 +22,7 @@ public:
     const ComponentManager* GetComponentManager() const { return m_componentManager.get(); }
 
     void AddRenderUpdater(RenderUpdater* updater);
+    void SetEventUpdater(IEventUpdater* updater);
 
     void UpdateRendering(IFrameRenderer& frameRenderer);
 
@@ -29,6 +31,7 @@ private:
 
     std::unique_ptr<ComponentManager> m_componentManager;
 
+    std::unique_ptr<IEventUpdater> m_eventUpdater;
     std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
 };
 

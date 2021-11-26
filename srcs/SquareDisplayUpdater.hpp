@@ -17,7 +17,7 @@ public:
     SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~SquareDisplayUpdater();
 
-    void Update(hatcher::ComponentManager* componentManager,
+    void Update(const hatcher::ComponentManager* componentManager,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:

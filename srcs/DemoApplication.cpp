@@ -26,7 +26,7 @@ DemoApplication::DemoApplication()
     StartRendering("hatcher - demo", 800, 600);
 
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
-    world->AddRenderUpdater(new EventHandlerUpdater(this));
+    world->SetEventUpdater(new EventHandlerUpdater(this));
 
     SetWatchedWorld(world);
 }

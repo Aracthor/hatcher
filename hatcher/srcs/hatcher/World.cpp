@@ -4,6 +4,7 @@
 #include "Updater.hpp"
 #include "assert.hpp"
 
+#include "Graphics/IEventUpdater.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
 #include <vector>
@@ -25,8 +26,17 @@ void World::AddRenderUpdater(RenderUpdater* updater)
     m_renderUpdaters.emplace_back(updater);
 }
 
+void World::SetEventUpdater(IEventUpdater* updater)
+{
+    HATCHER_ASSERT(updater != nullptr);
+    m_eventUpdater.reset(updater);
+}
+
 void World::UpdateRendering(IFrameRenderer& frameRenderer)
 {
+    if (m_eventUpdater)
+        m_eventUpdater->Update(m_componentManager.get(), frameRenderer);
+
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
         renderUpdater->Update(m_componentManager.get(), frameRenderer);

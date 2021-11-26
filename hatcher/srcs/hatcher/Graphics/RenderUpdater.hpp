@@ -8,9 +8,10 @@ class IFrameRenderer;
 class RenderUpdater
 {
 public:
-    virtual ~RenderUpdater() {}
+    virtual ~RenderUpdater() = default;
 
-    virtual void Update(ComponentManager* componentManager, IFrameRenderer& frameRenderer) = 0;
+    virtual void Update(const ComponentManager* componentManager,
+                        IFrameRenderer& frameRenderer) = 0;
 };
 
 } // namespace hatcher
