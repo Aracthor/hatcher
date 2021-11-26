@@ -4,7 +4,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Entity.hpp"
-#include "hatcher/Graphics/Rendering.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 

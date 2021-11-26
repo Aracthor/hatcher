@@ -7,7 +7,7 @@
 
 namespace hatcher
 {
-class Rendering;
+class IRendering;
 class World;
 
 class GameApplication
@@ -26,7 +26,7 @@ public:
 protected:
     void StartRendering(const char* name, int windowWidth, int windowHeight);
 
-    const std::unique_ptr<Rendering>& GetRendering() { return m_rendering; }
+    const std::unique_ptr<IRendering>& GetRendering() { return m_rendering; }
 
 private:
     void Update();
@@ -34,7 +34,7 @@ private:
     std::vector<std::shared_ptr<World>> m_worlds;
     std::shared_ptr<World> m_watchedWorld;
 
-    std::unique_ptr<Rendering> m_rendering;
+    std::unique_ptr<IRendering> m_rendering;
 
     uint m_renderFramerateLimit = 60;
     bool m_running = false;

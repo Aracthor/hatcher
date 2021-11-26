@@ -2,21 +2,23 @@
 
 #include <memory>
 
+#include "IRendering.hpp"
+
 namespace hatcher
 {
 class MeshBuilder;
 class Window;
 class World;
 
-class Rendering
+class Rendering : public IRendering
 {
 public:
     Rendering(const char* name, int windowWidth, int windowHeight);
     ~Rendering();
 
-    void RenderWorld(World* parWorld);
+    void RenderWorld(World* parWorld) override;
 
-    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() { return m_meshBuilder; }
+    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() override { return m_meshBuilder; }
 
 private:
     std::unique_ptr<MeshBuilder> m_meshBuilder;
