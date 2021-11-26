@@ -1,6 +1,7 @@
 #include "SquareDisplayUpdater.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -29,11 +30,9 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
 
 SquareDisplayUpdater::~SquareDisplayUpdater() = default;
 
-void SquareDisplayUpdater::Update(hatcher::ComponentManager* componentManager)
+void SquareDisplayUpdater::Update(hatcher::ComponentManager* componentManager,
+                                  hatcher::IFrameRenderer& frameRenderer)
 {
-    glm::mat4 viewMatrix = glm::mat4(1.f);
-    viewMatrix[0][0] = 600.f / 800.f;
-
     glm::mat4 modelMatrix = glm::mat4(1.f);
 
     for (const std::optional<Position2DComponent> component :
@@ -43,7 +42,7 @@ void SquareDisplayUpdater::Update(hatcher::ComponentManager* componentManager)
         {
             modelMatrix[3][0] = component->Position.x;
             modelMatrix[3][1] = component->Position.y;
-            m_mesh->Draw(viewMatrix, modelMatrix);
+            frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }
 }

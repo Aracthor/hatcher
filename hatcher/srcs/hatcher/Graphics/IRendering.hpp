@@ -10,7 +10,7 @@ class World;
 class IRendering
 {
 public:
-    IRendering() = default;
+    virtual ~IRendering() = default;
 
     virtual void RenderWorld(World* parWorld) = 0;
 

@@ -4,6 +4,7 @@
 
 #include "hatcher/World.hpp"
 
+#include "FrameRenderer.hpp"
 #include "MeshBuilder.hpp"
 
 namespace hatcher
@@ -19,8 +20,12 @@ Rendering::~Rendering() = default;
 
 void Rendering::RenderWorld(World* world)
 {
+    FrameRenderer frameRenderer;
+
+    world->UpdateRendering(frameRenderer);
+
     m_window->Clear();
-    world->UpdateRendering();
+    frameRenderer.Render();
     m_window->Refresh();
 }
 

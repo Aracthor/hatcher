@@ -4,6 +4,8 @@
 #include "Updater.hpp"
 #include "assert.hpp"
 
+#include "Graphics/RenderUpdater.hpp"
+
 #include <vector>
 
 namespace hatcher
@@ -17,17 +19,17 @@ World::World(const char* name)
 
 World::~World() = default;
 
-void World::AddRenderingUpdater(Updater* updater)
+void World::AddRenderUpdater(RenderUpdater* updater)
 {
     HATCHER_ASSERT(updater != nullptr);
-    m_renderingUpdaters.emplace_back(updater);
+    m_renderUpdaters.emplace_back(updater);
 }
 
-void World::UpdateRendering()
+void World::UpdateRendering(IFrameRenderer& frameRenderer)
 {
-    for (std::unique_ptr<Updater>& updater : m_renderingUpdaters)
+    for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        updater->Update(m_componentManager.get());
+        renderUpdater->Update(m_componentManager.get(), frameRenderer);
     }
 }
 
