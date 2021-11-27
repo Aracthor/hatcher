@@ -15,15 +15,6 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 {
     (void)componentManager;
 
-    const float halfWidth = m_windowWidth / 2.f * m_pixelSize;
-    const float halfHeight = m_windowHeight / 2.f * m_pixelSize;
-
-    const float right = m_fixedPosition.x + halfWidth;
-    const float left = m_fixedPosition.x - halfWidth;
-    const float top = m_fixedPosition.y + halfHeight;
-    const float bottom = m_fixedPosition.y - halfHeight;
-    frameRenderer.SetProjectionMatrix(glm::ortho(left, right, top, bottom));
-
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
     if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
@@ -45,4 +36,18 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
             m_application->Stop();
         }
     }
+
+    SendProjectionMatrix(frameRenderer);
+}
+
+void EventHandlerUpdater::SendProjectionMatrix(hatcher::IFrameRenderer& frameRenderer)
+{
+    const float halfWidth = m_windowWidth / 2.f * m_pixelSize;
+    const float halfHeight = m_windowHeight / 2.f * m_pixelSize;
+
+    const float right = m_fixedPosition.x + halfWidth;
+    const float left = m_fixedPosition.x - halfWidth;
+    const float top = m_fixedPosition.y + halfHeight;
+    const float bottom = m_fixedPosition.y - halfHeight;
+    frameRenderer.SetProjectionMatrix(glm::ortho(left, right, top, bottom));
 }

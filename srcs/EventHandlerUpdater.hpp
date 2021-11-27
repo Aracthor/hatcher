@@ -17,6 +17,9 @@ public:
     void Update(hatcher::ComponentManager* componentManager,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
+private:
+    void SendProjectionMatrix(hatcher::IFrameRenderer& frameRenderer);
+
     hatcher::GameApplication* m_application;
 
     glm::vec2 m_fixedPosition = glm::vec2(0.f, 0.f);
