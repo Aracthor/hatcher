@@ -31,8 +31,10 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
 SquareDisplayUpdater::~SquareDisplayUpdater() = default;
 
 void SquareDisplayUpdater::Update(const hatcher::ComponentManager* componentManager,
+                                  const hatcher::Clock& clock,
                                   hatcher::IFrameRenderer& frameRenderer)
 {
+    (void)clock;
     glm::mat4 modelMatrix = glm::mat4(1.f);
 
     for (const std::optional<Position2DComponent> component :

@@ -32,14 +32,14 @@ void World::SetEventUpdater(IEventUpdater* updater)
     m_eventUpdater.reset(updater);
 }
 
-void World::UpdateRendering(IFrameRenderer& frameRenderer)
+void World::UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock)
 {
     if (m_eventUpdater)
-        m_eventUpdater->Update(m_componentManager.get(), frameRenderer);
+        m_eventUpdater->Update(m_componentManager.get(), clock, frameRenderer);
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(m_componentManager.get(), frameRenderer);
+        renderUpdater->Update(m_componentManager.get(), clock, frameRenderer);
     }
 }
 

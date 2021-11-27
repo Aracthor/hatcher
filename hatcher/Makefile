@@ -89,6 +89,7 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/Core/VertexArrayObject.cpp	\
 		Graphics/Core/VertexBufferObject.cpp	\
 		Graphics/Core/Window.cpp 		\
+		Graphics/Clock.cpp			\
 		Graphics/FrameRenderer.cpp		\
 		Graphics/Mesh.cpp 			\
 		Graphics/MeshBuilder.cpp		\

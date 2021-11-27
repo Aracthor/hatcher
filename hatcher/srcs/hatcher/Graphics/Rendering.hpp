@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class Clock;
 class MeshBuilder;
 class Window;
 class World;
@@ -21,6 +22,7 @@ public:
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() override { return m_meshBuilder; }
 
 private:
+    std::unique_ptr<Clock> m_clock;
     std::unique_ptr<MeshBuilder> m_meshBuilder;
     std::unique_ptr<Window> m_window;
 };

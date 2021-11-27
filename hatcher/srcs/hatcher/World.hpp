@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class Clock;
 class ComponentManager;
 class IEventUpdater;
 class IFrameRenderer;
@@ -24,7 +25,7 @@ public:
     void AddRenderUpdater(RenderUpdater* updater);
     void SetEventUpdater(IEventUpdater* updater);
 
-    void UpdateRendering(IFrameRenderer& frameRenderer);
+    void UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock);
 
 private:
     std::string m_name;

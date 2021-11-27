@@ -14,7 +14,7 @@ class EventHandlerUpdater final : public hatcher::IEventUpdater
 public:
     EventHandlerUpdater(hatcher::GameApplication* application);
 
-    void Update(hatcher::ComponentManager* componentManager,
+    void Update(hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
