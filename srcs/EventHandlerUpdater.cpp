@@ -8,6 +8,7 @@
 #include "hatcher/GameApplication.hpp"
 #include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/assert.hpp"
 
 EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application)
     : m_application(application)
@@ -40,6 +41,18 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         if (event.type == SDL_QUIT)
         {
             m_application->Stop();
+        }
+
+        if (event.type == SDL_MOUSEWHEEL)
+        {
+            int verticalScroll = event.wheel.y;
+
+            // We don't use verticalScroll actual value because with emscripten,
+            // depending of browsers, this value can make no sense...
+            if (verticalScroll < 0)
+                m_pixelSize *= 4.f / 3.f;
+            else if (verticalScroll > 0)
+                m_pixelSize *= 3.f / 4.f;
         }
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
