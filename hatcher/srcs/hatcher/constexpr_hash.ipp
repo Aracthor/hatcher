@@ -35,14 +35,14 @@ constexpr unsigned int poly8_lookup[256] = {
     0xBDBDF21C, 0xCABAC28A, 0x53B39330, 0x24B4A3A6, 0xBAD03605, 0xCDD70693, 0x54DE5729, 0x23D967BF,
     0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94, 0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D};
 
-template <size_t idx>
+template <int idx>
 constexpr unsigned int crc32(const char* str)
 {
     return (crc32<idx - 1>(str) >> 8) ^ poly8_lookup[(crc32<idx - 1>(str) ^ str[idx]) & 0x000000FF];
 }
 
 template <>
-constexpr unsigned int crc32<size_t(-1)>(const char* str)
+constexpr unsigned int crc32<int(-1)>(const char* str)
 {
     (void)str;
     return 0xFFFFFFFF;
@@ -50,7 +50,7 @@ constexpr unsigned int crc32<size_t(-1)>(const char* str)
 
 } // namespace
 
-template <typename T, size_t N>
+template <typename T, int N>
 constexpr unsigned int constexpr_hash(const T str)
 {
     return crc32<N - 2>(str) ^ 0xFFFFFFFF;

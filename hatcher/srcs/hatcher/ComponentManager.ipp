@@ -1,3 +1,4 @@
+#include "Component.hpp"
 #include "ComponentList.hpp"
 #include "Entity.hpp"
 #include "assert.hpp"
@@ -8,7 +9,7 @@ namespace hatcher
 template <class Component>
 void ComponentManager::AddComponentType()
 {
-    const uint key = Component::Key;
+    const uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(!m_componentLists.contains(key),
                            "Trying to register two times te same component type.");
 
@@ -21,7 +22,7 @@ void ComponentManager::AttachComponent(Entity entity, Component& component)
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 
-    const uint key = Component::Key;
+    const uint key = ComponentKey<Component>();
     IComponentList* componentList = m_componentLists[key];
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
     realComponentList->AttachComponent(entity.ID(), component);
@@ -32,7 +33,7 @@ std::span<const std::optional<Component>> ComponentManager::GetComponents() cons
 {
     using RealComponentList = const IdentifiableComponentList<Component>*;
 
-    const uint key = Component::Key;
+    const uint key = ComponentKey<Component>();
     // Why doesn't std::unordered_map have an operator[] returning a const value ??
     const IComponentList* componentList = m_componentLists.at(key);
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);

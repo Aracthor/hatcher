@@ -3,13 +3,15 @@
 #include "basic_types.hpp"
 #include "constexpr_hash.hpp"
 
+#include <typeinfo>
+
 namespace hatcher
 {
 
-template <typename T, size_t N = sizeof(T)>
-constexpr uint ComponentKeyFromName(T name)
+template <class T>
+constexpr uint ComponentKey()
 {
-    return constexpr_hash(name);
+    return constexpr_hash(typeid(T).name());
 }
 
 } // namespace hatcher
