@@ -24,10 +24,10 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* pos
 
 Mesh::~Mesh() = default;
 
-void Mesh::Draw(const glm::mat4& viewMatrix, const glm::mat4& modelMatrix) const
+void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix) const
 {
     m_shaderProgram->Use();
-    m_shaderProgram->SetMatrix4Uniform("uniViewMatrix", glm::value_ptr(viewMatrix));
+    m_shaderProgram->SetMatrix4Uniform("uniProjectionMatrix", glm::value_ptr(projectionMatrix));
     m_shaderProgram->SetMatrix4Uniform("uniModelMatrix", glm::value_ptr(modelMatrix));
 
     m_elementVBO->Bind();

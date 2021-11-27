@@ -20,7 +20,7 @@ public:
          uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive);
     ~Mesh();
 
-    void Draw(const glm::mat4& viewMatrix, const glm::mat4& modelMatrix) const;
+    void Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix) const;
 
 private:
     std::unique_ptr<VertexArrayObject> m_VAO;
