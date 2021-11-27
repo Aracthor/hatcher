@@ -99,6 +99,7 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 
 SRCS_FILES=	DemoApplication.cpp		\
 		EventHandlerUpdater.cpp		\
+		MovingEntitiesRenderUpdater.cpp	\
 		SquareDisplayUpdater.cpp	\
 		main.cpp			\
 

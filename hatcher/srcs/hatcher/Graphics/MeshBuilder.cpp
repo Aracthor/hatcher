@@ -22,6 +22,11 @@ void MeshBuilder::SetProgram(const std::string& vertexShaderFileName,
     m_programToUse = m_shaderProgramLibrary[key];
 }
 
+void MeshBuilder::SetPrimitive(Primitive::Type primitive)
+{
+    m_primitive = primitive;
+}
+
 void MeshBuilder::SetPositions(float* positions, uint positionCount)
 {
     m_positions.clear();
@@ -36,6 +41,7 @@ void MeshBuilder::SetIndices(ushort* indices, uint indexCount)
 
 Mesh* MeshBuilder::Create()
 {
+    HATCHER_ASSERT_MESSAGE(m_primitive, "MeshBuilder::Create was called without a primitive.");
     HATCHER_ASSERT_MESSAGE(m_programToUse != nullptr,
                            "MeshBuilder::Create was called without a ShaderProgram.");
     HATCHER_ASSERT_MESSAGE(!m_positions.empty(),
@@ -44,8 +50,9 @@ Mesh* MeshBuilder::Create()
                            "MeshBuilder::Create was called without indices data.");
 
     Mesh* newMesh = new Mesh(m_programToUse, m_positions.data(), m_positions.size(),
-                             m_indices.data(), m_indices.size());
+                             m_indices.data(), m_indices.size(), *m_primitive);
 
+    m_primitive.reset();
     m_programToUse = nullptr;
     m_positions.clear();
     m_indices.clear();

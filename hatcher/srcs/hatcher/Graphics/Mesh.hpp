@@ -5,6 +5,8 @@
 #include "hatcher/basic_types.hpp"
 #include "hatcher/glm_pure.hpp"
 
+#include "Primitive.hpp"
+
 namespace hatcher
 {
 class ShaderProgram;
@@ -15,7 +17,7 @@ class Mesh
 {
 public:
     Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* positions,
-         uint positionCount, ushort* elements, uint elementCount);
+         uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive);
     ~Mesh();
 
     void Draw(const glm::mat4& viewMatrix, const glm::mat4& modelMatrix) const;

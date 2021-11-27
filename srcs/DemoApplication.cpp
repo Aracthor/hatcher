@@ -9,6 +9,8 @@
 #include "hatcher/glm_pure.hpp"
 
 #include "EventHandlerUpdater.hpp"
+#include "Movement2DComponent.hpp"
+#include "MovingEntitiesRenderUpdater.hpp"
 #include "Position2DComponent.hpp"
 #include "SquareDisplayUpdater.hpp"
 
@@ -19,6 +21,7 @@ DemoApplication::DemoApplication()
     hatcher::ComponentManager* componentManager = world->GetComponentManager();
 
     componentManager->AddComponentType<Position2DComponent>();
+    componentManager->AddComponentType<Movement2DComponent>();
     hatcher::Entity entity = componentManager->CreateNewEntity();
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
     componentManager->AttachComponent<Position2DComponent>(entity, position2D);
@@ -26,6 +29,7 @@ DemoApplication::DemoApplication()
     StartRendering("hatcher - demo", 800, 600);
 
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
+    world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
     world->SetEventUpdater(new EventHandlerUpdater(this));
 
     SetWatchedWorld(world);

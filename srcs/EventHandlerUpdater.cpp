@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_events.h>
 
+#include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
@@ -57,20 +58,31 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
+            const float windowWidth = 800;
+            const float windowHeight = 600;
+
+            glm::vec3 winCoords(event.button.x, windowHeight - event.button.y, 0.f);
+            glm::mat4 modelMatrix = glm::mat4(1.f);
+            glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
+            glm::vec3 worldCoords =
+                glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
+
             if (event.button.button == SDL_BUTTON_RIGHT)
             {
-                const float windowWidth = 800;
-                const float windowHeight = 600;
-
-                glm::vec3 winCoords(event.button.x, windowHeight - event.button.y, 0.f);
-                glm::mat4 modelMatrix = glm::mat4(1.f);
-                glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
-                glm::vec3 worldCoords =
-                    glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
-
                 hatcher::Entity newEntity = componentManager->CreateNewEntity();
                 Position2DComponent position2D{static_cast<glm::vec2>(worldCoords)};
                 componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
+            }
+
+            if (event.button.button == SDL_BUTTON_MIDDLE)
+            {
+                hatcher::Entity newEntity = componentManager->CreateNewEntity();
+                Position2DComponent position2D{static_cast<glm::vec2>(worldCoords)};
+                Movement2DComponent movement2D;
+                movement2D.Orientation = glm::vec2(1.f, 0.f);
+                movement2D.Speed = 0.f;
+                componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
+                componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
             }
         }
     }

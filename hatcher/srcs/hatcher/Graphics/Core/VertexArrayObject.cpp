@@ -8,7 +8,9 @@
 namespace hatcher
 {
 
-VertexArrayObject::VertexArrayObject()
+static_assert(Primitive::Count == 2);
+VertexArrayObject::VertexArrayObject(Primitive::Type primitive)
+    : m_mode((primitive == Primitive::Lines) ? GL_LINES : GL_TRIANGLES)
 {
     GL_CHECK(glGenVertexArrays(1, &m_id));
 }
@@ -32,13 +34,13 @@ void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLa
 void VertexArrayObject::DrawArrays() const
 {
     GL_CHECK(glBindVertexArray(m_id));
-    GL_CHECK(glDrawArrays(GL_TRIANGLES, 0, m_elementCount));
+    GL_CHECK(glDrawArrays(m_mode, 0, m_elementCount));
 }
 
 void VertexArrayObject::DrawElements(int count) const
 {
     GL_CHECK(glBindVertexArray(m_id));
-    GL_CHECK(glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_SHORT, nullptr));
+    GL_CHECK(glDrawElements(m_mode, count, GL_UNSIGNED_SHORT, nullptr));
 }
 
 } // namespace hatcher

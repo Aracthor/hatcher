@@ -19,6 +19,7 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
         -0.5f,  0.5f, 0.0f,
     };
     // clang-format on
+    meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
     meshBuilder->SetPositions(points, std::size(points));
 
     hatcher::ushort indices[] = {0, 1, 2, 0, 3, 2};

@@ -8,7 +8,7 @@ namespace hatcher
 {
 
 Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* positions,
-           uint positionCount, ushort* elements, uint elementCount)
+           uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive)
     : m_shaderProgram(shaderProgram)
 {
     m_positionVBO = std::make_unique<VertexBufferObject>();
@@ -17,7 +17,7 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* pos
     m_elementVBO = std::make_unique<VertexBufferObject>();
     m_elementVBO->SetData(elements, elementCount);
 
-    m_VAO = std::make_unique<VertexArrayObject>();
+    m_VAO = std::make_unique<VertexArrayObject>(primitive);
     GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
     m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
 }
