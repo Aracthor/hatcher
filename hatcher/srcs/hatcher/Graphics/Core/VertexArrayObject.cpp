@@ -20,27 +20,43 @@ VertexArrayObject::~VertexArrayObject()
     GL_CHECK(glDeleteVertexArrays(1, &m_id));
 }
 
-void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation)
+void VertexArrayObject::Bind()
 {
     GL_CHECK(glBindVertexArray(m_id));
+}
+
+void VertexArrayObject::Unbind()
+{
+    GL_CHECK(glBindVertexArray(0));
+}
+
+void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation)
+{
+    // GL_CHECK(glBindVertexArray(m_id));
+
     GL_CHECK(glEnableVertexAttribArray(parLayoutLocation));
     parVBO.Bind();
     GL_CHECK(glVertexAttribPointer(parLayoutLocation, 3, GL_FLOAT, GL_FALSE, 0, NULL));
+
     if (m_elementCount == 0)
         m_elementCount = parVBO.ElementCount();
     HATCHER_ASSERT(m_elementCount == parVBO.ElementCount());
+
+    // GL_CHECK(glBindVertexArray(0));
 }
 
 void VertexArrayObject::DrawArrays() const
 {
     GL_CHECK(glBindVertexArray(m_id));
     GL_CHECK(glDrawArrays(m_mode, 0, m_elementCount));
+    GL_CHECK(glBindVertexArray(0));
 }
 
 void VertexArrayObject::DrawElements(int count) const
 {
     GL_CHECK(glBindVertexArray(m_id));
     GL_CHECK(glDrawElements(m_mode, count, GL_UNSIGNED_SHORT, nullptr));
+    GL_CHECK(glBindVertexArray(0));
 }
 
 } // namespace hatcher

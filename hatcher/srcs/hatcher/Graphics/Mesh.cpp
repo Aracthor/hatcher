@@ -11,15 +11,18 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* pos
            uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive)
     : m_shaderProgram(shaderProgram)
 {
+    m_VAO = std::make_unique<VertexArrayObject>(primitive);
+    m_VAO->Bind();
+
     m_positionVBO = std::make_unique<VertexBufferObject>();
     m_positionVBO->SetData(positions, positionCount);
 
     m_elementVBO = std::make_unique<VertexBufferObject>();
     m_elementVBO->SetData(elements, elementCount);
 
-    m_VAO = std::make_unique<VertexArrayObject>(primitive);
     GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
     m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
+    m_VAO->Unbind();
 }
 
 Mesh::~Mesh() = default;
@@ -30,7 +33,6 @@ void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix)
     m_shaderProgram->SetMatrix4Uniform("uniProjectionMatrix", glm::value_ptr(projectionMatrix));
     m_shaderProgram->SetMatrix4Uniform("uniModelMatrix", glm::value_ptr(modelMatrix));
 
-    m_elementVBO->Bind();
     m_VAO->DrawElements(m_elementVBO->ElementCount());
 }
 

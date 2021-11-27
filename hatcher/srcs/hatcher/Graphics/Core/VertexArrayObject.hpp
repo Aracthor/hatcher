@@ -15,6 +15,9 @@ public:
     VertexArrayObject(Primitive::Type primitive);
     ~VertexArrayObject();
 
+    void Bind();
+    void Unbind();
+
     void AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation);
 
     void DrawArrays() const;
