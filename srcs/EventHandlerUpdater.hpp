@@ -18,7 +18,7 @@ public:
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
-    void SendProjectionMatrix(hatcher::IFrameRenderer& frameRenderer);
+    glm::mat4 CalculateProjectionMatrix();
 
     hatcher::GameApplication* m_application;
 
