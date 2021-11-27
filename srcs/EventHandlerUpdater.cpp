@@ -24,44 +24,25 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
     const float bottom = m_fixedPosition.y - halfHeight;
     frameRenderer.SetProjectionMatrix(glm::ortho(left, right, top, bottom));
 
+    const Uint8* keyState = SDL_GetKeyboardState(NULL);
+
+    if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
+        m_fixedPosition.y -= 0.1f;
+    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
+        m_fixedPosition.y += 0.1f;
+    if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
+        m_fixedPosition.x += 0.1f;
+    if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
+        m_fixedPosition.x -= 0.1f;
+    if (keyState[SDL_SCANCODE_ESCAPE])
+        m_application->Stop();
+
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
         if (event.type == SDL_QUIT)
         {
             m_application->Stop();
-        }
-        if (event.type == SDL_KEYDOWN)
-        {
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-                m_application->Stop();
-                break;
-
-            case SDLK_UP:
-            case SDLK_w:
-                m_fixedPosition.y -= 0.1f;
-                break;
-
-            case SDLK_DOWN:
-            case SDLK_s:
-                m_fixedPosition.y += 0.1f;
-                break;
-
-            case SDLK_RIGHT:
-            case SDLK_r:
-                m_fixedPosition.x += 0.1f;
-                break;
-
-            case SDLK_LEFT:
-            case SDLK_l:
-                m_fixedPosition.x -= 0.1f;
-                break;
-
-            default:
-                break;
-            }
         }
     }
 }
