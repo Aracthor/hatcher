@@ -26,7 +26,8 @@ int GameApplication::Run()
 
     m_running = true;
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop_arg(mainLoop, this, m_renderFramerateLimit, true);
+    emscripten_set_main_loop_timing(EM_TIMING_SETTIMEOUT, m_renderFramerateLimit);
+    emscripten_set_main_loop_arg(mainLoop, this, 0, true);
 #else
     while (m_running)
     {
