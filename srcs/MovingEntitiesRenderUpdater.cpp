@@ -42,8 +42,8 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
     const float orientationLinePositions[] = {0.f, 0.f, 1.f, 0.f};
     positions.insert(positions.end(), orientationLinePositions,
                      orientationLinePositions + std::size(orientationLinePositions));
+    indices.push_back(circleVertexCount);
     indices.push_back(circleVertexCount + 1);
-    indices.push_back(circleVertexCount + 2);
 
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
     meshBuilder->SetPositions(positions.data(), std::size(positions));
