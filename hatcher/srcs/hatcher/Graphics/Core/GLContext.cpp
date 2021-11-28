@@ -27,7 +27,7 @@ GLContext::GLContext(SDL_Window* window)
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
-        std::cout << "GLEW not initialized correctly" << std::endl;
+        std::cerr << "GLEW not initialized correctly" << std::endl;
 }
 
 GLContext::~GLContext()
