@@ -28,9 +28,6 @@ GLContext::GLContext(SDL_Window* window)
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
         std::cout << "GLEW not initialized correctly" << std::endl;
-
-    GL_CHECK(glEnable(GL_DEPTH_TEST)); // enable depth-testing
-    GL_CHECK(glDepthFunc(GL_LESS));    // depth-testing interprets a smaller value as "closer"
 }
 
 GLContext::~GLContext()
