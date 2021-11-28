@@ -23,7 +23,7 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
     const int circleVertexCount = 20;
     std::vector<float> positions;
     std::vector<hatcher::ushort> indices;
-    positions.reserve((circleVertexCount + 2) * 3);
+    positions.reserve((circleVertexCount + 2) * 2);
     indices.reserve(circleVertexCount * 2 + 2);
     for (int i = 0; i < circleVertexCount; i++)
     {
@@ -33,14 +33,13 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
         const float y = ::sinf(angle);
         positions.push_back(x);
         positions.push_back(y);
-        positions.push_back(0.f);
         const hatcher::ushort startIndex = i;
         const hatcher::ushort endIndex = (i == circleVertexCount - 1) ? 0 : (i + 1);
         indices.push_back(startIndex);
         indices.push_back(endIndex);
     }
 
-    const float orientationLinePositions[] = {0.f, 0.f, 0.f, 1.f, 0.f, 0.f};
+    const float orientationLinePositions[] = {0.f, 0.f, 1.f, 0.f};
     positions.insert(positions.end(), orientationLinePositions,
                      orientationLinePositions + std::size(orientationLinePositions));
     indices.push_back(circleVertexCount + 1);

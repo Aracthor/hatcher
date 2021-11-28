@@ -13,10 +13,10 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
     // clang-format off
     float points[] =
     {
-         0.5f,  0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        -0.5f,  0.5f, 0.0f,
+         0.5f,  0.5f,
+         0.5f, -0.5f,
+        -0.5f, -0.5f,
+        -0.5f,  0.5f,
     };
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);

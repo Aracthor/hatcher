@@ -36,7 +36,7 @@ void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLa
 
     GL_CHECK(glEnableVertexAttribArray(parLayoutLocation));
     parVBO.Bind();
-    GL_CHECK(glVertexAttribPointer(parLayoutLocation, 3, GL_FLOAT, GL_FALSE, 0, NULL));
+    GL_CHECK(glVertexAttribPointer(parLayoutLocation, 2, GL_FLOAT, GL_FALSE, 0, NULL));
 
     if (m_elementCount == 0)
         m_elementCount = parVBO.ElementCount();
