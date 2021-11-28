@@ -3,7 +3,7 @@ class Logger {
 
     constructor(textAreaElementId) {
 
-        this._textAreaElement = document.getElementById(textAreaElementId);
+        this._textAreaElement = document.querySelector(textAreaElementId);
 
         if (!this._textAreaElement)
             throw new Error(`DOM elements not found, id=${textAreaElementId}`);

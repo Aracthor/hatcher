@@ -5,7 +5,7 @@ import Logger from "./utilities/Logger.js";
 
 const onGlobalPageLoad = async () => {
 
-    const logger = new Logger("loggerOutput");
+    const logger = new Logger("#loggerOutput");
 
     logger.log("[JS] page loaded");
 
@@ -152,7 +152,7 @@ const onGlobalPageLoad = async () => {
             });
         };
 
-        await scriptLoadingUtility(`./js/bin/exec_release.js`)
+        await scriptLoadingUtility(`./js/bin/exec_debug.js`)
 
         logger.log("[JS] wasm script: loading successful");
 
