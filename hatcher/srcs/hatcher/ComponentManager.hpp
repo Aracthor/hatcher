@@ -30,6 +30,9 @@ public:
     template <class Component>
     std::span<const std::optional<Component>> GetComponents() const;
 
+    template <class Component>
+    std::span<std::optional<Component>> GetComponents();
+
 private:
     void AddEntities(int count);
 

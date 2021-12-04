@@ -49,4 +49,18 @@ std::span<const std::optional<Component>> ComponentManager::GetComponents() cons
     return realComponentList->GetComponentList();
 }
 
+template <class Component>
+std::span<std::optional<Component>> ComponentManager::GetComponents()
+{
+    using RealComponentList = IdentifiableComponentList<Component>*;
+
+    const uint key = ComponentKey<Component>();
+    HATCHER_ASSERT_MESSAGE(m_componentLists.contains(key),
+                           "Requesting a missing component type: " << typeid(Component).name());
+    // Why doesn't std::unordered_map have an operator[] returning a const value ??
+    IComponentList* componentList = m_componentLists.at(key);
+    RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
+    return realComponentList->GetComponentList();
+}
+
 } // namespace hatcher

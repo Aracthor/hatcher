@@ -25,6 +25,7 @@ public:
 
     void AttachComponent(uint index, Component& component);
     std::span<const std::optional<Component>> GetComponentList() const;
+    std::span<std::optional<Component>> GetComponentList();
 
 private:
     std::vector<std::optional<Component>> m_components;

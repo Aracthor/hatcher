@@ -118,7 +118,31 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
         if (event.type == SDL_MOUSEBUTTONUP)
         {
-            m_selectionHandler->EndSelection();
+            if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                std::span<std::optional<Selectable2DComponent>> selectableComponents =
+                    componentManager->GetComponents<Selectable2DComponent>();
+                std::span<std::optional<Position2DComponent>> positionComponents =
+                    componentManager->GetComponents<Position2DComponent>();
+                const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
+
+                HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
+                for (uint i = 0; i < selectableComponents.size(); i++)
+                {
+                    std::optional<Selectable2DComponent>& selectableComponent =
+                        selectableComponents[i];
+                    std::optional<Position2DComponent>& positionComponent = positionComponents[i];
+                    if (selectableComponent)
+                    {
+                        HATCHER_ASSERT(positionComponent);
+                        const hatcher::Box2f entityBox =
+                            selectableComponent->Box.Translated(positionComponent->Position);
+                        selectableComponent->Selected = selectionRectangle.Contains(entityBox);
+                    }
+                }
+
+                m_selectionHandler->EndSelection();
+            }
         }
 
         if (event.type == SDL_MOUSEMOTION)

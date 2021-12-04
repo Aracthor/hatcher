@@ -17,6 +17,7 @@ public:
     Box(const Vec& min, const Vec& max);
 
     void AddPoint(const Vec& point);
+    Box Translated(const Vec& translation) const;
 
     bool Contains(const Vec& point) const;
     bool Contains(const Box<L, T>& box) const;
