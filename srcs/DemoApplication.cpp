@@ -32,7 +32,7 @@ DemoApplication::DemoApplication()
 
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
-    world->SetEventUpdater(new EventHandlerUpdater(this));
+    world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()->GetMeshBuilder()));
 
     SetWatchedWorld(world);
 }

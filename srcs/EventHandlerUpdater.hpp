@@ -9,14 +9,17 @@
 namespace hatcher
 {
 class GameApplication;
-}
+class Mesh;
+class MeshBuilder;
+} // namespace hatcher
 
 class SelectionRectangleHandler;
 
 class EventHandlerUpdater final : public hatcher::IEventUpdater
 {
 public:
-    EventHandlerUpdater(hatcher::GameApplication* application);
+    EventHandlerUpdater(hatcher::GameApplication* application,
+                        const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~EventHandlerUpdater();
 
     void Update(hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
@@ -34,4 +37,5 @@ private:
     float m_pixelSize = 0.01f;
 
     std::unique_ptr<SelectionRectangleHandler> m_selectionHandler;
+    std::unique_ptr<hatcher::Mesh> m_selectionRectangleMesh;
 };
