@@ -12,8 +12,6 @@
 #include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
-#include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/assert.hpp"
 
@@ -39,17 +37,7 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
                                          const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
     : m_application(application)
 {
-    m_selectionHandler = std::make_unique<SelectionRectangleHandler>();
-
-    meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetDynamic();
-
-    meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
-    m_selectionRectangleMesh.reset(meshBuilder->Create());
-
-    hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
-
-    m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
+    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(meshBuilder);
 }
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
@@ -145,33 +133,10 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         }
     }
 
-    DrawSelectionRectangle(frameRenderer);
+    m_selectionHandler->DrawSelectionRectangle(frameRenderer);
 
     const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
     frameRenderer.SetProjectionMatrix(newProjectionMatrix);
-}
-
-void EventHandlerUpdater::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer)
-{
-    if (m_selectionHandler->IsSelecting())
-    {
-        const hatcher::Box2f rectangle = m_selectionHandler->GetCurrentSelection();
-
-        // clang-format off
-        float rectangleCorners[] =
-        {
-            rectangle.Min().x, rectangle.Min().y,
-            rectangle.Max().x, rectangle.Min().y,
-            rectangle.Max().x, rectangle.Max().y,
-            rectangle.Min().x, rectangle.Max().y,
-        };
-        // clang-format on
-
-        m_selectionRectangleMesh->SetPositions(rectangleCorners, std::size(rectangleCorners));
-
-        const glm::mat4 identityMatrix(1.f);
-        frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), identityMatrix);
-    }
 }
 
 glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()

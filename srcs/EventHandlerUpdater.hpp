@@ -9,7 +9,6 @@
 namespace hatcher
 {
 class GameApplication;
-class Mesh;
 class MeshBuilder;
 } // namespace hatcher
 
@@ -26,7 +25,6 @@ public:
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
-    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer);
     glm::mat4 CalculateProjectionMatrix();
 
     hatcher::GameApplication* m_application;
@@ -38,5 +36,4 @@ private:
     float m_pixelSize = 0.01f;
 
     std::unique_ptr<SelectionRectangleHandler> m_selectionHandler;
-    std::unique_ptr<hatcher::Mesh> m_selectionRectangleMesh;
 };
