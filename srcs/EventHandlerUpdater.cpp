@@ -42,6 +42,7 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
     m_selectionHandler = std::make_unique<SelectionRectangleHandler>();
 
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
+    meshBuilder->SetDynamic();
 
     meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
     m_selectionRectangleMesh.reset(meshBuilder->Create());

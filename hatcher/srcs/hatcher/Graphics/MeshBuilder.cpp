@@ -27,6 +27,11 @@ void MeshBuilder::SetPrimitive(Primitive::Type primitive)
     m_primitive = primitive;
 }
 
+void MeshBuilder::SetDynamic()
+{
+    m_dynamic = true;
+}
+
 Mesh* MeshBuilder::Create()
 {
     HATCHER_ASSERT_MESSAGE(m_primitive, "MeshBuilder::Create was called without a primitive.");
@@ -34,8 +39,9 @@ Mesh* MeshBuilder::Create()
                            "MeshBuilder::Create was called without a ShaderProgram.");
 
     Mesh* newMesh;
-    newMesh = new Mesh(m_programToUse, *m_primitive);
+    newMesh = new Mesh(m_programToUse, m_dynamic, *m_primitive);
 
+    m_dynamic = false;
     m_primitive.reset();
     m_programToUse = nullptr;
 

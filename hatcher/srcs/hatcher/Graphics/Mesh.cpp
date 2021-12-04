@@ -7,8 +7,10 @@
 namespace hatcher
 {
 
-Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, Primitive::Type primitive)
+Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynamic,
+           Primitive::Type primitive)
     : m_shaderProgram(shaderProgram)
+    , m_dynamic(dynamic)
 {
     m_VAO = std::make_unique<VertexArrayObject>(primitive);
     m_VAO->Bind();
@@ -23,7 +25,7 @@ void Mesh::SetPositions(float* positions, uint positionCount)
     m_VAO->Bind();
 
     GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
-    m_positionVBO->SetData(positions, positionCount);
+    m_positionVBO->SetData(positions, positionCount, m_dynamic);
     m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
 
     m_VAO->Unbind();
@@ -34,7 +36,7 @@ void Mesh::SetIndices(ushort* elements, uint elementCount)
     m_VAO->Bind();
 
     m_elementVBO = std::make_unique<VertexBufferObject>();
-    m_elementVBO->SetData(elements, elementCount);
+    m_elementVBO->SetData(elements, elementCount, m_dynamic);
 
     m_VAO->Unbind();
 }

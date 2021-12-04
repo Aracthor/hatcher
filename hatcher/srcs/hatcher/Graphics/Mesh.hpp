@@ -16,7 +16,8 @@ class VertexBufferObject;
 class Mesh
 {
 public:
-    Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, Primitive::Type primitive);
+    Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynamic,
+         Primitive::Type primitive);
     ~Mesh();
 
     void SetPositions(float* positions, uint positionCount);
@@ -29,6 +30,7 @@ private:
     std::unique_ptr<VertexBufferObject> m_positionVBO;
     std::unique_ptr<VertexBufferObject> m_elementVBO;
     std::shared_ptr<const ShaderProgram> m_shaderProgram;
+    bool m_dynamic;
 };
 
 } // namespace hatcher
