@@ -21,6 +21,7 @@ public:
 
     bool Contains(const Vec& point) const;
     bool Contains(const Box<L, T>& box) const;
+    bool Touches(const Box<L, T>& box) const;
 
     const Vec& Min() const { return m_min; }
     const Vec& Max() const { return m_max; }

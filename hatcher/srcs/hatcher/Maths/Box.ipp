@@ -56,6 +56,17 @@ bool Box<L, T>::Contains(const Box<L, T>& box) const
 }
 
 template <glm::length_t L, typename T>
+bool Box<L, T>::Touches(const Box<L, T>& box) const
+{
+    for (glm::length_t i = 0; i < L; i++)
+    {
+        if (m_min[i] > box.m_max[i] || m_max[i] < box.m_min[i])
+            return false;
+    }
+    return true;
+}
+
+template <glm::length_t L, typename T>
 bool Box<L, T>::operator==(const Box& other) const
 {
     return m_min == other.m_min && m_max == other.m_max;

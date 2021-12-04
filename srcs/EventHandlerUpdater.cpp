@@ -137,7 +137,7 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
                         HATCHER_ASSERT(positionComponent);
                         const hatcher::Box2f entityBox =
                             selectableComponent->Box.Translated(positionComponent->Position);
-                        selectableComponent->Selected = selectionRectangle.Contains(entityBox);
+                        selectableComponent->Selected = selectionRectangle.Touches(entityBox);
                     }
                 }
 
