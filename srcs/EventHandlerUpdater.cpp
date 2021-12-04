@@ -14,6 +14,24 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/assert.hpp"
 
+namespace
+{
+
+glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::mat4& previousProjectionMatrix)
+{
+    const float windowWidth = 800;
+    const float windowHeight = 600;
+
+    const glm::vec3 winCoords(x, windowHeight - y, 0.f);
+    const glm::mat4 modelMatrix = glm::mat4(1.f);
+    const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
+    const glm::vec3 worldCoords =
+        glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
+    return static_cast<glm::vec2>(worldCoords);
+}
+
+} // namespace
+
 EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application)
     : m_application(application)
 {
@@ -42,9 +60,6 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
 
-    const float windowWidth = 800;
-    const float windowHeight = 600;
-
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
@@ -67,12 +82,8 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
         if (event.type == SDL_MOUSEBUTTONDOWN)
         {
-            const glm::vec3 winCoords(event.button.x, windowHeight - event.button.y, 0.f);
-            const glm::mat4 modelMatrix = glm::mat4(1.f);
-            const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
-            const glm::vec3 worldCoords =
-                glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
-            const glm::vec2 worldCoords2D = static_cast<glm::vec2>(worldCoords);
+            const glm::vec2 worldCoords2D =
+                MouseCoordsToWorldCoords(event.button.x, event.button.y, previousProjectionMatrix);
 
             if (event.button.button == SDL_BUTTON_LEFT)
             {
@@ -110,12 +121,8 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
         if (event.type == SDL_MOUSEMOTION)
         {
-            const glm::vec3 winCoords(event.motion.x, windowHeight - event.motion.y, 0.f);
-            const glm::mat4 modelMatrix = glm::mat4(1.f);
-            const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
-            const glm::vec3 worldCoords =
-                glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
-            const glm::vec2 worldCoords2D = static_cast<glm::vec2>(worldCoords);
+            const glm::vec2 worldCoords2D =
+                MouseCoordsToWorldCoords(event.motion.x, event.motion.y, previousProjectionMatrix);
 
             m_selectionHandler->MoveSelection(worldCoords2D);
         }
