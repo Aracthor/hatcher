@@ -20,6 +20,8 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynam
     m_VAO->Unbind();
 }
 
+Mesh::~Mesh() = default;
+
 void Mesh::SetPositions(float* positions, uint positionCount)
 {
     m_VAO->Bind();
@@ -40,8 +42,6 @@ void Mesh::SetIndices(ushort* elements, uint elementCount)
 
     m_VAO->Unbind();
 }
-
-Mesh::~Mesh() = default;
 
 void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix) const
 {
