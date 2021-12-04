@@ -144,6 +144,14 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         }
     }
 
+    DrawSelectionRectangle(frameRenderer);
+
+    const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
+    frameRenderer.SetProjectionMatrix(newProjectionMatrix);
+}
+
+void EventHandlerUpdater::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer)
+{
     if (m_selectionHandler->IsSelecting())
     {
         const hatcher::Box2f rectangle = m_selectionHandler->GetCurrentSelection();
@@ -163,9 +171,6 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         const glm::mat4 identityMatrix(1.f);
         frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), identityMatrix);
     }
-
-    const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
-    frameRenderer.SetProjectionMatrix(newProjectionMatrix);
 }
 
 glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()

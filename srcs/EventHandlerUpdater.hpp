@@ -26,6 +26,7 @@ public:
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
+    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer);
     glm::mat4 CalculateProjectionMatrix();
 
     hatcher::GameApplication* m_application;
