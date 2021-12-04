@@ -121,10 +121,13 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
         if (event.type == SDL_MOUSEMOTION)
         {
-            const glm::vec2 worldCoords2D =
-                MouseCoordsToWorldCoords(event.motion.x, event.motion.y, previousProjectionMatrix);
+            if (m_selectionHandler->IsSelecting())
+            {
+                const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
+                    event.motion.x, event.motion.y, previousProjectionMatrix);
 
-            m_selectionHandler->MoveSelection(worldCoords2D);
+                m_selectionHandler->MoveSelection(worldCoords2D);
+            }
         }
     }
 

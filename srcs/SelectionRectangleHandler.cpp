@@ -6,6 +6,7 @@ void SelectionRectangleHandler::StartSelection(const glm::vec2& position)
 {
     m_isSelecting = true;
     m_selectionStart = position;
+    m_currentRectangle = hatcher::Box2f(m_selectionStart);
 }
 
 void SelectionRectangleHandler::MoveSelection(const glm::vec2& position)
