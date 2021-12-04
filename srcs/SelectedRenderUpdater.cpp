@@ -46,9 +46,11 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
         if (selectableComponent && selectableComponent->Selected)
         {
             HATCHER_ASSERT(positionComponent);
-            // const hatcher::Box2f box = selectableComponent->Box;
-            const glm::vec3 position = glm::vec3(positionComponent->Position, 0.f);
-            const glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), position);
+            const hatcher::Box2f box = selectableComponent->Box;
+            glm::mat4 modelMatrix =
+                glm::inverse(glm::ortho(box.Min().x, box.Max().x, box.Min().y, box.Max().y));
+            modelMatrix[3][0] += positionComponent->Position.x;
+            modelMatrix[3][1] += positionComponent->Position.y;
             frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }
