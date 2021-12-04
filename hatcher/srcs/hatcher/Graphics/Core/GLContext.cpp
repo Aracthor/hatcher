@@ -28,6 +28,9 @@ GLContext::GLContext(SDL_Window* window)
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
         std::cerr << "GLEW not initialized correctly" << std::endl;
+
+    GL_CHECK(glEnable(GL_BLEND));
+    GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
 GLContext::~GLContext()
