@@ -101,6 +101,7 @@ SRCS_FILES=	DemoApplication.cpp		\
 		EventHandlerUpdater.cpp		\
 		MovingEntitiesRenderUpdater.cpp	\
 		SelectionRectangleHandler.cpp	\
+		SelectedRenderUpdater.cpp 	\
 		SquareDisplayUpdater.cpp	\
 		main.cpp			\
 

@@ -13,6 +13,7 @@
 #include "MovingEntitiesRenderUpdater.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
+#include "SelectedRenderUpdater.hpp"
 #include "SquareDisplayUpdater.hpp"
 
 DemoApplication::DemoApplication()
@@ -32,6 +33,7 @@ DemoApplication::DemoApplication()
 
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
+    world->AddRenderUpdater(new SelectedRenderUpdater(GetRendering()->GetMeshBuilder()));
     world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()->GetMeshBuilder()));
 
     SetWatchedWorld(world);
