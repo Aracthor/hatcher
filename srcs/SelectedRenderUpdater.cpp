@@ -12,7 +12,7 @@ SelectedRenderUpdater::SelectedRenderUpdater(
     const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+    meshBuilder->SetProgram("shaders/selection.vert", "shaders/selection.frag");
     m_mesh.reset(meshBuilder->Create());
 
     float positions[] = {
