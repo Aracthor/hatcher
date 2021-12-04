@@ -24,6 +24,8 @@ public:
     void DrawElements(int count) const;
 
 private:
+    bool IsBinded() const;
+
     GLuint m_id;
     GLenum m_mode;
     uint m_elementCount = 0;

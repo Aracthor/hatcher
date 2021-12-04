@@ -32,7 +32,7 @@ void VertexArrayObject::Unbind()
 
 void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation)
 {
-    // GL_CHECK(glBindVertexArray(m_id));
+    HATCHER_ASSERT(IsBinded());
 
     GL_CHECK(glEnableVertexAttribArray(parLayoutLocation));
     parVBO.Bind();
@@ -41,8 +41,6 @@ void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLa
     if (m_elementCount == 0)
         m_elementCount = parVBO.ElementCount();
     HATCHER_ASSERT(m_elementCount == parVBO.ElementCount());
-
-    // GL_CHECK(glBindVertexArray(0));
 }
 
 void VertexArrayObject::DrawArrays() const
@@ -57,6 +55,13 @@ void VertexArrayObject::DrawElements(int count) const
     GL_CHECK(glBindVertexArray(m_id));
     GL_CHECK(glDrawElements(m_mode, count, GL_UNSIGNED_SHORT, nullptr));
     GL_CHECK(glBindVertexArray(0));
+}
+
+bool VertexArrayObject::IsBinded() const
+{
+    GLint binded;
+    GL_CHECK(glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &binded));
+    return binded == static_cast<GLint>(m_id);
 }
 
 } // namespace hatcher
