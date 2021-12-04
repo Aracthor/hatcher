@@ -12,6 +12,7 @@
 #include "Movement2DComponent.hpp"
 #include "MovingEntitiesRenderUpdater.hpp"
 #include "Position2DComponent.hpp"
+#include "Selectable2DComponent.hpp"
 #include "SquareDisplayUpdater.hpp"
 
 DemoApplication::DemoApplication()
@@ -22,6 +23,7 @@ DemoApplication::DemoApplication()
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
+    componentManager->AddComponentType<Selectable2DComponent>();
     hatcher::Entity entity = componentManager->CreateNewEntity();
     Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
     componentManager->AttachComponent<Position2DComponent>(entity, position2D);
