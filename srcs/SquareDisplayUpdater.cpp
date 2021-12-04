@@ -18,15 +18,18 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
         -0.5f, -0.5f,
         -0.5f,  0.5f,
     };
+    hatcher::ushort indices[] =
+    {
+        0, 1, 2,
+        0, 3, 2
+    };
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
-    meshBuilder->SetPositions(points, std::size(points));
-
-    hatcher::ushort indices[] = {0, 1, 2, 0, 3, 2};
-    meshBuilder->SetIndices(indices, std::size(indices));
-
     meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+
     m_mesh.reset(meshBuilder->Create());
+    m_mesh->SetPositions(points, std::size(points));
+    m_mesh->SetIndices(indices, std::size(indices));
 }
 
 SquareDisplayUpdater::~SquareDisplayUpdater() = default;

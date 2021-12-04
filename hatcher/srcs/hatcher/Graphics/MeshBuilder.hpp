@@ -4,7 +4,6 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "hatcher/basic_types.hpp"
 
@@ -23,8 +22,6 @@ public:
                     const std::string& fragmentShaderFileName);
 
     void SetPrimitive(Primitive::Type type);
-    void SetPositions(float* positions, uint positionCount);
-    void SetIndices(ushort* indices, uint indexCount);
 
     Mesh* Create();
 
@@ -34,8 +31,6 @@ private:
 
     std::optional<Primitive::Type> m_primitive;
     std::shared_ptr<const ShaderProgram> m_programToUse;
-    std::vector<float> m_positions;
-    std::vector<ushort> m_indices;
 };
 
 } // namespace hatcher

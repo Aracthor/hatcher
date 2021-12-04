@@ -46,11 +46,11 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
     indices.push_back(circleVertexCount + 1);
 
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetPositions(positions.data(), std::size(positions));
-    meshBuilder->SetIndices(indices.data(), std::size(indices));
-
     meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+
     m_mesh.reset(meshBuilder->Create());
+    m_mesh->SetPositions(positions.data(), std::size(positions));
+    m_mesh->SetIndices(indices.data(), std::size(indices));
 }
 
 MovingEntitiesRenderUpdater::~MovingEntitiesRenderUpdater() = default;

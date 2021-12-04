@@ -18,24 +18,6 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, Primitive:
     m_VAO->Unbind();
 }
 
-Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* positions,
-           uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive)
-    : m_shaderProgram(shaderProgram)
-{
-    m_VAO = std::make_unique<VertexArrayObject>(primitive);
-    m_VAO->Bind();
-
-    m_positionVBO = std::make_unique<VertexBufferObject>();
-    m_positionVBO->SetData(positions, positionCount);
-
-    m_elementVBO = std::make_unique<VertexBufferObject>();
-    m_elementVBO->SetData(elements, elementCount);
-
-    GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
-    m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
-    m_VAO->Unbind();
-}
-
 void Mesh::SetPositions(float* positions, uint positionCount)
 {
     m_VAO->Bind();

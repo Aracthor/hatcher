@@ -17,8 +17,6 @@ class Mesh
 {
 public:
     Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, Primitive::Type primitive);
-    Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, float* positions,
-         uint positionCount, ushort* elements, uint elementCount, Primitive::Type primitive);
     ~Mesh();
 
     void SetPositions(float* positions, uint positionCount);
