@@ -55,4 +55,16 @@ bool Box<L, T>::Contains(const Box<L, T>& box) const
     return true;
 }
 
+template <glm::length_t L, typename T>
+bool Box<L, T>::operator==(const Box& other) const
+{
+    return m_min == other.m_min && m_max == other.m_max;
+}
+
+template <glm::length_t L, typename T>
+bool Box<L, T>::operator!=(const Box& other) const
+{
+    return !operator==(other);
+}
+
 } // namespace hatcher

@@ -25,6 +25,9 @@ public:
     const Vec& Min() const { return m_min; }
     const Vec& Max() const { return m_max; }
 
+    bool operator==(const Box& other) const;
+    bool operator!=(const Box& other) const;
+
 private:
     glm::vec<L, T> m_min;
     glm::vec<L, T> m_max;
