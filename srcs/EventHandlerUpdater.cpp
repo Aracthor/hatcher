@@ -45,6 +45,10 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
 
     meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
     m_selectionRectangleMesh.reset(meshBuilder->Create());
+
+    hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
+
+    m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
 }
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
@@ -149,15 +153,8 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
         {
             rectangle.Min().x, rectangle.Min().y,
             rectangle.Max().x, rectangle.Min().y,
-
-            rectangle.Max().x, rectangle.Min().y,
-            rectangle.Max().x, rectangle.Max().y,
-
             rectangle.Max().x, rectangle.Max().y,
             rectangle.Min().x, rectangle.Max().y,
-
-            rectangle.Min().x, rectangle.Max().y,
-            rectangle.Min().x, rectangle.Min().y,
         };
         // clang-format on
 

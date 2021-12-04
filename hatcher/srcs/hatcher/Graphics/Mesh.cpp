@@ -47,6 +47,16 @@ void Mesh::SetPositions(float* positions, uint positionCount)
     m_VAO->Unbind();
 }
 
+void Mesh::SetIndices(ushort* elements, uint elementCount)
+{
+    m_VAO->Bind();
+
+    m_elementVBO = std::make_unique<VertexBufferObject>();
+    m_elementVBO->SetData(elements, elementCount);
+
+    m_VAO->Unbind();
+}
+
 Mesh::~Mesh() = default;
 
 void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix) const
