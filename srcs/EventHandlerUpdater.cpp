@@ -58,9 +58,9 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
     if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
-        m_fixedPosition.y -= 0.01f * elapsedTime;
-    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
         m_fixedPosition.y += 0.01f * elapsedTime;
+    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
+        m_fixedPosition.y -= 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
         m_fixedPosition.x += 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
