@@ -39,7 +39,7 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
     auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
     auto positionComponents = componentManager->GetComponents<Position2DComponent>();
     HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
-    for (uint i = 0; i < selectableComponents.size(); i++)
+    for (hatcher::uint i = 0; i < selectableComponents.size(); i++)
     {
         const std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
         const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
