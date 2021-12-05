@@ -13,7 +13,6 @@
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
-#include "hatcher/Maths/vectors.hpp"
 #include "hatcher/assert.hpp"
 #include "hatcher/glm_pure.hpp"
 
@@ -74,7 +73,7 @@ void MovingEntitiesRenderUpdater::Update(const hatcher::ComponentManager* compon
             HATCHER_ASSERT(positions[i]);
             const Position2DComponent& position2D = *positions[i];
             const Movement2DComponent& movement2D = *movements[i];
-            const float angle = hatcher::angle(movement2D.Orientation, glm::vec2(1.f, 0.f));
+            const float angle = glm::orientedAngle(glm::vec2(1.f, 0.f), movement2D.Orientation);
             glm::mat4 modelMatrix = glm::mat4(1.f);
             modelMatrix = glm::translate(modelMatrix, glm::vec3(position2D.Position, 0.f));
             modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
