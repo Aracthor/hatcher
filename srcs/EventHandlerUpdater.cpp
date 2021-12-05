@@ -174,9 +174,24 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 
     if (event.button.button == SDL_BUTTON_RIGHT)
     {
-        hatcher::Entity newEntity = componentManager->CreateNewEntity();
-        Position2DComponent position2D{worldCoords2D};
-        componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
+        auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
+        auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
+        auto positionComponents = componentManager->GetComponents<Position2DComponent>();
+
+        HATCHER_ASSERT(movementComponents.size() == positionComponents.size());
+        HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
+        for (uint i = 0; i < selectableComponents.size(); i++)
+        {
+            std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
+            std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
+            std::optional<Position2DComponent>& positionComponent = positionComponents[i];
+            if (selectableComponent && selectableComponent->Selected && movementComponent)
+            {
+                HATCHER_ASSERT(positionComponent);
+                movementComponent->Orientation =
+                    glm::normalize(worldCoords2D - positionComponent->Position);
+            }
+        }
     }
 
     if (event.button.button == SDL_BUTTON_MIDDLE)
