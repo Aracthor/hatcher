@@ -76,8 +76,8 @@ void MovingEntitiesRenderUpdater::Update(const hatcher::ComponentManager* compon
             const Movement2DComponent& movement2D = *movements[i];
             const float angle = hatcher::angle(movement2D.Orientation, glm::vec2(1.f, 0.f));
             glm::mat4 modelMatrix = glm::mat4(1.f);
-            modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
             modelMatrix = glm::translate(modelMatrix, glm::vec3(position2D.Position, 0.f));
+            modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
             frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }
