@@ -203,7 +203,7 @@ glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()
 
     const float right = m_fixedPosition.x + halfWidth;
     const float left = m_fixedPosition.x - halfWidth;
-    const float bottom = m_fixedPosition.y + halfHeight;
-    const float top = m_fixedPosition.y - halfHeight;
+    const float bottom = m_fixedPosition.y - halfHeight;
+    const float top = m_fixedPosition.y + halfHeight;
     return glm::ortho(left, right, bottom, top);
 }
