@@ -1,10 +1,12 @@
 #pragma once
 
 #include <memory>
+#include <unordered_map>
 
-#include "hatcher/glm_pure.hpp"
+#include <SDL2/SDL_events.h>
 
 #include "hatcher/Graphics/IEventUpdater.hpp"
+#include "hatcher/glm_pure.hpp"
 
 namespace hatcher
 {
@@ -25,9 +27,27 @@ public:
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
+    void HandleQuitEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+                         const glm::mat4& previousProjectionMatrix);
+    void HandleMouseWheelEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+                               const glm::mat4& previousProjectionMatrix);
+    void HandleMouseMotionEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+                                const glm::mat4& previousProjectionMatrix);
+    void HandleMouseButtonUpEvent(const SDL_Event& event,
+                                  hatcher::ComponentManager* componentManager,
+                                  const glm::mat4& previousProjectionMatrix);
+    void HandleMouseButtonDownEvent(const SDL_Event& event,
+                                    hatcher::ComponentManager* componentManager,
+                                    const glm::mat4& previousProjectionMatrix);
+
     glm::mat4 CalculateProjectionMatrix();
 
     hatcher::GameApplication* m_application;
+
+    using EventHandlerFunction = void (EventHandlerUpdater::*)(
+        const SDL_Event& event, hatcher::ComponentManager* componentManager,
+        const glm::mat4& previousProjectionMatrix);
+    std::unordered_map<uint, EventHandlerFunction> m_eventFunctions;
 
     glm::vec2 m_fixedPosition = glm::vec2(0.f, 0.f);
 

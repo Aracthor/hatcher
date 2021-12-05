@@ -37,6 +37,12 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
                                          const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
     : m_application(application)
 {
+    m_eventFunctions[SDL_QUIT] = &EventHandlerUpdater::HandleQuitEvent;
+    m_eventFunctions[SDL_MOUSEWHEEL] = &EventHandlerUpdater::HandleMouseWheelEvent;
+    m_eventFunctions[SDL_MOUSEMOTION] = &EventHandlerUpdater::HandleMouseMotionEvent;
+    m_eventFunctions[SDL_MOUSEBUTTONUP] = &EventHandlerUpdater::HandleMouseButtonUpEvent;
+    m_eventFunctions[SDL_MOUSEBUTTONDOWN] = &EventHandlerUpdater::HandleMouseButtonDownEvent;
+
     m_selectionHandler = std::make_unique<SelectionRectangleHandler>(meshBuilder);
 }
 
@@ -65,95 +71,11 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        if (event.type == SDL_QUIT)
+        auto functionIt = m_eventFunctions.find(event.type);
+        if (functionIt != m_eventFunctions.end())
         {
-            m_application->Stop();
-        }
-
-        if (event.type == SDL_MOUSEWHEEL)
-        {
-            int verticalScroll = event.wheel.y;
-
-            // We don't use verticalScroll actual value because with emscripten,
-            // depending of browsers, this value can make no sense...
-            if (verticalScroll < 0)
-                m_pixelSize *= 4.f / 3.f;
-            else if (verticalScroll > 0)
-                m_pixelSize *= 3.f / 4.f;
-        }
-
-        if (event.type == SDL_MOUSEBUTTONDOWN)
-        {
-            const glm::vec2 worldCoords2D =
-                MouseCoordsToWorldCoords(event.button.x, event.button.y, previousProjectionMatrix);
-
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-                m_selectionHandler->StartSelection(worldCoords2D);
-            }
-
-            if (event.button.button == SDL_BUTTON_RIGHT)
-            {
-                hatcher::Entity newEntity = componentManager->CreateNewEntity();
-                Position2DComponent position2D{worldCoords2D};
-                componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
-            }
-
-            if (event.button.button == SDL_BUTTON_MIDDLE)
-            {
-                hatcher::Entity newEntity = componentManager->CreateNewEntity();
-                Position2DComponent position2D{worldCoords2D};
-                Movement2DComponent movement2D;
-                movement2D.Orientation = glm::vec2(1.f, 0.f);
-                movement2D.Speed = 0.f;
-                Selectable2DComponent selectable2D;
-                selectable2D.Selected = false;
-                selectable2D.Box = hatcher::Box2f(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f));
-
-                componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
-                componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
-                componentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
-            }
-        }
-
-        if (event.type == SDL_MOUSEBUTTONUP)
-        {
-            if (event.button.button == SDL_BUTTON_LEFT)
-            {
-                std::span<std::optional<Selectable2DComponent>> selectableComponents =
-                    componentManager->GetComponents<Selectable2DComponent>();
-                std::span<std::optional<Position2DComponent>> positionComponents =
-                    componentManager->GetComponents<Position2DComponent>();
-                const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
-
-                HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
-                for (uint i = 0; i < selectableComponents.size(); i++)
-                {
-                    std::optional<Selectable2DComponent>& selectableComponent =
-                        selectableComponents[i];
-                    std::optional<Position2DComponent>& positionComponent = positionComponents[i];
-                    if (selectableComponent)
-                    {
-                        HATCHER_ASSERT(positionComponent);
-                        const hatcher::Box2f entityBox =
-                            selectableComponent->Box.Translated(positionComponent->Position);
-                        selectableComponent->Selected = selectionRectangle.Touches(entityBox);
-                    }
-                }
-
-                m_selectionHandler->EndSelection();
-            }
-        }
-
-        if (event.type == SDL_MOUSEMOTION)
-        {
-            if (m_selectionHandler->IsSelecting())
-            {
-                const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
-                    event.motion.x, event.motion.y, previousProjectionMatrix);
-
-                m_selectionHandler->MoveSelection(worldCoords2D);
-            }
+            EventHandlerFunction handlerFunction = functionIt->second;
+            (this->*handlerFunction)(event, componentManager, previousProjectionMatrix);
         }
     }
 
@@ -161,6 +83,117 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
 
     const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
     frameRenderer.SetProjectionMatrix(newProjectionMatrix);
+}
+
+void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
+                                          hatcher::ComponentManager* componentManager,
+                                          const glm::mat4& previousProjectionMatrix)
+{
+    (void)event;
+    (void)componentManager;
+    (void)previousProjectionMatrix;
+
+    m_application->Stop();
+}
+
+void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
+                                                hatcher::ComponentManager* componentManager,
+                                                const glm::mat4& previousProjectionMatrix)
+{
+    (void)componentManager;
+    (void)previousProjectionMatrix;
+
+    int verticalScroll = event.wheel.y;
+
+    // We don't use verticalScroll actual value because with emscripten,
+    // depending of browsers, this value can make no sense...
+    if (verticalScroll < 0)
+        m_pixelSize *= 4.f / 3.f;
+    else if (verticalScroll > 0)
+        m_pixelSize *= 3.f / 4.f;
+}
+
+void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
+                                                 hatcher::ComponentManager* componentManager,
+                                                 const glm::mat4& previousProjectionMatrix)
+{
+    (void)componentManager;
+
+    if (m_selectionHandler->IsSelecting())
+    {
+        const glm::vec2 worldCoords2D =
+            MouseCoordsToWorldCoords(event.motion.x, event.motion.y, previousProjectionMatrix);
+
+        m_selectionHandler->MoveSelection(worldCoords2D);
+    }
+}
+
+void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
+                                                   hatcher::ComponentManager* componentManager,
+                                                   const glm::mat4& previousProjectionMatrix)
+{
+    (void)previousProjectionMatrix;
+
+    if (event.button.button == SDL_BUTTON_LEFT)
+    {
+        std::span<std::optional<Selectable2DComponent>> selectableComponents =
+            componentManager->GetComponents<Selectable2DComponent>();
+        std::span<std::optional<Position2DComponent>> positionComponents =
+            componentManager->GetComponents<Position2DComponent>();
+        const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
+
+        HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
+        for (uint i = 0; i < selectableComponents.size(); i++)
+        {
+            std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
+            std::optional<Position2DComponent>& positionComponent = positionComponents[i];
+            if (selectableComponent)
+            {
+                HATCHER_ASSERT(positionComponent);
+                const hatcher::Box2f entityBox =
+                    selectableComponent->Box.Translated(positionComponent->Position);
+                selectableComponent->Selected = selectionRectangle.Touches(entityBox);
+            }
+        }
+
+        m_selectionHandler->EndSelection();
+    }
+}
+
+void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
+                                                     hatcher::ComponentManager* componentManager,
+                                                     const glm::mat4& previousProjectionMatrix)
+{
+    const glm::vec2 worldCoords2D =
+        MouseCoordsToWorldCoords(event.button.x, event.button.y, previousProjectionMatrix);
+
+    if (event.button.button == SDL_BUTTON_LEFT)
+    {
+        m_selectionHandler->StartSelection(worldCoords2D);
+    }
+
+    if (event.button.button == SDL_BUTTON_RIGHT)
+    {
+        hatcher::Entity newEntity = componentManager->CreateNewEntity();
+        Position2DComponent position2D{worldCoords2D};
+        componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
+    }
+
+    if (event.button.button == SDL_BUTTON_MIDDLE)
+    {
+        hatcher::Entity newEntity = componentManager->CreateNewEntity();
+        Position2DComponent position2D{worldCoords2D};
+        Movement2DComponent movement2D;
+        movement2D.Orientation = glm::vec2(1.f, 0.f);
+        movement2D.Speed = 0.f;
+        Selectable2DComponent selectable2D;
+        selectable2D.Selected = false;
+        selectable2D.Box = hatcher::Box2f(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f));
+
+        componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
+        componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
+        componentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
+    }
 }
 
 glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()
