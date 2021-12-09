@@ -15,7 +15,7 @@ public:
     float GetElapsedTime() const { return m_elapsedTime; }
 
 private:
-    using ClockType = std::chrono::system_clock;
+    using ClockType = std::chrono::steady_clock;
 
     std::chrono::time_point<ClockType> m_previousTime;
     std::chrono::time_point<ClockType> m_lastTime;
