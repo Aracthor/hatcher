@@ -26,6 +26,9 @@ public:
     const Vec& Min() const { return m_min; }
     const Vec& Max() const { return m_max; }
 
+    Vec Extents() const { return m_max - m_min; }
+    Vec Center() const { return (m_max + m_min) / static_cast<T>(2); }
+
     bool operator==(const Box& other) const;
     bool operator!=(const Box& other) const;
 

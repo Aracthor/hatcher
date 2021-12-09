@@ -9,13 +9,22 @@ SelectionRectangleHandler::SelectionRectangleHandler(
     const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetDynamic();
 
     meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
     m_selectionRectangleMesh.reset(meshBuilder->Create());
 
+    float positions[] = {
+        -0.5f, -0.5f,
+
+        0.5f,  -0.5f,
+
+        0.5f,  0.5f,
+
+        -0.5f, 0.5f,
+    };
     hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
 
+    m_selectionRectangleMesh->SetPositions(positions, std::size(positions));
     m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
 }
 
@@ -44,19 +53,12 @@ void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& 
 {
     if (IsSelecting())
     {
-        // clang-format off
-        float rectangleCorners[] =
-        {
-            m_currentRectangle.Min().x, m_currentRectangle.Min().y,
-            m_currentRectangle.Max().x, m_currentRectangle.Min().y,
-            m_currentRectangle.Max().x, m_currentRectangle.Max().y,
-            m_currentRectangle.Min().x, m_currentRectangle.Max().y,
-        };
-        // clang-format on
+        const glm::vec2 rectangleSize = m_currentRectangle.Extents();
+        const glm::vec2 center = m_currentRectangle.Center();
+        glm::mat4 modelMatrix = glm::mat4(1.f);
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(center.x, center.y, 1.f));
+        modelMatrix = glm::scale(modelMatrix, glm::vec3(rectangleSize.x, rectangleSize.y, 1.f));
 
-        m_selectionRectangleMesh->SetPositions(rectangleCorners, std::size(rectangleCorners));
-
-        const glm::mat4 identityMatrix(1.f);
-        frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), identityMatrix);
+        frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
     }
 }
