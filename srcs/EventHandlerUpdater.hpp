@@ -5,7 +5,7 @@
 
 #include <SDL2/SDL_events.h>
 
-#include "hatcher/Graphics/IEventUpdater.hpp"
+#include "hatcher/Graphics/AbstractEventUpdater.hpp"
 #include "hatcher/glm_pure.hpp"
 
 namespace hatcher
@@ -16,15 +16,16 @@ class MeshBuilder;
 
 class SelectionRectangleHandler;
 
-class EventHandlerUpdater final : public hatcher::IEventUpdater
+class EventHandlerUpdater final : public hatcher::AbstractEventUpdater
 {
 public:
     EventHandlerUpdater(hatcher::GameApplication* application,
                         const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~EventHandlerUpdater();
 
-    void Update(hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
-                hatcher::IFrameRenderer& frameRenderer) override;
+    void HandleEvents(std::span<const SDL_Event> events,
+                      hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
+                      hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
     void HandleQuitEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,

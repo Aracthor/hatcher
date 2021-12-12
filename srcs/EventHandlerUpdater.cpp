@@ -48,9 +48,10 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
 
-void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
-                                 const hatcher::Clock& clock,
-                                 hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleEvents(std::span<const SDL_Event> events,
+                                       hatcher::ComponentManager* componentManager,
+                                       const hatcher::Clock& clock,
+                                       hatcher::IFrameRenderer& frameRenderer)
 {
     const glm::mat4 previousProjectionMatrix = CalculateProjectionMatrix();
 
@@ -68,8 +69,7 @@ void EventHandlerUpdater::Update(hatcher::ComponentManager* componentManager,
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
 
-    SDL_Event event;
-    while (SDL_PollEvent(&event))
+    for (const SDL_Event& event : events)
     {
         auto functionIt = m_eventFunctions.find(event.type);
         if (functionIt != m_eventFunctions.end())
