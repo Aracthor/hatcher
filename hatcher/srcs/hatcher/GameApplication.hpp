@@ -30,6 +30,7 @@ protected:
 
 private:
     void Update();
+    void Render();
 
     std::vector<std::shared_ptr<World>> m_worlds;
     std::shared_ptr<World> m_watchedWorld;

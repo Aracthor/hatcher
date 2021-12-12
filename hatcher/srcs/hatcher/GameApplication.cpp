@@ -22,6 +22,7 @@ int GameApplication::Run()
     auto mainLoop = [](void* data) {
         GameApplication* game = reinterpret_cast<GameApplication*>(data);
         game->Update();
+        game->Render();
     };
 
     m_running = true;
@@ -67,7 +68,15 @@ void GameApplication::Update()
 {
     if (m_watchedWorld && m_rendering)
     {
-        m_rendering->RenderWorld(m_watchedWorld.get());
+        m_rendering->UpdateWorldRendering(m_watchedWorld.get());
+    }
+}
+
+void GameApplication::Render()
+{
+    if (m_watchedWorld && m_rendering)
+    {
+        m_rendering->RenderWorld();
     }
 }
 

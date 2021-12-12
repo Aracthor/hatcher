@@ -20,15 +20,19 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
 
 Rendering::~Rendering() = default;
 
-void Rendering::RenderWorld(World* world)
+void Rendering::UpdateWorldRendering(World* world)
 {
-    FrameRenderer frameRenderer;
+    // TODO clear instead ?
+    m_frameRenderer = std::make_unique<FrameRenderer>();
 
     m_clock->Update();
-    world->UpdateRendering(frameRenderer, *m_clock);
+    world->UpdateRendering(*m_frameRenderer, *m_clock);
+}
 
+void Rendering::RenderWorld()
+{
     m_window->Clear();
-    frameRenderer.Render();
+    m_frameRenderer->Render();
     m_window->Refresh();
 }
 
