@@ -17,6 +17,7 @@ RELEASE_DIR=		release/
 DEBUG_DIR=		debug/
 
 SRCS_SUBDIRS=		Graphics/	\
+			Threading/	\
 
 SRCS_SUBSUBDIRS=	Graphics/Core/	\
 
@@ -95,6 +96,9 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/Mesh.cpp 			\
 		Graphics/MeshBuilder.cpp		\
 		Graphics/Rendering.cpp 			\
+							\
+		Threading/Mutex.cpp 			\
+		Threading/Thread.cpp 			\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
