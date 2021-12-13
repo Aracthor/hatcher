@@ -118,6 +118,8 @@ OBJS=			$(OBJS_NATIVE_RELEASE)	\
 			$(OBJS_WEBASM_RELEASE)	\
 			$(OBJS_WEBASM_DEBUG)	\
 
+DEPS=			$(OBJS:.o=.dep)
+
 BIN_NATIVE_RELEASE=	$(NATIVE_BIN_DIR)$(NATIVE_NAME)_release
 BIN_NATIVE_DEBUG=	$(NATIVE_BIN_DIR)$(NATIVE_NAME)_debug
 BIN_WEBASM_RELEASE=	$(WEBASM_BIN_DIR)$(NATIVE_NAME)_release.js
@@ -131,6 +133,9 @@ BINS=			$(BIN_NATIVE_RELEASE)	\
 			$(RESIDUE_WEBASM_RELASE)\
 			$(RESIDUE_WEBASM_DEBUG)	\
 
+
+
+include $(shell test -d $(OBJS_DIR) && find $(OBJS_DIR) -name "*.dep")
 
 $(OBJS_DIR):
 	$(MKDIR) $@
@@ -146,9 +151,11 @@ $(OBJS_NATIVE_DEBUG_DIR):	| $(OBJS_NATIVE_DIR)
 
 $(OBJS_NATIVE_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_RELEASE_DIR)
 	$(CXX) $(CXX_RELEASE_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
+	@$(CXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
 
 $(OBJS_NATIVE_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_DEBUG_DIR)
 	$(CXX) $(CXX_DEBUG_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
+	@$(CXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
 
 $(OBJS_WEBASM_DIR):		| $(OBJS_DIR)
 	$(MKDIR) $@
@@ -161,9 +168,11 @@ $(OBJS_WEBASM_DEBUG_DIR):	| $(OBJS_WEBASM_DIR)
 
 $(OBJS_WEBASM_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_WEBASM_RELEASE_DIR)
 	$(EMXX) $(CXX_RELEASE_FLAGS) $(EMXX_FLAGS) -c $< -o $@
+	@$(EMXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
 
 $(OBJS_WEBASM_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_WEBASM_DEBUG_DIR)
 	$(EMXX) $(CXX_DEBUG_FLAGS) $(EMXX_FLAGS) -c $< -o $@
+	@$(EMXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
 
 
 $(HATCHER_BINS):
@@ -192,12 +201,12 @@ all:	$(BINS)
 
 clean:
 	$(MAKE) clean -C $(HATCHER_DIR)
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(DEPS)
 	$(RMDIR) $(OBJS_DIRS)
 
 fclean:
 	$(MAKE) fclean -C $(HATCHER_DIR)
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(DEPS)
 	$(RMDIR) $(OBJS_DIRS)
 	$(RM) $(BINS)
 	$(RMDIR) $(BIN_DIRS)
