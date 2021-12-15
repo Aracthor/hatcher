@@ -150,12 +150,10 @@ $(OBJS_NATIVE_DEBUG_DIR):	| $(OBJS_NATIVE_DIR)
 	$(MKDIR) $@
 
 $(OBJS_NATIVE_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_RELEASE_DIR)
-	$(CXX) $(CXX_RELEASE_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
-	@$(CXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
+	$(CXX) $(CXX_NATIVE_FLAGS) $(CXX_RELEASE_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
 
 $(OBJS_NATIVE_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_NATIVE_DEBUG_DIR)
-	$(CXX) $(CXX_DEBUG_FLAGS) $(CXX_NATIVE_FLAGS) -c $< -o $@
-	@$(CXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
+	$(CXX) $(CXX_NATIVE_FLAGS) $(CXX_DEBUG_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
 
 $(OBJS_WEBASM_DIR):		| $(OBJS_DIR)
 	$(MKDIR) $@
@@ -167,12 +165,10 @@ $(OBJS_WEBASM_DEBUG_DIR):	| $(OBJS_WEBASM_DIR)
 	$(MKDIR) $@
 
 $(OBJS_WEBASM_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_WEBASM_RELEASE_DIR)
-	$(EMXX) $(CXX_RELEASE_FLAGS) $(EMXX_FLAGS) -c $< -o $@
-	@$(EMXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
+	$(EMXX) $(EMXX_FLAGS) $(CXX_RELEASE_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
 
 $(OBJS_WEBASM_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $(OBJS_WEBASM_DEBUG_DIR)
-	$(EMXX) $(CXX_DEBUG_FLAGS) $(EMXX_FLAGS) -c $< -o $@
-	@$(EMXX) $(CXX_COMMON_FLAGS) -MM -MT $@ -c $< -o $(@:.o=.dep)
+	$(EMXX) $(EMXX_FLAGS) $(CXX_DEBUG_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
 
 
 $(HATCHER_BINS):
