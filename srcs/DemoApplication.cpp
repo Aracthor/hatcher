@@ -11,6 +11,8 @@
 #include "EventHandlerUpdater.hpp"
 #include "Movement2DComponent.hpp"
 #include "MovingEntitiesRenderUpdater.hpp"
+#include "Obstacle2DComponent.hpp"
+#include "ObstacleRenderUpdater.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 #include "SelectedRenderUpdater.hpp"
@@ -24,15 +26,23 @@ DemoApplication::DemoApplication()
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
+    componentManager->AddComponentType<Obstacle2DComponent>();
     componentManager->AddComponentType<Selectable2DComponent>();
-    hatcher::Entity entity = componentManager->CreateNewEntity();
-    Position2DComponent position2D{glm::vec2(0.5f, 0.0f)};
-    componentManager->AttachComponent<Position2DComponent>(entity, position2D);
+
+    hatcher::Entity obstacleEntity = componentManager->CreateNewEntity();
+    Obstacle2DComponent obstacle2D{{
+        glm::vec2(2.5f, 3.0f),
+        glm::vec2(1.5f, 3.0f),
+        glm::vec2(1.5f, 1.0f),
+        glm::vec2(3.5f, 1.0f),
+    }};
+    componentManager->AttachComponent<Obstacle2DComponent>(obstacleEntity, obstacle2D);
 
     StartRendering("hatcher - demo", 800, 600);
 
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
+    world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new SelectedRenderUpdater(GetRendering()->GetMeshBuilder()));
     world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()->GetMeshBuilder()));
 
