@@ -9,7 +9,6 @@ namespace hatcher
 class Clock;
 class FrameRenderer;
 class MeshBuilder;
-class Mutex;
 class Window;
 class World;
 
@@ -25,11 +24,9 @@ public:
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() override { return m_meshBuilder; }
 
 private:
-    std::unique_ptr<Mutex> m_mutex;
-
     std::unique_ptr<Clock> m_clock;
     std::unique_ptr<MeshBuilder> m_meshBuilder;
-    std::shared_ptr<FrameRenderer> m_frameRenderer;
+    std::unique_ptr<FrameRenderer> m_frameRenderer;
     std::unique_ptr<Window> m_window;
 };
 

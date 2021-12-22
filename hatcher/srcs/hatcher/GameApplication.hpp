@@ -8,7 +8,6 @@
 namespace hatcher
 {
 class IRendering;
-class Thread;
 class World;
 
 class GameApplication
@@ -30,8 +29,6 @@ protected:
     const std::unique_ptr<IRendering>& GetRendering() { return m_rendering; }
 
 private:
-    void StartUpdateThread();
-
     void Update();
     void Render();
 
@@ -39,7 +36,6 @@ private:
     std::shared_ptr<World> m_watchedWorld;
 
     std::unique_ptr<IRendering> m_rendering;
-    std::unique_ptr<Thread> m_updateThread;
 
     uint m_renderFramerateLimit = 60;
     bool m_running = false;

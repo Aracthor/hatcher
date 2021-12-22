@@ -6,9 +6,7 @@
 #include <emscripten.h>
 #endif
 
-#include "Graphics/Clock.hpp"
 #include "Graphics/Rendering.hpp"
-#include "Threading/Thread.hpp"
 
 #include "World.hpp"
 
@@ -21,23 +19,21 @@ GameApplication::~GameApplication() = default;
 
 int GameApplication::Run()
 {
-    m_running = true;
-
-    StartUpdateThread();
-
-    auto renderLoop = [](void* data) {
+    auto mainLoop = [](void* data) {
         GameApplication* game = reinterpret_cast<GameApplication*>(data);
+        game->Update();
         game->Render();
     };
 
+    m_running = true;
 #ifdef __EMSCRIPTEN__
     emscripten_set_main_loop_timing(EM_TIMING_SETTIMEOUT, m_renderFramerateLimit);
-    emscripten_set_main_loop_arg(renderLoop, this, 0, true);
+    emscripten_set_main_loop_arg(mainLoop, this, 0, true);
 #else
     while (m_running)
     {
         usleep(1000000 / m_renderFramerateLimit);
-        renderLoop(this);
+        mainLoop(this);
     }
 #endif
 
@@ -66,31 +62,6 @@ void GameApplication::Stop()
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
     m_rendering = std::make_unique<Rendering>(name, windowWidth, windowHeight);
-}
-
-void GameApplication::StartUpdateThread()
-{
-    auto updateThread = [](void* data) -> void* {
-        GameApplication* game = reinterpret_cast<GameApplication*>(data);
-
-        Clock updateClock;
-        const float updateTickTimeInMiliseconds = 10.0;
-
-        while (game->m_running)
-        {
-            updateClock.Update();
-            game->Update();
-            updateClock.Update();
-            const float waitTime =
-                std::max(0.f, updateTickTimeInMiliseconds - updateClock.GetElapsedTime());
-            if (waitTime > 0.f)
-                usleep(waitTime * 1000.f);
-        }
-
-        return nullptr;
-    };
-
-    m_updateThread = std::make_unique<Thread>(updateThread, this);
 }
 
 void GameApplication::Update()
