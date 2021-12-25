@@ -53,7 +53,7 @@ OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBSUBDIRS)	\
 			$(OBJS_WEBASM_DIR)			\
 			$(OBJS_DIR)				\
 
-CXX_COMMON_FLAGS=	-Wall -Wextra -Werror	\
+CXX_COMMON_FLAGS=	-Wall -Werror		\
 			-std=c++20		\
 			-I $(INC_DIR)		\
 

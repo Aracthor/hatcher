@@ -39,8 +39,6 @@ void SquareDisplayUpdater::Update(const hatcher::ComponentManager* componentMana
                                   const hatcher::Clock& clock,
                                   hatcher::IFrameRenderer& frameRenderer)
 {
-    (void)renderComponentManager;
-    (void)clock;
     glm::mat4 modelMatrix = glm::mat4(1.f);
 
     for (const std::optional<Position2DComponent> component :

@@ -59,9 +59,6 @@ void MovingEntitiesRenderUpdater::Update(const hatcher::ComponentManager* compon
                                          const hatcher::Clock& clock,
                                          hatcher::IFrameRenderer& frameRenderer)
 {
-    (void)renderComponentManager;
-    (void)clock;
-
     const std::span<const std::optional<Position2DComponent>> positions =
         componentManager->GetComponents<Position2DComponent>();
     const std::span<const std::optional<Movement2DComponent>> movements =

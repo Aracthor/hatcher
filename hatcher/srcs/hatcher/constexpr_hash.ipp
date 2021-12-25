@@ -44,7 +44,6 @@ constexpr unsigned int crc32(const char* str)
 template <>
 constexpr unsigned int crc32<int(-1)>(const char* str)
 {
-    (void)str;
     return 0xFFFFFFFF;
 }
 

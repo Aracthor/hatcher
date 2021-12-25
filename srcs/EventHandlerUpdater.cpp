@@ -93,11 +93,6 @@ void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
                                           hatcher::ComponentManager* componentManager,
                                           const glm::mat4& previousProjectionMatrix)
 {
-    (void)event;
-    (void)entityManager;
-    (void)componentManager;
-    (void)previousProjectionMatrix;
-
     m_application->Stop();
 }
 
@@ -106,10 +101,6 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
                                                 hatcher::ComponentManager* componentManager,
                                                 const glm::mat4& previousProjectionMatrix)
 {
-    (void)entityManager;
-    (void)componentManager;
-    (void)previousProjectionMatrix;
-
     int verticalScroll = event.wheel.y;
 
     // We don't use verticalScroll actual value because with emscripten,
@@ -125,9 +116,6 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
                                                  hatcher::ComponentManager* componentManager,
                                                  const glm::mat4& previousProjectionMatrix)
 {
-    (void)entityManager;
-    (void)componentManager;
-
     if (m_selectionHandler->IsSelecting())
     {
         const glm::vec2 worldCoords2D =
@@ -142,9 +130,6 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
                                                    hatcher::ComponentManager* componentManager,
                                                    const glm::mat4& previousProjectionMatrix)
 {
-    (void)entityManager;
-    (void)previousProjectionMatrix;
-
     if (event.button.button == SDL_BUTTON_LEFT)
     {
         std::span<std::optional<Selectable2DComponent>> selectableComponents =

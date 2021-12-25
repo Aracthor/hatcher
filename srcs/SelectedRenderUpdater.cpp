@@ -37,8 +37,6 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
                                    const hatcher::Clock& clock,
                                    hatcher::IFrameRenderer& frameRenderer)
 {
-    (void)renderComponentManager;
-
     auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
     auto positionComponents = componentManager->GetComponents<Position2DComponent>();
     HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
@@ -57,5 +55,4 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
             frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }
-    (void)clock;
 }
