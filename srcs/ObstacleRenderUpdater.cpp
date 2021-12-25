@@ -7,6 +7,7 @@
 #include "hatcher/glm_pure.hpp"
 
 #include "Obstacle2DComponent.hpp"
+#include "ObstacleMeshComponent.hpp"
 
 ObstacleRenderUpdater::ObstacleRenderUpdater(
     const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
@@ -21,8 +22,53 @@ void ObstacleRenderUpdater::Update(const hatcher::ComponentManager* componentMan
                                    const hatcher::Clock& clock,
                                    hatcher::IFrameRenderer& frameRenderer)
 {
-    for (const std::optional<Obstacle2DComponent> component :
-         componentManager->GetComponents<Obstacle2DComponent>())
+    const std::span<const std::optional<Obstacle2DComponent>> obstacleComponents =
+        componentManager->GetComponents<Obstacle2DComponent>();
+    std::span<std::optional<ObstacleMeshComponent>> obstacleMeshComponents =
+        renderComponentManager->GetComponents<ObstacleMeshComponent>();
+
+    for (hatcher::uint i = 0; i < obstacleComponents.size(); i++)
     {
+        const std::optional<Obstacle2DComponent> obstacle2D = obstacleComponents[i];
+        std::optional<ObstacleMeshComponent>& obstacleMesh = obstacleMeshComponents[i];
+        if (obstacle2D)
+        {
+            if (!obstacleMesh)
+            {
+                obstacleMesh = std::make_optional<ObstacleMeshComponent>();
+                obstacleMesh->Mesh = CreateMeshFromObstacle(*obstacle2D);
+            }
+            frameRenderer.AddMeshToRender(obstacleMesh->Mesh.get(), glm::mat4(1.f));
+        }
     }
+}
+
+std::shared_ptr<hatcher::Mesh>
+ObstacleRenderUpdater::CreateMeshFromObstacle(const Obstacle2DComponent& obstacleComponent)
+{
+    std::shared_ptr<hatcher::Mesh> result;
+
+    m_meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
+    m_meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+    result.reset(m_meshBuilder->Create());
+
+    auto obstacleCorners = obstacleComponent.Corners;
+    int cornersCount = obstacleCorners.size();
+
+    std::vector<float> positions;
+    std::vector<hatcher::ushort> indices;
+    positions.reserve(cornersCount * 2);
+    indices.reserve(cornersCount * 2);
+    for (int i = 0; i < cornersCount; i++)
+    {
+        positions.push_back(obstacleCorners[i].x);
+        positions.push_back(obstacleCorners[i].y);
+        indices.push_back(i);
+        indices.push_back(i == cornersCount - 1 ? 0 : i + 1);
+    }
+
+    result->SetPositions(positions.data(), std::size(positions));
+    result->SetIndices(indices.data(), std::size(indices));
+
+    return result;
 }

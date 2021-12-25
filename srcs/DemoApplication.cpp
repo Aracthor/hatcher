@@ -13,6 +13,7 @@
 #include "Movement2DComponent.hpp"
 #include "MovingEntitiesRenderUpdater.hpp"
 #include "Obstacle2DComponent.hpp"
+#include "ObstacleMeshComponent.hpp"
 #include "ObstacleRenderUpdater.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
@@ -25,11 +26,15 @@ DemoApplication::DemoApplication()
     std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
     hatcher::EntityManager* entityManager = world->GetEntityManager();
     hatcher::ComponentManager* componentManager = entityManager->GetComponentManager();
+    hatcher::ComponentManager* renderComponentManager =
+        entityManager->GetRenderingComponentManager();
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
     componentManager->AddComponentType<Obstacle2DComponent>();
     componentManager->AddComponentType<Selectable2DComponent>();
+
+    renderComponentManager->AddComponentType<ObstacleMeshComponent>();
 
     hatcher::Entity obstacleEntity = entityManager->CreateNewEntity();
     Obstacle2DComponent obstacle2D{{
