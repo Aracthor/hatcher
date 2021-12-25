@@ -4,6 +4,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Entity.hpp"
+#include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -22,14 +23,15 @@ DemoApplication::DemoApplication()
     : hatcher::GameApplication()
 {
     std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
-    hatcher::ComponentManager* componentManager = world->GetComponentManager();
+    hatcher::EntityManager* entityManager = world->GetEntityManager();
+    hatcher::ComponentManager* componentManager = entityManager->GetComponentManager();
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
     componentManager->AddComponentType<Obstacle2DComponent>();
     componentManager->AddComponentType<Selectable2DComponent>();
 
-    hatcher::Entity obstacleEntity = componentManager->CreateNewEntity();
+    hatcher::Entity obstacleEntity = entityManager->CreateNewEntity();
     Obstacle2DComponent obstacle2D{{
         glm::vec2(2.5f, 3.0f),
         glm::vec2(1.5f, 3.0f),

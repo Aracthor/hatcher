@@ -11,7 +11,8 @@ class RenderUpdater
 public:
     virtual ~RenderUpdater() = default;
 
-    virtual void Update(const ComponentManager* componentManager, const Clock& clock,
+    virtual void Update(const ComponentManager* componentManager,
+                        ComponentManager* renderComponentManager, const Clock& clock,
                         IFrameRenderer& frameRenderer) = 0;
 };
 

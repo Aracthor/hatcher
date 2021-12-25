@@ -9,6 +9,7 @@ namespace hatcher
 {
 class Clock;
 class ComponentManager;
+class IEntityManager;
 class IFrameRenderer;
 
 class AbstractEventUpdater
@@ -18,12 +19,13 @@ public:
 
     void PollEvents();
 
-    void Update(ComponentManager* componentManager, const Clock& clock,
-                IFrameRenderer& frameRenderer);
+    void Update(IEntityManager* entityManager, ComponentManager* componentManager,
+                const Clock& clock, IFrameRenderer& frameRenderer);
 
 private:
-    virtual void HandleEvents(std::span<const SDL_Event> events, ComponentManager* componentManager,
-                              const Clock& clock, IFrameRenderer& frameRenderer) = 0;
+    virtual void HandleEvents(std::span<const SDL_Event> events, IEntityManager* entityManager,
+                              ComponentManager* componentManager, const Clock& clock,
+                              IFrameRenderer& frameRenderer) = 0;
 
     std::vector<SDL_Event> m_queuedEvents;
 };

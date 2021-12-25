@@ -1,16 +1,14 @@
 #pragma once
 
-#include <memory>
 #include <optional>
 #include <span>
 #include <unordered_map>
 
+#include "Entity.hpp"
 #include "basic_types.hpp"
 
 namespace hatcher
 {
-class Entity;
-class EntityIDRegistry;
 class IComponentList;
 
 class ComponentManager
@@ -19,7 +17,7 @@ public:
     ComponentManager();
     ~ComponentManager();
 
-    Entity CreateNewEntity();
+    void AddEntities(int count);
 
     template <class Component>
     void AddComponentType();
@@ -34,10 +32,6 @@ public:
     std::span<std::optional<Component>> GetComponents();
 
 private:
-    void AddEntities(int count);
-
-    int m_maxEntityCount = 0;
-    std::unique_ptr<EntityIDRegistry> m_entityIDRegistry;
     std::unordered_map<uint, IComponentList*> m_componentLists;
 };
 

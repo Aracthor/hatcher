@@ -23,21 +23,24 @@ public:
                         const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~EventHandlerUpdater();
 
-    void HandleEvents(std::span<const SDL_Event> events,
+    void HandleEvents(std::span<const SDL_Event> events, hatcher::IEntityManager* entityManager,
                       hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
                       hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
-    void HandleQuitEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+    void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
+                         hatcher::ComponentManager* componentManager,
                          const glm::mat4& previousProjectionMatrix);
-    void HandleMouseWheelEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+    void HandleMouseWheelEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
+                               hatcher::ComponentManager* componentManager,
                                const glm::mat4& previousProjectionMatrix);
-    void HandleMouseMotionEvent(const SDL_Event& event, hatcher::ComponentManager* componentManager,
+    void HandleMouseMotionEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
+                                hatcher::ComponentManager* componentManager,
                                 const glm::mat4& previousProjectionMatrix);
-    void HandleMouseButtonUpEvent(const SDL_Event& event,
+    void HandleMouseButtonUpEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                   hatcher::ComponentManager* componentManager,
                                   const glm::mat4& previousProjectionMatrix);
-    void HandleMouseButtonDownEvent(const SDL_Event& event,
+    void HandleMouseButtonDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                     hatcher::ComponentManager* componentManager,
                                     const glm::mat4& previousProjectionMatrix);
 
@@ -46,8 +49,8 @@ private:
     hatcher::GameApplication* m_application;
 
     using EventHandlerFunction = void (EventHandlerUpdater::*)(
-        const SDL_Event& event, hatcher::ComponentManager* componentManager,
-        const glm::mat4& previousProjectionMatrix);
+        const SDL_Event& event, hatcher::IEntityManager* entityManager,
+        hatcher::ComponentManager* componentManager, const glm::mat4& previousProjectionMatrix);
     std::unordered_map<uint, EventHandlerFunction> m_eventFunctions;
 
     glm::vec2 m_fixedPosition = glm::vec2(0.f, 0.f);

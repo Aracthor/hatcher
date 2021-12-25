@@ -1,6 +1,6 @@
 #include "World.hpp"
 
-#include "ComponentManager.hpp"
+#include "EntityManager.hpp"
 #include "Updater.hpp"
 #include "assert.hpp"
 
@@ -15,7 +15,7 @@ namespace hatcher
 World::World(const char* name)
     : m_name(name)
 {
-    m_componentManager.reset(new ComponentManager());
+    m_entityManager.reset(new EntityManager());
 }
 
 World::~World() = default;
@@ -37,12 +37,15 @@ void World::UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock)
     if (m_eventUpdater)
     {
         m_eventUpdater->PollEvents();
-        m_eventUpdater->Update(m_componentManager.get(), clock, frameRenderer);
+        m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(), clock,
+                               frameRenderer);
     }
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(m_componentManager.get(), clock, frameRenderer);
+        renderUpdater->Update(m_entityManager->GetComponentManager(),
+                              m_entityManager->GetRenderingComponentManager(), clock,
+                              frameRenderer);
     }
 }
 

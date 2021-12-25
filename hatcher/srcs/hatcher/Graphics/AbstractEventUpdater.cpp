@@ -12,10 +12,10 @@ void AbstractEventUpdater::PollEvents()
     }
 }
 
-void AbstractEventUpdater::Update(ComponentManager* componentManager, const Clock& clock,
-                                  IFrameRenderer& frameRenderer)
+void AbstractEventUpdater::Update(IEntityManager* entityManager, ComponentManager* componentManager,
+                                  const Clock& clock, IFrameRenderer& frameRenderer)
 {
-    HandleEvents(std::span(m_queuedEvents), componentManager, clock, frameRenderer);
+    HandleEvents(std::span(m_queuedEvents), entityManager, componentManager, clock, frameRenderer);
     m_queuedEvents.clear();
 }
 

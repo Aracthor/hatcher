@@ -80,6 +80,7 @@ LD_WEBASM_DEBUG_FLAGS=
 
 
 SRCS_FILES=	ComponentManager.cpp			\
+		EntityManager.cpp			\
 		EntityIDRegistry.cpp	    		\
 		GameApplication.cpp 			\
 		World.cpp				\

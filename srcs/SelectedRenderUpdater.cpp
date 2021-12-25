@@ -33,9 +33,12 @@ SelectedRenderUpdater::SelectedRenderUpdater(
 SelectedRenderUpdater::~SelectedRenderUpdater() = default;
 
 void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentManager,
+                                   hatcher::ComponentManager* renderComponentManager,
                                    const hatcher::Clock& clock,
                                    hatcher::IFrameRenderer& frameRenderer)
 {
+    (void)renderComponentManager;
+
     auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
     auto positionComponents = componentManager->GetComponents<Position2DComponent>();
     HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());

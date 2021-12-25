@@ -8,6 +8,7 @@
 #include "SelectionRectangleHandler.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/EntityManager.hpp"
 #include "hatcher/GameApplication.hpp"
 #include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -49,6 +50,7 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
 EventHandlerUpdater::~EventHandlerUpdater() = default;
 
 void EventHandlerUpdater::HandleEvents(std::span<const SDL_Event> events,
+                                       hatcher::IEntityManager* entityManager,
                                        hatcher::ComponentManager* componentManager,
                                        const hatcher::Clock& clock,
                                        hatcher::IFrameRenderer& frameRenderer)
@@ -75,7 +77,8 @@ void EventHandlerUpdater::HandleEvents(std::span<const SDL_Event> events,
         if (functionIt != m_eventFunctions.end())
         {
             EventHandlerFunction handlerFunction = functionIt->second;
-            (this->*handlerFunction)(event, componentManager, previousProjectionMatrix);
+            (this->*handlerFunction)(event, entityManager, componentManager,
+                                     previousProjectionMatrix);
         }
     }
 
@@ -86,10 +89,12 @@ void EventHandlerUpdater::HandleEvents(std::span<const SDL_Event> events,
 }
 
 void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
+                                          hatcher::IEntityManager* entityManager,
                                           hatcher::ComponentManager* componentManager,
                                           const glm::mat4& previousProjectionMatrix)
 {
     (void)event;
+    (void)entityManager;
     (void)componentManager;
     (void)previousProjectionMatrix;
 
@@ -97,9 +102,11 @@ void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
 }
 
 void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
+                                                hatcher::IEntityManager* entityManager,
                                                 hatcher::ComponentManager* componentManager,
                                                 const glm::mat4& previousProjectionMatrix)
 {
+    (void)entityManager;
     (void)componentManager;
     (void)previousProjectionMatrix;
 
@@ -114,9 +121,11 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
 }
 
 void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
+                                                 hatcher::IEntityManager* entityManager,
                                                  hatcher::ComponentManager* componentManager,
                                                  const glm::mat4& previousProjectionMatrix)
 {
+    (void)entityManager;
     (void)componentManager;
 
     if (m_selectionHandler->IsSelecting())
@@ -129,9 +138,11 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
 }
 
 void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
+                                                   hatcher::IEntityManager* entityManager,
                                                    hatcher::ComponentManager* componentManager,
                                                    const glm::mat4& previousProjectionMatrix)
 {
+    (void)entityManager;
     (void)previousProjectionMatrix;
 
     if (event.button.button == SDL_BUTTON_LEFT)
@@ -161,6 +172,7 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
 }
 
 void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
+                                                     hatcher::IEntityManager* entityManager,
                                                      hatcher::ComponentManager* componentManager,
                                                      const glm::mat4& previousProjectionMatrix)
 {
@@ -196,7 +208,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 
     if (event.button.button == SDL_BUTTON_MIDDLE)
     {
-        hatcher::Entity newEntity = componentManager->CreateNewEntity();
+        hatcher::Entity newEntity = entityManager->CreateNewEntity();
         Position2DComponent position2D{worldCoords2D};
         Movement2DComponent movement2D;
         movement2D.Orientation = glm::vec2(1.f, 0.f);

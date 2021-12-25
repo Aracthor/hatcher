@@ -8,7 +8,7 @@ namespace hatcher
 {
 class AbstractEventUpdater;
 class Clock;
-class ComponentManager;
+class EntityManager;
 class IFrameRenderer;
 class RenderUpdater;
 class Updater;
@@ -19,8 +19,7 @@ public:
     World(const char* name);
     ~World();
 
-    ComponentManager* GetComponentManager() { return m_componentManager.get(); }
-    const ComponentManager* GetComponentManager() const { return m_componentManager.get(); }
+    EntityManager* GetEntityManager() { return m_entityManager.get(); }
 
     void AddRenderUpdater(RenderUpdater* updater);
     void SetEventUpdater(AbstractEventUpdater* updater);
@@ -30,7 +29,7 @@ public:
 private:
     std::string m_name;
 
-    std::unique_ptr<ComponentManager> m_componentManager;
+    std::unique_ptr<EntityManager> m_entityManager;
 
     std::unique_ptr<AbstractEventUpdater> m_eventUpdater;
     std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
