@@ -21,9 +21,11 @@ public:
 
     EntityManager* GetEntityManager() { return m_entityManager.get(); }
 
+    void AddUpdater(Updater* updater);
     void AddRenderUpdater(RenderUpdater* updater);
     void SetEventUpdater(AbstractEventUpdater* updater);
 
+    void Update();
     void UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock);
 
 private:
@@ -31,6 +33,7 @@ private:
 
     std::unique_ptr<EntityManager> m_entityManager;
 
+    std::vector<std::unique_ptr<Updater>> m_updaters;
     std::unique_ptr<AbstractEventUpdater> m_eventUpdater;
     std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
 };

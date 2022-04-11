@@ -20,6 +20,12 @@ World::World(const char* name)
 
 World::~World() = default;
 
+void World::AddUpdater(Updater* updater)
+{
+    HATCHER_ASSERT(updater != nullptr);
+    m_updaters.emplace_back(updater);
+}
+
 void World::AddRenderUpdater(RenderUpdater* updater)
 {
     HATCHER_ASSERT(updater != nullptr);
@@ -30,6 +36,14 @@ void World::SetEventUpdater(AbstractEventUpdater* updater)
 {
     HATCHER_ASSERT(updater != nullptr);
     m_eventUpdater.reset(updater);
+}
+
+void World::Update()
+{
+    for (std::unique_ptr<Updater>& updater : m_updaters)
+    {
+        updater->Update(m_entityManager->GetComponentManager());
+    }
 }
 
 void World::UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock)

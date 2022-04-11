@@ -187,6 +187,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
                 HATCHER_ASSERT(positionComponent);
                 movementComponent->Orientation =
                     glm::normalize(worldCoords2D - positionComponent->Position);
+                movementComponent->Path = {worldCoords2D};
             }
         }
     }

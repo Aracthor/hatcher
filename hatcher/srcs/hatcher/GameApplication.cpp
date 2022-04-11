@@ -66,6 +66,7 @@ void GameApplication::StartRendering(const char* name, int windowWidth, int wind
 
 void GameApplication::Update()
 {
+    m_watchedWorld->Update();
     if (m_watchedWorld && m_rendering)
     {
         m_rendering->UpdateWorldRendering(m_watchedWorld.get());

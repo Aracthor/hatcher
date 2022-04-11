@@ -12,6 +12,7 @@
 #include "EventHandlerUpdater.hpp"
 #include "Movement2DComponent.hpp"
 #include "MovingEntitiesRenderUpdater.hpp"
+#include "MovingEntitiesUpdater.hpp"
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
 #include "ObstacleRenderUpdater.hpp"
@@ -47,6 +48,7 @@ DemoApplication::DemoApplication()
 
     StartRendering("hatcher - demo", 800, 600);
 
+    world->AddUpdater(new MovingEntitiesUpdater());
     world->AddRenderUpdater(new SquareDisplayUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
     world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()->GetMeshBuilder()));
