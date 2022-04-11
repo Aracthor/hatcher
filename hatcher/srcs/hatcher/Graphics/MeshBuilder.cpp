@@ -13,7 +13,7 @@ void MeshBuilder::SetProgram(const std::string& vertexShaderFileName,
 {
     ProgramKey key = ProgramKey(vertexShaderFileName, fragmentShaderFileName);
 
-    if (!m_shaderProgramLibrary.contains(key))
+    if (m_shaderProgramLibrary.find(key) == m_shaderProgramLibrary.end())
     {
         m_shaderProgramLibrary[key] = std::make_shared<ShaderProgram>(
             vertexShaderFileName.data(), fragmentShaderFileName.data());

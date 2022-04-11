@@ -47,7 +47,7 @@ HATCHER_BINS=		$(HATCHER_NATIVE_RELEASE) $(HATCHER_NATIVE_DEBUG) $(HATCHER_WEBAS
 
 
 CXX_COMMON_FLAGS=	-Wall -Werror			\
-			-std=c++20			\
+			-std=c++17			\
 			-I $(INC_DIR)			\
 			-I $(HATCHER_DIR)$(INC_DIR)	\
 
@@ -58,8 +58,7 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-g3			\
 			-DNDEBUG		\
 
-# -Wno-volatile is necessary For glm.
-CXX_NATIVE_FLAGS=	-Wno-volatile
+CXX_NATIVE_FLAGS=
 
 EMXX_FLAGS=		-s WASM=1 			\
 			-s USE_PTHREADS=1 		\

@@ -54,7 +54,7 @@ OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBSUBDIRS)	\
 			$(OBJS_DIR)				\
 
 CXX_COMMON_FLAGS=	-Wall -Werror		\
-			-std=c++20		\
+			-std=c++17		\
 			-I $(INC_DIR)		\
 
 CXX_RELEASE_FLAGS=	$(CXX_COMMON_FLAGS)	\
@@ -64,8 +64,7 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 			-g3			\
 			-DNDEBUG		\
 
-# -Wno-volatile is necessary For glm.
-CXX_NATIVE_FLAGS=	-Wno-volatile
+CXX_NATIVE_FLAGS=
 
 EMXX_FLAGS=		-s WASM=1 -s USE_PTHREADS=1	\
 			-Wno-deprecated-volatile	\
