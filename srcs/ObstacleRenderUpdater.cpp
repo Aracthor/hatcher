@@ -22,9 +22,9 @@ void ObstacleRenderUpdater::Update(const hatcher::ComponentManager* componentMan
                                    const hatcher::Clock& clock,
                                    hatcher::IFrameRenderer& frameRenderer)
 {
-    const std::span<const std::optional<Obstacle2DComponent>> obstacleComponents =
+    const hatcher::span<const std::optional<Obstacle2DComponent>> obstacleComponents =
         componentManager->GetComponents<Obstacle2DComponent>();
-    std::span<std::optional<ObstacleMeshComponent>> obstacleMeshComponents =
+    hatcher::span<std::optional<ObstacleMeshComponent>> obstacleMeshComponents =
         renderComponentManager->GetComponents<ObstacleMeshComponent>();
 
     for (hatcher::uint i = 0; i < obstacleComponents.size(); i++)

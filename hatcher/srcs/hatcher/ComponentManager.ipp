@@ -36,7 +36,7 @@ void ComponentManager::AttachComponent(Entity entity, Component& component)
 }
 
 template <class Component>
-std::span<const std::optional<Component>> ComponentManager::GetComponents() const
+span<const std::optional<Component>> ComponentManager::GetComponents() const
 {
     using RealComponentList = const IdentifiableComponentList<Component>*;
 
@@ -50,7 +50,7 @@ std::span<const std::optional<Component>> ComponentManager::GetComponents() cons
 }
 
 template <class Component>
-std::span<std::optional<Component>> ComponentManager::GetComponents()
+span<std::optional<Component>> ComponentManager::GetComponents()
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 

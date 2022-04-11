@@ -1,9 +1,10 @@
 #pragma once
 
-#include <span>
 #include <vector>
 
 #include <SDL2/SDL_events.h>
+
+#include "hatcher/span.hpp"
 
 namespace hatcher
 {
@@ -23,7 +24,7 @@ public:
                 const Clock& clock, IFrameRenderer& frameRenderer);
 
 private:
-    virtual void HandleEvents(std::span<const SDL_Event> events, IEntityManager* entityManager,
+    virtual void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
                               ComponentManager* componentManager, const Clock& clock,
                               IFrameRenderer& frameRenderer) = 0;
 

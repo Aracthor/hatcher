@@ -1,10 +1,10 @@
 #pragma once
 
 #include <optional>
-#include <span>
 #include <vector>
 
 #include "basic_types.hpp"
+#include "span.hpp"
 
 namespace hatcher
 {
@@ -24,8 +24,8 @@ public:
     void AddEntities(int count) override;
 
     void AttachComponent(uint index, Component& component);
-    std::span<const std::optional<Component>> GetComponentList() const;
-    std::span<std::optional<Component>> GetComponentList();
+    span<const std::optional<Component>> GetComponentList() const;
+    span<std::optional<Component>> GetComponentList();
 
 private:
     std::vector<std::optional<Component>> m_components;

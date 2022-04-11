@@ -1,6 +1,5 @@
 #include "assert.hpp"
 
-#include <iostream>
 namespace hatcher
 {
 
@@ -18,16 +17,15 @@ void IdentifiableComponentList<Component>::AttachComponent(uint index, Component
 }
 
 template <class Component>
-std::span<const std::optional<Component>>
-IdentifiableComponentList<Component>::GetComponentList() const
+span<const std::optional<Component>> IdentifiableComponentList<Component>::GetComponentList() const
 {
-    return std::span<const std::optional<Component>>(m_components);
+    return span<const std::optional<Component>>(m_components);
 }
 
 template <class Component>
-std::span<std::optional<Component>> IdentifiableComponentList<Component>::GetComponentList()
+span<std::optional<Component>> IdentifiableComponentList<Component>::GetComponentList()
 {
-    return std::span<std::optional<Component>>(m_components);
+    return span<std::optional<Component>>(m_components);
 }
 
 } // namespace hatcher

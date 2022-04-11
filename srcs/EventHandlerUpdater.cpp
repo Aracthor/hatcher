@@ -49,7 +49,7 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
 
-void EventHandlerUpdater::HandleEvents(std::span<const SDL_Event> events,
+void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& events,
                                        hatcher::IEntityManager* entityManager,
                                        hatcher::ComponentManager* componentManager,
                                        const hatcher::Clock& clock,
@@ -132,9 +132,9 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
 {
     if (event.button.button == SDL_BUTTON_LEFT)
     {
-        std::span<std::optional<Selectable2DComponent>> selectableComponents =
+        hatcher::span<std::optional<Selectable2DComponent>> selectableComponents =
             componentManager->GetComponents<Selectable2DComponent>();
-        std::span<std::optional<Position2DComponent>> positionComponents =
+        hatcher::span<std::optional<Position2DComponent>> positionComponents =
             componentManager->GetComponents<Position2DComponent>();
         const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
 

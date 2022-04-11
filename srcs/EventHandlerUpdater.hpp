@@ -23,7 +23,8 @@ public:
                         const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
     ~EventHandlerUpdater();
 
-    void HandleEvents(std::span<const SDL_Event> events, hatcher::IEntityManager* entityManager,
+    void HandleEvents(const hatcher::span<const SDL_Event>& events,
+                      hatcher::IEntityManager* entityManager,
                       hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
                       hatcher::IFrameRenderer& frameRenderer) override;
 
