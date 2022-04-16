@@ -23,7 +23,8 @@ public:
     void SetPositions(float* positions, uint positionCount);
     void SetIndices(ushort* elements, uint elementCount);
 
-    void Draw(const glm::mat4& projectionMatrix, const glm::mat4& modelMatrix) const;
+    void Draw(const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix,
+              const glm::mat4& modelMatrix) const;
 
 private:
     std::unique_ptr<VertexArrayObject> m_VAO;

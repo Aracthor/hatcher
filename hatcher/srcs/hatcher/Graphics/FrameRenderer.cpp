@@ -15,11 +15,16 @@ void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
     m_projectionMatrix = matrix;
 }
 
+void FrameRenderer::SetViewMatrix(const glm::mat4& matrix)
+{
+    m_viewMatrix = matrix;
+}
+
 void FrameRenderer::Render() const
 {
     for (const MeshToRender& meshToRender : m_meshesToRender)
     {
-        meshToRender.first->Draw(m_projectionMatrix, meshToRender.second);
+        meshToRender.first->Draw(m_projectionMatrix, m_viewMatrix, meshToRender.second);
     }
 }
 

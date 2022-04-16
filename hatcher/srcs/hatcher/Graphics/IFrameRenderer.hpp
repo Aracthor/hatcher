@@ -13,6 +13,7 @@ public:
 
     virtual void AddMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix) = 0;
     virtual void SetProjectionMatrix(const glm::mat4& matrix) = 0;
+    virtual void SetViewMatrix(const glm::mat4& matrix) = 0;
 };
 
 } // namespace hatcher
