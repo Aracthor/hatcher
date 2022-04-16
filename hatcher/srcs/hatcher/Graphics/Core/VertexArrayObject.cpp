@@ -30,13 +30,14 @@ void VertexArrayObject::Unbind()
     GL_CHECK(glBindVertexArray(0));
 }
 
-void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLuint parLayoutLocation)
+void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLint componentCount,
+                                  GLuint layoutLocation)
 {
     HATCHER_ASSERT(IsBinded());
 
-    GL_CHECK(glEnableVertexAttribArray(parLayoutLocation));
+    GL_CHECK(glEnableVertexAttribArray(layoutLocation));
     parVBO.Bind();
-    GL_CHECK(glVertexAttribPointer(parLayoutLocation, 2, GL_FLOAT, GL_FALSE, 0, NULL));
+    GL_CHECK(glVertexAttribPointer(layoutLocation, componentCount, GL_FLOAT, GL_FALSE, 0, NULL));
 
     if (m_elementCount == 0)
         m_elementCount = parVBO.ElementCount();

@@ -49,7 +49,7 @@ ObstacleRenderUpdater::CreateMeshFromObstacle(const Obstacle2DComponent& obstacl
     std::shared_ptr<hatcher::Mesh> result;
 
     m_meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    m_meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+    m_meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
     result.reset(m_meshBuilder->Create());
 
     auto obstacleCorners = obstacleComponent.Corners;
@@ -67,7 +67,7 @@ ObstacleRenderUpdater::CreateMeshFromObstacle(const Obstacle2DComponent& obstacl
         indices.push_back(i == cornersCount - 1 ? 0 : i + 1);
     }
 
-    result->SetPositions(positions.data(), std::size(positions));
+    result->Set2DPositions(positions.data(), std::size(positions));
     result->SetIndices(indices.data(), std::size(indices));
 
     return result;

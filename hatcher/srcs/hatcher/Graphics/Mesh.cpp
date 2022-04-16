@@ -22,15 +22,14 @@ Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynam
 
 Mesh::~Mesh() = default;
 
-void Mesh::SetPositions(float* positions, uint positionCount)
+void Mesh::Set2DPositions(float* positions, uint positionCount)
 {
-    m_VAO->Bind();
+    SetPositions(positions, positionCount, 2);
+}
 
-    GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
-    m_positionVBO->SetData(positions, positionCount, m_dynamic);
-    m_VAO->AttribVBO(*m_positionVBO, positionAttribLocation);
-
-    m_VAO->Unbind();
+void Mesh::Set3DPositions(float* positions, uint positionCount)
+{
+    SetPositions(positions, positionCount, 3);
 }
 
 void Mesh::SetIndices(ushort* elements, uint elementCount)
@@ -55,6 +54,17 @@ void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix,
         m_VAO->DrawElements(m_elementVBO->ElementCount());
     else
         m_VAO->DrawArrays();
+}
+
+void Mesh::SetPositions(float* positions, uint positionCount, int componentCount)
+{
+    m_VAO->Bind();
+
+    GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
+    m_positionVBO->SetData(positions, positionCount, m_dynamic);
+    m_VAO->AttribVBO(*m_positionVBO, componentCount, positionAttribLocation);
+
+    m_VAO->Unbind();
 }
 
 } // namespace hatcher

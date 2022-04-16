@@ -26,7 +26,7 @@ SelectedRenderUpdater::SelectedRenderUpdater(
     };
     hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
 
-    m_mesh->SetPositions(positions, std::size(positions));
+    m_mesh->Set2DPositions(positions, std::size(positions));
     m_mesh->SetIndices(indices, std::size(indices));
 }
 

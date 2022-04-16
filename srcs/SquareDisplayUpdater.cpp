@@ -25,10 +25,10 @@ SquareDisplayUpdater::SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBu
     };
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
-    meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+    meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
 
     m_mesh.reset(meshBuilder->Create());
-    m_mesh->SetPositions(points, std::size(points));
+    m_mesh->Set2DPositions(points, std::size(points));
     m_mesh->SetIndices(indices, std::size(indices));
 }
 

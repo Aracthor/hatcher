@@ -10,7 +10,7 @@ SelectionRectangleHandler::SelectionRectangleHandler(
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    meshBuilder->SetProgram("shaders/hello_world.vert", "shaders/hello_world.frag");
+    meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
     m_selectionRectangleMesh.reset(meshBuilder->Create());
 
     float positions[] = {
@@ -24,7 +24,7 @@ SelectionRectangleHandler::SelectionRectangleHandler(
     };
     hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
 
-    m_selectionRectangleMesh->SetPositions(positions, std::size(positions));
+    m_selectionRectangleMesh->Set2DPositions(positions, std::size(positions));
     m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
 }
 
