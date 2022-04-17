@@ -96,14 +96,14 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 			-s GL_DEBUG=1 			\
 
 
-SRCS_FILES=	DemoApplication.cpp		\
+SRCS_FILES=	CubeDisplayUpdater.cpp		\
+		DemoApplication.cpp		\
 		EventHandlerUpdater.cpp		\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
 		ObstacleRenderUpdater.cpp	\
 		SelectionRectangleHandler.cpp	\
 		SelectedRenderUpdater.cpp 	\
-		SquareDisplayUpdater.cpp	\
 		main.cpp			\
 
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))

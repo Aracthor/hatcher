@@ -11,11 +11,11 @@ class MeshBuilder;
 class World;
 } // namespace hatcher
 
-class SquareDisplayUpdater final : public hatcher::RenderUpdater
+class CubeDisplayUpdater final : public hatcher::RenderUpdater
 {
 public:
-    SquareDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
-    ~SquareDisplayUpdater();
+    CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    ~CubeDisplayUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,
                 hatcher::ComponentManager* renderComponentManager, const hatcher::Clock& clock,
