@@ -30,20 +30,15 @@ public:
 
 private:
     void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                         hatcher::ComponentManager* componentManager,
-                         const glm::mat4& previousProjectionMatrix);
+                         hatcher::ComponentManager* componentManager);
     void HandleMouseWheelEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                               hatcher::ComponentManager* componentManager,
-                               const glm::mat4& previousProjectionMatrix);
+                               hatcher::ComponentManager* componentManager);
     void HandleMouseMotionEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                hatcher::ComponentManager* componentManager,
-                                const glm::mat4& previousProjectionMatrix);
+                                hatcher::ComponentManager* componentManager);
     void HandleMouseButtonUpEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                  hatcher::ComponentManager* componentManager,
-                                  const glm::mat4& previousProjectionMatrix);
+                                  hatcher::ComponentManager* componentManager);
     void HandleMouseButtonDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                    hatcher::ComponentManager* componentManager,
-                                    const glm::mat4& previousProjectionMatrix);
+                                    hatcher::ComponentManager* componentManager);
 
     glm::mat4 CalculateProjectionMatrix();
 
@@ -51,10 +46,12 @@ private:
 
     using EventHandlerFunction = void (EventHandlerUpdater::*)(
         const SDL_Event& event, hatcher::IEntityManager* entityManager,
-        hatcher::ComponentManager* componentManager, const glm::mat4& previousProjectionMatrix);
+        hatcher::ComponentManager* componentManager);
     std::unordered_map<uint, EventHandlerFunction> m_eventFunctions;
 
     glm::vec2 m_fixedPosition = glm::vec2(0.f, 0.f);
+    glm::mat4 m_projectionMatrix = glm::mat4(1.f);
+    glm::mat4 m_viewMatrix = glm::mat4(1.f);
 
     float m_windowWidth = 800.f;
     float m_windowHeight = 600.f;

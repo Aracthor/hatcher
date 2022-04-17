@@ -19,17 +19,17 @@
 namespace
 {
 
-glm::vec2 MouseCoordsToWorldCoords(int x, int y, glm::vec2 fixedPosition,
+glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::mat4& previousViewMatrix,
                                    const glm::mat4& previousProjectionMatrix)
 {
     const float windowWidth = 800;
     const float windowHeight = 600;
 
     const glm::vec3 winCoords(x, windowHeight - y, 0.f);
-    const glm::mat4 modelMatrix = glm::translate(glm::vec3(-fixedPosition, 0.f));
+    const glm::mat4 modelViewMatrix = previousViewMatrix;
     const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
     const glm::vec3 worldCoords =
-        glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
+        glm::unProject(winCoords, modelViewMatrix, previousProjectionMatrix, viewport);
     return static_cast<glm::vec2>(worldCoords);
 }
 
@@ -56,8 +56,6 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
                                        const hatcher::Clock& clock,
                                        hatcher::IFrameRenderer& frameRenderer)
 {
-    const glm::mat4 previousProjectionMatrix = CalculateProjectionMatrix();
-
     const float elapsedTime = clock.GetElapsedTime();
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
@@ -78,33 +76,30 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
         if (functionIt != m_eventFunctions.end())
         {
             EventHandlerFunction handlerFunction = functionIt->second;
-            (this->*handlerFunction)(event, entityManager, componentManager,
-                                     previousProjectionMatrix);
+            (this->*handlerFunction)(event, entityManager, componentManager);
         }
     }
 
     m_selectionHandler->DrawSelectionRectangle(frameRenderer);
 
-    const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
-    frameRenderer.SetProjectionMatrix(newProjectionMatrix);
+    m_projectionMatrix = CalculateProjectionMatrix();
+    frameRenderer.SetProjectionMatrix(m_projectionMatrix);
 
-    const glm::mat4 viewMatrix = glm::lookAt(glm::vec3(m_fixedPosition, 100),
-                                             glm::vec3(m_fixedPosition, 0), glm::vec3(0, 1, 0));
-    frameRenderer.SetViewMatrix(viewMatrix);
+    m_viewMatrix = glm::lookAt(glm::vec3(m_fixedPosition, 100), glm::vec3(m_fixedPosition, 0),
+                               glm::vec3(0, 1, 0));
+    frameRenderer.SetViewMatrix(m_viewMatrix);
 }
 
 void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
                                           hatcher::IEntityManager* entityManager,
-                                          hatcher::ComponentManager* componentManager,
-                                          const glm::mat4& previousProjectionMatrix)
+                                          hatcher::ComponentManager* componentManager)
 {
     m_application->Stop();
 }
 
 void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
                                                 hatcher::IEntityManager* entityManager,
-                                                hatcher::ComponentManager* componentManager,
-                                                const glm::mat4& previousProjectionMatrix)
+                                                hatcher::ComponentManager* componentManager)
 {
     int verticalScroll = event.wheel.y;
 
@@ -118,13 +113,12 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
 
 void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
                                                  hatcher::IEntityManager* entityManager,
-                                                 hatcher::ComponentManager* componentManager,
-                                                 const glm::mat4& previousProjectionMatrix)
+                                                 hatcher::ComponentManager* componentManager)
 {
     if (m_selectionHandler->IsSelecting())
     {
-        const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
-            event.motion.x, event.motion.y, m_fixedPosition, previousProjectionMatrix);
+        const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(event.motion.x, event.motion.y,
+                                                                 m_viewMatrix, m_projectionMatrix);
 
         m_selectionHandler->MoveSelection(worldCoords2D);
     }
@@ -132,8 +126,7 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
 
 void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
                                                    hatcher::IEntityManager* entityManager,
-                                                   hatcher::ComponentManager* componentManager,
-                                                   const glm::mat4& previousProjectionMatrix)
+                                                   hatcher::ComponentManager* componentManager)
 {
     if (event.button.button == SDL_BUTTON_LEFT)
     {
@@ -163,11 +156,10 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
 
 void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
                                                      hatcher::IEntityManager* entityManager,
-                                                     hatcher::ComponentManager* componentManager,
-                                                     const glm::mat4& previousProjectionMatrix)
+                                                     hatcher::ComponentManager* componentManager)
 {
-    const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
-        event.button.x, event.button.y, m_fixedPosition, previousProjectionMatrix);
+    const glm::vec2 worldCoords2D =
+        MouseCoordsToWorldCoords(event.button.x, event.button.y, m_viewMatrix, m_projectionMatrix);
 
     if (event.button.button == SDL_BUTTON_LEFT)
     {
