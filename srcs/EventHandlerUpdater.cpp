@@ -19,13 +19,14 @@
 namespace
 {
 
-glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::mat4& previousProjectionMatrix)
+glm::vec2 MouseCoordsToWorldCoords(int x, int y, glm::vec2 fixedPosition,
+                                   const glm::mat4& previousProjectionMatrix)
 {
     const float windowWidth = 800;
     const float windowHeight = 600;
 
     const glm::vec3 winCoords(x, windowHeight - y, 0.f);
-    const glm::mat4 modelMatrix = glm::mat4(1.f);
+    const glm::mat4 modelMatrix = glm::translate(glm::vec3(-fixedPosition, 0.f));
     const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
     const glm::vec3 worldCoords =
         glm::unProject(winCoords, modelMatrix, previousProjectionMatrix, viewport);
@@ -86,6 +87,10 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
 
     const glm::mat4 newProjectionMatrix = CalculateProjectionMatrix();
     frameRenderer.SetProjectionMatrix(newProjectionMatrix);
+
+    const glm::mat4 viewMatrix = glm::lookAt(glm::vec3(m_fixedPosition, 100),
+                                             glm::vec3(m_fixedPosition, 0), glm::vec3(0, 1, 0));
+    frameRenderer.SetViewMatrix(viewMatrix);
 }
 
 void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
@@ -118,8 +123,8 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
 {
     if (m_selectionHandler->IsSelecting())
     {
-        const glm::vec2 worldCoords2D =
-            MouseCoordsToWorldCoords(event.motion.x, event.motion.y, previousProjectionMatrix);
+        const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
+            event.motion.x, event.motion.y, m_fixedPosition, previousProjectionMatrix);
 
         m_selectionHandler->MoveSelection(worldCoords2D);
     }
@@ -161,8 +166,8 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
                                                      hatcher::ComponentManager* componentManager,
                                                      const glm::mat4& previousProjectionMatrix)
 {
-    const glm::vec2 worldCoords2D =
-        MouseCoordsToWorldCoords(event.button.x, event.button.y, previousProjectionMatrix);
+    const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(
+        event.button.x, event.button.y, m_fixedPosition, previousProjectionMatrix);
 
     if (event.button.button == SDL_BUTTON_LEFT)
     {
@@ -214,9 +219,11 @@ glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()
     const float halfWidth = m_windowWidth / 2.f * m_pixelSize;
     const float halfHeight = m_windowHeight / 2.f * m_pixelSize;
 
-    const float right = m_fixedPosition.x + halfWidth;
-    const float left = m_fixedPosition.x - halfWidth;
-    const float bottom = m_fixedPosition.y - halfHeight;
-    const float top = m_fixedPosition.y + halfHeight;
-    return glm::ortho(left, right, bottom, top);
+    const float right = halfWidth;
+    const float left = -halfWidth;
+    const float bottom = -halfHeight;
+    const float top = halfHeight;
+    const float zNear = 0.1f;
+    const float zFar = 1000.f;
+    return glm::ortho(left, right, bottom, top, zNear, zFar);
 }
