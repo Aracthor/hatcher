@@ -63,16 +63,17 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
                                        hatcher::IFrameRenderer& frameRenderer)
 {
     const float elapsedTime = clock.GetElapsedTime();
+    const float movementAmplitude = elapsedTime * m_pixelSize;
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
     if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
-        m_cameraTarget.y += 0.01f * elapsedTime;
+        m_cameraTarget.y += movementAmplitude;
     if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
-        m_cameraTarget.y -= 0.01f * elapsedTime;
+        m_cameraTarget.y -= movementAmplitude;
     if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
-        m_cameraTarget.x += 0.01f * elapsedTime;
+        m_cameraTarget.x += movementAmplitude;
     if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
-        m_cameraTarget.x -= 0.01f * elapsedTime;
+        m_cameraTarget.x -= movementAmplitude;
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
 
