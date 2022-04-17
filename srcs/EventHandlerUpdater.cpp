@@ -126,6 +126,8 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
         m_pixelSize *= 4.f / 3.f;
     else if (verticalScroll > 0)
         m_pixelSize *= 3.f / 4.f;
+
+    m_pixelSize = std::clamp(m_pixelSize, 0.001f, 0.1f);
 }
 
 void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
