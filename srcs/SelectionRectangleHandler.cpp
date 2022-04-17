@@ -56,7 +56,7 @@ void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& 
         const glm::vec2 rectangleSize = m_currentRectangle.Extents();
         const glm::vec2 center = m_currentRectangle.Center();
         glm::mat4 modelMatrix = glm::mat4(1.f);
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(center.x, center.y, 1.f));
+        modelMatrix = glm::translate(modelMatrix, glm::vec3(center.x, center.y, 0.f));
         modelMatrix = glm::scale(modelMatrix, glm::vec3(rectangleSize.x, rectangleSize.y, 1.f));
 
         frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
