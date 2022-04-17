@@ -19,7 +19,9 @@
 namespace
 {
 
-glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::mat4& previousViewMatrix,
+glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::vec3& cameraPosition,
+                                   const glm::vec3& cameraTarget,
+                                   const glm::mat4& previousViewMatrix,
                                    const glm::mat4& previousProjectionMatrix)
 {
     const float windowWidth = 800;
@@ -30,7 +32,11 @@ glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::mat4& previousViewMa
     const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
     const glm::vec3 worldCoords =
         glm::unProject(winCoords, modelViewMatrix, previousProjectionMatrix, viewport);
-    return static_cast<glm::vec2>(worldCoords);
+
+    const glm::vec3 cameraToTarget = cameraPosition - cameraTarget;
+    const float t = worldCoords.z / cameraToTarget.z;
+    const glm::vec3 projectedWorldCoords = worldCoords - cameraToTarget * t;
+    return static_cast<glm::vec2>(projectedWorldCoords);
 }
 
 } // namespace
@@ -60,13 +66,13 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
     if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
-        m_fixedPosition.y += 0.01f * elapsedTime;
+        m_cameraTarget.y += 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
-        m_fixedPosition.y -= 0.01f * elapsedTime;
+        m_cameraTarget.y -= 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
-        m_fixedPosition.x += 0.01f * elapsedTime;
+        m_cameraTarget.x += 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
-        m_fixedPosition.x -= 0.01f * elapsedTime;
+        m_cameraTarget.x -= 0.01f * elapsedTime;
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
 
@@ -85,8 +91,18 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     m_projectionMatrix = CalculateProjectionMatrix();
     frameRenderer.SetProjectionMatrix(m_projectionMatrix);
 
-    m_viewMatrix = glm::lookAt(glm::vec3(m_fixedPosition, 100), glm::vec3(m_fixedPosition, 0),
-                               glm::vec3(0, 1, 0));
+    if (keyState[SDL_SCANCODE_F])
+    {
+        m_cameraPosition = glm::vec3(-90, -90, 100);
+        m_cameraUp = glm::vec3(sqrtf(2.f) / 2.f, sqrtf(2.f) / 2.f, 0.f);
+    }
+    else
+    {
+        m_cameraPosition = glm::vec3(0, 0, 100);
+        m_cameraUp = glm::vec3(0, 1, 0);
+    }
+    m_cameraPosition += m_cameraTarget;
+    m_viewMatrix = glm::lookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
     frameRenderer.SetViewMatrix(m_viewMatrix);
 }
 
@@ -117,8 +133,9 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
 {
     if (m_selectionHandler->IsSelecting())
     {
-        const glm::vec2 worldCoords2D = MouseCoordsToWorldCoords(event.motion.x, event.motion.y,
-                                                                 m_viewMatrix, m_projectionMatrix);
+        const glm::vec2 worldCoords2D =
+            MouseCoordsToWorldCoords(event.motion.x, event.motion.y, m_cameraPosition,
+                                     m_cameraTarget, m_viewMatrix, m_projectionMatrix);
 
         m_selectionHandler->MoveSelection(worldCoords2D);
     }
@@ -159,7 +176,8 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
                                                      hatcher::ComponentManager* componentManager)
 {
     const glm::vec2 worldCoords2D =
-        MouseCoordsToWorldCoords(event.button.x, event.button.y, m_viewMatrix, m_projectionMatrix);
+        MouseCoordsToWorldCoords(event.button.x, event.button.y, m_cameraPosition, m_cameraTarget,
+                                 m_viewMatrix, m_projectionMatrix);
 
     if (event.button.button == SDL_BUTTON_LEFT)
     {
