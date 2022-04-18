@@ -31,6 +31,8 @@ public:
                       hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
+    void HandleCameraMotion(const hatcher::Clock& clock, const Uint8* keyState);
+
     void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                          hatcher::ComponentManager* componentManager);
     void HandleMouseWheelEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,

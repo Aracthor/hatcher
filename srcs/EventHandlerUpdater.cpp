@@ -65,18 +65,10 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
                                        const hatcher::Clock& clock,
                                        hatcher::IFrameRenderer& frameRenderer)
 {
-    const float elapsedTime = clock.GetElapsedTime();
-    const float movementAmplitude = elapsedTime * m_pixelSize;
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
-    if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
-        m_cameraTarget.y += movementAmplitude;
-    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
-        m_cameraTarget.y -= movementAmplitude;
-    if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
-        m_cameraTarget.x += movementAmplitude;
-    if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
-        m_cameraTarget.x -= movementAmplitude;
+    HandleCameraMotion(clock, keyState);
+
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
 
@@ -109,6 +101,26 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     m_cameraPosition += m_cameraTarget;
     m_viewMatrix = glm::lookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
     frameRenderer.SetViewMatrix(m_viewMatrix);
+}
+
+void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock& clock, const Uint8* keyState)
+{
+    const float elapsedTime = clock.GetElapsedTime();
+    const float movementAmplitude = elapsedTime * m_pixelSize;
+    const glm::vec2 cameraUp = m_cameraUp;
+    const glm::vec2 cameraRight = {m_cameraUp.y, -m_cameraUp.x};
+    glm::vec2 cameraMovement = glm::vec2(0.f);
+
+    if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
+        cameraMovement += cameraUp;
+    if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
+        cameraMovement -= cameraUp;
+    if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
+        cameraMovement += cameraRight;
+    if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
+        cameraMovement -= cameraRight;
+
+    m_cameraTarget += glm::vec3(cameraMovement, 0.f) * movementAmplitude;
 }
 
 void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
