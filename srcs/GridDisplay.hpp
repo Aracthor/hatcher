@@ -19,7 +19,8 @@ public:
 
     void SetEnabled(bool enabled) { m_enabled = enabled; }
 
-    void DrawGrid(hatcher::IFrameRenderer& frameRenderer, float parPositionX, float parPositionY);
+    void DrawGrid(hatcher::IFrameRenderer& frameRenderer, float parPositionX,
+                  float parPositionY) const;
 
 private:
     int m_gridSize = 150;

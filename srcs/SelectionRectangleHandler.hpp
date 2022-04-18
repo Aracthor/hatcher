@@ -24,7 +24,7 @@ public:
 
     bool IsSelecting() const { return m_isSelecting; }
     const hatcher::Box2f GetCurrentSelection() const { return m_currentRectangle; }
-    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer);
+    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const;
 
 private:
     glm::vec2 m_windowResolution;

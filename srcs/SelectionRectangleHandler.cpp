@@ -51,7 +51,7 @@ void SelectionRectangleHandler::EndSelection()
     m_isSelecting = false;
 }
 
-void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer)
+void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const
 {
     if (IsSelecting())
     {

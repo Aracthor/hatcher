@@ -39,7 +39,7 @@ GridDisplay::GridDisplay(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilde
 GridDisplay::~GridDisplay() {}
 
 void GridDisplay::DrawGrid(hatcher::IFrameRenderer& frameRenderer, float parPositionX,
-                           float parPositionY)
+                           float parPositionY) const
 {
     if (m_enabled)
     {
