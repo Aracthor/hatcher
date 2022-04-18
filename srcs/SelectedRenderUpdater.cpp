@@ -44,14 +44,14 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
     {
         const std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
         const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
-        if (selectableComponent && selectableComponent->Selected)
+        if (selectableComponent && selectableComponent->selected)
         {
             HATCHER_ASSERT(positionComponent);
-            const hatcher::Box2f box = selectableComponent->Box;
+            const hatcher::Box2f box = selectableComponent->box;
             glm::mat4 modelMatrix =
                 glm::inverse(glm::ortho(box.Min().x, box.Max().x, box.Min().y, box.Max().y));
-            modelMatrix[3][0] += positionComponent->Position.x;
-            modelMatrix[3][1] += positionComponent->Position.y;
+            modelMatrix[3][0] += positionComponent->position.x;
+            modelMatrix[3][1] += positionComponent->position.y;
             frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }

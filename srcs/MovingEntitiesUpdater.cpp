@@ -26,18 +26,18 @@ void MovingEntitiesUpdater::Update(hatcher::ComponentManager* componentManager)
             const float movementLength = 0.05f;
             Movement2DComponent& movement2D = *movements[i];
             Position2DComponent& position2D = *positions[i];
-            if (!movement2D.Path.empty())
+            if (!movement2D.path.empty())
             {
-                const glm::vec2 nextObjective = movement2D.Path.back();
-                const glm::vec2 direction = (nextObjective - positions[i]->Position);
+                const glm::vec2 nextObjective = movement2D.path.back();
+                const glm::vec2 direction = (nextObjective - positions[i]->position);
                 if (glm::length(direction) < movementLength)
                 {
-                    position2D.Position = nextObjective;
-                    movement2D.Path.pop_back();
+                    position2D.position = nextObjective;
+                    movement2D.path.pop_back();
                 }
                 else
                 {
-                    position2D.Position += glm::normalize(direction) * movementLength;
+                    position2D.position += glm::normalize(direction) * movementLength;
                 }
             }
         }

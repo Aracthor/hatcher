@@ -36,9 +36,9 @@ void ObstacleRenderUpdater::Update(const hatcher::ComponentManager* componentMan
             if (!obstacleMesh)
             {
                 obstacleMesh = std::make_optional<ObstacleMeshComponent>();
-                obstacleMesh->Mesh = CreateMeshFromObstacle(*obstacle2D);
+                obstacleMesh->mesh = CreateMeshFromObstacle(*obstacle2D);
             }
-            frameRenderer.AddMeshToRender(obstacleMesh->Mesh.get(), glm::mat4(1.f));
+            frameRenderer.AddMeshToRender(obstacleMesh->mesh.get(), glm::mat4(1.f));
         }
     }
 }
@@ -52,7 +52,7 @@ ObstacleRenderUpdater::CreateMeshFromObstacle(const Obstacle2DComponent& obstacl
     m_meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
     result.reset(m_meshBuilder->Create());
 
-    auto obstacleCorners = obstacleComponent.Corners;
+    auto obstacleCorners = obstacleComponent.corners;
     int cornersCount = obstacleCorners.size();
 
     std::vector<float> positions;

@@ -59,8 +59,8 @@ void CubeDisplayUpdater::Update(const hatcher::ComponentManager* componentManage
     {
         if (component)
         {
-            modelMatrix[3][0] = component->Position.x;
-            modelMatrix[3][1] = component->Position.y;
+            modelMatrix[3][0] = component->position.x;
+            modelMatrix[3][1] = component->position.y;
             frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
         }
     }

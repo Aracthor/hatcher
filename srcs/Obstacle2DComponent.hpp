@@ -6,5 +6,5 @@
 
 struct Obstacle2DComponent
 {
-    std::vector<glm::vec2> Corners;
+    std::vector<glm::vec2> corners;
 };

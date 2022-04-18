@@ -5,7 +5,7 @@
 
 struct Movement2DComponent
 {
-    glm::vec2 Orientation;
-    float Speed;
-    std::vector<glm::vec2> Path; // Reversed : last element is the next step.
+    glm::vec2 orientation;
+    float speed;
+    std::vector<glm::vec2> path; // Reversed : last element is the next step.
 };

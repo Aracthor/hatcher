@@ -10,5 +10,5 @@ class Mesh;
 
 struct ObstacleMeshComponent
 {
-    std::shared_ptr<hatcher::Mesh> Mesh;
+    std::shared_ptr<hatcher::Mesh> mesh;
 };

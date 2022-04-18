@@ -169,8 +169,8 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
             {
                 HATCHER_ASSERT(positionComponent);
                 const hatcher::Box2f entityBox =
-                    selectableComponent->Box.Translated(positionComponent->Position);
-                selectableComponent->Selected = selectionRectangle.Touches(entityBox);
+                    selectableComponent->box.Translated(positionComponent->position);
+                selectableComponent->selected = selectionRectangle.Touches(entityBox);
             }
         }
 
@@ -204,12 +204,12 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
             std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
             std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
             std::optional<Position2DComponent>& positionComponent = positionComponents[i];
-            if (selectableComponent && selectableComponent->Selected && movementComponent)
+            if (selectableComponent && selectableComponent->selected && movementComponent)
             {
                 HATCHER_ASSERT(positionComponent);
-                movementComponent->Orientation =
-                    glm::normalize(worldCoords2D - positionComponent->Position);
-                movementComponent->Path = {worldCoords2D};
+                movementComponent->orientation =
+                    glm::normalize(worldCoords2D - positionComponent->position);
+                movementComponent->path = {worldCoords2D};
             }
         }
     }
@@ -219,11 +219,11 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
         hatcher::Entity newEntity = entityManager->CreateNewEntity();
         Position2DComponent position2D{worldCoords2D};
         Movement2DComponent movement2D;
-        movement2D.Orientation = glm::vec2(1.f, 0.f);
-        movement2D.Speed = 0.f;
+        movement2D.orientation = glm::vec2(1.f, 0.f);
+        movement2D.speed = 0.f;
         Selectable2DComponent selectable2D;
-        selectable2D.Selected = false;
-        selectable2D.Box = hatcher::Box2f(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f));
+        selectable2D.selected = false;
+        selectable2D.box = hatcher::Box2f(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f));
 
         componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
         componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);

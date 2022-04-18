@@ -4,5 +4,5 @@
 
 struct Position2DComponent
 {
-    glm::vec2 Position;
+    glm::vec2 position;
 };
