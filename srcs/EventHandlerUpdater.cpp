@@ -2,6 +2,7 @@
 
 #include <SDL2/SDL_events.h>
 
+#include "GridDisplay.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
@@ -50,8 +51,10 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
     m_eventFunctions[SDL_MOUSEMOTION] = &EventHandlerUpdater::HandleMouseMotionEvent;
     m_eventFunctions[SDL_MOUSEBUTTONUP] = &EventHandlerUpdater::HandleMouseButtonUpEvent;
     m_eventFunctions[SDL_MOUSEBUTTONDOWN] = &EventHandlerUpdater::HandleMouseButtonDownEvent;
+    m_eventFunctions[SDL_KEYDOWN] = &EventHandlerUpdater::HandleKeyDownEvent;
 
     m_selectionHandler = std::make_unique<SelectionRectangleHandler>(meshBuilder);
+    m_gridDisplay = std::make_unique<GridDisplay>(meshBuilder);
 }
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
@@ -88,6 +91,7 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     }
 
     m_selectionHandler->DrawSelectionRectangle(frameRenderer);
+    m_gridDisplay->DrawGrid(frameRenderer, m_cameraTarget.x, m_cameraTarget.y);
 
     m_projectionMatrix = CalculateProjectionMatrix();
     frameRenderer.SetProjectionMatrix(m_projectionMatrix);
@@ -224,6 +228,16 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
         componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
         componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
         componentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
+    }
+}
+
+void EventHandlerUpdater::HandleKeyDownEvent(const SDL_Event& event,
+                                             hatcher::IEntityManager* entityManager,
+                                             hatcher::ComponentManager* componentManager)
+{
+    if (event.key.keysym.scancode == SDL_SCANCODE_U)
+    {
+        m_gridDisplay->SetEnabled(!m_gridDisplay->Enabled());
     }
 }
 

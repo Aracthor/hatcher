@@ -14,6 +14,7 @@ class GameApplication;
 class MeshBuilder;
 } // namespace hatcher
 
+class GridDisplay;
 class SelectionRectangleHandler;
 
 class EventHandlerUpdater final : public hatcher::AbstractEventUpdater
@@ -39,6 +40,8 @@ private:
                                   hatcher::ComponentManager* componentManager);
     void HandleMouseButtonDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                     hatcher::ComponentManager* componentManager);
+    void HandleKeyDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
+                            hatcher::ComponentManager* componentManager);
 
     glm::mat4 CalculateProjectionMatrix();
 
@@ -60,4 +63,5 @@ private:
     float m_pixelSize = 0.01f;
 
     std::unique_ptr<SelectionRectangleHandler> m_selectionHandler;
+    std::unique_ptr<GridDisplay> m_gridDisplay;
 };
