@@ -39,9 +39,10 @@ void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLint compon
     parVBO.Bind();
     GL_CHECK(glVertexAttribPointer(layoutLocation, componentCount, GL_FLOAT, GL_FALSE, 0, NULL));
 
+    HATCHER_ASSERT(parVBO.ElementCount() % componentCount == 0);
     if (m_elementCount == 0)
-        m_elementCount = parVBO.ElementCount();
-    HATCHER_ASSERT(m_elementCount == parVBO.ElementCount());
+        m_elementCount = parVBO.ElementCount() / componentCount;
+    HATCHER_ASSERT(m_elementCount == parVBO.ElementCount() / componentCount);
 }
 
 void VertexArrayObject::DrawArrays() const
