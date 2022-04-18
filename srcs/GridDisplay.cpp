@@ -1,6 +1,7 @@
 #include "GridDisplay.hpp"
 
 #include "hatcher/Graphics/FrameRenderer.hpp"
+#include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 
@@ -10,8 +11,10 @@ GridDisplay::GridDisplay(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilde
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
+    std::shared_ptr<hatcher::Material> material =
+        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+    material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
+    meshBuilder->SetMaterial(material);
     m_gridMesh.reset(meshBuilder->Create());
 
     std::vector<float> positions;

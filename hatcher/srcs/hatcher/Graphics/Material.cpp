@@ -1,6 +1,7 @@
 #include "Material.hpp"
 
 #include "Core/ShaderProgram.hpp"
+#include "hatcher/assert.hpp"
 
 namespace hatcher
 {
@@ -15,6 +16,10 @@ Material::~Material() = default;
 void Material::Use() const
 {
     m_shaderProgram->Use();
+    for (auto uniform : m_uniforms)
+    {
+        m_shaderProgram->SetVector4Uniform(uniform.first, glm::value_ptr(uniform.second));
+    }
 }
 
 void Material::SetTransformationMatrices(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
@@ -28,6 +33,12 @@ void Material::SetTransformationMatrices(const glm::mat4& modelMatrix, const glm
 GLint Material::PositionAttribLocation() const
 {
     return m_shaderProgram->GetAttribLocation("vertPosition");
+}
+
+void Material::AddUniform(const char* name, const glm::vec4& value)
+{
+    HATCHER_ASSERT(m_uniforms.find(name) == m_uniforms.end());
+    m_uniforms[name] = value;
 }
 
 } // namespace hatcher
