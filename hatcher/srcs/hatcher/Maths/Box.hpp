@@ -9,6 +9,9 @@ template <glm::length_t L, typename T>
 class Box
 {
 private:
+    constexpr static int _pow2(glm::length_t n);
+    const static int CornerCount = _pow2(L);
+
     using Vec = glm::vec<L, T>;
 
 public:
@@ -28,6 +31,7 @@ public:
 
     Vec Extents() const { return m_max - m_min; }
     Vec Center() const { return (m_max + m_min) / static_cast<T>(2); }
+    void GetCorners(Vec corners[CornerCount]) const;
 
     bool operator==(const Box& other) const;
     bool operator!=(const Box& other) const;

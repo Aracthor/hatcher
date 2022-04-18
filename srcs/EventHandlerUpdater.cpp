@@ -271,12 +271,9 @@ hatcher::Box2f EventHandlerUpdater::ProjectBox3DToScreenSpace(const hatcher::Box
                                                               const glm::mat4& modelMatrix) const
 {
     hatcher::Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
-    const glm::vec3 corners[] = {
-        {box.Min()[0], box.Min()[1], box.Min()[2]}, {box.Min()[0], box.Min()[1], box.Max()[2]},
-        {box.Min()[0], box.Max()[1], box.Min()[2]}, {box.Min()[0], box.Max()[1], box.Max()[2]},
-        {box.Max()[0], box.Min()[1], box.Min()[2]}, {box.Max()[0], box.Min()[1], box.Max()[2]},
-        {box.Max()[0], box.Max()[1], box.Min()[2]}, {box.Max()[0], box.Max()[1], box.Max()[2]},
-    };
+    glm::vec3 corners[8];
+    box.GetCorners(corners);
+
     for (const glm::vec3& corner : corners)
     {
         result.AddPoint(WorldCoordsToWindowCoords(corner, modelMatrix));

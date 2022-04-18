@@ -2,6 +2,16 @@
 
 namespace hatcher
 {
+template <glm::length_t L, typename T>
+constexpr int Box<L, T>::_pow2(glm::length_t n)
+{
+    int result = 1;
+    for (int i = 0; i < static_cast<int>(n); i++)
+    {
+        result *= 2;
+    }
+    return result;
+}
 
 template <glm::length_t L, typename T>
 Box<L, T>::Box(const Vec& point)
@@ -64,6 +74,16 @@ bool Box<L, T>::Touches(const Box<L, T>& box) const
             return false;
     }
     return true;
+}
+
+template <glm::length_t L, typename T>
+void Box<L, T>::GetCorners(Vec corners[CornerCount]) const
+{
+    for (glm::length_t n = 0; n < L; n++)
+    {
+        for (int i = 0; i < CornerCount; i++)
+            corners[i][n] = (i / _pow2(n)) % 2 == 0 ? m_min[n] : m_max[n];
+    }
 }
 
 template <glm::length_t L, typename T>
