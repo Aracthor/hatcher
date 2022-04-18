@@ -92,6 +92,7 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/AbstractEventUpdater.cpp	\
 		Graphics/Clock.cpp			\
 		Graphics/FrameRenderer.cpp		\
+		Graphics/Material.cpp 			\
 		Graphics/Mesh.cpp 			\
 		Graphics/MeshBuilder.cpp		\
 		Graphics/Rendering.cpp 			\

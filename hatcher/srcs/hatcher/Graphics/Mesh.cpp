@@ -1,15 +1,14 @@
 #include "Mesh.hpp"
 
-#include "Core/ShaderProgram.hpp"
 #include "Core/VertexArrayObject.hpp"
 #include "Core/VertexBufferObject.hpp"
+#include "Material.hpp"
 
 namespace hatcher
 {
 
-Mesh::Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynamic,
-           Primitive::Type primitive)
-    : m_shaderProgram(shaderProgram)
+Mesh::Mesh(const std::shared_ptr<const Material>& material, bool dynamic, Primitive::Type primitive)
+    : m_material(material)
     , m_dynamic(dynamic)
 {
     m_VAO = std::make_unique<VertexArrayObject>(primitive);
@@ -45,10 +44,8 @@ void Mesh::SetIndices(ushort* elements, uint elementCount)
 void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix,
                 const glm::mat4& modelMatrix) const
 {
-    m_shaderProgram->Use();
-    m_shaderProgram->SetMatrix4Uniform("uniProjectionMatrix", glm::value_ptr(projectionMatrix));
-    m_shaderProgram->SetMatrix4Uniform("uniViewMatrix", glm::value_ptr(viewMatrix));
-    m_shaderProgram->SetMatrix4Uniform("uniModelMatrix", glm::value_ptr(modelMatrix));
+    m_material->Use();
+    m_material->SetTransformationMatrices(modelMatrix, viewMatrix, projectionMatrix);
 
     if (m_elementVBO)
         m_VAO->DrawElements(m_elementVBO->ElementCount());
@@ -60,7 +57,7 @@ void Mesh::SetPositions(float* positions, uint positionCount, int componentCount
 {
     m_VAO->Bind();
 
-    GLint positionAttribLocation = m_shaderProgram->GetAttribLocation("vertPosition");
+    GLint positionAttribLocation = m_material->PositionAttribLocation();
     m_positionVBO->SetData(positions, positionCount, m_dynamic);
     m_VAO->AttribVBO(*m_positionVBO, componentCount, positionAttribLocation);
 

@@ -3,6 +3,7 @@
 #include "Core/ShaderProgram.hpp"
 #include "hatcher/assert.hpp"
 
+#include "Material.hpp"
 #include "Mesh.hpp"
 
 namespace hatcher
@@ -39,7 +40,8 @@ Mesh* MeshBuilder::Create()
                            "MeshBuilder::Create was called without a ShaderProgram.");
 
     Mesh* newMesh;
-    newMesh = new Mesh(m_programToUse, m_dynamic, *m_primitive);
+    std::shared_ptr<Material> material = std::make_shared<Material>(m_programToUse);
+    newMesh = new Mesh(material, m_dynamic, *m_primitive);
 
     m_dynamic = false;
     m_primitive.reset();

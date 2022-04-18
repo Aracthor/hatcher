@@ -9,15 +9,14 @@
 
 namespace hatcher
 {
-class ShaderProgram;
+class Material;
 class VertexArrayObject;
 class VertexBufferObject;
 
 class Mesh
 {
 public:
-    Mesh(const std::shared_ptr<const ShaderProgram>& shaderProgram, bool dynamic,
-         Primitive::Type primitive);
+    Mesh(const std::shared_ptr<const Material>& material, bool dynamic, Primitive::Type primitive);
     ~Mesh();
 
     void Set2DPositions(float* positions, uint positionCount);
@@ -33,7 +32,7 @@ private:
     std::unique_ptr<VertexArrayObject> m_VAO;
     std::unique_ptr<VertexBufferObject> m_positionVBO;
     std::unique_ptr<VertexBufferObject> m_elementVBO;
-    std::shared_ptr<const ShaderProgram> m_shaderProgram;
+    std::shared_ptr<const Material> m_material;
     bool m_dynamic;
 };
 
