@@ -77,13 +77,15 @@ bool Box<L, T>::Touches(const Box<L, T>& box) const
 }
 
 template <glm::length_t L, typename T>
-void Box<L, T>::GetCorners(Vec corners[CornerCount]) const
+std::array<glm::vec<L, T>, Box<L, T>::CornerCount> Box<L, T>::GetCorners() const
 {
+    std::array<Vec, CornerCount> corners;
     for (glm::length_t n = 0; n < L; n++)
     {
         for (int i = 0; i < CornerCount; i++)
             corners[i][n] = (i / _pow2(n)) % 2 == 0 ? m_min[n] : m_max[n];
     }
+    return corners;
 }
 
 template <glm::length_t L, typename T>

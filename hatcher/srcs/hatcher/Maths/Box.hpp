@@ -1,5 +1,7 @@
 #pragma once
 
+#include <array>
+
 #include "hatcher/glm_pure.hpp"
 
 namespace hatcher
@@ -31,7 +33,7 @@ public:
 
     Vec Extents() const { return m_max - m_min; }
     Vec Center() const { return (m_max + m_min) / static_cast<T>(2); }
-    void GetCorners(Vec corners[CornerCount]) const;
+    std::array<Vec, CornerCount> GetCorners() const;
 
     bool operator==(const Box& other) const;
     bool operator!=(const Box& other) const;
