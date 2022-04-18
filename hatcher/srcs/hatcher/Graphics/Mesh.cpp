@@ -41,8 +41,8 @@ void Mesh::SetIndices(ushort* elements, uint elementCount)
     m_VAO->Unbind();
 }
 
-void Mesh::Draw(const glm::mat4& projectionMatrix, const glm::mat4& viewMatrix,
-                const glm::mat4& modelMatrix) const
+void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
+                const glm::mat4& projectionMatrix) const
 {
     m_material->Use();
     m_material->SetTransformationMatrices(modelMatrix, viewMatrix, projectionMatrix);

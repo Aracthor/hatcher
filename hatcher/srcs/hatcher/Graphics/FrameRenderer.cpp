@@ -24,7 +24,7 @@ void FrameRenderer::Render() const
 {
     for (const MeshToRender& meshToRender : m_meshesToRender)
     {
-        meshToRender.mesh->Draw(m_projectionMatrix, m_viewMatrix, meshToRender.modelMatrix);
+        meshToRender.mesh->Draw(meshToRender.modelMatrix, m_viewMatrix, m_projectionMatrix);
     }
 }
 
