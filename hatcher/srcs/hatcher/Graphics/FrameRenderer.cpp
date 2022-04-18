@@ -7,7 +7,7 @@ namespace hatcher
 
 void FrameRenderer::AddMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix)
 {
-    m_meshesToRender.emplace_back(mesh, modelMatrix);
+    m_meshesToRender.push_back({mesh, modelMatrix});
 }
 
 void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
@@ -24,7 +24,7 @@ void FrameRenderer::Render() const
 {
     for (const MeshToRender& meshToRender : m_meshesToRender)
     {
-        meshToRender.first->Draw(m_projectionMatrix, m_viewMatrix, meshToRender.second);
+        meshToRender.mesh->Draw(m_projectionMatrix, m_viewMatrix, meshToRender.modelMatrix);
     }
 }
 
