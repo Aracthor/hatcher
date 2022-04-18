@@ -10,7 +10,8 @@ SelectionRectangleHandler::SelectionRectangleHandler(
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+    meshBuilder->SetMaterial(
+        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
     m_selectionRectangleMesh.reset(meshBuilder->Create());
 
     float positions[] = {

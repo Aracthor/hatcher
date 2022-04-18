@@ -9,8 +9,8 @@
 namespace hatcher
 {
 
-void MeshBuilder::SetProgram(const std::string& vertexShaderFileName,
-                             const std::string& fragmentShaderFileName)
+std::shared_ptr<Material> MeshBuilder::CreateMaterial(const std::string& vertexShaderFileName,
+                                                      const std::string& fragmentShaderFileName)
 {
     ProgramKey key = ProgramKey(vertexShaderFileName, fragmentShaderFileName);
 
@@ -20,7 +20,7 @@ void MeshBuilder::SetProgram(const std::string& vertexShaderFileName,
             vertexShaderFileName.data(), fragmentShaderFileName.data());
     }
     HATCHER_ASSERT(m_shaderProgramLibrary.contains(key));
-    m_programToUse = m_shaderProgramLibrary[key];
+    return std::make_unique<Material>(m_shaderProgramLibrary[key]);
 }
 
 void MeshBuilder::SetPrimitive(Primitive::Type primitive)
@@ -33,19 +33,23 @@ void MeshBuilder::SetDynamic()
     m_dynamic = true;
 }
 
+void MeshBuilder::SetMaterial(const std::shared_ptr<const Material>& material)
+{
+    m_material = material;
+}
+
 Mesh* MeshBuilder::Create()
 {
     HATCHER_ASSERT_MESSAGE(m_primitive, "MeshBuilder::Create was called without a primitive.");
-    HATCHER_ASSERT_MESSAGE(m_programToUse != nullptr,
-                           "MeshBuilder::Create was called without a ShaderProgram.");
+    HATCHER_ASSERT_MESSAGE(m_material != nullptr,
+                           "MeshBuilder::Create was called without a Material.");
 
     Mesh* newMesh;
-    std::shared_ptr<Material> material = std::make_shared<Material>(m_programToUse);
-    newMesh = new Mesh(material, m_dynamic, *m_primitive);
+    newMesh = new Mesh(m_material, m_dynamic, *m_primitive);
 
     m_dynamic = false;
     m_primitive.reset();
-    m_programToUse = nullptr;
+    m_material = nullptr;
 
     return newMesh;
 }

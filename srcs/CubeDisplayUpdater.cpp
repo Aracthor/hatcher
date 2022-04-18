@@ -2,6 +2,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -39,7 +40,8 @@ CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilde
     };
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
-    meshBuilder->SetProgram("shaders/hello_world_3D.vert", "shaders/hello_world.frag");
+    meshBuilder->SetMaterial(
+        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_world.frag"));
 
     m_mesh.reset(meshBuilder->Create());
     m_mesh->Set3DPositions(points, std::size(points));

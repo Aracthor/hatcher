@@ -10,7 +10,8 @@ GridDisplay::GridDisplay(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilde
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+    meshBuilder->SetMaterial(
+        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
     m_gridMesh.reset(meshBuilder->Create());
 
     std::vector<float> positions;

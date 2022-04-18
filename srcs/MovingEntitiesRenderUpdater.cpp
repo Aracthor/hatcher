@@ -44,7 +44,8 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
     indices.push_back(circleVertexCount + 1);
 
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetProgram("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+    meshBuilder->SetMaterial(
+        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
 
     m_mesh.reset(meshBuilder->Create());
     m_mesh->Set2DPositions(positions.data(), std::size(positions));
