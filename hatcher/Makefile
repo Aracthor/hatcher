@@ -1,4 +1,4 @@
-CXX=	g++-10
+CXX=	g++
 EMXX=	em++
 ARXX=	ar rc
 EMARXX=	emar rc

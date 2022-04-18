@@ -1,4 +1,4 @@
-CXX=	g++-10
+CXX=	g++
 EMXX=	em++
 MKDIR=	mkdir
 RM=	rm -f
