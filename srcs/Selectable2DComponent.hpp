@@ -5,6 +5,6 @@
 
 struct Selectable2DComponent
 {
-    hatcher::Box2f box;
+    hatcher::Box3f box;
     bool selected;
 };

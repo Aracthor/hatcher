@@ -14,7 +14,8 @@ class MeshBuilder;
 class SelectionRectangleHandler
 {
 public:
-    SelectionRectangleHandler(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    SelectionRectangleHandler(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder,
+                              const glm::vec2& windowResolution);
     ~SelectionRectangleHandler();
 
     void StartSelection(const glm::vec2& position);
@@ -26,6 +27,8 @@ public:
     void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer);
 
 private:
+    glm::vec2 m_windowResolution;
+
     bool m_isSelecting = false;
     glm::vec2 m_selectionStart;
     hatcher::Box2f m_currentRectangle;

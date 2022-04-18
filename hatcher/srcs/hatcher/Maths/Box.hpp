@@ -38,6 +38,7 @@ private:
 };
 
 using Box2f = Box<2, float>;
+using Box3f = Box<3, float>;
 
 } // namespace hatcher
 

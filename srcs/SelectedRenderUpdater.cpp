@@ -48,7 +48,8 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
         if (selectableComponent && selectableComponent->selected)
         {
             HATCHER_ASSERT(positionComponent);
-            const hatcher::Box2f box = selectableComponent->box;
+            const hatcher::Box2f box = {glm::vec2(selectableComponent->box.Min()),
+                                        glm::vec2(selectableComponent->box.Max())};
             glm::mat4 modelMatrix =
                 glm::inverse(glm::ortho(box.Min().x, box.Max().x, box.Min().y, box.Max().y));
             modelMatrix[3][0] += positionComponent->position.x;

@@ -6,6 +6,7 @@
 #include <SDL2/SDL_events.h>
 
 #include "hatcher/Graphics/AbstractEventUpdater.hpp"
+#include "hatcher/Maths/Box.hpp"
 #include "hatcher/glm_pure.hpp"
 
 namespace hatcher
@@ -44,6 +45,11 @@ private:
                             hatcher::ComponentManager* componentManager);
 
     glm::mat4 CalculateProjectionMatrix();
+
+    hatcher::Box2f ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
+                                             const glm::mat4& modelMatrix) const;
+    glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
+                                        const glm::mat4& modelMatrix) const;
 
     hatcher::GameApplication* m_application;
 

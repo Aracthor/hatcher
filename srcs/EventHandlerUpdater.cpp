@@ -19,15 +19,14 @@
 
 namespace
 {
+const float windowWidth = 800;
+const float windowHeight = 600;
 
 glm::vec2 MouseCoordsToWorldCoords(int x, int y, const glm::vec3& cameraPosition,
                                    const glm::vec3& cameraTarget,
                                    const glm::mat4& previousViewMatrix,
                                    const glm::mat4& previousProjectionMatrix)
 {
-    const float windowWidth = 800;
-    const float windowHeight = 600;
-
     const glm::vec3 winCoords(x, windowHeight - y, 0.f);
     const glm::mat4 modelViewMatrix = previousViewMatrix;
     const glm::vec4 viewport = {0.f, 0.f, windowWidth, windowHeight};
@@ -53,7 +52,8 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
     m_eventFunctions[SDL_MOUSEBUTTONDOWN] = &EventHandlerUpdater::HandleMouseButtonDownEvent;
     m_eventFunctions[SDL_KEYDOWN] = &EventHandlerUpdater::HandleKeyDownEvent;
 
-    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(meshBuilder);
+    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(
+        meshBuilder, glm::vec2(windowWidth, windowHeight));
     m_gridDisplay = std::make_unique<GridDisplay>(meshBuilder);
 }
 
@@ -140,11 +140,8 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
 {
     if (m_selectionHandler->IsSelecting())
     {
-        const glm::vec2 worldCoords2D =
-            MouseCoordsToWorldCoords(event.motion.x, event.motion.y, m_cameraPosition,
-                                     m_cameraTarget, m_viewMatrix, m_projectionMatrix);
-
-        m_selectionHandler->MoveSelection(worldCoords2D);
+        const glm::vec2 winCoords = {event.motion.x, windowHeight - event.motion.y};
+        m_selectionHandler->MoveSelection(winCoords);
     }
 }
 
@@ -168,9 +165,11 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
             if (selectableComponent)
             {
                 HATCHER_ASSERT(positionComponent);
-                const hatcher::Box2f entityBox =
-                    selectableComponent->box.Translated(positionComponent->position);
-                selectableComponent->selected = selectionRectangle.Touches(entityBox);
+                const glm::mat4 modelMatrix =
+                    glm::translate(glm::vec3(positionComponent->position, 0.f));
+                const hatcher::Box2f selectionBox =
+                    ProjectBox3DToScreenSpace(selectableComponent->box, modelMatrix);
+                selectableComponent->selected = selectionRectangle.Touches(selectionBox);
             }
         }
 
@@ -188,7 +187,8 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 
     if (event.button.button == SDL_BUTTON_LEFT)
     {
-        m_selectionHandler->StartSelection(worldCoords2D);
+        const glm::vec2 winCoords = {event.motion.x, windowHeight - event.motion.y};
+        m_selectionHandler->StartSelection(winCoords);
     }
 
     if (event.button.button == SDL_BUTTON_RIGHT)
@@ -223,7 +223,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
         movement2D.speed = 0.f;
         Selectable2DComponent selectable2D;
         selectable2D.selected = false;
-        selectable2D.box = hatcher::Box2f(glm::vec2(-1.f, -1.f), glm::vec2(1.f, 1.f));
+        selectable2D.box = hatcher::Box3f(glm::vec3(-1.f, -1.f, 0.f), glm::vec3(1.f, 1.f, 1.f));
 
         componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
         componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
@@ -253,4 +253,30 @@ glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix()
     const float zNear = 0.1f;
     const float zFar = 1000.f;
     return glm::ortho(left, right, bottom, top, zNear, zFar);
+}
+
+hatcher::Box2f EventHandlerUpdater::ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
+                                                              const glm::mat4& modelMatrix) const
+{
+    hatcher::Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
+    const glm::vec3 corners[] = {
+        {box.Min()[0], box.Min()[1], box.Min()[2]}, {box.Min()[0], box.Min()[1], box.Max()[2]},
+        {box.Min()[0], box.Max()[1], box.Min()[2]}, {box.Min()[0], box.Max()[1], box.Max()[2]},
+        {box.Max()[0], box.Min()[1], box.Min()[2]}, {box.Max()[0], box.Min()[1], box.Max()[2]},
+        {box.Max()[0], box.Max()[1], box.Min()[2]}, {box.Max()[0], box.Max()[1], box.Max()[2]},
+    };
+    for (const glm::vec3& corner : corners)
+    {
+        result.AddPoint(WorldCoordsToWindowCoords(corner, modelMatrix));
+    }
+    return result;
+}
+
+glm::vec2 EventHandlerUpdater::WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
+                                                         const glm::mat4& modelMatrix) const
+{
+    const glm::vec4 projectedVertex =
+        m_projectionMatrix * m_viewMatrix * modelMatrix * glm::vec4(worldCoords, 1.f);
+    return {(projectedVertex.x + 1.f) / 2.f * windowWidth,
+            (projectedVertex.y + 1.f) / 2.f * windowHeight};
 }

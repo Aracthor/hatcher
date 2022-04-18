@@ -6,7 +6,8 @@
 #include "hatcher/assert.hpp"
 
 SelectionRectangleHandler::SelectionRectangleHandler(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder, const glm::vec2& windowResolution)
+    : m_windowResolution(windowResolution)
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
@@ -15,13 +16,13 @@ SelectionRectangleHandler::SelectionRectangleHandler(
     m_selectionRectangleMesh.reset(meshBuilder->Create());
 
     float positions[] = {
-        -0.5f, -0.5f,
+        -1.f, -1.f,
 
-        0.5f,  -0.5f,
+        1.f,  -1.f,
 
-        0.5f,  0.5f,
+        1.f,  1.f,
 
-        -0.5f, 0.5f,
+        -1.f, 1.f,
     };
     hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
 
@@ -55,11 +56,17 @@ void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& 
     if (IsSelecting())
     {
         const glm::vec2 rectangleSize = m_currentRectangle.Extents();
-        const glm::vec2 center = m_currentRectangle.Center();
-        glm::mat4 modelMatrix = glm::mat4(1.f);
-        modelMatrix = glm::translate(modelMatrix, glm::vec3(center.x, center.y, 0.f));
-        modelMatrix = glm::scale(modelMatrix, glm::vec3(rectangleSize.x, rectangleSize.y, 1.f));
+        const glm::vec2 rectangleCenter = m_currentRectangle.Center();
 
-        frameRenderer.AddMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
+        const glm::vec3 position = {-1.f + (rectangleCenter.x / m_windowResolution.x) * 2.f,
+                                    -1.f + (rectangleCenter.y / m_windowResolution.y) * 2.f, 0.f};
+        const glm::vec3 scale = {rectangleSize.x / m_windowResolution.x,
+                                 rectangleSize.y / m_windowResolution.y, 0.f};
+
+        glm::mat4 modelMatrix = glm::mat4(1.f);
+        modelMatrix = glm::translate(modelMatrix, position);
+        modelMatrix = glm::scale(modelMatrix, scale);
+
+        frameRenderer.AddUIMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
     }
 }
