@@ -17,6 +17,9 @@ public:
     void SetProjectionMatrix(const glm::mat4& matrix) override;
     void SetViewMatrix(const glm::mat4& matrix) override;
 
+    const glm::mat4& ProjectionMatrix() const { return m_projectionMatrix; }
+    const glm::mat4& ViewMatrix() const { return m_viewMatrix; }
+
     void Render() const;
 
 private:

@@ -59,8 +59,6 @@ private:
     hatcher::Box2f ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
                                              const glm::mat4& modelMatrix,
                                              const hatcher::IRendering& rendering) const;
-    glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords, const glm::mat4& modelMatrix,
-                                        const hatcher::IRendering& rendering) const;
 
     glm::vec2 MouseCoordsToWorldCoords(int x, int y, const hatcher::IRendering& rendering) const;
 

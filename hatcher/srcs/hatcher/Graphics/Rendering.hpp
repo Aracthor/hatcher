@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "IRendering.hpp"
+#include "hatcher/glm_pure.hpp"
 
 namespace hatcher
 {
@@ -24,6 +25,10 @@ public:
     glm::ivec2 Resolution() const override;
     const Clock* GetClock() const override { return m_clock.get(); }
 
+    glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
+                                        const glm::mat4& modelMatrix) const override;
+    glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const override;
+
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }
 
 private:
@@ -31,6 +36,9 @@ private:
     std::unique_ptr<MeshBuilder> m_meshBuilder;
     std::unique_ptr<FrameRenderer> m_frameRenderer;
     std::unique_ptr<Window> m_window;
+
+    glm::mat4 m_projectionMatrix = glm::mat4(1.f);
+    glm::mat4 m_viewMatrix = glm::mat4(1.f);
 };
 
 } // namespace hatcher

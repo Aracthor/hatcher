@@ -253,37 +253,20 @@ EventHandlerUpdater::ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
                                                const glm::mat4& modelMatrix,
                                                const hatcher::IRendering& rendering) const
 {
-    hatcher::Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix, rendering);
+    hatcher::Box2f result = rendering.WorldCoordsToWindowCoords(box.Min(), modelMatrix);
     std::array<glm::vec3, 8> corners = box.GetCorners();
 
     for (const glm::vec3& corner : corners)
     {
-        result.AddPoint(WorldCoordsToWindowCoords(corner, modelMatrix, rendering));
+        result.AddPoint(rendering.WorldCoordsToWindowCoords(corner, modelMatrix));
     }
     return result;
-}
-
-glm::vec2 EventHandlerUpdater::WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
-                                                         const glm::mat4& modelMatrix,
-                                                         const hatcher::IRendering& rendering) const
-{
-    const glm::ivec2 resolution = rendering.Resolution();
-    const glm::vec4 projectedVertex =
-        m_projectionMatrix * m_viewMatrix * modelMatrix * glm::vec4(worldCoords, 1.f);
-    return {(projectedVertex.x + 1.f) / 2.f * resolution.x,
-            (projectedVertex.y + 1.f) / 2.f * resolution.y};
 }
 
 glm::vec2 EventHandlerUpdater::MouseCoordsToWorldCoords(int x, int y,
                                                         const hatcher::IRendering& rendering) const
 {
-    const glm::ivec2 resolution = rendering.Resolution();
-    const glm::vec3 winCoords(x, resolution.y - y, 0.f);
-    const glm::mat4 modelViewMatrix = m_viewMatrix;
-    const glm::vec4 viewport = {0.f, 0.f, resolution.x, resolution.y};
-    const glm::vec3 worldCoords =
-        glm::unProject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
-
+    const glm::vec3 worldCoords = rendering.WindowCoordsToWorldCoords(glm::vec2(x, y));
     const glm::vec3 cameraToTarget = m_cameraPosition - m_cameraTarget;
     const float t = worldCoords.z / cameraToTarget.z;
     const glm::vec3 projectedWorldCoords = worldCoords - cameraToTarget * t;
