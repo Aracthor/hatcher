@@ -21,7 +21,7 @@ public:
     void UpdateWorldRendering(World* parWorld) override;
     void RenderWorld() override;
 
-    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() override { return m_meshBuilder; }
+    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }
 
 private:
     std::unique_ptr<Clock> m_clock;
