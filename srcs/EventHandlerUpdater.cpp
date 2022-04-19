@@ -57,7 +57,7 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
         }
     }
 
-    m_selectionHandler->DrawSelectionRectangle(frameRenderer, rendering);
+    m_selectionHandler->DrawSelectionRectangle(frameRenderer);
     m_gridDisplay->DrawGrid(frameRenderer, m_cameraTarget.x, m_cameraTarget.y);
 
     m_projectionMatrix = CalculateProjectionMatrix(rendering);

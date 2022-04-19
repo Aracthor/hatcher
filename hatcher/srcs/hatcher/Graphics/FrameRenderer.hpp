@@ -20,7 +20,7 @@ public:
     const glm::mat4& ProjectionMatrix() const { return m_projectionMatrix; }
     const glm::mat4& ViewMatrix() const { return m_viewMatrix; }
 
-    void Render() const;
+    void Render(const glm::vec2& resolution) const;
 
 private:
     struct MeshToRender

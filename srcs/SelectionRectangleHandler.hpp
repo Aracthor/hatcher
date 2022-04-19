@@ -7,7 +7,6 @@
 namespace hatcher
 {
 class IFrameRenderer;
-class IRendering;
 class Mesh;
 class MeshBuilder;
 } // namespace hatcher
@@ -24,8 +23,7 @@ public:
 
     bool IsSelecting() const { return m_isSelecting; }
     const hatcher::Box2f GetCurrentSelection() const { return m_currentRectangle; }
-    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer,
-                                const hatcher::IRendering& rendering) const;
+    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const;
 
 private:
     bool m_isSelecting = false;

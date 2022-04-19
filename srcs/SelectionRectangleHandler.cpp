@@ -51,19 +51,15 @@ void SelectionRectangleHandler::EndSelection()
     m_isSelecting = false;
 }
 
-void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer,
-                                                       const hatcher::IRendering& rendering) const
+void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const
 {
     if (IsSelecting())
     {
-        const glm::ivec2 resolution = rendering.Resolution();
-        const glm::vec2 rectangleSize = m_currentRectangle.Extents();
         const glm::vec2 rectangleCenter = m_currentRectangle.Center();
+        const glm::vec2 rectangleSize = m_currentRectangle.Extents();
 
-        const glm::vec3 position = {-1.f + (rectangleCenter.x / resolution.x) * 2.f,
-                                    -1.f + (rectangleCenter.y / resolution.y) * 2.f, 0.f};
-        const glm::vec3 scale = {rectangleSize.x / resolution.x, rectangleSize.y / resolution.y,
-                                 0.f};
+        const glm::vec3 position = {rectangleCenter.x, rectangleCenter.y, 0.f};
+        const glm::vec3 scale = {rectangleSize.x / 2.f, rectangleSize.y / 2.f, 0.f};
 
         glm::mat4 modelMatrix = glm::mat4(1.f);
         modelMatrix = glm::translate(modelMatrix, position);

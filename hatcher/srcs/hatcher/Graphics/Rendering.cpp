@@ -59,7 +59,7 @@ void Rendering::UpdateWorldRendering(World* world)
 void Rendering::RenderWorld()
 {
     m_window->Clear();
-    m_frameRenderer->Render();
+    m_frameRenderer->Render(Resolution());
     m_window->Refresh();
 }
 
