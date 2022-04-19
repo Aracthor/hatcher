@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class Clock;
 class MeshBuilder;
 class World;
 
@@ -15,6 +16,7 @@ public:
     virtual ~IRendering() = default;
 
     virtual glm::ivec2 Resolution() const = 0;
+    virtual const Clock* GetClock() const = 0;
 
     virtual const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const = 0;
 };

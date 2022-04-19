@@ -37,13 +37,12 @@ EventHandlerUpdater::~EventHandlerUpdater() = default;
 void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& events,
                                        hatcher::IEntityManager* entityManager,
                                        hatcher::ComponentManager* componentManager,
-                                       const hatcher::Clock& clock,
                                        hatcher::IFrameRenderer& frameRenderer,
                                        const hatcher::IRendering& rendering)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
-    HandleCameraMotion(clock, keyState);
+    HandleCameraMotion(rendering.GetClock(), keyState);
 
     if (keyState[SDL_SCANCODE_ESCAPE])
         m_application->Stop();
@@ -79,9 +78,9 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     frameRenderer.SetViewMatrix(m_viewMatrix);
 }
 
-void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock& clock, const Uint8* keyState)
+void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock* clock, const Uint8* keyState)
 {
-    const float elapsedTime = clock.GetElapsedTime();
+    const float elapsedTime = clock->GetElapsedTime();
     const float movementAmplitude = elapsedTime * m_pixelSize;
     const glm::vec2 cameraUp = m_cameraUp;
     const glm::vec2 cameraRight = {m_cameraUp.y, -m_cameraUp.x};

@@ -52,7 +52,7 @@ void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& ren
     if (m_eventUpdater)
     {
         m_eventUpdater->PollEvents();
-        m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(), clock,
+        m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                frameRenderer, rendering);
     }
 

@@ -11,6 +11,7 @@
 
 namespace hatcher
 {
+class Clock;
 class GameApplication;
 class MeshBuilder;
 } // namespace hatcher
@@ -27,12 +28,12 @@ public:
 
     void HandleEvents(const hatcher::span<const SDL_Event>& events,
                       hatcher::IEntityManager* entityManager,
-                      hatcher::ComponentManager* componentManager, const hatcher::Clock& clock,
+                      hatcher::ComponentManager* componentManager,
                       hatcher::IFrameRenderer& frameRenderer,
                       const hatcher::IRendering& rendering) override;
 
 private:
-    void HandleCameraMotion(const hatcher::Clock& clock, const Uint8* keyState);
+    void HandleCameraMotion(const hatcher::Clock* clock, const Uint8* keyState);
 
     void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                          hatcher::ComponentManager* componentManager,
