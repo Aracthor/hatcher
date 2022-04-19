@@ -19,7 +19,7 @@ ObstacleRenderUpdater::~ObstacleRenderUpdater() = default;
 
 void ObstacleRenderUpdater::Update(const hatcher::ComponentManager* componentManager,
                                    hatcher::ComponentManager* renderComponentManager,
-                                   const hatcher::Clock& clock,
+                                   const hatcher::IRendering& rendering,
                                    hatcher::IFrameRenderer& frameRenderer)
 {
     const hatcher::span<const std::optional<Obstacle2DComponent>> obstacleComponents =

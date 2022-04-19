@@ -31,7 +31,7 @@ void Rendering::UpdateWorldRendering(World* world)
     m_frameRenderer = std::make_unique<FrameRenderer>();
 
     m_clock->Update();
-    world->UpdateRendering(*m_frameRenderer, *this, *m_clock);
+    world->UpdateRendering(*m_frameRenderer, *this);
 }
 
 void Rendering::RenderWorld()

@@ -46,8 +46,7 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering,
-                            const Clock& clock)
+void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering)
 {
     if (m_eventUpdater)
     {
@@ -59,7 +58,7 @@ void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& ren
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
         renderUpdater->Update(m_entityManager->GetComponentManager(),
-                              m_entityManager->GetRenderingComponentManager(), clock,
+                              m_entityManager->GetRenderingComponentManager(), rendering,
                               frameRenderer);
     }
 }

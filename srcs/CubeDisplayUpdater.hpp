@@ -18,7 +18,8 @@ public:
     ~CubeDisplayUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,
-                hatcher::ComponentManager* renderComponentManager, const hatcher::Clock& clock,
+                hatcher::ComponentManager* renderComponentManager,
+                const hatcher::IRendering& rendering,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
