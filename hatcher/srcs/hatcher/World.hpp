@@ -10,6 +10,7 @@ class AbstractEventUpdater;
 class Clock;
 class EntityManager;
 class IFrameRenderer;
+class IRendering;
 class RenderUpdater;
 class Updater;
 
@@ -26,7 +27,8 @@ public:
     void SetEventUpdater(AbstractEventUpdater* updater);
 
     void Update();
-    void UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock);
+    void UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering,
+                         const Clock& clock);
 
 private:
     std::string m_name;

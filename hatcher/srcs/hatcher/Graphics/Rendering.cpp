@@ -20,13 +20,18 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
 
 Rendering::~Rendering() = default;
 
+glm::ivec2 Rendering::Resolution() const
+{
+    return {m_window->Width(), m_window->Height()};
+}
+
 void Rendering::UpdateWorldRendering(World* world)
 {
     // TODO clear instead ?
     m_frameRenderer = std::make_unique<FrameRenderer>();
 
     m_clock->Update();
-    world->UpdateRendering(*m_frameRenderer, *m_clock);
+    world->UpdateRendering(*m_frameRenderer, *this, *m_clock);
 }
 
 void Rendering::RenderWorld()

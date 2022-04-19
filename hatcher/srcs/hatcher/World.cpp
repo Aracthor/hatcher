@@ -46,13 +46,14 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IFrameRenderer& frameRenderer, const Clock& clock)
+void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering,
+                            const Clock& clock)
 {
     if (m_eventUpdater)
     {
         m_eventUpdater->PollEvents();
         m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(), clock,
-                               frameRenderer);
+                               frameRenderer, rendering);
     }
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)

@@ -13,10 +13,11 @@ void AbstractEventUpdater::PollEvents()
 }
 
 void AbstractEventUpdater::Update(IEntityManager* entityManager, ComponentManager* componentManager,
-                                  const Clock& clock, IFrameRenderer& frameRenderer)
+                                  const Clock& clock, IFrameRenderer& frameRenderer,
+                                  const IRendering& rendering)
 {
     span<const SDL_Event> events(m_queuedEvents);
-    HandleEvents(events, entityManager, componentManager, clock, frameRenderer);
+    HandleEvents(events, entityManager, componentManager, clock, frameRenderer, rendering);
     m_queuedEvents.clear();
 }
 

@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "hatcher/glm_pure.hpp"
+
 namespace hatcher
 {
 class MeshBuilder;
@@ -14,6 +16,8 @@ public:
 
     virtual void UpdateWorldRendering(World* parWorld) = 0;
     virtual void RenderWorld() = 0;
+
+    virtual glm::ivec2 Resolution() const = 0;
 
     virtual const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const = 0;
 };

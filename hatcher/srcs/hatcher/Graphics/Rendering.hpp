@@ -21,6 +21,8 @@ public:
     void UpdateWorldRendering(World* parWorld) override;
     void RenderWorld() override;
 
+    glm::ivec2 Resolution() const override;
+
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }
 
 private:

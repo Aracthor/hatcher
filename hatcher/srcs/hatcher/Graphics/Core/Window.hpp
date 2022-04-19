@@ -17,6 +17,9 @@ public:
     void Clear();
     void Refresh();
 
+    int Width() const { return m_width; }
+    int Height() const { return m_height; }
+
     SDL_Window* window() { return m_window; }
 
 private:

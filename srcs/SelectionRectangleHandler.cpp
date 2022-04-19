@@ -1,13 +1,13 @@
 #include "SelectionRectangleHandler.hpp"
 
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/assert.hpp"
 
 SelectionRectangleHandler::SelectionRectangleHandler(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder, const glm::vec2& windowResolution)
-    : m_windowResolution(windowResolution)
+    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
 {
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
@@ -51,17 +51,19 @@ void SelectionRectangleHandler::EndSelection()
     m_isSelecting = false;
 }
 
-void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const
+void SelectionRectangleHandler::DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer,
+                                                       const hatcher::IRendering& rendering) const
 {
     if (IsSelecting())
     {
+        const glm::ivec2 resolution = rendering.Resolution();
         const glm::vec2 rectangleSize = m_currentRectangle.Extents();
         const glm::vec2 rectangleCenter = m_currentRectangle.Center();
 
-        const glm::vec3 position = {-1.f + (rectangleCenter.x / m_windowResolution.x) * 2.f,
-                                    -1.f + (rectangleCenter.y / m_windowResolution.y) * 2.f, 0.f};
-        const glm::vec3 scale = {rectangleSize.x / m_windowResolution.x,
-                                 rectangleSize.y / m_windowResolution.y, 0.f};
+        const glm::vec3 position = {-1.f + (rectangleCenter.x / resolution.x) * 2.f,
+                                    -1.f + (rectangleCenter.y / resolution.y) * 2.f, 0.f};
+        const glm::vec3 scale = {rectangleSize.x / resolution.x, rectangleSize.y / resolution.y,
+                                 0.f};
 
         glm::mat4 modelMatrix = glm::mat4(1.f);
         modelMatrix = glm::translate(modelMatrix, position);

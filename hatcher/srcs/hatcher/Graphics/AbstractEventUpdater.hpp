@@ -12,6 +12,7 @@ class Clock;
 class ComponentManager;
 class IEntityManager;
 class IFrameRenderer;
+class IRendering;
 
 class AbstractEventUpdater
 {
@@ -21,12 +22,12 @@ public:
     void PollEvents();
 
     void Update(IEntityManager* entityManager, ComponentManager* componentManager,
-                const Clock& clock, IFrameRenderer& frameRenderer);
+                const Clock& clock, IFrameRenderer& frameRenderer, const IRendering& rendering);
 
 private:
     virtual void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
                               ComponentManager* componentManager, const Clock& clock,
-                              IFrameRenderer& frameRenderer) = 0;
+                              IFrameRenderer& frameRenderer, const IRendering& rendering) = 0;
 
     std::vector<SDL_Event> m_queuedEvents;
 };
