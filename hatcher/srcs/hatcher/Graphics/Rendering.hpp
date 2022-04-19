@@ -18,8 +18,8 @@ public:
     Rendering(const char* name, int windowWidth, int windowHeight);
     ~Rendering();
 
-    void UpdateWorldRendering(World* parWorld) override;
-    void RenderWorld() override;
+    void UpdateWorldRendering(World* parWorld);
+    void RenderWorld();
 
     glm::ivec2 Resolution() const override;
 

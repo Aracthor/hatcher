@@ -64,6 +64,11 @@ void GameApplication::StartRendering(const char* name, int windowWidth, int wind
     m_rendering = std::make_unique<Rendering>(name, windowWidth, windowHeight);
 }
 
+const IRendering* GameApplication::GetRendering() const
+{
+    return m_rendering.get();
+}
+
 void GameApplication::Update()
 {
     m_watchedWorld->Update();
