@@ -35,6 +35,19 @@ glm::vec2 Rendering::WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
             (projectedVertex.y + 1.f) / 2.f * resolution.y};
 }
 
+hatcher::Box2f Rendering::ProjectBox3DToWindowCoords(const hatcher::Box3f& box,
+                                                     const glm::mat4& modelMatrix) const
+{
+    hatcher::Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
+    std::array<glm::vec3, 8> corners = box.GetCorners();
+
+    for (const glm::vec3& corner : corners)
+    {
+        result.AddPoint(WorldCoordsToWindowCoords(corner, modelMatrix));
+    }
+    return result;
+}
+
 glm::vec3 Rendering::WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const
 {
     const glm::ivec2 resolution = Resolution();

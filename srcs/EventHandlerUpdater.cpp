@@ -159,7 +159,7 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
                 const glm::mat4 modelMatrix =
                     glm::translate(glm::vec3(positionComponent->position, 0.f));
                 const hatcher::Box2f selectionBox =
-                    ProjectBox3DToScreenSpace(selectableComponent->box, modelMatrix, rendering);
+                    rendering.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
                 selectableComponent->selected = selectionRectangle.Touches(selectionBox);
             }
         }
@@ -246,21 +246,6 @@ glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix(const hatcher::IRenderi
     const float zNear = 0.1f;
     const float zFar = 1000.f;
     return glm::ortho(left, right, bottom, top, zNear, zFar);
-}
-
-hatcher::Box2f
-EventHandlerUpdater::ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
-                                               const glm::mat4& modelMatrix,
-                                               const hatcher::IRendering& rendering) const
-{
-    hatcher::Box2f result = rendering.WorldCoordsToWindowCoords(box.Min(), modelMatrix);
-    std::array<glm::vec3, 8> corners = box.GetCorners();
-
-    for (const glm::vec3& corner : corners)
-    {
-        result.AddPoint(rendering.WorldCoordsToWindowCoords(corner, modelMatrix));
-    }
-    return result;
 }
 
 glm::vec2 EventHandlerUpdater::MouseCoordsToWorldCoords(int x, int y,

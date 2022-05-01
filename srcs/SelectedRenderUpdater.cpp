@@ -2,6 +2,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 
@@ -47,14 +48,22 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
         const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
         if (selectableComponent && selectableComponent->selected)
         {
-            HATCHER_ASSERT(positionComponent);
-            const hatcher::Box2f box = {glm::vec2(selectableComponent->box.Min()),
-                                        glm::vec2(selectableComponent->box.Max())};
-            glm::mat4 modelMatrix =
-                glm::inverse(glm::ortho(box.Min().x, box.Max().x, box.Min().y, box.Max().y));
-            modelMatrix[3][0] += positionComponent->position.x;
-            modelMatrix[3][1] += positionComponent->position.y;
-            frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
+            const glm::mat4 modelMatrix =
+                glm::translate(glm::vec3(positionComponent->position, 0.f));
+            const hatcher::Box2f selectionBox =
+                rendering.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
+
+            const glm::vec2 rectangleCenter = selectionBox.Center();
+            const glm::vec2 rectangleSize = selectionBox.Extents();
+
+            const glm::vec3 position = {rectangleCenter.x, rectangleCenter.y, 0.f};
+            const glm::vec3 scale = {rectangleSize.x / 2.f, rectangleSize.y / 2.f, 0.f};
+
+            glm::mat4 selectedModelMatrix = glm::mat4(1.f);
+            selectedModelMatrix = glm::translate(selectedModelMatrix, position);
+            selectedModelMatrix = glm::scale(selectedModelMatrix, scale);
+
+            frameRenderer.AddUIMeshToRender(m_mesh.get(), selectedModelMatrix);
         }
     }
 }

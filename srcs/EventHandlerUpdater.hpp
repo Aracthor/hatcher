@@ -56,10 +56,6 @@ private:
 
     glm::mat4 CalculateProjectionMatrix(const hatcher::IRendering& rendering);
 
-    hatcher::Box2f ProjectBox3DToScreenSpace(const hatcher::Box3f& box,
-                                             const glm::mat4& modelMatrix,
-                                             const hatcher::IRendering& rendering) const;
-
     glm::vec2 MouseCoordsToWorldCoords(int x, int y, const hatcher::IRendering& rendering) const;
 
     hatcher::GameApplication* m_application;
