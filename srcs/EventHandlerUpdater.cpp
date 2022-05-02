@@ -18,7 +18,7 @@
 #include "hatcher/assert.hpp"
 
 EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
-                                         const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+                                         const hatcher::IRendering* rendering)
     : m_application(application)
 {
     m_eventFunctions[SDL_QUIT] = &EventHandlerUpdater::HandleQuitEvent;
@@ -28,8 +28,8 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
     m_eventFunctions[SDL_MOUSEBUTTONDOWN] = &EventHandlerUpdater::HandleMouseButtonDownEvent;
     m_eventFunctions[SDL_KEYDOWN] = &EventHandlerUpdater::HandleKeyDownEvent;
 
-    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(meshBuilder);
-    m_gridDisplay = std::make_unique<GridDisplay>(meshBuilder);
+    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(rendering);
+    m_gridDisplay = std::make_unique<GridDisplay>(rendering);
 }
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;

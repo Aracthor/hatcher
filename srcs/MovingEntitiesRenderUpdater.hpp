@@ -9,14 +9,14 @@ namespace hatcher
 class Clock;
 class ComponentManager;
 class IFrameRenderer;
+class IRendering;
 class Mesh;
-class MeshBuilder;
 } // namespace hatcher
 
 class MovingEntitiesRenderUpdater final : public hatcher::RenderUpdater
 {
 public:
-    MovingEntitiesRenderUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    MovingEntitiesRenderUpdater(const hatcher::IRendering* rendering);
     ~MovingEntitiesRenderUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,

@@ -23,7 +23,7 @@ class EventHandlerUpdater final : public hatcher::AbstractEventUpdater
 {
 public:
     EventHandlerUpdater(hatcher::GameApplication* application,
-                        const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+                        const hatcher::IRendering* rendering);
     ~EventHandlerUpdater();
 
     void HandleEvents(const hatcher::span<const SDL_Event>& events,

@@ -3,18 +3,19 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 
-SelectedRenderUpdater::SelectedRenderUpdater(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+SelectedRenderUpdater::SelectedRenderUpdater(const hatcher::IRendering* rendering)
 {
+    hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/selection.vert", "shaders/selection.frag"));
+    meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
+        "shaders/selection.vert", "shaders/selection.frag"));
     m_mesh.reset(meshBuilder->Create());
 
     float positions[] = {

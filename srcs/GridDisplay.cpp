@@ -1,18 +1,21 @@
 #include "GridDisplay.hpp"
 
 #include "hatcher/Graphics/FrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 
 #include <vector>
 
-GridDisplay::GridDisplay(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+GridDisplay::GridDisplay(const hatcher::IRendering* rendering)
 {
+    hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    std::shared_ptr<hatcher::Material> material =
-        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+    std::shared_ptr<hatcher::Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+        "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
     material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
     meshBuilder->SetMaterial(material);
     m_gridMesh.reset(meshBuilder->Create());

@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class Material;
 class Mesh;
 class MeshBuilder;
 class World;
@@ -15,7 +16,7 @@ struct Obstacle2DComponent;
 class ObstacleRenderUpdater final : public hatcher::RenderUpdater
 {
 public:
-    ObstacleRenderUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    ObstacleRenderUpdater(const hatcher::IRendering* rendering);
     ~ObstacleRenderUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,
@@ -28,4 +29,5 @@ private:
     CreateMeshFromObstacle(const Obstacle2DComponent& obstacleComponent);
 
     const std::unique_ptr<hatcher::MeshBuilder>& m_meshBuilder;
+    std::shared_ptr<hatcher::Material> m_material;
 };

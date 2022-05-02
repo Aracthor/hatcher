@@ -6,6 +6,7 @@
 
 #include "Clock.hpp"
 #include "FrameRenderer.hpp"
+#include "MaterialFactory.hpp"
 #include "MeshBuilder.hpp"
 
 namespace hatcher
@@ -14,6 +15,7 @@ namespace hatcher
 Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
 {
     m_clock = std::make_unique<Clock>();
+    m_materialFactory = std::make_unique<MaterialFactory>();
     m_meshBuilder = std::make_unique<MeshBuilder>();
     m_window = std::make_unique<Window>(name, windowWidth, windowHeight);
 }

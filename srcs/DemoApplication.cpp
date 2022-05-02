@@ -50,11 +50,11 @@ DemoApplication::DemoApplication()
     StartRendering("hatcher - demo", 800, 600);
 
     world->AddUpdater(new MovingEntitiesUpdater());
-    world->AddRenderUpdater(new CubeDisplayUpdater(GetRendering()->GetMeshBuilder()));
-    world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()->GetMeshBuilder()));
-    world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()->GetMeshBuilder()));
-    world->AddRenderUpdater(new SelectedRenderUpdater(GetRendering()->GetMeshBuilder()));
-    world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()->GetMeshBuilder()));
+    world->AddRenderUpdater(new CubeDisplayUpdater(GetRendering()));
+    world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()));
+    world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()));
+    world->AddRenderUpdater(new SelectedRenderUpdater(GetRendering()));
+    world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()));
 
     SetWatchedWorld(world);
 }

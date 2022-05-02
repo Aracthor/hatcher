@@ -2,17 +2,18 @@
 
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/assert.hpp"
 
-SelectionRectangleHandler::SelectionRectangleHandler(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+SelectionRectangleHandler::SelectionRectangleHandler(const hatcher::IRendering* rendering)
 {
+    hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
 
-    meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
+    meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
+        "shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
     m_selectionRectangleMesh.reset(meshBuilder->Create());
 
     float positions[] = {

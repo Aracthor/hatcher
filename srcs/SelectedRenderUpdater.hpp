@@ -8,6 +8,7 @@
 
 namespace hatcher
 {
+class IRendering;
 class Mesh;
 class MeshBuilder;
 class World;
@@ -16,7 +17,7 @@ class World;
 class SelectedRenderUpdater final : public hatcher::RenderUpdater
 {
 public:
-    SelectedRenderUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    SelectedRenderUpdater(const hatcher::IRendering* rendering);
     ~SelectedRenderUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,

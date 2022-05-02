@@ -6,8 +6,8 @@
 
 namespace hatcher
 {
+class IRendering;
 class Mesh;
-class MeshBuilder;
 class Texture;
 class World;
 } // namespace hatcher
@@ -15,7 +15,7 @@ class World;
 class CubeDisplayUpdater final : public hatcher::RenderUpdater
 {
 public:
-    CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    CubeDisplayUpdater(const hatcher::IRendering* rendering);
     ~CubeDisplayUpdater();
 
     void Update(const hatcher::ComponentManager* componentManager,

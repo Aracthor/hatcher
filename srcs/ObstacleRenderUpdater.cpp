@@ -2,6 +2,9 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
+#include "hatcher/Graphics/Material.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -9,9 +12,10 @@
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
 
-ObstacleRenderUpdater::ObstacleRenderUpdater(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
-    : m_meshBuilder(meshBuilder)
+ObstacleRenderUpdater::ObstacleRenderUpdater(const hatcher::IRendering* rendering)
+    : m_meshBuilder(rendering->GetMeshBuilder())
+    , m_material(rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert",
+                                                                 "shaders/hello_world.frag"))
 {
 }
 
@@ -49,8 +53,7 @@ ObstacleRenderUpdater::CreateMeshFromObstacle(const Obstacle2DComponent& obstacl
     std::shared_ptr<hatcher::Mesh> result;
 
     m_meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    m_meshBuilder->SetMaterial(
-        m_meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
+    m_meshBuilder->SetMaterial(m_material);
     result.reset(m_meshBuilder->Create());
 
     auto obstacleCorners = obstacleComponent.corners;

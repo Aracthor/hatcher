@@ -7,14 +7,14 @@
 namespace hatcher
 {
 class IFrameRenderer;
+class IRendering;
 class Mesh;
-class MeshBuilder;
 } // namespace hatcher
 
 class SelectionRectangleHandler
 {
 public:
-    SelectionRectangleHandler(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    SelectionRectangleHandler(const hatcher::IRendering* rendering);
     ~SelectionRectangleHandler();
 
     void StartSelection(const glm::vec2& position);

@@ -5,14 +5,14 @@
 namespace hatcher
 {
 class IFrameRenderer;
+class IRendering;
 class Mesh;
-class MeshBuilder;
 } // namespace hatcher
 
 class GridDisplay
 {
 public:
-    GridDisplay(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder);
+    GridDisplay(const hatcher::IRendering* rendering);
     ~GridDisplay();
 
     bool Enabled() const { return m_enabled; }

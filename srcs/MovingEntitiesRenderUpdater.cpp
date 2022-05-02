@@ -10,13 +10,14 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/assert.hpp"
 #include "hatcher/glm_pure.hpp"
 
-MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
-    const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(const hatcher::IRendering* rendering)
 {
     const int circleVertexCount = 20;
     std::vector<float> positions;
@@ -43,9 +44,11 @@ MovingEntitiesRenderUpdater::MovingEntitiesRenderUpdater(
     indices.push_back(circleVertexCount);
     indices.push_back(circleVertexCount + 1);
 
+    hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
+
     meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
-    meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
+    meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
+        "shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
 
     m_mesh.reset(meshBuilder->Create());
     m_mesh->Set2DPositions(positions.data(), std::size(positions));

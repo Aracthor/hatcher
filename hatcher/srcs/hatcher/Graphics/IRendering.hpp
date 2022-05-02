@@ -8,6 +8,7 @@
 namespace hatcher
 {
 class Clock;
+class MaterialFactory;
 class MeshBuilder;
 class World;
 
@@ -26,6 +27,7 @@ public:
 
     virtual glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const = 0;
 
+    virtual const std::unique_ptr<MaterialFactory>& GetMaterialFactory() const = 0;
     virtual const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const = 0;
 };
 

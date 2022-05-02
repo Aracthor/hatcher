@@ -1,6 +1,5 @@
 #include "MeshBuilder.hpp"
 
-#include "Core/ShaderProgram.hpp"
 #include "hatcher/assert.hpp"
 
 #include "Material.hpp"
@@ -8,20 +7,6 @@
 
 namespace hatcher
 {
-
-std::shared_ptr<Material> MeshBuilder::CreateMaterial(const std::string& vertexShaderFileName,
-                                                      const std::string& fragmentShaderFileName)
-{
-    ProgramKey key = ProgramKey(vertexShaderFileName, fragmentShaderFileName);
-
-    if (m_shaderProgramLibrary.find(key) == m_shaderProgramLibrary.end())
-    {
-        m_shaderProgramLibrary[key] = std::make_shared<ShaderProgram>(
-            vertexShaderFileName.data(), fragmentShaderFileName.data());
-    }
-    HATCHER_ASSERT(m_shaderProgramLibrary.find(key) != m_shaderProgramLibrary.end());
-    return std::make_unique<Material>(m_shaderProgramLibrary[key]);
-}
 
 void MeshBuilder::SetPrimitive(Primitive::Type primitive)
 {

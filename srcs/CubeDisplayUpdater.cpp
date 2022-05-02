@@ -2,7 +2,9 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
+#include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
+#include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/Texture.hpp"
@@ -10,7 +12,7 @@
 
 #include "Position2DComponent.hpp"
 
-CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilder>& meshBuilder)
+CubeDisplayUpdater::CubeDisplayUpdater(const hatcher::IRendering* rendering)
 {
     // clang-format off
     float points[] =
@@ -98,15 +100,15 @@ CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilde
         20,23,22,
     };
     // clang-format on
-    meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
-    std::shared_ptr<hatcher::Material> material =
-        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
+    rendering->GetMeshBuilder()->SetPrimitive(hatcher::Primitive::Triangles);
+    std::shared_ptr<hatcher::Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+        "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
     m_texture = std::make_shared<hatcher::Texture>();
     material->AddTexture("diffuseTexture", m_texture);
-    meshBuilder->SetMaterial(material);
+    rendering->GetMeshBuilder()->SetMaterial(material);
 
-    m_mesh.reset(meshBuilder->Create());
+    m_mesh.reset(rendering->GetMeshBuilder()->Create());
     m_mesh->Set3DPositions(points, std::size(points));
     m_mesh->SetTextureCoords(textureCoords, std::size(textureCoords));
     m_mesh->SetIndices(indices, std::size(indices));
