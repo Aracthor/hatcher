@@ -8,7 +8,7 @@ namespace hatcher
 class Texture
 {
 public:
-    Texture();
+    Texture(const char* fileName);
     ~Texture();
 
     void Bind() const;

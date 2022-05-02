@@ -104,7 +104,7 @@ CubeDisplayUpdater::CubeDisplayUpdater(const hatcher::IRendering* rendering)
     std::shared_ptr<hatcher::Material> material = rendering->GetMaterialFactory()->CreateMaterial(
         "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
-    m_texture = std::make_shared<hatcher::Texture>();
+    m_texture = rendering->GetMaterialFactory()->TextureFromFile("textures/dirt.bmp");
     material->AddTexture("diffuseTexture", m_texture);
     rendering->GetMeshBuilder()->SetMaterial(material);
 

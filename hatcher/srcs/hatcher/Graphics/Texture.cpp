@@ -1,36 +1,51 @@
 #include "Texture.hpp"
 
+#include <iostream>
+
+#include <SDL2/SDL_surface.h>
+
 #include "hatcher/Graphics/Core/gl.hpp"
 
 namespace hatcher
 {
 
-Texture::Texture()
+Texture::Texture(const char* fileName)
 {
-    // clang-format off
-    GLubyte pixels[9 * 4] = {
-        18,  140, 171, 255,
-        143, 143, 143, 255,
-        255, 255, 255, 255,
+    SDL_Surface* surface = SDL_LoadBMP(fileName);
+    if (surface == nullptr)
+    {
+        std::cerr << "Cannot load texture file '" << fileName << "': " << SDL_GetError()
+                  << std::endl;
+        std::terminate();
+    }
 
-        255, 255, 0,   255,
-        0,   255, 255, 255,
-        255, 0,   255, 255,
+    // Must convert to RGBA : WebGL doesn't support BGR or BGRA formats...
+    SDL_PixelFormat* pixelFormat = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA32);
+    SDL_Surface* convertedSurface = SDL_ConvertSurface(surface, pixelFormat, 0);
+    SDL_FreeSurface(surface);
+    SDL_FreeFormat(pixelFormat);
+    if (convertedSurface == nullptr)
+    {
+        std::cerr << "Error converting surface: " << SDL_GetError() << std::endl;
+        std::terminate();
+    }
 
-        255, 0,   0,   255,
-        0,   255, 0,   255,
-        0,   0,   255, 255,
-    };
-    // clang-format on
+    const GLubyte* bytes = static_cast<const GLubyte*>(convertedSurface->pixels);
+    const int width = convertedSurface->w;
+    const int height = convertedSurface->h;
+    const GLenum format = GL_RGBA;
 
     GL_CHECK(glGenTextures(1, &m_textureID));
     Bind();
-    GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 3, 3, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels));
+    GL_CHECK(
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes));
 
     // Set the filtering mode.
     GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
     GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
     Unbind();
+
+    SDL_FreeSurface(convertedSurface);
 }
 
 Texture::~Texture()
