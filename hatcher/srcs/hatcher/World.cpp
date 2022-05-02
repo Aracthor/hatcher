@@ -52,14 +52,13 @@ void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& ren
     {
         m_eventUpdater->PollEvents();
         m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(),
-                               frameRenderer, rendering);
+                               frameRenderer);
     }
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
         renderUpdater->Update(m_entityManager->GetComponentManager(),
-                              m_entityManager->GetRenderingComponentManager(), rendering,
-                              frameRenderer);
+                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 }
 

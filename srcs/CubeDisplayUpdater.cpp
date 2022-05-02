@@ -118,7 +118,6 @@ CubeDisplayUpdater::~CubeDisplayUpdater() = default;
 
 void CubeDisplayUpdater::Update(const hatcher::ComponentManager* componentManager,
                                 hatcher::ComponentManager* renderComponentManager,
-                                const hatcher::IRendering& rendering,
                                 hatcher::IFrameRenderer& frameRenderer)
 {
     glm::mat4 modelMatrix = glm::mat4(1.f);

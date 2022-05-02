@@ -37,8 +37,7 @@ EventHandlerUpdater::~EventHandlerUpdater() = default;
 void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& events,
                                        hatcher::IEntityManager* entityManager,
                                        hatcher::ComponentManager* componentManager,
-                                       hatcher::IFrameRenderer& frameRenderer,
-                                       const hatcher::IRendering& rendering)
+                                       hatcher::IFrameRenderer& frameRenderer)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 

@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class IRendering;
 class Material;
 class Mesh;
 class MeshBuilder;
@@ -21,7 +22,6 @@ public:
 
     void Update(const hatcher::ComponentManager* componentManager,
                 hatcher::ComponentManager* renderComponentManager,
-                const hatcher::IRendering& rendering,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:

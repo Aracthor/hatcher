@@ -59,7 +59,6 @@ MovingEntitiesRenderUpdater::~MovingEntitiesRenderUpdater() = default;
 
 void MovingEntitiesRenderUpdater::Update(const hatcher::ComponentManager* componentManager,
                                          hatcher::ComponentManager* renderComponentManager,
-                                         const hatcher::IRendering& rendering,
                                          hatcher::IFrameRenderer& frameRenderer)
 {
     const hatcher::span<const std::optional<Position2DComponent>> positions =

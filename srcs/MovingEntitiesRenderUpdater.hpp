@@ -21,7 +21,6 @@ public:
 
     void Update(const hatcher::ComponentManager* componentManager,
                 hatcher::ComponentManager* renderComponentManager,
-                const hatcher::IRendering& rendering,
                 hatcher::IFrameRenderer& frameRenderer) override;
 
 private:
