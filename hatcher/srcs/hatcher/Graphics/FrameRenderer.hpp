@@ -12,6 +12,9 @@ namespace hatcher
 class FrameRenderer : public IFrameRenderer
 {
 public:
+    FrameRenderer(const glm::vec2& resolution);
+    ~FrameRenderer();
+
     void AddMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix) override;
     void AddUIMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix) override;
     void SetProjectionMatrix(const glm::mat4& matrix) override;
@@ -20,7 +23,7 @@ public:
     const glm::mat4& ProjectionMatrix() const { return m_projectionMatrix; }
     const glm::mat4& ViewMatrix() const { return m_viewMatrix; }
 
-    void Render(const glm::vec2& resolution) const;
+    void Render() const;
 
 private:
     struct MeshToRender
@@ -28,6 +31,8 @@ private:
         const Mesh* mesh;
         glm::mat4 modelMatrix;
     };
+
+    const glm::vec2 m_resolution;
 
     std::vector<MeshToRender> m_meshesToRender;
     std::vector<MeshToRender> m_UImeshesToRender;

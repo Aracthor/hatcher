@@ -62,7 +62,7 @@ glm::vec3 Rendering::WindowCoordsToWorldCoords(const glm::vec2 windowCoords) con
 void Rendering::UpdateWorldRendering(World* world)
 {
     // TODO clear instead ?
-    m_frameRenderer = std::make_unique<FrameRenderer>();
+    m_frameRenderer = std::make_unique<FrameRenderer>(Resolution());
 
     m_clock->Update();
     world->UpdateRendering(*m_frameRenderer, *this);
@@ -74,7 +74,7 @@ void Rendering::UpdateWorldRendering(World* world)
 void Rendering::RenderWorld()
 {
     m_window->Clear();
-    m_frameRenderer->Render(Resolution());
+    m_frameRenderer->Render();
     m_window->Refresh();
 }
 
