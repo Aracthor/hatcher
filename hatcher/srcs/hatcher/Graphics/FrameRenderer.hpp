@@ -12,7 +12,7 @@ namespace hatcher
 class FrameRenderer : public IFrameRenderer
 {
 public:
-    FrameRenderer(const glm::vec2& resolution);
+    FrameRenderer(const Clock* clock, const glm::vec2& resolution);
     ~FrameRenderer();
 
     void AddMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix) override;
@@ -20,6 +20,7 @@ public:
     void SetProjectionMatrix(const glm::mat4& matrix) override;
     void SetViewMatrix(const glm::mat4& matrix) override;
 
+    const Clock* GetClock() const override { return m_clock; }
     glm::ivec2 Resolution() const override { return m_resolution; }
     glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
                                         const glm::mat4& modelMatrix) const override;
@@ -39,6 +40,7 @@ private:
         glm::mat4 modelMatrix;
     };
 
+    const Clock* m_clock;
     const glm::vec2 m_resolution;
 
     std::vector<MeshToRender> m_meshesToRender;

@@ -30,7 +30,7 @@ glm::ivec2 Rendering::Resolution() const
 void Rendering::UpdateWorldRendering(World* world)
 {
     // TODO clear instead ?
-    m_frameRenderer = std::make_unique<FrameRenderer>(Resolution());
+    m_frameRenderer = std::make_unique<FrameRenderer>(m_clock.get(), Resolution());
 
     m_clock->Update();
     world->UpdateRendering(*m_frameRenderer, *this);

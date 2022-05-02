@@ -23,8 +23,6 @@ public:
     void UpdateWorldRendering(World* parWorld);
     void RenderWorld();
 
-    const Clock* GetClock() const override { return m_clock.get(); }
-
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }
     const std::unique_ptr<MaterialFactory>& GetMaterialFactory() const override
     {

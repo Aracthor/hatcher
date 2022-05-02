@@ -5,8 +5,9 @@
 namespace hatcher
 {
 
-FrameRenderer::FrameRenderer(const glm::vec2& resolution)
-    : m_resolution(resolution)
+FrameRenderer::FrameRenderer(const Clock* clock, const glm::vec2& resolution)
+    : m_clock(clock)
+    , m_resolution(resolution)
 {
 }
 

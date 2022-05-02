@@ -42,7 +42,7 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
-    HandleCameraMotion(rendering.GetClock(), keyState);
+    HandleCameraMotion(frameRenderer.GetClock(), keyState);
 
     frameRenderer.SetProjectionMatrix(CalculateProjectionMatrix(frameRenderer));
 
