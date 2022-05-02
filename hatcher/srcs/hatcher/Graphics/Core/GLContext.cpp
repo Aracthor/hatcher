@@ -30,6 +30,7 @@ GLContext::GLContext(SDL_Window* window)
         std::cerr << "GLEW not initialized correctly" << std::endl;
 
     GL_CHECK(glEnable(GL_BLEND));
+    GL_CHECK(glEnable(GL_DEPTH_TEST));
     GL_CHECK(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 

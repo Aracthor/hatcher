@@ -34,7 +34,7 @@ void Window::Clear()
 {
     GL_CHECK(glViewport(0, 0, m_width, m_height));
     GL_CHECK(glClearColor(0.f, 0.f, 0.f, 1.f));
-    GL_CHECK(glClear(GL_COLOR_BUFFER_BIT));
+    GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 }
 
 void Window::Refresh()
