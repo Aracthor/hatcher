@@ -37,32 +37,33 @@ private:
 
     void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                          hatcher::ComponentManager* componentManager,
-                         const hatcher::IRendering& rendering);
+                         const hatcher::IFrameRenderer& frameRenderer);
     void HandleMouseWheelEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                hatcher::ComponentManager* componentManager,
-                               const hatcher::IRendering& rendering);
+                               const hatcher::IFrameRenderer& frameRenderer);
     void HandleMouseMotionEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                 hatcher::ComponentManager* componentManager,
-                                const hatcher::IRendering& rendering);
+                                const hatcher::IFrameRenderer& frameRenderer);
     void HandleMouseButtonUpEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                   hatcher::ComponentManager* componentManager,
-                                  const hatcher::IRendering& rendering);
+                                  const hatcher::IFrameRenderer& frameRenderer);
     void HandleMouseButtonDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                                     hatcher::ComponentManager* componentManager,
-                                    const hatcher::IRendering& rendering);
+                                    const hatcher::IFrameRenderer& frameRenderer);
     void HandleKeyDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
                             hatcher::ComponentManager* componentManager,
-                            const hatcher::IRendering& rendering);
+                            const hatcher::IFrameRenderer& frameRenderer);
 
-    glm::mat4 CalculateProjectionMatrix(const hatcher::IRendering& rendering);
+    glm::mat4 CalculateProjectionMatrix(const hatcher::IFrameRenderer& frameRenderer);
 
-    glm::vec2 MouseCoordsToWorldCoords(int x, int y, const hatcher::IRendering& rendering) const;
+    glm::vec2 MouseCoordsToWorldCoords(int x, int y,
+                                       const hatcher::IFrameRenderer& frameRenderer) const;
 
     hatcher::GameApplication* m_application;
 
     using EventHandlerFunction = void (EventHandlerUpdater::*)(
         const SDL_Event& event, hatcher::IEntityManager* entityManager,
-        hatcher::ComponentManager* componentManager, const hatcher::IRendering& rendering);
+        hatcher::ComponentManager* componentManager, const hatcher::IFrameRenderer& frameRenderer);
     std::unordered_map<uint, EventHandlerFunction> m_eventFunctions;
 
     glm::vec3 m_cameraPosition = glm::vec3(0.f, 0.f, 100.f);

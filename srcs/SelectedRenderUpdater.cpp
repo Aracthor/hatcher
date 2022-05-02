@@ -52,7 +52,7 @@ void SelectedRenderUpdater::Update(const hatcher::ComponentManager* componentMan
             const glm::mat4 modelMatrix =
                 glm::translate(glm::vec3(positionComponent->position, 0.f));
             const hatcher::Box2f selectionBox =
-                rendering.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
+                frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
 
             const glm::vec2 rectangleCenter = selectionBox.Center();
             const glm::vec2 rectangleSize = selectionBox.Extents();
