@@ -52,10 +52,12 @@ CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilde
     };
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
-    meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag"));
+    std::shared_ptr<hatcher::Material> material =
+        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
-    m_texture = std::make_unique<hatcher::Texture>();
+    m_texture = std::make_shared<hatcher::Texture>();
+    material->AddTexture("diffuseTexture", m_texture);
+    meshBuilder->SetMaterial(material);
 
     m_mesh.reset(meshBuilder->Create());
     m_mesh->Set3DPositions(points, std::size(points));

@@ -25,5 +25,5 @@ public:
 
 private:
     std::unique_ptr<hatcher::Mesh> m_mesh;
-    std::unique_ptr<hatcher::Texture> m_texture;
+    std::shared_ptr<hatcher::Texture> m_texture;
 };

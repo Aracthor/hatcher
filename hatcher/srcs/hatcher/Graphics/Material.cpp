@@ -1,6 +1,7 @@
 #include "Material.hpp"
 
 #include "Core/ShaderProgram.hpp"
+#include "Texture.hpp"
 #include "hatcher/assert.hpp"
 
 namespace hatcher
@@ -19,6 +20,10 @@ void Material::Use() const
     for (auto uniform : m_uniforms)
     {
         m_shaderProgram->SetVector4Uniform(uniform.first, glm::value_ptr(uniform.second));
+    }
+    for (auto texture : m_textures)
+    {
+        texture.second->Bind();
     }
 }
 
@@ -44,6 +49,12 @@ void Material::AddUniform(const char* name, const glm::vec4& value)
 {
     HATCHER_ASSERT(m_uniforms.find(name) == m_uniforms.end());
     m_uniforms[name] = value;
+}
+
+void Material::AddTexture(const char* name, const std::shared_ptr<const Texture>& texture)
+{
+    HATCHER_ASSERT(m_textures.find(name) == m_textures.end());
+    m_textures[name] = texture;
 }
 
 } // namespace hatcher

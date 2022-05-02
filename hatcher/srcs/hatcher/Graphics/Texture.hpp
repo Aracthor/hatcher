@@ -11,6 +11,9 @@ public:
     Texture();
     ~Texture();
 
+    void Bind() const;
+    void Unbind() const;
+
 private:
     GLuint m_textureID;
 };
