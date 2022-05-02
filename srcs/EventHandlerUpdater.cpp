@@ -57,11 +57,7 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
         }
     }
 
-    m_selectionHandler->DrawSelectionRectangle(frameRenderer);
-    m_gridDisplay->DrawGrid(frameRenderer, m_cameraTarget.x, m_cameraTarget.y);
-
-    m_projectionMatrix = CalculateProjectionMatrix(rendering);
-    frameRenderer.SetProjectionMatrix(m_projectionMatrix);
+    frameRenderer.SetProjectionMatrix(CalculateProjectionMatrix(rendering));
 
     if (keyState[SDL_SCANCODE_F])
     {
@@ -74,8 +70,10 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
         m_cameraUp = glm::vec3(0, 1, 0);
     }
     m_cameraPosition += m_cameraTarget;
-    m_viewMatrix = glm::lookAt(m_cameraPosition, m_cameraTarget, m_cameraUp);
-    frameRenderer.SetViewMatrix(m_viewMatrix);
+    frameRenderer.SetViewMatrix(glm::lookAt(m_cameraPosition, m_cameraTarget, m_cameraUp));
+
+    m_selectionHandler->DrawSelectionRectangle(frameRenderer);
+    m_gridDisplay->DrawGrid(frameRenderer, m_cameraTarget.x, m_cameraTarget.y);
 }
 
 void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock* clock, const Uint8* keyState)

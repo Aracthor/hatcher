@@ -68,8 +68,6 @@ private:
     glm::vec3 m_cameraPosition = glm::vec3(0.f, 0.f, 100.f);
     glm::vec3 m_cameraTarget = glm::vec3(0.f, 0.f, 0.f);
     glm::vec3 m_cameraUp = glm::vec3(0.f, 1.f, 0.f);
-    glm::mat4 m_projectionMatrix = glm::mat4(1.f);
-    glm::mat4 m_viewMatrix = glm::mat4(1.f);
 
     float m_pixelSize = 0.01f;
 
