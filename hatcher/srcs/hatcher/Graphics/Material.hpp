@@ -21,6 +21,7 @@ public:
                                    const glm::mat4& projectionMatrix) const;
 
     GLint PositionAttribLocation() const;
+    GLint TextureCoordsAttribLocation() const;
 
     void AddUniform(const char* name, const glm::vec4& value);
 

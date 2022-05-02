@@ -96,6 +96,7 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/Mesh.cpp 			\
 		Graphics/MeshBuilder.cpp		\
 		Graphics/Rendering.cpp 			\
+		Graphics/Texture.cpp 			\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 

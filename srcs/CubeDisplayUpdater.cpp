@@ -5,6 +5,7 @@
 #include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/MeshBuilder.hpp"
+#include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/glm_pure.hpp"
 
 #include "Position2DComponent.hpp"
@@ -22,6 +23,17 @@ CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilde
         -0.5f,  0.5f, 1.f,
          0.5f, -0.5f, 1.f,
         -0.5f, -0.5f, 1.f,
+    };
+    float textureCoords[] =
+    {
+         0.f, 0.f,
+         0.f, 1.f,
+         1.f, 1.f,
+         1.f, 0.f,
+         0.f, 0.f,
+         1.f, 0.f,
+         0.f, 1.f,
+         1.f, 1.f,
     };
     hatcher::ushort indices[] =
     {
@@ -41,10 +53,13 @@ CubeDisplayUpdater::CubeDisplayUpdater(const std::unique_ptr<hatcher::MeshBuilde
     // clang-format on
     meshBuilder->SetPrimitive(hatcher::Primitive::Triangles);
     meshBuilder->SetMaterial(
-        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_world.frag"));
+        meshBuilder->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag"));
+
+    m_texture = std::make_unique<hatcher::Texture>();
 
     m_mesh.reset(meshBuilder->Create());
     m_mesh->Set3DPositions(points, std::size(points));
+    m_mesh->SetTextureCoords(textureCoords, std::size(textureCoords));
     m_mesh->SetIndices(indices, std::size(indices));
 }
 

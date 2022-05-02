@@ -35,6 +35,11 @@ GLint Material::PositionAttribLocation() const
     return m_shaderProgram->GetAttribLocation("vertPosition");
 }
 
+GLint Material::TextureCoordsAttribLocation() const
+{
+    return m_shaderProgram->GetAttribLocation("vertTextureCoord");
+}
+
 void Material::AddUniform(const char* name, const glm::vec4& value)
 {
     HATCHER_ASSERT(m_uniforms.find(name) == m_uniforms.end());

@@ -31,6 +31,18 @@ void Mesh::Set3DPositions(float* positions, uint positionCount)
     SetPositions(positions, positionCount, 3);
 }
 
+void Mesh::SetTextureCoords(float* textureCoords, uint textureCoordsCount)
+{
+    m_VAO->Bind();
+
+    GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
+    m_textureCoordsVBO = std::make_unique<VertexBufferObject>();
+    m_textureCoordsVBO->SetData(textureCoords, textureCoordsCount, m_dynamic);
+    m_VAO->AttribVBO(*m_textureCoordsVBO, 2, textureCoordsAttribLocation);
+
+    m_VAO->Unbind();
+}
+
 void Mesh::SetIndices(ushort* elements, uint elementCount)
 {
     m_VAO->Bind();

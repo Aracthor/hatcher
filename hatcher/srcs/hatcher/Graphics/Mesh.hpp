@@ -21,6 +21,7 @@ public:
 
     void Set2DPositions(float* positions, uint positionCount);
     void Set3DPositions(float* positions, uint positionCount);
+    void SetTextureCoords(float* positions, uint positionCount);
     void SetIndices(ushort* elements, uint elementCount);
 
     void Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
@@ -31,6 +32,7 @@ private:
 
     std::unique_ptr<VertexArrayObject> m_VAO;
     std::unique_ptr<VertexBufferObject> m_positionVBO;
+    std::unique_ptr<VertexBufferObject> m_textureCoordsVBO;
     std::unique_ptr<VertexBufferObject> m_elementVBO;
     std::shared_ptr<const Material> m_material;
     bool m_dynamic;

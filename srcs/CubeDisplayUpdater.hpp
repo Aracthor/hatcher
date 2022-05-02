@@ -8,6 +8,7 @@ namespace hatcher
 {
 class Mesh;
 class MeshBuilder;
+class Texture;
 class World;
 } // namespace hatcher
 
@@ -24,4 +25,5 @@ public:
 
 private:
     std::unique_ptr<hatcher::Mesh> m_mesh;
+    std::unique_ptr<hatcher::Texture> m_texture;
 };
