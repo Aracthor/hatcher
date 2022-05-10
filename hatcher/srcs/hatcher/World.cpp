@@ -7,8 +7,6 @@
 #include "Graphics/AbstractEventUpdater.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
-#include <vector>
-
 namespace hatcher
 {
 
