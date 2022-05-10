@@ -55,8 +55,6 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()));
     world->AddRenderUpdater(new SelectedRenderUpdater(GetRendering()));
     world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()));
-
-    SetWatchedWorld(world);
 }
 
 DemoApplication::~DemoApplication() = default;

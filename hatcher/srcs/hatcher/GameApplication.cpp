@@ -42,13 +42,8 @@ int GameApplication::Run()
 
 std::shared_ptr<World> GameApplication::CreateNewWorld(const char* name)
 {
-    m_worlds.emplace_back(new World(name));
-    return m_worlds.back();
-}
-
-void GameApplication::SetWatchedWorld(std::shared_ptr<World> world)
-{
-    m_watchedWorld = world;
+    m_world = std::make_shared<World>(name);
+    return m_world;
 }
 
 void GameApplication::Stop()
@@ -71,16 +66,16 @@ const IRendering* GameApplication::GetRendering() const
 
 void GameApplication::Update()
 {
-    m_watchedWorld->Update();
-    if (m_watchedWorld && m_rendering)
+    m_world->Update();
+    if (m_rendering)
     {
-        m_rendering->UpdateWorldRendering(m_watchedWorld.get());
+        m_rendering->UpdateWorldRendering(m_world.get());
     }
 }
 
 void GameApplication::Render()
 {
-    if (m_watchedWorld && m_rendering)
+    if (m_rendering)
     {
         m_rendering->RenderWorld();
     }
