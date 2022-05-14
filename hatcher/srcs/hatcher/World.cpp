@@ -20,6 +20,12 @@ std::map<std::string, CreateUpdaterFunction*>& UpdaterCreators()
     static std::map<std::string, CreateUpdaterFunction*> updaterCreators;
     return updaterCreators;
 }
+
+std::map<std::string, CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
+{
+    static std::map<std::string, CreateRenderUpdaterFunction*> updaterCreators;
+    return updaterCreators;
+}
 } // namespace
 
 int RegisterUpdater(const char* name, CreateUpdaterFunction* createFunction)
@@ -31,6 +37,18 @@ int RegisterUpdater(const char* name, CreateUpdaterFunction* createFunction)
         std::abort();
     }
     updaterCreators[name] = createFunction;
+    return 0;
+}
+
+int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createFunction)
+{
+    auto& renderUpdaterCreators = RenderUpdaterCreators();
+    if (renderUpdaterCreators.find(name) != renderUpdaterCreators.end())
+    {
+        std::cerr << "RenderUpdater registered twice: " << name << std::endl;
+        std::abort();
+    }
+    renderUpdaterCreators[name] = createFunction;
     return 0;
 }
 
@@ -57,10 +75,15 @@ void World::AddUpdater(const char* name)
     m_updaters.emplace_back(updaterCreators[name]());
 }
 
-void World::AddRenderUpdater(RenderUpdater* updater)
+void World::AddRenderUpdater(const char* name, const IRendering* rendering)
 {
-    HATCHER_ASSERT(updater != nullptr);
-    m_renderUpdaters.emplace_back(updater);
+    auto& updaterCreators = RenderUpdaterCreators();
+    if (updaterCreators.find(name) == updaterCreators.end())
+    {
+        std::cerr << "Unkown render updater: " << name << std::endl;
+        std::abort();
+    }
+    m_renderUpdaters.emplace_back(RenderUpdaterCreators()[name](rendering));
 }
 
 void World::SetEventUpdater(AbstractEventUpdater* updater)

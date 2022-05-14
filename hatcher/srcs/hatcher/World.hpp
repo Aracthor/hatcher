@@ -22,7 +22,7 @@ public:
     EntityManager* GetEntityManager() { return m_entityManager.get(); }
 
     void AddUpdater(const char* name);
-    void AddRenderUpdater(RenderUpdater* updater);
+    void AddRenderUpdater(const char* name, const IRendering* rendering);
     void SetEventUpdater(AbstractEventUpdater* updater);
 
     void Update();
