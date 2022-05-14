@@ -21,7 +21,7 @@ public:
 
     EntityManager* GetEntityManager() { return m_entityManager.get(); }
 
-    void AddUpdater(Updater* updater);
+    void AddUpdater(const char* name);
     void AddRenderUpdater(RenderUpdater* updater);
     void SetEventUpdater(AbstractEventUpdater* updater);
 

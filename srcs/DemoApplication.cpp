@@ -13,7 +13,6 @@
 #include "EventHandlerUpdater.hpp"
 #include "Movement2DComponent.hpp"
 #include "MovingEntitiesRenderUpdater.hpp"
-#include "MovingEntitiesUpdater.hpp"
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
 #include "ObstacleRenderUpdater.hpp"
@@ -37,6 +36,8 @@ DemoApplication::DemoApplication()
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
 
+    world->AddUpdater("MovingEntities");
+
     hatcher::Entity obstacleEntity = entityManager->CreateNewEntity();
     Obstacle2DComponent obstacle2D{{
         glm::vec2(2.5f, 3.0f),
@@ -44,12 +45,10 @@ DemoApplication::DemoApplication()
         glm::vec2(1.5f, 1.0f),
         glm::vec2(3.5f, 1.0f),
     }};
-
     componentManager->AttachComponent<Obstacle2DComponent>(obstacleEntity, obstacle2D);
 
     StartRendering("hatcher - demo", 800, 600);
 
-    world->AddUpdater(new MovingEntitiesUpdater());
     world->AddRenderUpdater(new CubeDisplayUpdater(GetRendering()));
     world->AddRenderUpdater(new MovingEntitiesRenderUpdater(GetRendering()));
     world->AddRenderUpdater(new ObstacleRenderUpdater(GetRendering()));
