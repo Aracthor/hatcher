@@ -71,38 +71,40 @@ public:
         };
         float textureCoords[] =
         {
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+            24.f,  8.f,
+            16.f,  8.f,
+            16.f,  0.f,
+            24.f,  0.f,
 
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+            16.f,  8.f,
+             8.f,  8.f,
+             8.f,  0.f,
+            16.f,  0.f,
 
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+            16.f, 16.f,
+             8.f, 16.f,
+             8.f,  8.f,
+            16.f,  8.f,
 
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+             8.f, 16.f,
+             0.f, 16.f,
+             0.f,  8.f,
+             8.f,  8.f,
 
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+            32.f, 16.f,
+            24.f, 16.f,
+            24.f,  8.f,
+            32.f,  8.f,
 
-            0.f, 0.f,
-            0.f, 1.f,
-            1.f, 1.f,
-            1.f, 0.f,
+            24.f, 16.f,
+            16.f, 16.f,
+            16.f,  8.f,
+            24.f,  8.f,
         };
         // clang-format on
 
+        for (auto& textureCoord : textureCoords)
+            textureCoord /= 64.f;
         auto indices = MakeIndicesFromRectVertices<std::size(points)>();
 
         rendering->GetMeshBuilder()->SetPrimitive(hatcher::Primitive::Triangles);
@@ -110,7 +112,7 @@ public:
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_3D.vert",
                                                             "shaders/hello_texture.frag");
 
-        m_texture = rendering->GetMaterialFactory()->TextureFromFile("textures/dirt.bmp");
+        m_texture = rendering->GetMaterialFactory()->TextureFromFile("textures/skins/steve.bmp");
         material->AddTexture("diffuseTexture", m_texture);
         rendering->GetMeshBuilder()->SetMaterial(material);
 
