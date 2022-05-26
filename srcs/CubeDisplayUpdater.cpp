@@ -14,6 +14,23 @@
 namespace
 {
 
+template <std::size_t N>
+std::array<hatcher::ushort, N / 2 * 3> MakeIndicesFromRectVertices()
+{
+    int index = 0;
+    std::array<hatcher::ushort, N / 2 * 3> result;
+    for (std::size_t i = 0; i < N; i += 4)
+    {
+        result[index++] = i + 0;
+        result[index++] = i + 1;
+        result[index++] = i + 2;
+        result[index++] = i + 0;
+        result[index++] = i + 3;
+        result[index++] = i + 2;
+    }
+    return result;
+}
+
 class CubeDisplayUpdater final : public hatcher::RenderUpdater
 {
 public:
@@ -84,27 +101,10 @@ public:
         1.f, 1.f,
         1.f, 0.f,
     };
-    hatcher::ushort indices[] =
-    {
-        0, 1, 2,
-        0, 3, 2,
-
-        4, 5, 6,
-        4, 7, 6,
-
-        8, 9, 10,
-        8, 11,10,
-
-        12,13,14,
-        12,15,14,
-
-        16,17,18,
-        16,19,18,
-
-        20,21,22,
-        20,23,22,
-    };
         // clang-format on
+
+        auto indices = MakeIndicesFromRectVertices<std::size(points)>();
+
         rendering->GetMeshBuilder()->SetPrimitive(hatcher::Primitive::Triangles);
         std::shared_ptr<hatcher::Material> material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_3D.vert",
@@ -117,7 +117,7 @@ public:
         m_mesh.reset(rendering->GetMeshBuilder()->Create());
         m_mesh->Set3DPositions(points, std::size(points));
         m_mesh->SetTextureCoords(textureCoords, std::size(textureCoords));
-        m_mesh->SetIndices(indices, std::size(indices));
+        m_mesh->SetIndices(indices.data(), std::size(indices));
     }
 
     ~CubeDisplayUpdater() = default;
