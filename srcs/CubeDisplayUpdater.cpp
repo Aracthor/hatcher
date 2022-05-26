@@ -9,6 +9,7 @@
 #include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/glm_pure.hpp"
 
+#include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 
 namespace
@@ -128,15 +129,20 @@ public:
                 hatcher::ComponentManager* renderComponentManager,
                 hatcher::IFrameRenderer& frameRenderer) override
     {
-        glm::mat4 modelMatrix = glm::mat4(1.f);
+        const auto positionComponents = componentManager->GetComponents<Position2DComponent>();
+        const auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
 
-        for (const std::optional<Position2DComponent> component :
-             componentManager->GetComponents<Position2DComponent>())
+        for (size_t i = 0; i < positionComponents.size(); i++)
         {
-            if (component)
+            if (positionComponents[i] && movementComponents[i])
             {
-                modelMatrix[3][0] = component->position.x;
-                modelMatrix[3][1] = component->position.y;
+                const Position2DComponent& position2D = *positionComponents[i];
+                const Movement2DComponent& movement2D = *movementComponents[i];
+
+                const float angle = glm::orientedAngle(glm::vec2(1.f, 0.f), movement2D.orientation);
+                glm::mat4 modelMatrix = glm::mat4(1.f);
+                modelMatrix = glm::translate(modelMatrix, glm::vec3(position2D.position, 0.f));
+                modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
                 frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
             }
         }
