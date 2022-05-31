@@ -20,11 +20,12 @@ public:
     void PollEvents();
 
     void Update(IEntityManager* entityManager, ComponentManager* componentManager,
-                IFrameRenderer& frameRenderer);
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer);
 
 private:
     virtual void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
                               ComponentManager* componentManager,
+                              ComponentManager* renderComponentManager,
                               IFrameRenderer& frameRenderer) = 0;
 
     std::vector<SDL_Event> m_queuedEvents;

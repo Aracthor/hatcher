@@ -44,7 +44,7 @@ public:
                 hatcher::ComponentManager* renderComponentManager,
                 hatcher::IFrameRenderer& frameRenderer) override
     {
-        auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
+        auto selectableComponents = renderComponentManager->GetComponents<Selectable2DComponent>();
         auto positionComponents = componentManager->GetComponents<Position2DComponent>();
         HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
         for (hatcher::uint i = 0; i < selectableComponents.size(); i++)

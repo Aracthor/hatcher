@@ -28,9 +28,9 @@ DemoApplication::DemoApplication()
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
     componentManager->AddComponentType<Obstacle2DComponent>();
-    componentManager->AddComponentType<Selectable2DComponent>();
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
+    renderComponentManager->AddComponentType<Selectable2DComponent>();
 
     world->AddUpdater("MovingEntities");
 

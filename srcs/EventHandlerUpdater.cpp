@@ -37,6 +37,7 @@ EventHandlerUpdater::~EventHandlerUpdater() = default;
 void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& events,
                                        hatcher::IEntityManager* entityManager,
                                        hatcher::ComponentManager* componentManager,
+                                       hatcher::ComponentManager* renderComponentManager,
                                        hatcher::IFrameRenderer& frameRenderer)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
@@ -67,7 +68,8 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
         if (functionIt != m_eventFunctions.end())
         {
             EventHandlerFunction handlerFunction = functionIt->second;
-            (this->*handlerFunction)(event, entityManager, componentManager, frameRenderer);
+            (this->*handlerFunction)(event, entityManager, componentManager, renderComponentManager,
+                                     frameRenderer);
         }
     }
 
@@ -98,6 +100,7 @@ void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock* clock, const 
 void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
                                           hatcher::IEntityManager* entityManager,
                                           hatcher::ComponentManager* componentManager,
+                                          hatcher::ComponentManager* renderComponentManager,
                                           const hatcher::IFrameRenderer& frameRenderer)
 {
     m_application->Stop();
@@ -106,6 +109,7 @@ void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
 void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
                                                 hatcher::IEntityManager* entityManager,
                                                 hatcher::ComponentManager* componentManager,
+                                                hatcher::ComponentManager* renderComponentManager,
                                                 const hatcher::IFrameRenderer& frameRenderer)
 {
     int verticalScroll = event.wheel.y;
@@ -123,6 +127,7 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
 void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
                                                  hatcher::IEntityManager* entityManager,
                                                  hatcher::ComponentManager* componentManager,
+                                                 hatcher::ComponentManager* renderComponentManager,
                                                  const hatcher::IFrameRenderer& frameRenderer)
 {
     if (m_selectionHandler->IsSelecting())
@@ -132,15 +137,15 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
     }
 }
 
-void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
-                                                   hatcher::IEntityManager* entityManager,
-                                                   hatcher::ComponentManager* componentManager,
-                                                   const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleMouseButtonUpEvent(
+    const SDL_Event& event, hatcher::IEntityManager* entityManager,
+    hatcher::ComponentManager* componentManager, hatcher::ComponentManager* renderComponentManager,
+    const hatcher::IFrameRenderer& frameRenderer)
 {
     if (event.button.button == SDL_BUTTON_LEFT)
     {
         hatcher::span<std::optional<Selectable2DComponent>> selectableComponents =
-            componentManager->GetComponents<Selectable2DComponent>();
+            renderComponentManager->GetComponents<Selectable2DComponent>();
         hatcher::span<std::optional<Position2DComponent>> positionComponents =
             componentManager->GetComponents<Position2DComponent>();
         const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
@@ -165,10 +170,10 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
     }
 }
 
-void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
-                                                     hatcher::IEntityManager* entityManager,
-                                                     hatcher::ComponentManager* componentManager,
-                                                     const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleMouseButtonDownEvent(
+    const SDL_Event& event, hatcher::IEntityManager* entityManager,
+    hatcher::ComponentManager* componentManager, hatcher::ComponentManager* renderComponentManager,
+    const hatcher::IFrameRenderer& frameRenderer)
 {
     const glm::vec2 worldCoords2D =
         MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
@@ -182,7 +187,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
     if (event.button.button == SDL_BUTTON_RIGHT)
     {
         auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
-        auto selectableComponents = componentManager->GetComponents<Selectable2DComponent>();
+        auto selectableComponents = renderComponentManager->GetComponents<Selectable2DComponent>();
         auto positionComponents = componentManager->GetComponents<Position2DComponent>();
 
         HATCHER_ASSERT(movementComponents.size() == positionComponents.size());
@@ -215,13 +220,14 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 
         componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
         componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
-        componentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
+        renderComponentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
     }
 }
 
 void EventHandlerUpdater::HandleKeyDownEvent(const SDL_Event& event,
                                              hatcher::IEntityManager* entityManager,
                                              hatcher::ComponentManager* componentManager,
+                                             hatcher::ComponentManager* renderComponentManager,
                                              const hatcher::IFrameRenderer& frameRenderer)
 {
     if (event.key.keysym.scancode == SDL_SCANCODE_U)
