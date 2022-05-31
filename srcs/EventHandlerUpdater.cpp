@@ -7,6 +7,7 @@
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 #include "SelectionRectangleHandler.hpp"
+#include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -148,18 +149,20 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(
             renderComponentManager->GetComponents<Selectable2DComponent>();
         hatcher::span<std::optional<Position2DComponent>> positionComponents =
             componentManager->GetComponents<Position2DComponent>();
+        hatcher::span<std::optional<Movement2DComponent>> movementComponents =
+            componentManager->GetComponents<Movement2DComponent>();
         const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
 
         HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
         for (uint i = 0; i < selectableComponents.size(); i++)
         {
             std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
-            std::optional<Position2DComponent>& positionComponent = positionComponents[i];
             if (selectableComponent)
             {
                 HATCHER_ASSERT(positionComponent);
-                const glm::mat4 modelMatrix =
-                    glm::translate(glm::vec3(positionComponent->position, 0.f));
+                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
+                    positionComponents[i], movementComponents[i]);
+
                 const hatcher::Box2f selectionBox =
                     frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
                 selectableComponent->selected = selectionRectangle.Touches(selectionBox);
