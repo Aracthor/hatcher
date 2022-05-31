@@ -104,6 +104,7 @@ SRCS_FILES=	CubeDisplayUpdater.cpp		\
 		ObstacleRenderUpdater.cpp	\
 		SelectionRectangleHandler.cpp	\
 		SelectedRenderUpdater.cpp 	\
+		TransformationHelper.cpp	\
 		main.cpp			\
 
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))

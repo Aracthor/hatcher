@@ -5,6 +5,7 @@
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
+#include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -77,12 +78,9 @@ public:
             if (movements[i])
             {
                 HATCHER_ASSERT(positions[i]);
-                const Position2DComponent& position2D = *positions[i];
-                const Movement2DComponent& movement2D = *movements[i];
-                const float angle = glm::orientedAngle(glm::vec2(1.f, 0.f), movement2D.orientation);
-                glm::mat4 modelMatrix = glm::mat4(1.f);
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(position2D.position, 0.f));
-                modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
+                const glm::mat4 modelMatrix =
+                    TransformationHelper::ModelFromComponents(positions[i], movements[i]);
+
                 frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
             }
         }

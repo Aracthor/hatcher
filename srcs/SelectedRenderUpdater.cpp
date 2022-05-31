@@ -9,6 +9,7 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
+#include "TransformationHelper.hpp"
 
 namespace
 {
@@ -58,12 +59,8 @@ public:
             const std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
             if (selectableComponent && selectableComponent->selected)
             {
-                const float angle =
-                    glm::orientedAngle(glm::vec2(1.f, 0.f), movementComponent->orientation);
-                glm::mat4 modelMatrix = glm::mat4(1.f);
-                modelMatrix =
-                    glm::translate(modelMatrix, glm::vec3(positionComponent->position, 0.f));
-                modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
+                const glm::mat4 modelMatrix =
+                    TransformationHelper::ModelFromComponents(positionComponent, movementComponent);
 
                 const hatcher::Box2f selectionBox =
                     frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
