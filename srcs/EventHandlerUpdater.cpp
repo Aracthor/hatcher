@@ -160,7 +160,7 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(
             std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
             if (selectableComponent)
             {
-                HATCHER_ASSERT(positionComponent);
+                HATCHER_ASSERT(positionComponents[i]);
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
                     positionComponents[i], movementComponents[i]);
 
