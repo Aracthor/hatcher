@@ -209,8 +209,6 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
                                          componentManager, movementComponent->obstacleOffset);
                 if (!path.empty())
                 {
-                    movementComponent->orientation =
-                        glm::normalize(path.back() - positionComponent->position);
                     movementComponent->path = path;
                 }
             }
