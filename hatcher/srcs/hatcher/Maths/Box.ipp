@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <limits>
 
 namespace hatcher
 {
@@ -25,6 +26,18 @@ Box<L, T>::Box(const Vec& min, const Vec& max)
     : m_min(min)
     , m_max(max)
 {
+}
+
+template <glm::length_t L, typename T>
+template <class Iterator>
+Box<L, T>::Box(Iterator first, Iterator last)
+{
+    m_min = Vec(std::numeric_limits<T>::max());
+    m_max = Vec(std::numeric_limits<T>::lowest());
+    for (Iterator it = first; it != last; it++)
+    {
+        AddPoint(*it);
+    }
 }
 
 template <glm::length_t L, typename T>

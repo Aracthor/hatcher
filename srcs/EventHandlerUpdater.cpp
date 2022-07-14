@@ -4,6 +4,7 @@
 
 #include "GridDisplay.hpp"
 #include "Movement2DComponent.hpp"
+#include "Pathfinding.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 #include "SelectionRectangleHandler.hpp"
@@ -203,9 +204,15 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
             if (selectableComponent && selectableComponent->selected && movementComponent)
             {
                 HATCHER_ASSERT(positionComponent);
-                movementComponent->orientation =
-                    glm::normalize(worldCoords2D - positionComponent->position);
-                movementComponent->path = {worldCoords2D};
+                std::vector<glm::vec2> path =
+                    Pathfinding::GetPath(positionComponent->position, worldCoords2D,
+                                         componentManager, movementComponent->obstacleOffset);
+                if (!path.empty())
+                {
+                    movementComponent->orientation =
+                        glm::normalize(path.back() - positionComponent->position);
+                    movementComponent->path = path;
+                }
             }
         }
     }
@@ -217,6 +224,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
         Movement2DComponent movement2D;
         movement2D.orientation = glm::vec2(1.f, 0.f);
         movement2D.speed = 0.f;
+        movement2D.obstacleOffset = 0.5f;
         Selectable2DComponent selectable2D;
         selectable2D.selected = false;
         selectable2D.box = hatcher::Box3f(glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.5f, 0.5f, 1.f));

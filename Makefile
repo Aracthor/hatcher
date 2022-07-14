@@ -102,6 +102,7 @@ SRCS_FILES=	CubeDisplayUpdater.cpp		\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
 		ObstacleRenderUpdater.cpp	\
+		Pathfinding.cpp			\
 		SelectionRectangleHandler.cpp	\
 		SelectedRenderUpdater.cpp 	\
 		TransformationHelper.cpp	\

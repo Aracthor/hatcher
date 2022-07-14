@@ -20,6 +20,8 @@ public:
     Box() = default;
     Box(const Vec& point);
     Box(const Vec& min, const Vec& max);
+    template <class Iterator>
+    Box(Iterator first, Iterator last);
 
     void AddPoint(const Vec& point);
     Box Translated(const Vec& translation) const;
@@ -30,6 +32,9 @@ public:
 
     const Vec& Min() const { return m_min; }
     const Vec& Max() const { return m_max; }
+
+    void SetMin(const Vec& min) { m_min = min; }
+    void SetMax(const Vec& max) { m_max = max; }
 
     Vec Extents() const { return m_max - m_min; }
     Vec Center() const { return (m_max + m_min) / static_cast<T>(2); }
