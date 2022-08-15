@@ -24,8 +24,7 @@ public:
     glm::ivec2 Resolution() const override { return m_resolution; }
     glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
                                         const glm::mat4& modelMatrix) const override;
-    hatcher::Box2f ProjectBox3DToWindowCoords(const hatcher::Box3f& box,
-                                              const glm::mat4& modelMatrix) const override;
+    Box2f ProjectBox3DToWindowCoords(const Box3f& box, const glm::mat4& modelMatrix) const override;
     glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const override;
 
     const glm::mat4& ProjectionMatrix() const { return m_projectionMatrix; }

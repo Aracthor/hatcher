@@ -23,8 +23,8 @@ public:
     virtual glm::ivec2 Resolution() const = 0;
     virtual glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
                                                 const glm::mat4& modelMatrix) const = 0;
-    virtual hatcher::Box2f ProjectBox3DToWindowCoords(const hatcher::Box3f& box,
-                                                      const glm::mat4& modelMatrix) const = 0;
+    virtual Box2f ProjectBox3DToWindowCoords(const Box3f& box,
+                                             const glm::mat4& modelMatrix) const = 0;
 
     virtual glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const = 0;
 };

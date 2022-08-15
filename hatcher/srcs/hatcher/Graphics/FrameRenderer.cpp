@@ -43,10 +43,10 @@ glm::vec2 FrameRenderer::WorldCoordsToWindowCoords(const glm::vec3& worldCoords,
             (projectedVertex.y + 1.f) / 2.f * resolution.y};
 }
 
-hatcher::Box2f FrameRenderer::ProjectBox3DToWindowCoords(const hatcher::Box3f& box,
-                                                         const glm::mat4& modelMatrix) const
+Box2f FrameRenderer::ProjectBox3DToWindowCoords(const Box3f& box,
+                                                const glm::mat4& modelMatrix) const
 {
-    hatcher::Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
+    Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
     std::array<glm::vec3, 8> corners = box.GetCorners();
 
     for (const glm::vec3& corner : corners)

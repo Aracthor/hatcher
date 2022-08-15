@@ -16,7 +16,7 @@ public:
                         IFrameRenderer& frameRenderer) = 0;
 };
 
-using CreateRenderUpdaterFunction = RenderUpdater*(const hatcher::IRendering* rendering);
+using CreateRenderUpdaterFunction = RenderUpdater*(const IRendering* rendering);
 template <class UpdaterClass>
 int RegisterRenderUpdater(const char* name)
 {
