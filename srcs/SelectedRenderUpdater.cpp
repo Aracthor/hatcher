@@ -11,16 +11,18 @@
 #include "Selectable2DComponent.hpp"
 #include "TransformationHelper.hpp"
 
+using namespace hatcher;
+
 namespace
 {
 
-class SelectedRenderUpdater final : public hatcher::RenderUpdater
+class SelectedRenderUpdater final : public RenderUpdater
 {
 public:
-    SelectedRenderUpdater(const hatcher::IRendering* rendering)
+    SelectedRenderUpdater(const IRendering* rendering)
     {
-        hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
-        meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
+        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
+        meshBuilder->SetPrimitive(Primitive::Lines);
         meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/selection.vert", "shaders/selection.frag"));
         m_mesh.reset(meshBuilder->Create());
@@ -34,7 +36,7 @@ public:
 
             -1.f, 1.f,
         };
-        hatcher::ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
+        ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
 
         m_mesh->Set2DPositions(positions, std::size(positions));
         m_mesh->SetIndices(indices, std::size(indices));
@@ -42,16 +44,15 @@ public:
 
     ~SelectedRenderUpdater() = default;
 
-    void Update(const hatcher::ComponentManager* componentManager,
-                hatcher::ComponentManager* renderComponentManager,
-                hatcher::IFrameRenderer& frameRenderer) override
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
     {
         auto selectableComponents = renderComponentManager->GetComponents<Selectable2DComponent>();
         auto positionComponents = componentManager->GetComponents<Position2DComponent>();
         auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
         HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
         HATCHER_ASSERT(selectableComponents.size() == movementComponents.size());
-        for (hatcher::uint i = 0; i < selectableComponents.size(); i++)
+        for (uint i = 0; i < selectableComponents.size(); i++)
         {
             const std::optional<Selectable2DComponent>& selectableComponent =
                 selectableComponents[i];
@@ -62,7 +63,7 @@ public:
                 const glm::mat4 modelMatrix =
                     TransformationHelper::ModelFromComponents(positionComponent, movementComponent);
 
-                const hatcher::Box2f selectionBox =
+                const Box2f selectionBox =
                     frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
 
                 const glm::vec2 rectangleCenter = selectionBox.Center();
@@ -81,9 +82,9 @@ public:
     }
 
 private:
-    std::unique_ptr<hatcher::Mesh> m_mesh;
+    std::unique_ptr<Mesh> m_mesh;
 };
 
-const int dummy = hatcher::RegisterRenderUpdater<SelectedRenderUpdater>("Selected");
+const int dummy = RegisterRenderUpdater<SelectedRenderUpdater>("Selected");
 
 } // namespace

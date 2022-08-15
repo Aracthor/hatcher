@@ -17,17 +17,19 @@
 #include "hatcher/assert.hpp"
 #include "hatcher/glm_pure.hpp"
 
+using namespace hatcher;
+
 namespace
 {
 
-class MovingEntitiesRenderUpdater final : public hatcher::RenderUpdater
+class MovingEntitiesRenderUpdater final : public RenderUpdater
 {
 public:
-    MovingEntitiesRenderUpdater(const hatcher::IRendering* rendering)
+    MovingEntitiesRenderUpdater(const IRendering* rendering)
     {
         const int circleVertexCount = 20;
         std::vector<float> positions;
-        std::vector<hatcher::ushort> indices;
+        std::vector<ushort> indices;
         positions.reserve((circleVertexCount + 2) * 2);
         indices.reserve(circleVertexCount * 2 + 2);
         for (int i = 0; i < circleVertexCount; i++)
@@ -38,8 +40,8 @@ public:
             const float y = ::sinf(angle);
             positions.push_back(x);
             positions.push_back(y);
-            const hatcher::ushort startIndex = i;
-            const hatcher::ushort endIndex = (i == circleVertexCount - 1) ? 0 : (i + 1);
+            const ushort startIndex = i;
+            const ushort endIndex = (i == circleVertexCount - 1) ? 0 : (i + 1);
             indices.push_back(startIndex);
             indices.push_back(endIndex);
         }
@@ -50,9 +52,9 @@ public:
         indices.push_back(circleVertexCount);
         indices.push_back(circleVertexCount + 1);
 
-        hatcher::MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
+        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
 
-        meshBuilder->SetPrimitive(hatcher::Primitive::Lines);
+        meshBuilder->SetPrimitive(Primitive::Lines);
         meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
 
@@ -63,13 +65,12 @@ public:
 
     ~MovingEntitiesRenderUpdater() = default;
 
-    void Update(const hatcher::ComponentManager* componentManager,
-                hatcher::ComponentManager* renderComponentManager,
-                hatcher::IFrameRenderer& frameRenderer) override
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
     {
-        const hatcher::span<const std::optional<Position2DComponent>> positions =
+        const span<const std::optional<Position2DComponent>> positions =
             componentManager->GetComponents<Position2DComponent>();
-        const hatcher::span<const std::optional<Movement2DComponent>> movements =
+        const span<const std::optional<Movement2DComponent>> movements =
             componentManager->GetComponents<Movement2DComponent>();
 
         HATCHER_ASSERT(positions.size() == movements.size());
@@ -87,9 +88,9 @@ public:
     }
 
 private:
-    std::unique_ptr<hatcher::Mesh> m_mesh;
+    std::unique_ptr<Mesh> m_mesh;
 };
 
-const int dummy = hatcher::RegisterRenderUpdater<MovingEntitiesRenderUpdater>("MovingEntities");
+const int dummy = RegisterRenderUpdater<MovingEntitiesRenderUpdater>("MovingEntities");
 
 } // namespace

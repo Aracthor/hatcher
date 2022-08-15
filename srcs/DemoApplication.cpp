@@ -16,14 +16,15 @@
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 
+using namespace hatcher;
+
 DemoApplication::DemoApplication()
-    : hatcher::GameApplication()
+    : GameApplication()
 {
-    std::shared_ptr<hatcher::World> world = CreateNewWorld("default");
-    hatcher::EntityManager* entityManager = world->GetEntityManager();
-    hatcher::ComponentManager* componentManager = entityManager->GetComponentManager();
-    hatcher::ComponentManager* renderComponentManager =
-        entityManager->GetRenderingComponentManager();
+    std::shared_ptr<World> world = CreateNewWorld("default");
+    EntityManager* entityManager = world->GetEntityManager();
+    ComponentManager* componentManager = entityManager->GetComponentManager();
+    ComponentManager* renderComponentManager = entityManager->GetRenderingComponentManager();
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
@@ -34,7 +35,7 @@ DemoApplication::DemoApplication()
 
     world->AddUpdater("MovingEntities");
 
-    hatcher::Entity obstacleEntity = entityManager->CreateNewEntity();
+    Entity obstacleEntity = entityManager->CreateNewEntity();
     Obstacle2DComponent obstacle2D{{
         glm::vec2(2.5f, 3.0f),
         glm::vec2(1.5f, 3.0f),

@@ -8,7 +8,9 @@ namespace hatcher
 class Mesh;
 } // namespace hatcher
 
+using namespace hatcher;
+
 struct ObstacleMeshComponent
 {
-    std::shared_ptr<hatcher::Mesh> mesh;
+    std::shared_ptr<Mesh> mesh;
 };

@@ -7,11 +7,12 @@
 
 #include "Obstacle2DComponent.hpp"
 
+using namespace hatcher;
+
 namespace Pathfinding
 {
 namespace
 {
-using namespace hatcher;
 
 bool Intersects(const glm::vec2& a1, const glm::vec2& a2, const glm::vec2& b1, const glm::vec2& b2)
 {
@@ -192,8 +193,7 @@ Graph CreateGraph(const glm::vec2& start, const glm::vec2& end,
 } // namespace
 
 std::vector<glm::vec2> GetPath(const glm::vec2& start, const glm::vec2& end,
-                               const hatcher::ComponentManager* componentManager,
-                               float borderOffset)
+                               const ComponentManager* componentManager, float borderOffset)
 {
     Graph graph = CreateGraph(start, end, componentManager, borderOffset);
     return graph.Resolve(0, 1);

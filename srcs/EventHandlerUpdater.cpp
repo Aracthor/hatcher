@@ -19,8 +19,9 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/assert.hpp"
 
-EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
-                                         const hatcher::IRendering* rendering)
+using namespace hatcher;
+
+EventHandlerUpdater::EventHandlerUpdater(GameApplication* application, const IRendering* rendering)
     : m_application(application)
 {
     m_eventFunctions[SDL_QUIT] = &EventHandlerUpdater::HandleQuitEvent;
@@ -36,11 +37,11 @@ EventHandlerUpdater::EventHandlerUpdater(hatcher::GameApplication* application,
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
 
-void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& events,
-                                       hatcher::IEntityManager* entityManager,
-                                       hatcher::ComponentManager* componentManager,
-                                       hatcher::ComponentManager* renderComponentManager,
-                                       hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleEvents(const span<const SDL_Event>& events,
+                                       IEntityManager* entityManager,
+                                       ComponentManager* componentManager,
+                                       ComponentManager* renderComponentManager,
+                                       IFrameRenderer& frameRenderer)
 {
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
 
@@ -79,7 +80,7 @@ void EventHandlerUpdater::HandleEvents(const hatcher::span<const SDL_Event>& eve
     m_gridDisplay->DrawGrid(frameRenderer, m_cameraTarget.x, m_cameraTarget.y);
 }
 
-void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock* clock, const Uint8* keyState)
+void EventHandlerUpdater::HandleCameraMotion(const Clock* clock, const Uint8* keyState)
 {
     const float elapsedTime = clock->GetElapsedTime();
     const float movementAmplitude = elapsedTime * m_pixelSize;
@@ -99,20 +100,19 @@ void EventHandlerUpdater::HandleCameraMotion(const hatcher::Clock* clock, const 
     m_cameraTarget += glm::vec3(cameraMovement, 0.f) * movementAmplitude;
 }
 
-void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event,
-                                          hatcher::IEntityManager* entityManager,
-                                          hatcher::ComponentManager* componentManager,
-                                          hatcher::ComponentManager* renderComponentManager,
-                                          const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event, IEntityManager* entityManager,
+                                          ComponentManager* componentManager,
+                                          ComponentManager* renderComponentManager,
+                                          const IFrameRenderer& frameRenderer)
 {
     m_application->Stop();
 }
 
 void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
-                                                hatcher::IEntityManager* entityManager,
-                                                hatcher::ComponentManager* componentManager,
-                                                hatcher::ComponentManager* renderComponentManager,
-                                                const hatcher::IFrameRenderer& frameRenderer)
+                                                IEntityManager* entityManager,
+                                                ComponentManager* componentManager,
+                                                ComponentManager* renderComponentManager,
+                                                const IFrameRenderer& frameRenderer)
 {
     int verticalScroll = event.wheel.y;
 
@@ -127,10 +127,10 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
 }
 
 void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
-                                                 hatcher::IEntityManager* entityManager,
-                                                 hatcher::ComponentManager* componentManager,
-                                                 hatcher::ComponentManager* renderComponentManager,
-                                                 const hatcher::IFrameRenderer& frameRenderer)
+                                                 IEntityManager* entityManager,
+                                                 ComponentManager* componentManager,
+                                                 ComponentManager* renderComponentManager,
+                                                 const IFrameRenderer& frameRenderer)
 {
     if (m_selectionHandler->IsSelecting())
     {
@@ -139,20 +139,21 @@ void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
     }
 }
 
-void EventHandlerUpdater::HandleMouseButtonUpEvent(
-    const SDL_Event& event, hatcher::IEntityManager* entityManager,
-    hatcher::ComponentManager* componentManager, hatcher::ComponentManager* renderComponentManager,
-    const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
+                                                   IEntityManager* entityManager,
+                                                   ComponentManager* componentManager,
+                                                   ComponentManager* renderComponentManager,
+                                                   const IFrameRenderer& frameRenderer)
 {
     if (event.button.button == SDL_BUTTON_LEFT)
     {
-        hatcher::span<std::optional<Selectable2DComponent>> selectableComponents =
+        span<std::optional<Selectable2DComponent>> selectableComponents =
             renderComponentManager->GetComponents<Selectable2DComponent>();
-        hatcher::span<std::optional<Position2DComponent>> positionComponents =
+        span<std::optional<Position2DComponent>> positionComponents =
             componentManager->GetComponents<Position2DComponent>();
-        hatcher::span<std::optional<Movement2DComponent>> movementComponents =
+        span<std::optional<Movement2DComponent>> movementComponents =
             componentManager->GetComponents<Movement2DComponent>();
-        const hatcher::Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
+        const Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
 
         HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
         for (uint i = 0; i < selectableComponents.size(); i++)
@@ -164,7 +165,7 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
                     positionComponents[i], movementComponents[i]);
 
-                const hatcher::Box2f selectionBox =
+                const Box2f selectionBox =
                     frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
                 selectableComponent->selected = selectionRectangle.Touches(selectionBox);
             }
@@ -174,10 +175,11 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(
     }
 }
 
-void EventHandlerUpdater::HandleMouseButtonDownEvent(
-    const SDL_Event& event, hatcher::IEntityManager* entityManager,
-    hatcher::ComponentManager* componentManager, hatcher::ComponentManager* renderComponentManager,
-    const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
+                                                     IEntityManager* entityManager,
+                                                     ComponentManager* componentManager,
+                                                     ComponentManager* renderComponentManager,
+                                                     const IFrameRenderer& frameRenderer)
 {
     const glm::vec2 worldCoords2D =
         MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
@@ -217,7 +219,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
 
     if (event.button.button == SDL_BUTTON_MIDDLE)
     {
-        hatcher::Entity newEntity = entityManager->CreateNewEntity();
+        Entity newEntity = entityManager->CreateNewEntity();
         Position2DComponent position2D{worldCoords2D};
         Movement2DComponent movement2D;
         movement2D.orientation = glm::vec2(1.f, 0.f);
@@ -225,7 +227,7 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
         movement2D.obstacleOffset = 0.5f;
         Selectable2DComponent selectable2D;
         selectable2D.selected = false;
-        selectable2D.box = hatcher::Box3f(glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.5f, 0.5f, 1.f));
+        selectable2D.box = Box3f(glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.5f, 0.5f, 1.f));
 
         componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
         componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
@@ -233,11 +235,10 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(
     }
 }
 
-void EventHandlerUpdater::HandleKeyDownEvent(const SDL_Event& event,
-                                             hatcher::IEntityManager* entityManager,
-                                             hatcher::ComponentManager* componentManager,
-                                             hatcher::ComponentManager* renderComponentManager,
-                                             const hatcher::IFrameRenderer& frameRenderer)
+void EventHandlerUpdater::HandleKeyDownEvent(const SDL_Event& event, IEntityManager* entityManager,
+                                             ComponentManager* componentManager,
+                                             ComponentManager* renderComponentManager,
+                                             const IFrameRenderer& frameRenderer)
 {
     if (event.key.keysym.scancode == SDL_SCANCODE_U)
     {
@@ -245,8 +246,7 @@ void EventHandlerUpdater::HandleKeyDownEvent(const SDL_Event& event,
     }
 }
 
-glm::mat4
-EventHandlerUpdater::CalculateProjectionMatrix(const hatcher::IFrameRenderer& frameRenderer)
+glm::mat4 EventHandlerUpdater::CalculateProjectionMatrix(const IFrameRenderer& frameRenderer)
 {
     const glm::ivec2 resolution = frameRenderer.Resolution();
     const float halfWidth = resolution.x / 2.f * m_pixelSize;
@@ -261,9 +261,8 @@ EventHandlerUpdater::CalculateProjectionMatrix(const hatcher::IFrameRenderer& fr
     return glm::ortho(left, right, bottom, top, zNear, zFar);
 }
 
-glm::vec2
-EventHandlerUpdater::MouseCoordsToWorldCoords(int x, int y,
-                                              const hatcher::IFrameRenderer& frameRenderer) const
+glm::vec2 EventHandlerUpdater::MouseCoordsToWorldCoords(int x, int y,
+                                                        const IFrameRenderer& frameRenderer) const
 {
     const glm::vec3 worldCoords = frameRenderer.WindowCoordsToWorldCoords(glm::vec2(x, y));
     const glm::vec3 cameraToTarget = m_cameraPosition - m_cameraTarget;

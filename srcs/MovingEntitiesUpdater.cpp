@@ -5,17 +5,19 @@
 #include "hatcher/Updater.hpp"
 #include "hatcher/glm_pure.hpp"
 
+using namespace hatcher;
+
 namespace
 {
 
-class MovingEntitiesUpdater final : public hatcher::Updater
+class MovingEntitiesUpdater final : public Updater
 {
 public:
-    void Update(hatcher::ComponentManager* componentManager) override
+    void Update(ComponentManager* componentManager) override
     {
-        hatcher::span<std::optional<Position2DComponent>> positions =
+        span<std::optional<Position2DComponent>> positions =
             componentManager->GetComponents<Position2DComponent>();
-        hatcher::span<std::optional<Movement2DComponent>> movements =
+        span<std::optional<Movement2DComponent>> movements =
             componentManager->GetComponents<Movement2DComponent>();
 
         HATCHER_ASSERT(positions.size() == movements.size());
@@ -48,6 +50,6 @@ public:
     }
 };
 
-const int dummy = hatcher::RegisterUpdater<MovingEntitiesUpdater>("MovingEntities");
+const int dummy = RegisterUpdater<MovingEntitiesUpdater>("MovingEntities");
 
 } // namespace

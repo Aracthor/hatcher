@@ -13,14 +13,16 @@
 #include "Position2DComponent.hpp"
 #include "TransformationHelper.hpp"
 
+using namespace hatcher;
+
 namespace
 {
 
 template <std::size_t N>
-std::array<hatcher::ushort, N / 2 * 3> MakeIndicesFromRectVertices()
+std::array<ushort, N / 2 * 3> MakeIndicesFromRectVertices()
 {
     int index = 0;
-    std::array<hatcher::ushort, N / 2 * 3> result;
+    std::array<ushort, N / 2 * 3> result;
     for (std::size_t i = 0; i < N; i += 4)
     {
         result[index++] = i + 0;
@@ -33,10 +35,10 @@ std::array<hatcher::ushort, N / 2 * 3> MakeIndicesFromRectVertices()
     return result;
 }
 
-class CubeDisplayUpdater final : public hatcher::RenderUpdater
+class CubeDisplayUpdater final : public RenderUpdater
 {
 public:
-    CubeDisplayUpdater(const hatcher::IRendering* rendering)
+    CubeDisplayUpdater(const IRendering* rendering)
     {
         // clang-format off
         float points[] =
@@ -109,10 +111,9 @@ public:
             textureCoord /= 64.f;
         auto indices = MakeIndicesFromRectVertices<std::size(points)>();
 
-        rendering->GetMeshBuilder()->SetPrimitive(hatcher::Primitive::Triangles);
-        std::shared_ptr<hatcher::Material> material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_3D.vert",
-                                                            "shaders/hello_texture.frag");
+        rendering->GetMeshBuilder()->SetPrimitive(Primitive::Triangles);
+        std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+            "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
         m_texture = rendering->GetMaterialFactory()->TextureFromFile("textures/skins/steve.bmp");
         material->AddTexture("diffuseTexture", m_texture);
@@ -126,9 +127,8 @@ public:
 
     ~CubeDisplayUpdater() = default;
 
-    void Update(const hatcher::ComponentManager* componentManager,
-                hatcher::ComponentManager* renderComponentManager,
-                hatcher::IFrameRenderer& frameRenderer) override
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->GetComponents<Position2DComponent>();
         const auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
@@ -145,10 +145,10 @@ public:
     }
 
 private:
-    std::unique_ptr<hatcher::Mesh> m_mesh;
-    std::shared_ptr<hatcher::Texture> m_texture;
+    std::unique_ptr<Mesh> m_mesh;
+    std::shared_ptr<Texture> m_texture;
 };
 
-const int dummy = hatcher::RegisterRenderUpdater<CubeDisplayUpdater>("CubeDisplay");
+const int dummy = RegisterRenderUpdater<CubeDisplayUpdater>("CubeDisplay");
 
 } // namespace

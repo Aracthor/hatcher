@@ -2,7 +2,9 @@
 
 #include "hatcher/GameApplication.hpp"
 
-class DemoApplication final : public hatcher::GameApplication
+using namespace hatcher;
+
+class DemoApplication final : public GameApplication
 {
 public:
     DemoApplication();

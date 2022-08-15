@@ -20,59 +20,55 @@ class IRendering;
 class GridDisplay;
 class SelectionRectangleHandler;
 
-class EventHandlerUpdater final : public hatcher::AbstractEventUpdater
+using namespace hatcher;
+
+class EventHandlerUpdater final : public AbstractEventUpdater
 {
 public:
-    EventHandlerUpdater(hatcher::GameApplication* application,
-                        const hatcher::IRendering* rendering);
+    EventHandlerUpdater(GameApplication* application, const IRendering* rendering);
     ~EventHandlerUpdater();
 
-    void HandleEvents(const hatcher::span<const SDL_Event>& events,
-                      hatcher::IEntityManager* entityManager,
-                      hatcher::ComponentManager* componentManager,
-                      hatcher::ComponentManager* renderComponentManager,
-                      hatcher::IFrameRenderer& frameRenderer) override;
+    void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
+                      ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                      IFrameRenderer& frameRenderer) override;
 
 private:
-    void HandleCameraMotion(const hatcher::Clock* clock, const Uint8* keyState);
+    void HandleCameraMotion(const Clock* clock, const Uint8* keyState);
 
-    void HandleQuitEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                         hatcher::ComponentManager* componentManager,
-                         hatcher::ComponentManager* renderComponentManager,
-                         const hatcher::IFrameRenderer& frameRenderer);
-    void HandleMouseWheelEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                               hatcher::ComponentManager* componentManager,
-                               hatcher::ComponentManager* renderComponentManager,
-                               const hatcher::IFrameRenderer& frameRenderer);
-    void HandleMouseMotionEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                hatcher::ComponentManager* componentManager,
-                                hatcher::ComponentManager* renderComponentManager,
-                                const hatcher::IFrameRenderer& frameRenderer);
-    void HandleMouseButtonUpEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                  hatcher::ComponentManager* componentManager,
-                                  hatcher::ComponentManager* renderComponentManager,
-                                  const hatcher::IFrameRenderer& frameRenderer);
-    void HandleMouseButtonDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                                    hatcher::ComponentManager* componentManager,
-                                    hatcher::ComponentManager* renderComponentManager,
-                                    const hatcher::IFrameRenderer& frameRenderer);
-    void HandleKeyDownEvent(const SDL_Event& event, hatcher::IEntityManager* entityManager,
-                            hatcher::ComponentManager* componentManager,
-                            hatcher::ComponentManager* renderComponentManager,
-                            const hatcher::IFrameRenderer& frameRenderer);
+    void HandleQuitEvent(const SDL_Event& event, IEntityManager* entityManager,
+                         ComponentManager* componentManager,
+                         ComponentManager* renderComponentManager,
+                         const IFrameRenderer& frameRenderer);
+    void HandleMouseWheelEvent(const SDL_Event& event, IEntityManager* entityManager,
+                               ComponentManager* componentManager,
+                               ComponentManager* renderComponentManager,
+                               const IFrameRenderer& frameRenderer);
+    void HandleMouseMotionEvent(const SDL_Event& event, IEntityManager* entityManager,
+                                ComponentManager* componentManager,
+                                ComponentManager* renderComponentManager,
+                                const IFrameRenderer& frameRenderer);
+    void HandleMouseButtonUpEvent(const SDL_Event& event, IEntityManager* entityManager,
+                                  ComponentManager* componentManager,
+                                  ComponentManager* renderComponentManager,
+                                  const IFrameRenderer& frameRenderer);
+    void HandleMouseButtonDownEvent(const SDL_Event& event, IEntityManager* entityManager,
+                                    ComponentManager* componentManager,
+                                    ComponentManager* renderComponentManager,
+                                    const IFrameRenderer& frameRenderer);
+    void HandleKeyDownEvent(const SDL_Event& event, IEntityManager* entityManager,
+                            ComponentManager* componentManager,
+                            ComponentManager* renderComponentManager,
+                            const IFrameRenderer& frameRenderer);
 
-    glm::mat4 CalculateProjectionMatrix(const hatcher::IFrameRenderer& frameRenderer);
+    glm::mat4 CalculateProjectionMatrix(const IFrameRenderer& frameRenderer);
 
-    glm::vec2 MouseCoordsToWorldCoords(int x, int y,
-                                       const hatcher::IFrameRenderer& frameRenderer) const;
+    glm::vec2 MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const;
 
-    hatcher::GameApplication* m_application;
+    GameApplication* m_application;
 
     using EventHandlerFunction = void (EventHandlerUpdater::*)(
-        const SDL_Event& event, hatcher::IEntityManager* entityManager,
-        hatcher::ComponentManager* componentManager,
-        hatcher::ComponentManager* renderComponentManager,
-        const hatcher::IFrameRenderer& frameRenderer);
+        const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+        ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer);
     std::unordered_map<uint, EventHandlerFunction> m_eventFunctions;
 
     glm::vec3 m_cameraPosition = glm::vec3(0.f, 0.f, 100.f);

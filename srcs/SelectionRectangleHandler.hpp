@@ -11,10 +11,12 @@ class IRendering;
 class Mesh;
 } // namespace hatcher
 
+using namespace hatcher;
+
 class SelectionRectangleHandler
 {
 public:
-    SelectionRectangleHandler(const hatcher::IRendering* rendering);
+    SelectionRectangleHandler(const IRendering* rendering);
     ~SelectionRectangleHandler();
 
     void StartSelection(const glm::vec2& position);
@@ -22,12 +24,12 @@ public:
     void EndSelection();
 
     bool IsSelecting() const { return m_isSelecting; }
-    const hatcher::Box2f GetCurrentSelection() const { return m_currentRectangle; }
-    void DrawSelectionRectangle(hatcher::IFrameRenderer& frameRenderer) const;
+    const Box2f GetCurrentSelection() const { return m_currentRectangle; }
+    void DrawSelectionRectangle(IFrameRenderer& frameRenderer) const;
 
 private:
     bool m_isSelecting = false;
     glm::vec2 m_selectionStart;
-    hatcher::Box2f m_currentRectangle;
-    std::unique_ptr<hatcher::Mesh> m_selectionRectangleMesh;
+    Box2f m_currentRectangle;
+    std::unique_ptr<Mesh> m_selectionRectangleMesh;
 };

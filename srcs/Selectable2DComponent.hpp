@@ -3,8 +3,10 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/glm_pure.hpp"
 
+using namespace hatcher;
+
 struct Selectable2DComponent
 {
-    hatcher::Box3f box;
+    Box3f box;
     bool selected;
 };
