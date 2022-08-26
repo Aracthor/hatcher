@@ -30,7 +30,7 @@ void ComponentManager::AttachComponent(Entity entity, Component& component)
     const uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
-    IComponentList* componentList = m_componentLists[key];
+    IComponentList* componentList = m_componentLists[key].get();
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
     realComponentList->AttachComponent(entity.ID(), component);
 }
@@ -44,7 +44,7 @@ span<const std::optional<Component>> ComponentManager::GetComponents() const
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
     // Why doesn't std::unordered_map have an operator[] returning a const value ??
-    const IComponentList* componentList = m_componentLists.at(key);
+    const IComponentList* componentList = m_componentLists.at(key).get();
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
     return realComponentList->GetComponentList();
 }
@@ -57,7 +57,7 @@ span<std::optional<Component>> ComponentManager::GetComponents()
     const uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
-    IComponentList* componentList = m_componentLists.at(key);
+    IComponentList* componentList = m_componentLists.at(key).get();
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
     return realComponentList->GetComponentList();
 }

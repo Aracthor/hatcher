@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <optional>
 #include <unordered_map>
 
@@ -32,7 +33,7 @@ public:
     span<std::optional<Component>> GetComponents();
 
 private:
-    std::unordered_map<uint, IComponentList*> m_componentLists;
+    std::unordered_map<uint, std::unique_ptr<IComponentList>> m_componentLists;
 };
 
 } // namespace hatcher
