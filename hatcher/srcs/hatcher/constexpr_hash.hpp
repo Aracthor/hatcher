@@ -1,6 +1,6 @@
 #pragma once
 
-template <typename T, int N = sizeof(T)>
-constexpr unsigned int constexpr_hash(const T str);
+template <int N>
+constexpr unsigned int constexpr_hash(const char* str);
 
 #include "constexpr_hash.ipp"

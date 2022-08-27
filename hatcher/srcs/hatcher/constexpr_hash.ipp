@@ -49,8 +49,8 @@ constexpr unsigned int crc32<int(-1)>(const char* str)
 
 } // namespace
 
-template <typename T, int N>
-constexpr unsigned int constexpr_hash(const T str)
+template <int N>
+constexpr unsigned int constexpr_hash(const char* str)
 {
     return crc32<N - 2>(str) ^ 0xFFFFFFFF;
 }

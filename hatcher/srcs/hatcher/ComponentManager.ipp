@@ -13,7 +13,7 @@ namespace hatcher
 template <class Component>
 void ComponentManager::AddComponentType()
 {
-    const uint key = ComponentKey<Component>();
+    constexpr uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(
         m_componentLists.find(key) == m_componentLists.end(),
         "Trying to register two times te same component type: " << typeid(Component).name());
@@ -27,7 +27,7 @@ void ComponentManager::AttachComponent(Entity entity, Component& component)
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 
-    const uint key = ComponentKey<Component>();
+    constexpr uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
     IComponentList* componentList = m_componentLists[key].get();
@@ -40,7 +40,7 @@ span<const std::optional<Component>> ComponentManager::GetComponents() const
 {
     using RealComponentList = const IdentifiableComponentList<Component>*;
 
-    const uint key = ComponentKey<Component>();
+    constexpr uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
     // Why doesn't std::unordered_map have an operator[] returning a const value ??
@@ -54,7 +54,7 @@ span<std::optional<Component>> ComponentManager::GetComponents()
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 
-    const uint key = ComponentKey<Component>();
+    constexpr uint key = ComponentKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << typeid(Component).name());
     IComponentList* componentList = m_componentLists.at(key).get();

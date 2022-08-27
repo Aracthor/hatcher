@@ -2,8 +2,7 @@
 
 #include "basic_types.hpp"
 #include "constexpr_hash.hpp"
-
-#include <typeinfo>
+#include "constexpr_typeid.hpp"
 
 namespace hatcher
 {
@@ -11,7 +10,8 @@ namespace hatcher
 template <class T>
 constexpr uint ComponentKey()
 {
-    return constexpr_hash(typeid(T).name());
+    constexpr string_view className = constexpr_typeid<T>();
+    return constexpr_hash<className.size>(className.data);
 }
 
 } // namespace hatcher
