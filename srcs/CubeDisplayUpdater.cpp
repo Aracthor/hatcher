@@ -130,10 +130,10 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        const auto positionComponents = componentManager->GetComponents<Position2DComponent>();
-        const auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
+        const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
 
-        for (size_t i = 0; i < positionComponents.size(); i++)
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             if (positionComponents[i] && movementComponents[i])
             {

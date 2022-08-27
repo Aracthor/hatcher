@@ -68,13 +68,12 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        const span<const std::optional<Position2DComponent>> positions =
-            componentManager->GetComponents<Position2DComponent>();
-        const span<const std::optional<Movement2DComponent>> movements =
-            componentManager->GetComponents<Movement2DComponent>();
+        ComponentReader<Position2DComponent> positions =
+            componentManager->ReadComponents<Position2DComponent>();
+        ComponentReader<Movement2DComponent> movements =
+            componentManager->ReadComponents<Movement2DComponent>();
 
-        HATCHER_ASSERT(positions.size() == movements.size());
-        for (size_t i = 0; i < positions.size(); i++)
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             if (movements[i])
             {

@@ -12,6 +12,11 @@ namespace hatcher
 {
 class IComponentList;
 
+template <class Component>
+using ComponentReader = span<const std::optional<Component>>;
+template <class Component>
+using ComponentWriter = span<std::optional<Component>>;
+
 class ComponentManager
 {
 public:
@@ -20,6 +25,8 @@ public:
 
     void AddEntities(int count);
 
+    int Count() const { return m_entityCount; }
+
     template <class Component>
     void AddComponentType();
 
@@ -27,12 +34,13 @@ public:
     void AttachComponent(Entity entity, Component& component);
 
     template <class Component>
-    span<const std::optional<Component>> GetComponents() const;
+    ComponentReader<Component> ReadComponents() const;
 
     template <class Component>
-    span<std::optional<Component>> GetComponents();
+    ComponentWriter<Component> WriteComponents();
 
 private:
+    int m_entityCount = 0;
     std::unordered_map<uint, std::unique_ptr<IComponentList>> m_componentLists;
 };
 

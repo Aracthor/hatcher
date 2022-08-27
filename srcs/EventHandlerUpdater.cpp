@@ -147,16 +147,16 @@ void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
 {
     if (event.button.button == SDL_BUTTON_LEFT)
     {
-        span<std::optional<Selectable2DComponent>> selectableComponents =
-            renderComponentManager->GetComponents<Selectable2DComponent>();
-        span<std::optional<Position2DComponent>> positionComponents =
-            componentManager->GetComponents<Position2DComponent>();
-        span<std::optional<Movement2DComponent>> movementComponents =
-            componentManager->GetComponents<Movement2DComponent>();
+        ComponentWriter<Selectable2DComponent> selectableComponents =
+            renderComponentManager->WriteComponents<Selectable2DComponent>();
+        ComponentReader<Position2DComponent> positionComponents =
+            componentManager->ReadComponents<Position2DComponent>();
+        ComponentReader<Movement2DComponent> movementComponents =
+            componentManager->ReadComponents<Movement2DComponent>();
         const Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
 
-        HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
-        for (uint i = 0; i < selectableComponents.size(); i++)
+        HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
             if (selectableComponent)
@@ -192,17 +192,17 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 
     if (event.button.button == SDL_BUTTON_RIGHT)
     {
-        auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
-        auto selectableComponents = renderComponentManager->GetComponents<Selectable2DComponent>();
-        auto positionComponents = componentManager->GetComponents<Position2DComponent>();
+        auto movementComponents = componentManager->WriteComponents<Movement2DComponent>();
+        auto selectableComponents = renderComponentManager->ReadComponents<Selectable2DComponent>();
+        auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
 
-        HATCHER_ASSERT(movementComponents.size() == positionComponents.size());
-        HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
-        for (uint i = 0; i < selectableComponents.size(); i++)
+        HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
-            std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
-            std::optional<Position2DComponent>& positionComponent = positionComponents[i];
+            const std::optional<Selectable2DComponent>& selectableComponent =
+                selectableComponents[i];
+            const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
             if (selectableComponent && selectableComponent->selected && movementComponent)
             {
                 HATCHER_ASSERT(positionComponent);

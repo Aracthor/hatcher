@@ -15,13 +15,12 @@ class MovingEntitiesUpdater final : public Updater
 public:
     void Update(ComponentManager* componentManager) override
     {
-        span<std::optional<Position2DComponent>> positions =
-            componentManager->GetComponents<Position2DComponent>();
-        span<std::optional<Movement2DComponent>> movements =
-            componentManager->GetComponents<Movement2DComponent>();
+        ComponentWriter<Position2DComponent> positions =
+            componentManager->WriteComponents<Position2DComponent>();
+        ComponentWriter<Movement2DComponent> movements =
+            componentManager->WriteComponents<Movement2DComponent>();
 
-        HATCHER_ASSERT(positions.size() == movements.size());
-        for (size_t i = 0; i < positions.size(); i++)
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             if (movements[i])
             {

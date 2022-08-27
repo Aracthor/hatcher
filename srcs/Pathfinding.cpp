@@ -148,7 +148,7 @@ std::vector<Box2f> GetObstacleBoxes(const ComponentManager* componentManager, fl
 {
     std::vector<Box2f> boxes;
 
-    auto obstacles = componentManager->GetComponents<Obstacle2DComponent>();
+    auto obstacles = componentManager->ReadComponents<Obstacle2DComponent>();
     for (std::optional<const Obstacle2DComponent> obstacle : obstacles)
     {
         if (obstacle)

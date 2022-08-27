@@ -47,12 +47,10 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        auto selectableComponents = renderComponentManager->GetComponents<Selectable2DComponent>();
-        auto positionComponents = componentManager->GetComponents<Position2DComponent>();
-        auto movementComponents = componentManager->GetComponents<Movement2DComponent>();
-        HATCHER_ASSERT(selectableComponents.size() == positionComponents.size());
-        HATCHER_ASSERT(selectableComponents.size() == movementComponents.size());
-        for (uint i = 0; i < selectableComponents.size(); i++)
+        auto selectableComponents = renderComponentManager->ReadComponents<Selectable2DComponent>();
+        auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             const std::optional<Selectable2DComponent>& selectableComponent =
                 selectableComponents[i];

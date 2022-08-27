@@ -11,6 +11,7 @@ ComponentManager::~ComponentManager() = default;
 
 void ComponentManager::AddEntities(int count)
 {
+    m_entityCount += count;
     for (auto& it : m_componentLists)
     {
         it.second->AddEntities(count);

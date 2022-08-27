@@ -31,12 +31,12 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        const span<const std::optional<Obstacle2DComponent>> obstacleComponents =
-            componentManager->GetComponents<Obstacle2DComponent>();
-        span<std::optional<ObstacleMeshComponent>> obstacleMeshComponents =
-            renderComponentManager->GetComponents<ObstacleMeshComponent>();
+        ComponentReader<Obstacle2DComponent> obstacleComponents =
+            componentManager->ReadComponents<Obstacle2DComponent>();
+        ComponentWriter<ObstacleMeshComponent> obstacleMeshComponents =
+            renderComponentManager->WriteComponents<ObstacleMeshComponent>();
 
-        for (uint i = 0; i < obstacleComponents.size(); i++)
+        for (int i = 0; i < componentManager->Count(); i++)
         {
             const std::optional<Obstacle2DComponent> obstacle2D = obstacleComponents[i];
             std::optional<ObstacleMeshComponent>& obstacleMesh = obstacleMeshComponents[i];
