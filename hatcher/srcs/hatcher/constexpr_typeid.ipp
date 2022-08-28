@@ -9,7 +9,7 @@ constexpr string_view constexpr_typeid()
     while (prettyFunctionName[classNameStart - 2] != '=')
         classNameStart++;
     int classNameEnd = classNameStart + 1;
-    while (prettyFunctionName[classNameEnd] != ']')
+    while (prettyFunctionName[classNameEnd] != ']' && prettyFunctionName[classNameEnd] != ';')
         classNameEnd++;
     return string_view({&prettyFunctionName[classNameStart], classNameEnd - classNameStart});
 }

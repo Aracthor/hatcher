@@ -38,13 +38,13 @@ constexpr unsigned int poly8_lookup[256] = {
 template <int idx>
 constexpr unsigned int crc32(const char* str)
 {
-    return (crc32<idx - 1>(str) >> 8) ^ poly8_lookup[(crc32<idx - 1>(str) ^ str[idx]) & 0x000000FF];
-}
-
-template <>
-constexpr unsigned int crc32<int(-1)>(const char* str)
-{
-    return 0xFFFFFFFF;
+    if constexpr (idx > 0)
+    {
+        unsigned int nextCrc = crc32<idx - 1>(str);
+        return (nextCrc >> 8) ^ poly8_lookup[(nextCrc ^ str[idx]) & 0x000000FF];
+    }
+    else
+        return 0xFFFFFFFF;
 }
 
 } // namespace
