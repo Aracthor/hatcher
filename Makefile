@@ -61,7 +61,6 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 CXX_NATIVE_FLAGS=
 
 EMXX_FLAGS=		-s WASM=1 			\
-			-Wno-deprecated-volatile	\
 
 LD_NATIVE_COMMON_FLAGS=	-lSDL2 -lGL -lGLEW
 
