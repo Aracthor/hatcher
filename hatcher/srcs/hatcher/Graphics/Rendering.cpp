@@ -18,6 +18,7 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
     m_materialFactory = std::make_unique<MaterialFactory>();
     m_meshBuilder = std::make_unique<MeshBuilder>();
     m_window = std::make_unique<Window>(name, windowWidth, windowHeight);
+    m_frameRenderer = std::make_unique<FrameRenderer>(m_clock.get(), Resolution());
 }
 
 Rendering::~Rendering() = default;
@@ -29,9 +30,7 @@ glm::ivec2 Rendering::Resolution() const
 
 void Rendering::UpdateWorldRendering(IApplication* application, World* world)
 {
-    // TODO clear instead ?
-    m_frameRenderer = std::make_unique<FrameRenderer>(m_clock.get(), Resolution());
-
+    m_frameRenderer->Clear();
     m_clock->Update();
     world->UpdateRendering(application, *m_frameRenderer, *this);
 }

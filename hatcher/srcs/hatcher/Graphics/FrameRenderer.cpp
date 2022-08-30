@@ -81,4 +81,10 @@ void FrameRenderer::Render() const
     }
 }
 
+void FrameRenderer::Clear()
+{
+    m_meshesToRender.clear();
+    m_UImeshesToRender.clear();
+}
+
 } // namespace hatcher

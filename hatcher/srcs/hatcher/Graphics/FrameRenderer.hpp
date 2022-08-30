@@ -28,6 +28,7 @@ public:
     glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const override;
 
     void Render() const;
+    void Clear();
 
 private:
     struct MeshToRender
