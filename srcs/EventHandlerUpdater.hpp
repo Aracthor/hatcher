@@ -50,10 +50,6 @@ private:
                                     ComponentManager* componentManager,
                                     ComponentManager* renderComponentManager,
                                     const IFrameRenderer& frameRenderer);
-    void HandleKeyDownEvent(const SDL_Event& event, IEntityManager* entityManager,
-                            ComponentManager* componentManager,
-                            ComponentManager* renderComponentManager,
-                            const IFrameRenderer& frameRenderer);
 
     glm::mat4 CalculateProjectionMatrix(const IFrameRenderer& frameRenderer);
 
@@ -71,5 +67,4 @@ private:
     float m_pixelSize = 0.01f;
 
     std::unique_ptr<SelectionRectangleHandler> m_selectionHandler;
-    std::unique_ptr<GridDisplay> m_gridDisplay;
 };

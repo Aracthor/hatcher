@@ -10,6 +10,7 @@
 #include "hatcher/glm_pure.hpp"
 
 #include "EventHandlerUpdater.hpp"
+#include "GridDisplay.hpp"
 #include "Movement2DComponent.hpp"
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
@@ -32,6 +33,7 @@ DemoApplication::DemoApplication()
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
+    renderComponentManager->AddWorldComponent<GridDisplay>();
 
     world->AddUpdater("MovingEntities");
 
@@ -47,10 +49,12 @@ DemoApplication::DemoApplication()
     StartRendering("hatcher - demo", 800, 600);
 
     world->AddRenderUpdater("CubeDisplay", GetRendering());
+    world->AddRenderUpdater("DebugGrid", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
     world->SetEventUpdater(new EventHandlerUpdater(GetRendering()));
+    world->AddEventListener("DebugGrid");
     world->AddEventListener("Quit");
 }
 
