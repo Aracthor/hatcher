@@ -1,8 +1,8 @@
 #pragma once
 
+#ifdef NDEBUG
 #include <iostream>
 
-#ifdef NDEBUG
 #define HATCHER_ASSERT(condition)                                                                  \
     if (!(condition))                                                                              \
     {                                                                                              \

@@ -1,5 +1,6 @@
 #include "World.hpp"
 
+#include <iostream>
 #include <map>
 #include <string>
 
