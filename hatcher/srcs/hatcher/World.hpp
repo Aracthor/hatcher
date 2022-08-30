@@ -8,6 +8,7 @@ namespace hatcher
 {
 class AbstractEventUpdater;
 class EntityManager;
+class IApplication;
 class IFrameRenderer;
 class IRendering;
 class RenderUpdater;
@@ -23,10 +24,12 @@ public:
 
     void AddUpdater(const char* name);
     void AddRenderUpdater(const char* name, const IRendering* rendering);
+    void AddEventListener(const char* name);
     void SetEventUpdater(AbstractEventUpdater* updater);
 
     void Update();
-    void UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering);
+    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer,
+                         const IRendering& rendering);
 
 private:
     std::string m_name;

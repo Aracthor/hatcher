@@ -11,6 +11,12 @@ class span
 public:
     span() = default;
 
+    span(T* pointer, std::size_t size)
+        : ptr(pointer)
+        , length(size)
+    {
+    }
+
     template <typename U>
     span(std::vector<U>& container)
         : ptr(container.data())

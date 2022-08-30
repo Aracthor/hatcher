@@ -12,7 +12,6 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
-#include "hatcher/GameApplication.hpp"
 #include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
@@ -21,10 +20,8 @@
 
 using namespace hatcher;
 
-EventHandlerUpdater::EventHandlerUpdater(GameApplication* application, const IRendering* rendering)
-    : m_application(application)
+EventHandlerUpdater::EventHandlerUpdater(const IRendering* rendering)
 {
-    m_eventFunctions[SDL_QUIT] = &EventHandlerUpdater::HandleQuitEvent;
     m_eventFunctions[SDL_MOUSEWHEEL] = &EventHandlerUpdater::HandleMouseWheelEvent;
     m_eventFunctions[SDL_MOUSEMOTION] = &EventHandlerUpdater::HandleMouseMotionEvent;
     m_eventFunctions[SDL_MOUSEBUTTONUP] = &EventHandlerUpdater::HandleMouseButtonUpEvent;
@@ -62,9 +59,6 @@ void EventHandlerUpdater::HandleEvents(const span<const SDL_Event>& events,
     m_cameraPosition += m_cameraTarget;
     frameRenderer.SetViewMatrix(glm::lookAt(m_cameraPosition, m_cameraTarget, m_cameraUp));
 
-    if (keyState[SDL_SCANCODE_ESCAPE])
-        m_application->Stop();
-
     for (const SDL_Event& event : events)
     {
         auto functionIt = m_eventFunctions.find(event.type);
@@ -98,14 +92,6 @@ void EventHandlerUpdater::HandleCameraMotion(const Clock* clock, const Uint8* ke
         cameraMovement -= cameraRight;
 
     m_cameraTarget += glm::vec3(cameraMovement, 0.f) * movementAmplitude;
-}
-
-void EventHandlerUpdater::HandleQuitEvent(const SDL_Event& event, IEntityManager* entityManager,
-                                          ComponentManager* componentManager,
-                                          ComponentManager* renderComponentManager,
-                                          const IFrameRenderer& frameRenderer)
-{
-    m_application->Stop();
 }
 
 void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,

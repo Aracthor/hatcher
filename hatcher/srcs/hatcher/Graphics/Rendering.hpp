@@ -9,6 +9,7 @@ namespace hatcher
 {
 class Clock;
 class FrameRenderer;
+class IApplication;
 class MaterialFactory;
 class MeshBuilder;
 class Window;
@@ -20,7 +21,7 @@ public:
     Rendering(const char* name, int windowWidth, int windowHeight);
     ~Rendering();
 
-    void UpdateWorldRendering(World* parWorld);
+    void UpdateWorldRendering(IApplication* application, World* parWorld);
     void RenderWorld();
 
     const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }

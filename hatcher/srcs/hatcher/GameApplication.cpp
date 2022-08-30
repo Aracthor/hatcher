@@ -69,7 +69,7 @@ void GameApplication::Update()
     m_world->Update();
     if (m_rendering)
     {
-        m_rendering->UpdateWorldRendering(m_world.get());
+        m_rendering->UpdateWorldRendering(this, m_world.get());
     }
 }
 

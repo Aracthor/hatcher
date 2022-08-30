@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 
+#include "IApplication.hpp"
 #include "basic_types.hpp"
 
 namespace hatcher
@@ -11,7 +12,7 @@ class IRendering;
 class Rendering;
 class World;
 
-class GameApplication
+class GameApplication : public IApplication
 {
 public:
     GameApplication();
@@ -21,7 +22,7 @@ public:
 
     int Run();
 
-    void Stop();
+    void Stop() override;
 
 protected:
     void StartRendering(const char* name, int windowWidth, int windowHeight);

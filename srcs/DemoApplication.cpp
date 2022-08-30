@@ -50,7 +50,8 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
-    world->SetEventUpdater(new EventHandlerUpdater(this, GetRendering()));
+    world->SetEventUpdater(new EventHandlerUpdater(GetRendering()));
+    world->AddEventListener("Quit");
 }
 
 DemoApplication::~DemoApplication() = default;

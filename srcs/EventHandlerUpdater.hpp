@@ -12,7 +12,6 @@
 namespace hatcher
 {
 class Clock;
-class GameApplication;
 class MeshBuilder;
 class IRendering;
 } // namespace hatcher
@@ -25,7 +24,7 @@ using namespace hatcher;
 class EventHandlerUpdater final : public AbstractEventUpdater
 {
 public:
-    EventHandlerUpdater(GameApplication* application, const IRendering* rendering);
+    EventHandlerUpdater(const IRendering* rendering);
     ~EventHandlerUpdater();
 
     void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
@@ -35,10 +34,6 @@ public:
 private:
     void HandleCameraMotion(const Clock* clock, const Uint8* keyState);
 
-    void HandleQuitEvent(const SDL_Event& event, IEntityManager* entityManager,
-                         ComponentManager* componentManager,
-                         ComponentManager* renderComponentManager,
-                         const IFrameRenderer& frameRenderer);
     void HandleMouseWheelEvent(const SDL_Event& event, IEntityManager* entityManager,
                                ComponentManager* componentManager,
                                ComponentManager* renderComponentManager,
@@ -63,8 +58,6 @@ private:
     glm::mat4 CalculateProjectionMatrix(const IFrameRenderer& frameRenderer);
 
     glm::vec2 MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const;
-
-    GameApplication* m_application;
 
     using EventHandlerFunction = void (EventHandlerUpdater::*)(
         const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,

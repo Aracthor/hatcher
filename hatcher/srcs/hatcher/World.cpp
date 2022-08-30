@@ -9,6 +9,7 @@
 #include "assert.hpp"
 
 #include "Graphics/AbstractEventUpdater.hpp"
+#include "Graphics/IEventListener.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
 namespace hatcher
@@ -26,6 +27,12 @@ std::map<std::string, CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
 {
     static std::map<std::string, CreateRenderUpdaterFunction*> updaterCreators;
     return updaterCreators;
+}
+
+std::map<std::string, CreateEventListenerFunction*>& EventListenerCreators()
+{
+    static std::map<std::string, CreateEventListenerFunction*> eventListenerCreators;
+    return eventListenerCreators;
 }
 } // namespace
 
@@ -50,6 +57,18 @@ int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createF
         std::abort();
     }
     renderUpdaterCreators[name] = createFunction;
+    return 0;
+}
+
+int RegisterEventListener(const char* name, CreateEventListenerFunction* createFunction)
+{
+    auto& eventListenerCreators = EventListenerCreators();
+    if (eventListenerCreators.find(name) != eventListenerCreators.end())
+    {
+        std::cerr << "EventListener registered twice: " << name << std::endl;
+        std::abort();
+    }
+    eventListenerCreators[name] = createFunction;
     return 0;
 }
 
@@ -87,6 +106,18 @@ void World::AddRenderUpdater(const char* name, const IRendering* rendering)
     m_renderUpdaters.emplace_back(RenderUpdaterCreators()[name](rendering));
 }
 
+void World::AddEventListener(const char* name)
+{
+    auto& eventListenerCreators = EventListenerCreators();
+    if (eventListenerCreators.find(name) == eventListenerCreators.end())
+    {
+        std::cerr << "Unkown event listener: " << name << std::endl;
+        std::abort();
+    }
+    std::shared_ptr<IEventListener> eventListener(eventListenerCreators[name]());
+    m_eventUpdater->RegisterEventListener(eventListener);
+}
+
 void World::SetEventUpdater(AbstractEventUpdater* updater)
 {
     HATCHER_ASSERT(updater != nullptr);
@@ -101,11 +132,14 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IFrameRenderer& frameRenderer, const IRendering& rendering)
+void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer,
+                            const IRendering& rendering)
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->PollEvents();
+        m_eventUpdater->PollEvents(application, m_entityManager.get(),
+                                   m_entityManager->GetComponentManager(),
+                                   m_entityManager->GetRenderingComponentManager());
         m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
