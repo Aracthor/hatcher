@@ -1,6 +1,7 @@
 #include "ComponentManager.hpp"
 
 #include "ComponentList.hpp"
+#include "IWorldComponent.hpp"
 
 namespace hatcher
 {

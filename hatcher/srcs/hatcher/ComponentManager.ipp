@@ -2,6 +2,7 @@
 #include "ComponentList.hpp"
 #include "Entity.hpp"
 #include "assert.hpp"
+#include "checked_cast.hpp"
 
 #ifdef NDEBUG
 #include <typeinfo>
@@ -20,6 +21,17 @@ void ComponentManager::AddComponentType()
 
     auto componentList = new IdentifiableComponentList<Component>();
     m_componentLists.emplace(key, componentList);
+}
+
+template <class Component>
+void ComponentManager::AddWorldComponent()
+{
+    constexpr uint key = ComponentKey<Component>();
+    HATCHER_ASSERT_MESSAGE(
+        m_worldComponents.find(key) == m_worldComponents.end(),
+        "Trying to register two times te same world component: " << typeid(Component).name());
+
+    m_worldComponents.emplace(key, std::make_unique<Component>());
 }
 
 template <class Component>
@@ -60,6 +72,26 @@ ComponentWriter<Component> ComponentManager::WriteComponents()
     IComponentList* componentList = m_componentLists.at(key).get();
     RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
     return realComponentList->GetComponentList();
+}
+
+template <class Component>
+const Component* ComponentManager::ReadWorldComponent() const
+{
+    constexpr uint key = ComponentKey<Component>();
+    HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
+                           "Requesting a missing world component: " << typeid(Component).name());
+    const IWorldComponent* component = m_worldComponents.at(key).get();
+    return checked_cast<const Component*>(component);
+}
+
+template <class Component>
+Component* ComponentManager::WriteWorldComponent()
+{
+    constexpr uint key = ComponentKey<Component>();
+    HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
+                           "Requesting a missing world component: " << typeid(Component).name());
+    IWorldComponent* component = m_worldComponents.at(key).get();
+    return checked_cast<Component*>(component);
 }
 
 } // namespace hatcher

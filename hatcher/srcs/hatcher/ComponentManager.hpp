@@ -11,6 +11,7 @@
 namespace hatcher
 {
 class IComponentList;
+class IWorldComponent;
 
 template <class Component>
 using ComponentReader = span<const std::optional<Component>>;
@@ -31,17 +32,25 @@ public:
     void AddComponentType();
 
     template <class Component>
+    void AddWorldComponent();
+
+    template <class Component>
     void AttachComponent(Entity entity, Component& component);
 
     template <class Component>
     ComponentReader<Component> ReadComponents() const;
-
     template <class Component>
     ComponentWriter<Component> WriteComponents();
+
+    template <class Component>
+    const Component* ReadWorldComponent() const;
+    template <class Component>
+    Component* WriteWorldComponent();
 
 private:
     int m_entityCount = 0;
     std::unordered_map<uint, std::unique_ptr<IComponentList>> m_componentLists;
+    std::unordered_map<uint, std::unique_ptr<IWorldComponent>> m_worldComponents;
 };
 
 } // namespace hatcher
