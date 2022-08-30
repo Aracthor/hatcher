@@ -81,6 +81,7 @@ SRCS_FILES=	ComponentManager.cpp			\
 		EntityManager.cpp			\
 		EntityIDRegistry.cpp	    		\
 		GameApplication.cpp 			\
+		string_view.cpp				\
 		World.cpp				\
 							\
 		Graphics/Core/GLContext.cpp		\

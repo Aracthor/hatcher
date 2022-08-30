@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ostream>
+
 #include "assert.hpp"
 
 namespace hatcher
@@ -16,5 +18,7 @@ struct string_view
         return data[index];
     }
 };
+
+std::ostream& operator<<(std::ostream& stream, const string_view& stringView);
 
 } // namespace hatcher
