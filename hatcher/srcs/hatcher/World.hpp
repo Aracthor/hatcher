@@ -6,8 +6,8 @@
 
 namespace hatcher
 {
-class AbstractEventUpdater;
 class EntityManager;
+class EventUpdater;
 class IApplication;
 class IFrameRenderer;
 class IRendering;
@@ -36,7 +36,7 @@ private:
     std::unique_ptr<EntityManager> m_entityManager;
 
     std::vector<std::unique_ptr<Updater>> m_updaters;
-    std::unique_ptr<AbstractEventUpdater> m_eventUpdater;
+    std::unique_ptr<EventUpdater> m_eventUpdater;
     std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
 };
 

@@ -1,19 +1,18 @@
-#include "AbstractEventUpdater.hpp"
+#include "EventUpdater.hpp"
 
 #include "IEventListener.hpp"
 
 namespace hatcher
 {
 
-void AbstractEventUpdater::PollEvents(IApplication* application, IEntityManager* entityManager,
-                                      ComponentManager* componentManager,
-                                      ComponentManager* renderComponentManager,
-                                      const IFrameRenderer& frameRenderer)
+void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityManager,
+                              ComponentManager* componentManager,
+                              ComponentManager* renderComponentManager,
+                              const IFrameRenderer& frameRenderer)
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
     {
-        m_queuedEvents.push_back(event);
         SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
         if (m_eventListeners.find(eventType) != m_eventListeners.end())
         {
@@ -24,16 +23,7 @@ void AbstractEventUpdater::PollEvents(IApplication* application, IEntityManager*
     }
 }
 
-void AbstractEventUpdater::Update(IEntityManager* entityManager, ComponentManager* componentManager,
-                                  ComponentManager* renderComponentManager,
-                                  IFrameRenderer& frameRenderer)
-{
-    span<const SDL_Event> events(m_queuedEvents);
-    m_queuedEvents.clear();
-}
-
-void AbstractEventUpdater::RegisterEventListener(
-    const std::shared_ptr<IEventListener>& eventListener)
+void EventUpdater::RegisterEventListener(const std::shared_ptr<IEventListener>& eventListener)
 {
     const span<const SDL_EventType> eventTypesToListen = eventListener->EventTypesToListen();
 

@@ -6,8 +6,6 @@
 
 #include <SDL2/SDL_events.h>
 
-#include "hatcher/span.hpp"
-
 namespace hatcher
 {
 class ComponentManager;
@@ -16,22 +14,16 @@ class IEntityManager;
 class IEventListener;
 class IFrameRenderer;
 
-class AbstractEventUpdater
+class EventUpdater
 {
 public:
-    virtual ~AbstractEventUpdater() = default;
-
     void PollEvents(IApplication* application, IEntityManager* entityManager,
                     ComponentManager* componentManager, ComponentManager* renderComponentManager,
                     const IFrameRenderer& frameRenderer);
 
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer);
-
     void RegisterEventListener(const std::shared_ptr<IEventListener>& eventListener);
 
 private:
-    std::vector<SDL_Event> m_queuedEvents;
     std::map<SDL_EventType, std::vector<std::shared_ptr<IEventListener>>> m_eventListeners;
 };
 

@@ -8,7 +8,7 @@
 #include "Updater.hpp"
 #include "assert.hpp"
 
-#include "Graphics/AbstractEventUpdater.hpp"
+#include "Graphics/EventUpdater.hpp"
 #include "Graphics/IEventListener.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
@@ -80,7 +80,7 @@ World::World(const char* name)
     {
         m_updaters.emplace_back(entry.second());
     }
-    m_eventUpdater = std::make_unique<AbstractEventUpdater>();
+    m_eventUpdater = std::make_unique<EventUpdater>();
 }
 
 World::~World() = default;
@@ -135,8 +135,6 @@ void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRend
         m_eventUpdater->PollEvents(application, m_entityManager.get(),
                                    m_entityManager->GetComponentManager(),
                                    m_entityManager->GetRenderingComponentManager(), frameRenderer);
-        m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(),
-                               m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
