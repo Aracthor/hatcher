@@ -31,11 +31,6 @@ public:
     void RegisterEventListener(const std::shared_ptr<IEventListener>& eventListener);
 
 private:
-    virtual void HandleEvents(const span<const SDL_Event>& events, IEntityManager* entityManager,
-                              ComponentManager* componentManager,
-                              ComponentManager* renderComponentManager,
-                              IFrameRenderer& frameRenderer) = 0;
-
     std::vector<SDL_Event> m_queuedEvents;
     std::map<SDL_EventType, std::vector<std::shared_ptr<IEventListener>>> m_eventListeners;
 };

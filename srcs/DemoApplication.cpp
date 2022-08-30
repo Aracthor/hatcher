@@ -9,7 +9,7 @@
 #include "hatcher/World.hpp"
 #include "hatcher/glm_pure.hpp"
 
-#include "EventHandlerUpdater.hpp"
+#include "Camera.hpp"
 #include "GridDisplay.hpp"
 #include "Movement2DComponent.hpp"
 #include "Obstacle2DComponent.hpp"
@@ -34,6 +34,7 @@ DemoApplication::DemoApplication()
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
+    renderComponentManager->AddWorldComponent<Camera>();
     renderComponentManager->AddWorldComponent<GridDisplay>();
     renderComponentManager->AddWorldComponent<SelectionRectangle>();
 
@@ -50,14 +51,17 @@ DemoApplication::DemoApplication()
 
     StartRendering("hatcher - demo", 800, 600);
 
+    world->AddRenderUpdater("Camera", GetRendering());
     world->AddRenderUpdater("CubeDisplay", GetRendering());
     world->AddRenderUpdater("DebugGrid", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
     world->AddRenderUpdater("SelectionRectangle", GetRendering());
-    world->SetEventUpdater(new EventHandlerUpdater(GetRendering()));
+    world->AddEventListener("Camera");
     world->AddEventListener("DebugGrid");
+    world->AddEventListener("EntityCreator");
+    world->AddEventListener("MoveOrder");
     world->AddEventListener("Quit");
     world->AddEventListener("SelectionRectangle");
 }

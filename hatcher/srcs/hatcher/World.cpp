@@ -80,6 +80,7 @@ World::World(const char* name)
     {
         m_updaters.emplace_back(entry.second());
     }
+    m_eventUpdater = std::make_unique<AbstractEventUpdater>();
 }
 
 World::~World() = default;
@@ -116,12 +117,6 @@ void World::AddEventListener(const char* name)
     }
     std::shared_ptr<IEventListener> eventListener(eventListenerCreators[name]());
     m_eventUpdater->RegisterEventListener(eventListener);
-}
-
-void World::SetEventUpdater(AbstractEventUpdater* updater)
-{
-    HATCHER_ASSERT(updater != nullptr);
-    m_eventUpdater.reset(updater);
 }
 
 void World::Update()

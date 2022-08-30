@@ -94,12 +94,16 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 			-s GL_DEBUG=1 			\
 
 
-SRCS_FILES=	CubeDisplayUpdater.cpp		\
+SRCS_FILES=	Camera.cpp 			\
+		CameraEventListener.cpp 	\
+		CameraRenderUpdater.cpp 	\
+		CubeDisplayUpdater.cpp		\
 		DebugGridRenderUpdater.cpp	\
 		DemoApplication.cpp		\
-		EventHandlerUpdater.cpp		\
+		EntityCreatorEventListener.cpp  \
 		EventListenerDebugGrid.cpp	\
 		EventListenerQuit.cpp		\
+		MoveOrderEventListener.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
 		ObstacleRenderUpdater.cpp	\

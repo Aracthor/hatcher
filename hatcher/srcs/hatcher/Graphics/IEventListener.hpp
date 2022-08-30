@@ -14,6 +14,8 @@ class IFrameRenderer;
 class IEventListener
 {
 public:
+    virtual ~IEventListener() = default;
+
     virtual void GetEvent(const SDL_Event& event, IApplication* gameApplication,
                           IEntityManager* entityManager, ComponentManager* componentManager,
                           ComponentManager* renderComponentManager,
