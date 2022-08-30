@@ -139,7 +139,7 @@ void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRend
     {
         m_eventUpdater->PollEvents(application, m_entityManager.get(),
                                    m_entityManager->GetComponentManager(),
-                                   m_entityManager->GetRenderingComponentManager());
+                                   m_entityManager->GetRenderingComponentManager(), frameRenderer);
         m_eventUpdater->Update(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }

@@ -7,7 +7,8 @@ namespace hatcher
 
 void AbstractEventUpdater::PollEvents(IApplication* application, IEntityManager* entityManager,
                                       ComponentManager* componentManager,
-                                      ComponentManager* renderComponentManager)
+                                      ComponentManager* renderComponentManager,
+                                      const IFrameRenderer& frameRenderer)
 {
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -18,7 +19,7 @@ void AbstractEventUpdater::PollEvents(IApplication* application, IEntityManager*
         {
             for (auto& listener : m_eventListeners[eventType])
                 listener->GetEvent(event, application, entityManager, componentManager,
-                                   renderComponentManager);
+                                   renderComponentManager, frameRenderer);
         }
     }
 }

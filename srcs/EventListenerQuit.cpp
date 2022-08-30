@@ -11,7 +11,8 @@ class EventListenerQuit final : public IEventListener
 public:
     void GetEvent(const SDL_Event& event, IApplication* gameApplication,
                   IEntityManager* entityManager, ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager) override
+                  ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_QUIT ||
             (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_ESCAPE))

@@ -16,6 +16,7 @@
 #include "ObstacleMeshComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
+#include "SelectionRectangle.hpp"
 
 using namespace hatcher;
 
@@ -34,6 +35,7 @@ DemoApplication::DemoApplication()
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
     renderComponentManager->AddWorldComponent<GridDisplay>();
+    renderComponentManager->AddWorldComponent<SelectionRectangle>();
 
     world->AddUpdater("MovingEntities");
 
@@ -53,9 +55,11 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
+    world->AddRenderUpdater("SelectionRectangle", GetRendering());
     world->SetEventUpdater(new EventHandlerUpdater(GetRendering()));
     world->AddEventListener("DebugGrid");
     world->AddEventListener("Quit");
+    world->AddEventListener("SelectionRectangle");
 }
 
 DemoApplication::~DemoApplication() = default;

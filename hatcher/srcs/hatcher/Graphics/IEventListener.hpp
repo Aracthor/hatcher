@@ -9,13 +9,15 @@ namespace hatcher
 class ComponentManager;
 class IApplication;
 class IEntityManager;
+class IFrameRenderer;
 
 class IEventListener
 {
 public:
     virtual void GetEvent(const SDL_Event& event, IApplication* gameApplication,
                           IEntityManager* entityManager, ComponentManager* componentManager,
-                          ComponentManager* renderComponentManager) = 0;
+                          ComponentManager* renderComponentManager,
+                          const IFrameRenderer& frameRenderer) = 0;
     virtual span<const SDL_EventType> EventTypesToListen() const = 0;
 };
 

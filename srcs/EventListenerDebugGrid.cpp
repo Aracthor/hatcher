@@ -14,7 +14,8 @@ class EventListenerDebugGrid final : public IEventListener
 public:
     void GetEvent(const SDL_Event& event, IApplication* gameApplication,
                   IEntityManager* entityManager, ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager) override
+                  ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
     {
         HATCHER_ASSERT(event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_U)

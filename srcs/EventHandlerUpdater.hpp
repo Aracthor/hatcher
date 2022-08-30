@@ -17,7 +17,6 @@ class IRendering;
 } // namespace hatcher
 
 class GridDisplay;
-class SelectionRectangleHandler;
 
 using namespace hatcher;
 
@@ -38,14 +37,6 @@ private:
                                ComponentManager* componentManager,
                                ComponentManager* renderComponentManager,
                                const IFrameRenderer& frameRenderer);
-    void HandleMouseMotionEvent(const SDL_Event& event, IEntityManager* entityManager,
-                                ComponentManager* componentManager,
-                                ComponentManager* renderComponentManager,
-                                const IFrameRenderer& frameRenderer);
-    void HandleMouseButtonUpEvent(const SDL_Event& event, IEntityManager* entityManager,
-                                  ComponentManager* componentManager,
-                                  ComponentManager* renderComponentManager,
-                                  const IFrameRenderer& frameRenderer);
     void HandleMouseButtonDownEvent(const SDL_Event& event, IEntityManager* entityManager,
                                     ComponentManager* componentManager,
                                     ComponentManager* renderComponentManager,
@@ -65,6 +56,4 @@ private:
     glm::vec3 m_cameraUp = glm::vec3(0.f, 1.f, 0.f);
 
     float m_pixelSize = 0.01f;
-
-    std::unique_ptr<SelectionRectangleHandler> m_selectionHandler;
 };

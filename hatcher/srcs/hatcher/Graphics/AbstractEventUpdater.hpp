@@ -22,7 +22,8 @@ public:
     virtual ~AbstractEventUpdater() = default;
 
     void PollEvents(IApplication* application, IEntityManager* entityManager,
-                    ComponentManager* componentManager, ComponentManager* renderComponentManager);
+                    ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                    const IFrameRenderer& frameRenderer);
 
     void Update(IEntityManager* entityManager, ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer);

@@ -6,7 +6,6 @@
 #include "Pathfinding.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
-#include "SelectionRectangleHandler.hpp"
 #include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"
@@ -22,11 +21,7 @@ using namespace hatcher;
 EventHandlerUpdater::EventHandlerUpdater(const IRendering* rendering)
 {
     m_eventFunctions[SDL_MOUSEWHEEL] = &EventHandlerUpdater::HandleMouseWheelEvent;
-    m_eventFunctions[SDL_MOUSEMOTION] = &EventHandlerUpdater::HandleMouseMotionEvent;
-    m_eventFunctions[SDL_MOUSEBUTTONUP] = &EventHandlerUpdater::HandleMouseButtonUpEvent;
     m_eventFunctions[SDL_MOUSEBUTTONDOWN] = &EventHandlerUpdater::HandleMouseButtonDownEvent;
-
-    m_selectionHandler = std::make_unique<SelectionRectangleHandler>(rendering);
 }
 
 EventHandlerUpdater::~EventHandlerUpdater() = default;
@@ -66,8 +61,6 @@ void EventHandlerUpdater::HandleEvents(const span<const SDL_Event>& events,
                                      frameRenderer);
         }
     }
-
-    m_selectionHandler->DrawSelectionRectangle(frameRenderer);
 }
 
 void EventHandlerUpdater::HandleCameraMotion(const Clock* clock, const Uint8* keyState)
@@ -108,55 +101,6 @@ void EventHandlerUpdater::HandleMouseWheelEvent(const SDL_Event& event,
     m_pixelSize = std::clamp(m_pixelSize, 0.001f, 0.1f);
 }
 
-void EventHandlerUpdater::HandleMouseMotionEvent(const SDL_Event& event,
-                                                 IEntityManager* entityManager,
-                                                 ComponentManager* componentManager,
-                                                 ComponentManager* renderComponentManager,
-                                                 const IFrameRenderer& frameRenderer)
-{
-    if (m_selectionHandler->IsSelecting())
-    {
-        const glm::vec2 winCoords = {event.motion.x, frameRenderer.Resolution().y - event.motion.y};
-        m_selectionHandler->MoveSelection(winCoords);
-    }
-}
-
-void EventHandlerUpdater::HandleMouseButtonUpEvent(const SDL_Event& event,
-                                                   IEntityManager* entityManager,
-                                                   ComponentManager* componentManager,
-                                                   ComponentManager* renderComponentManager,
-                                                   const IFrameRenderer& frameRenderer)
-{
-    if (event.button.button == SDL_BUTTON_LEFT)
-    {
-        ComponentWriter<Selectable2DComponent> selectableComponents =
-            renderComponentManager->WriteComponents<Selectable2DComponent>();
-        ComponentReader<Position2DComponent> positionComponents =
-            componentManager->ReadComponents<Position2DComponent>();
-        ComponentReader<Movement2DComponent> movementComponents =
-            componentManager->ReadComponents<Movement2DComponent>();
-        const Box2f selectionRectangle = m_selectionHandler->GetCurrentSelection();
-
-        HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
-        for (int i = 0; i < componentManager->Count(); i++)
-        {
-            std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
-            if (selectableComponent)
-            {
-                HATCHER_ASSERT(positionComponents[i]);
-                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
-                    positionComponents[i], movementComponents[i]);
-
-                const Box2f selectionBox =
-                    frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
-                selectableComponent->selected = selectionRectangle.Touches(selectionBox);
-            }
-        }
-
-        m_selectionHandler->EndSelection();
-    }
-}
-
 void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
                                                      IEntityManager* entityManager,
                                                      ComponentManager* componentManager,
@@ -165,12 +109,6 @@ void EventHandlerUpdater::HandleMouseButtonDownEvent(const SDL_Event& event,
 {
     const glm::vec2 worldCoords2D =
         MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-
-    if (event.button.button == SDL_BUTTON_LEFT)
-    {
-        const glm::vec2 winCoords = {event.motion.x, frameRenderer.Resolution().y - event.motion.y};
-        m_selectionHandler->StartSelection(winCoords);
-    }
 
     if (event.button.button == SDL_BUTTON_RIGHT)
     {
