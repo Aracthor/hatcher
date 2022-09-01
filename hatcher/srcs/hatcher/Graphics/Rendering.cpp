@@ -31,13 +31,13 @@ glm::ivec2 Rendering::Resolution() const
 void Rendering::UpdateWorldRendering(IApplication* application, World* world)
 {
     m_frameRenderer->Clear();
+    m_window->Clear();
     m_clock->Update();
     world->UpdateRendering(application, *m_frameRenderer, *this);
 }
 
 void Rendering::RenderWorld()
 {
-    m_window->Clear();
     m_frameRenderer->Render();
     m_window->Refresh();
 }

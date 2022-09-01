@@ -54,6 +54,7 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("Camera", GetRendering());
     world->AddRenderUpdater("CubeDisplay", GetRendering());
     world->AddRenderUpdater("DebugGrid", GetRendering());
+    world->AddRenderUpdater("DemoImgui", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());

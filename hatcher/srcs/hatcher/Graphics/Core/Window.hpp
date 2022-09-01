@@ -2,11 +2,12 @@
 
 #include <memory>
 
-class SDL_Window;
+struct SDL_Window;
 
 namespace hatcher
 {
 class GLContext;
+class ImGuiIntegration;
 
 class Window
 {
@@ -27,6 +28,7 @@ private:
     int m_height;
     SDL_Window* m_window;
     std::unique_ptr<GLContext> m_context;
+    std::unique_ptr<ImGuiIntegration> m_imguiIntegration;
 };
 
 } // namespace hatcher

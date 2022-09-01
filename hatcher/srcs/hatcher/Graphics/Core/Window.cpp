@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "GLContext.hpp"
+#include "ImGuiIntegration.hpp"
 #include "gl.hpp"
 
 namespace hatcher
@@ -21,6 +22,7 @@ Window::Window(const char* name, int width, int height)
     m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width,
                                 height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     m_context.reset(new GLContext(m_window));
+    m_imguiIntegration = std::make_unique<ImGuiIntegration>(m_window, m_context->SDLContext());
 }
 
 Window::~Window()
@@ -32,6 +34,7 @@ Window::~Window()
 
 void Window::Clear()
 {
+    m_imguiIntegration->NewFrame();
     GL_CHECK(glViewport(0, 0, m_width, m_height));
     GL_CHECK(glClearColor(0.f, 0.f, 0.f, 1.f));
     GL_CHECK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -39,6 +42,7 @@ void Window::Clear()
 
 void Window::Refresh()
 {
+    m_imguiIntegration->Render();
     SDL_GL_SwapWindow(m_window);
 }
 
