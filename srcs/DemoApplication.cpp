@@ -63,7 +63,6 @@ DemoApplication::DemoApplication()
     world->AddEventListener("DebugGrid");
     world->AddEventListener("EntityCreator");
     world->AddEventListener("MoveOrder");
-    world->AddEventListener("Quit");
     world->AddEventListener("SelectionRectangle");
 }
 

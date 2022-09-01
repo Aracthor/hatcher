@@ -117,7 +117,6 @@ SRCS_FILES=	Camera.cpp 			\
 		DemoApplication.cpp		\
 		EntityCreatorEventListener.cpp  \
 		EventListenerDebugGrid.cpp	\
-		EventListenerQuit.cpp		\
 		MoveOrderEventListener.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\

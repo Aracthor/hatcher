@@ -17,9 +17,8 @@ using namespace hatcher;
 class SelectionRectangleEventListener final : public IEventListener
 {
 public:
-    void GetEvent(const SDL_Event& event, IApplication* gameApplication,
-                  IEntityManager* entityManager, ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager,
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
+                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
     {
         SelectionRectangle* selectionRectangle =

@@ -1,6 +1,7 @@
 #include "EventUpdater.hpp"
 
 #include "IEventListener.hpp"
+#include "hatcher/IApplication.hpp"
 
 #include "backends/imgui_impl_sdl.h"
 
@@ -18,11 +19,13 @@ void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityM
         // TODO a shame this ImGui function is not in ImGuiIntegration...
         ImGui_ImplSDL2_ProcessEvent(&event);
         SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
-        if (m_eventListeners.find(eventType) != m_eventListeners.end())
+        if (eventType == SDL_QUIT)
+            application->Stop();
+        else if (m_eventListeners.find(eventType) != m_eventListeners.end())
         {
             for (auto& listener : m_eventListeners[eventType])
-                listener->GetEvent(event, application, entityManager, componentManager,
-                                   renderComponentManager, frameRenderer);
+                listener->GetEvent(event, entityManager, componentManager, renderComponentManager,
+                                   frameRenderer);
         }
     }
 }
