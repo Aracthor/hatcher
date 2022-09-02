@@ -95,14 +95,17 @@ private:
         const glm::vec2 cameraRight = {cameraUp.y, -cameraUp.x};
         glm::vec2 cameraMovement = glm::vec2(0.f);
 
-        if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
-            cameraMovement += cameraUp;
-        if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
-            cameraMovement -= cameraUp;
-        if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
-            cameraMovement += cameraRight;
-        if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
-            cameraMovement -= cameraRight;
+        if (!keyState[SDL_SCANCODE_LCTRL] && !keyState[SDL_SCANCODE_RCTRL])
+        {
+            if (keyState[SDL_SCANCODE_UP] || keyState[SDL_SCANCODE_W])
+                cameraMovement += cameraUp;
+            if (keyState[SDL_SCANCODE_DOWN] || keyState[SDL_SCANCODE_S])
+                cameraMovement -= cameraUp;
+            if (keyState[SDL_SCANCODE_RIGHT] || keyState[SDL_SCANCODE_D])
+                cameraMovement += cameraRight;
+            if (keyState[SDL_SCANCODE_LEFT] || keyState[SDL_SCANCODE_A])
+                cameraMovement -= cameraRight;
+        }
 
         camera->target += glm::vec3(cameraMovement, 0.f) * movementAmplitude;
     }
