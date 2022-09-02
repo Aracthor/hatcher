@@ -6,6 +6,8 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
+#include "hatcher/Graphics/IEventUpdater.hpp"
+#include "hatcher/Graphics/RenderUpdater.hpp"
 
 namespace
 {
@@ -62,6 +64,21 @@ public:
     }
 };
 
-const int dummy = RegisterEventListener<MoveOrderEventListener>("MoveOrder");
+class MoveOrderRenderUpdater final : public RenderUpdater
+{
+public:
+    MoveOrderRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    {
+        eventUpdater->RegisterListener(std::make_shared<MoveOrderEventListener>());
+    }
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+        // TODO show current path ?
+    }
+};
+
+const int dummy = RegisterRenderUpdater<MoveOrderRenderUpdater>("MoveOrder");
 
 } // namespace

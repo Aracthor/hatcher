@@ -24,7 +24,6 @@ public:
 
     void AddUpdater(const char* name);
     void AddRenderUpdater(const char* name, const IRendering* rendering);
-    void AddEventListener(const char* name);
 
     void Update();
     void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer,

@@ -38,7 +38,7 @@ std::array<ushort, N / 2 * 3> MakeIndicesFromRectVertices()
 class CubeDisplayUpdater final : public RenderUpdater
 {
 public:
-    CubeDisplayUpdater(const IRendering* rendering)
+    CubeDisplayUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
         // clang-format off
         float points[] =

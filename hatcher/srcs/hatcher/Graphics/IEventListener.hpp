@@ -22,13 +22,4 @@ public:
     virtual span<const SDL_EventType> EventTypesToListen() const = 0;
 };
 
-using CreateEventListenerFunction = IEventListener*();
-template <class EventListenerClass>
-int RegisterEventListener(const char* name)
-{
-    int RegisterEventListener(const char* name, CreateEventListenerFunction* createFunction);
-    return RegisterEventListener(name,
-                                 []() -> IEventListener* { return new EventListenerClass(); });
-}
-
 } // namespace hatcher

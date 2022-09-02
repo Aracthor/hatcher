@@ -30,7 +30,7 @@ void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityM
     }
 }
 
-void EventUpdater::RegisterEventListener(const std::shared_ptr<IEventListener>& eventListener)
+void EventUpdater::RegisterListener(const std::shared_ptr<IEventListener>& eventListener)
 {
     const span<const SDL_EventType> eventTypesToListen = eventListener->EventTypesToListen();
 

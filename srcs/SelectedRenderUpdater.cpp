@@ -19,7 +19,7 @@ namespace
 class SelectedRenderUpdater final : public RenderUpdater
 {
 public:
-    SelectedRenderUpdater(const IRendering* rendering)
+    SelectedRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
         MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
         meshBuilder->SetPrimitive(Primitive::Lines);

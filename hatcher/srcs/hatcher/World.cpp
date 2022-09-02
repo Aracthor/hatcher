@@ -9,7 +9,6 @@
 #include "assert.hpp"
 
 #include "Graphics/EventUpdater.hpp"
-#include "Graphics/IEventListener.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
 namespace hatcher
@@ -27,12 +26,6 @@ std::map<std::string, CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
 {
     static std::map<std::string, CreateRenderUpdaterFunction*> updaterCreators;
     return updaterCreators;
-}
-
-std::map<std::string, CreateEventListenerFunction*>& EventListenerCreators()
-{
-    static std::map<std::string, CreateEventListenerFunction*> eventListenerCreators;
-    return eventListenerCreators;
 }
 } // namespace
 
@@ -57,18 +50,6 @@ int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createF
         std::abort();
     }
     renderUpdaterCreators[name] = createFunction;
-    return 0;
-}
-
-int RegisterEventListener(const char* name, CreateEventListenerFunction* createFunction)
-{
-    auto& eventListenerCreators = EventListenerCreators();
-    if (eventListenerCreators.find(name) != eventListenerCreators.end())
-    {
-        std::cerr << "EventListener registered twice: " << name << std::endl;
-        std::abort();
-    }
-    eventListenerCreators[name] = createFunction;
     return 0;
 }
 
@@ -104,19 +85,7 @@ void World::AddRenderUpdater(const char* name, const IRendering* rendering)
         std::cerr << "Unkown render updater: " << name << std::endl;
         std::abort();
     }
-    m_renderUpdaters.emplace_back(RenderUpdaterCreators()[name](rendering));
-}
-
-void World::AddEventListener(const char* name)
-{
-    auto& eventListenerCreators = EventListenerCreators();
-    if (eventListenerCreators.find(name) == eventListenerCreators.end())
-    {
-        std::cerr << "Unkown event listener: " << name << std::endl;
-        std::abort();
-    }
-    std::shared_ptr<IEventListener> eventListener(eventListenerCreators[name]());
-    m_eventUpdater->RegisterEventListener(eventListener);
+    m_renderUpdaters.emplace_back(RenderUpdaterCreators()[name](rendering, m_eventUpdater.get()));
 }
 
 void World::Update()

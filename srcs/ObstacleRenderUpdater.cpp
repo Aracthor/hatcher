@@ -19,7 +19,7 @@ namespace
 class ObstacleRenderUpdater final : public RenderUpdater
 {
 public:
-    ObstacleRenderUpdater(const IRendering* rendering)
+    ObstacleRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
         : m_meshBuilder(rendering->GetMeshBuilder())
         , m_material(rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert",
                                                                      "shaders/hello_world.frag"))

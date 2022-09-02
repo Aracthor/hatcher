@@ -25,7 +25,7 @@ namespace
 class MovingEntitiesRenderUpdater final : public RenderUpdater
 {
 public:
-    MovingEntitiesRenderUpdater(const IRendering* rendering)
+    MovingEntitiesRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
         const int circleVertexCount = 20;
         std::vector<float> positions;

@@ -55,15 +55,12 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("CubeDisplay", GetRendering());
     world->AddRenderUpdater("DebugGrid", GetRendering());
     world->AddRenderUpdater("DemoImgui", GetRendering());
+    world->AddRenderUpdater("EntityCreator", GetRendering());
+    world->AddRenderUpdater("MoveOrder", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
     world->AddRenderUpdater("SelectionRectangle", GetRendering());
-    world->AddEventListener("Camera");
-    world->AddEventListener("DebugGrid");
-    world->AddEventListener("EntityCreator");
-    world->AddEventListener("MoveOrder");
-    world->AddEventListener("SelectionRectangle");
 }
 
 DemoApplication::~DemoApplication() = default;

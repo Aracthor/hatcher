@@ -6,6 +6,8 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
+#include "hatcher/Graphics/IEventUpdater.hpp"
+#include "hatcher/Graphics/RenderUpdater.hpp"
 
 namespace
 {
@@ -51,6 +53,20 @@ public:
     }
 };
 
-const int dummy = RegisterEventListener<EntityCreatorEventListener>("EntityCreator");
+class EntityCreatorRenderUpdater final : public RenderUpdater
+{
+public:
+    EntityCreatorRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    {
+        eventUpdater->RegisterListener(std::make_shared<EntityCreatorEventListener>());
+    }
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+    }
+};
+
+const int dummy = RegisterRenderUpdater<EntityCreatorRenderUpdater>("EntityCreator");
 
 } // namespace

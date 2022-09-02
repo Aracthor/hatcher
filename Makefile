@@ -109,22 +109,19 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 
 
 SRCS_FILES=	Camera.cpp 			\
-		CameraEventListener.cpp 	\
 		CameraRenderUpdater.cpp 	\
 		CubeDisplayUpdater.cpp		\
 		DebugGridRenderUpdater.cpp	\
 		DemoImguiRenderUpdater.cpp	\
 		DemoApplication.cpp		\
-		EntityCreatorEventListener.cpp  \
-		EventListenerDebugGrid.cpp	\
-		MoveOrderEventListener.cpp	\
+		EntityCreatorRenderUpdater.cpp	\
+		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
 		ObstacleRenderUpdater.cpp	\
 		Pathfinding.cpp			\
 		SelectionRectangle.cpp		\
 		SelectionRectangleRenderUpdater.cpp	\
-		SelectionRectangleEventListener.cpp	\
 		SelectedRenderUpdater.cpp 	\
 		TransformationHelper.cpp	\
 		main.cpp			\

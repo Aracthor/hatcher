@@ -3,6 +3,7 @@
 namespace hatcher
 {
 class ComponentManager;
+class IEventUpdater;
 class IFrameRenderer;
 class IRendering;
 
@@ -16,14 +17,16 @@ public:
                         IFrameRenderer& frameRenderer) = 0;
 };
 
-using CreateRenderUpdaterFunction = RenderUpdater*(const IRendering* rendering);
+using CreateRenderUpdaterFunction = RenderUpdater*(const IRendering* rendering,
+                                                   IEventUpdater* eventUpdater);
 template <class UpdaterClass>
 int RegisterRenderUpdater(const char* name)
 {
     int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createFunction);
-    return RegisterRenderUpdater(name, [](const IRendering* rendering) -> RenderUpdater* {
-        return new UpdaterClass(rendering);
-    });
+    return RegisterRenderUpdater(
+        name, [](const IRendering* rendering, IEventUpdater* eventUpdater) -> RenderUpdater* {
+            return new UpdaterClass(rendering, eventUpdater);
+        });
 }
 
 } // namespace hatcher
