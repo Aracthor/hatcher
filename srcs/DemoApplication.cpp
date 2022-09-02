@@ -10,13 +10,11 @@
 #include "hatcher/glm_pure.hpp"
 
 #include "Camera.hpp"
-#include "GridDisplay.hpp"
 #include "Movement2DComponent.hpp"
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
-#include "SelectionRectangle.hpp"
 
 using namespace hatcher;
 
@@ -35,8 +33,6 @@ DemoApplication::DemoApplication()
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
     renderComponentManager->AddWorldComponent<Camera>();
-    renderComponentManager->AddWorldComponent<GridDisplay>();
-    renderComponentManager->AddWorldComponent<SelectionRectangle>();
 
     world->AddUpdater("MovingEntities");
 

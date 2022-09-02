@@ -1,7 +1,5 @@
 #include <memory>
 
-#include "GridDisplay.hpp"
-
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
@@ -23,6 +21,11 @@ namespace
 class DebugGridEventListener final : public IEventListener
 {
 public:
+    DebugGridEventListener(bool& gridDisplayEnabled)
+        : m_gridDisplayEnabled(gridDisplayEnabled)
+    {
+    }
+
     void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
                   ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
@@ -30,8 +33,7 @@ public:
         HATCHER_ASSERT(event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_U)
         {
-            GridDisplay* gridDisplay = renderComponentManager->WriteWorldComponent<GridDisplay>();
-            gridDisplay->SetEnabled(!gridDisplay->Enabled());
+            m_gridDisplayEnabled = !m_gridDisplayEnabled;
         }
     }
 
@@ -42,6 +44,9 @@ public:
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
+
+private:
+    bool& m_gridDisplayEnabled;
 };
 
 class DebugGridRenderUpdater final : public RenderUpdater
@@ -49,7 +54,8 @@ class DebugGridRenderUpdater final : public RenderUpdater
 public:
     DebugGridRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(std::make_shared<DebugGridEventListener>());
+        eventUpdater->RegisterListener(
+            std::make_shared<DebugGridEventListener>(m_gridDisplayEnabled));
 
         MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
         meshBuilder->SetPrimitive(Primitive::Lines);
@@ -84,8 +90,7 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        const GridDisplay* gridDisplay = renderComponentManager->ReadWorldComponent<GridDisplay>();
-        if (gridDisplay->Enabled())
+        if (m_gridDisplayEnabled)
         {
             int gridPositionX = -m_gridSize / 2 + 1;
             int gridPositionY = -m_gridSize / 2 + 1;
@@ -96,6 +101,7 @@ public:
     }
 
 private:
+    bool m_gridDisplayEnabled = false;
     int m_gridSize = 150;
     std::unique_ptr<Mesh> m_gridMesh;
 };

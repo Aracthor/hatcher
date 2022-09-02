@@ -3,7 +3,6 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
-#include "SelectionRectangle.hpp"
 #include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"
@@ -24,28 +23,59 @@ using namespace hatcher;
 namespace
 {
 
+class SelectionRectangle
+{
+public:
+    void StartSelection(const glm::vec2& position)
+    {
+        m_isSelecting = true;
+        m_selectionStart = position;
+        m_currentRectangle = Box2f(m_selectionStart);
+    }
+
+    void MoveSelection(const glm::vec2& position)
+    {
+        HATCHER_ASSERT(m_isSelecting);
+        m_currentRectangle = Box2f(m_selectionStart);
+        m_currentRectangle.AddPoint(position);
+    }
+
+    void EndSelection() { m_isSelecting = false; }
+
+    bool IsSelecting() const { return m_isSelecting; }
+    const Box2f GetCurrentSelection() const { return m_currentRectangle; }
+
+private:
+    bool m_isSelecting = false;
+    glm::vec2 m_selectionStart;
+    Box2f m_currentRectangle;
+};
+
 class SelectionRectangleEventListener final : public IEventListener
 {
 public:
+    SelectionRectangleEventListener(SelectionRectangle& selectionRectangle)
+        : m_selectionRectangle(selectionRectangle)
+    {
+    }
+
     void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
                   ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
     {
-        SelectionRectangle* selectionRectangle =
-            renderComponentManager->WriteWorldComponent<SelectionRectangle>();
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
         {
             const glm::vec2 winCoords = {event.motion.x,
                                          frameRenderer.Resolution().y - event.motion.y};
-            selectionRectangle->StartSelection(winCoords);
+            m_selectionRectangle.StartSelection(winCoords);
         }
         else if (event.type == SDL_MOUSEMOTION)
         {
-            if (selectionRectangle->IsSelecting())
+            if (m_selectionRectangle.IsSelecting())
             {
                 const glm::vec2 winCoords = {event.motion.x,
                                              frameRenderer.Resolution().y - event.motion.y};
-                selectionRectangle->MoveSelection(winCoords);
+                m_selectionRectangle.MoveSelection(winCoords);
             }
         }
         else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
@@ -56,7 +86,7 @@ public:
                 componentManager->ReadComponents<Position2DComponent>();
             ComponentReader<Movement2DComponent> movementComponents =
                 componentManager->ReadComponents<Movement2DComponent>();
-            const Box2f selectionBox = selectionRectangle->GetCurrentSelection();
+            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
 
             HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
             for (int i = 0; i < componentManager->Count(); i++)
@@ -74,7 +104,7 @@ public:
                 }
             }
 
-            selectionRectangle->EndSelection();
+            m_selectionRectangle.EndSelection();
         }
     }
 
@@ -87,6 +117,9 @@ public:
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
+
+private:
+    SelectionRectangle& m_selectionRectangle;
 };
 
 class SelectionRectangleRenderUpdater final : public RenderUpdater
@@ -94,7 +127,8 @@ class SelectionRectangleRenderUpdater final : public RenderUpdater
 public:
     SelectionRectangleRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(std::make_shared<SelectionRectangleEventListener>());
+        eventUpdater->RegisterListener(
+            std::make_shared<SelectionRectangleEventListener>(m_selectionRectangle));
 
         MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
         meshBuilder->SetPrimitive(Primitive::Lines);
@@ -123,11 +157,9 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        const SelectionRectangle* selectionRectangle =
-            renderComponentManager->ReadWorldComponent<SelectionRectangle>();
-        if (selectionRectangle->IsSelecting())
+        if (m_selectionRectangle.IsSelecting())
         {
-            const Box2f selectionBox = selectionRectangle->GetCurrentSelection();
+            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
             const glm::vec2 rectangleCenter = selectionBox.Center();
             const glm::vec2 rectangleSize = selectionBox.Extents();
 
@@ -143,6 +175,7 @@ public:
     }
 
 private:
+    SelectionRectangle m_selectionRectangle;
     std::unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
