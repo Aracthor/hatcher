@@ -1,6 +1,7 @@
 #include "EventUpdater.hpp"
 
 #include "IEventListener.hpp"
+#include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/IApplication.hpp"
 
 #include "backends/imgui_impl_sdl.h"
@@ -23,6 +24,13 @@ void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityM
             application->Stop();
         else if (m_eventListeners.find(eventType) != m_eventListeners.end())
         {
+            // We invert Y axis for mouse events because there seems to be an inversion between
+            // OpenGL and SDL2.
+            if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP)
+                event.button.y = frameRenderer.Resolution().y - event.button.y;
+            if (eventType == SDL_MOUSEMOTION)
+                event.motion.y = frameRenderer.Resolution().y - event.motion.y;
+
             for (auto& listener : m_eventListeners[eventType])
                 listener->GetEvent(event, entityManager, componentManager, renderComponentManager,
                                    frameRenderer);

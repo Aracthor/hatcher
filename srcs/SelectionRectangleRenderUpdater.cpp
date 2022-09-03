@@ -65,16 +65,14 @@ public:
     {
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
         {
-            const glm::vec2 winCoords = {event.motion.x,
-                                         frameRenderer.Resolution().y - event.motion.y};
+            const glm::vec2 winCoords = {event.motion.x, event.motion.y};
             m_selectionRectangle.StartSelection(winCoords);
         }
         else if (event.type == SDL_MOUSEMOTION)
         {
             if (m_selectionRectangle.IsSelecting())
             {
-                const glm::vec2 winCoords = {event.motion.x,
-                                             frameRenderer.Resolution().y - event.motion.y};
+                const glm::vec2 winCoords = {event.motion.x, event.motion.y};
                 m_selectionRectangle.MoveSelection(winCoords);
             }
         }

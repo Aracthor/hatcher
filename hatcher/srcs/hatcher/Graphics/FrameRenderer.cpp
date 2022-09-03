@@ -59,7 +59,7 @@ Box2f FrameRenderer::ProjectBox3DToWindowCoords(const Box3f& box,
 glm::vec3 FrameRenderer::WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const
 {
     const glm::ivec2 resolution = m_resolution;
-    const glm::vec3 winCoords(windowCoords.x, resolution.y - windowCoords.y, 0.f);
+    const glm::vec3 winCoords(windowCoords.x, windowCoords.y, 0.f);
     const glm::mat4 modelViewMatrix = m_viewMatrix;
     const glm::vec4 viewport = {0.f, 0.f, resolution.x, resolution.y};
     return glm::unProject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
