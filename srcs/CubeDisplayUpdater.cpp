@@ -115,7 +115,8 @@ public:
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
-        m_texture = rendering->GetMaterialFactory()->TextureFromFile("textures/skins/steve.bmp");
+        m_texture =
+            rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
         material->AddTexture("diffuseTexture", m_texture);
         rendering->GetMeshBuilder()->SetMaterial(material);
 
