@@ -3,7 +3,6 @@
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 
 #include "Movement2DComponent.hpp"
@@ -21,11 +20,9 @@ class SelectedRenderUpdater final : public RenderUpdater
 public:
     SelectedRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
-        meshBuilder->SetPrimitive(Primitive::Lines);
-        meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/selection.vert", "shaders/selection.frag"));
-        m_mesh.reset(meshBuilder->Create());
+        const std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+            "shaders/selection.vert", "shaders/selection.frag");
+        m_mesh = std::make_unique<Mesh>(material, Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,

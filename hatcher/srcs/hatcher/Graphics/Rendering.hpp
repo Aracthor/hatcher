@@ -11,7 +11,6 @@ class Clock;
 class FrameRenderer;
 class IApplication;
 class MaterialFactory;
-class MeshBuilder;
 class Window;
 class World;
 
@@ -24,7 +23,6 @@ public:
     void UpdateWorldRendering(IApplication* application, World* parWorld);
     void RenderWorld();
 
-    const std::unique_ptr<MeshBuilder>& GetMeshBuilder() const override { return m_meshBuilder; }
     const std::unique_ptr<MaterialFactory>& GetMaterialFactory() const override
     {
         return m_materialFactory;
@@ -35,7 +33,6 @@ private:
 
     std::unique_ptr<Clock> m_clock;
     std::unique_ptr<MaterialFactory> m_materialFactory;
-    std::unique_ptr<MeshBuilder> m_meshBuilder;
     std::unique_ptr<FrameRenderer> m_frameRenderer;
     std::unique_ptr<Window> m_window;
 };

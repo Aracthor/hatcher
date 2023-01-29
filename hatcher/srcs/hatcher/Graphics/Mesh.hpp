@@ -16,7 +16,8 @@ class VertexBufferObject;
 class Mesh
 {
 public:
-    Mesh(const std::shared_ptr<const Material>& material, bool dynamic, Primitive::Type primitive);
+    Mesh(const std::shared_ptr<const Material>& material, Primitive::Type primitive,
+         bool dynamic = false);
     ~Mesh();
 
     void Set2DPositions(float* positions, uint positionCount);

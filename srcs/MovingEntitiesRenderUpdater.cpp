@@ -12,7 +12,6 @@
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -52,13 +51,10 @@ public:
         indices.push_back(circleVertexCount);
         indices.push_back(circleVertexCount + 1);
 
-        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
+        const std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+            "shaders/hello_world_2D.vert", "shaders/hello_world.frag");
 
-        meshBuilder->SetPrimitive(Primitive::Lines);
-        meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
-
-        m_mesh.reset(meshBuilder->Create());
+        m_mesh = std::make_unique<Mesh>(material, Primitive::Lines);
         m_mesh->Set2DPositions(positions.data(), std::size(positions));
         m_mesh->SetIndices(indices.data(), std::size(indices));
     }

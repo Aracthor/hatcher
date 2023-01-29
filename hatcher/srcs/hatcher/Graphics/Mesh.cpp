@@ -7,7 +7,8 @@
 namespace hatcher
 {
 
-Mesh::Mesh(const std::shared_ptr<const Material>& material, bool dynamic, Primitive::Type primitive)
+Mesh::Mesh(const std::shared_ptr<const Material>& material, Primitive::Type primitive,
+           bool dynamic /* = false */)
     : m_material(material)
     , m_dynamic(dynamic)
 {

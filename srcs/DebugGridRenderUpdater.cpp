@@ -9,7 +9,6 @@
 #include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
@@ -57,14 +56,10 @@ public:
         eventUpdater->RegisterListener(
             std::make_shared<DebugGridEventListener>(m_gridDisplayEnabled));
 
-        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
-        meshBuilder->SetPrimitive(Primitive::Lines);
-
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
-        meshBuilder->SetMaterial(material);
-        m_gridMesh.reset(meshBuilder->Create());
+        m_gridMesh = std::make_unique<Mesh>(material, Primitive::Lines);
 
         std::vector<float> positions;
         positions.reserve(m_gridSize * 8);

@@ -4,7 +4,6 @@
 #include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/glm_pure.hpp"
 
@@ -20,8 +19,7 @@ class ObstacleRenderUpdater final : public RenderUpdater
 {
 public:
     ObstacleRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-        : m_meshBuilder(rendering->GetMeshBuilder())
-        , m_material(rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert",
+        : m_material(rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert",
                                                                      "shaders/hello_world.frag"))
     {
     }
@@ -57,9 +55,7 @@ private:
     {
         std::shared_ptr<Mesh> result;
 
-        m_meshBuilder->SetPrimitive(Primitive::Lines);
-        m_meshBuilder->SetMaterial(m_material);
-        result.reset(m_meshBuilder->Create());
+        result.reset(new Mesh(m_material, Primitive::Lines));
 
         auto obstacleCorners = obstacleComponent.corners;
         int cornersCount = obstacleCorners.size();
@@ -82,7 +78,6 @@ private:
         return result;
     }
 
-    const std::unique_ptr<MeshBuilder>& m_meshBuilder;
     std::shared_ptr<Material> m_material;
 };
 

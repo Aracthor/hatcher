@@ -4,7 +4,6 @@
 #include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/glm_pure.hpp"
@@ -111,16 +110,14 @@ public:
             textureCoord /= 64.f;
         auto indices = MakeIndicesFromRectVertices<std::size(points)>();
 
-        rendering->GetMeshBuilder()->SetPrimitive(Primitive::Triangles);
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
         m_texture =
             rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
         material->AddTexture("diffuseTexture", m_texture);
-        rendering->GetMeshBuilder()->SetMaterial(material);
 
-        m_mesh.reset(rendering->GetMeshBuilder()->Create());
+        m_mesh = std::make_unique<Mesh>(material, Primitive::Triangles);
         m_mesh->Set3DPositions(points, std::size(points));
         m_mesh->SetTextureCoords(textureCoords, std::size(textureCoords));
         m_mesh->SetIndices(indices.data(), std::size(indices));

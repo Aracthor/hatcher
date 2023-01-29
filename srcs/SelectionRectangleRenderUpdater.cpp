@@ -14,7 +14,6 @@
 #include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
-#include "hatcher/Graphics/MeshBuilder.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
@@ -128,12 +127,9 @@ public:
         eventUpdater->RegisterListener(
             std::make_shared<SelectionRectangleEventListener>(m_selectionRectangle));
 
-        MeshBuilder* meshBuilder = rendering->GetMeshBuilder().get();
-        meshBuilder->SetPrimitive(Primitive::Lines);
-
-        meshBuilder->SetMaterial(rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_world.frag"));
-        m_selectionRectangleMesh.reset(meshBuilder->Create());
+        const std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+            "shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+        m_selectionRectangleMesh = std::make_unique<Mesh>(material, Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,
