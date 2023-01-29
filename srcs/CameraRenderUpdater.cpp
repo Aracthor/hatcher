@@ -62,7 +62,7 @@ public:
     }
 
 private:
-    bool m_verticalMode = true;
+    bool m_verticalMode = false;
 };
 
 class CameraRenderUpdater final : public RenderUpdater
