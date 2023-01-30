@@ -9,8 +9,8 @@
         glFunction;                                                                                \
         int error = glGetError();                                                                  \
         if (error != 0)                                                                            \
-            std::cerr << __FILE__ << ":" << __LINE__ << " " << #glFunction                         \
-                      << " PANIK: " << std::hex << "0x" << error << std::endl;                     \
+            std::cerr << __FILE__ << ":" << __LINE__ << " " << #glFunction << " PANIK: "           \
+                      << "0x" << std::hex << error << std::dec << std::endl;                       \
     }
 #else
 #define GL_CHECK(glFunction) glFunction;
