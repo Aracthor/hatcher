@@ -11,6 +11,7 @@ class Clock;
 class FrameRenderer;
 class IApplication;
 class MaterialFactory;
+class MeshLoader;
 class Window;
 class World;
 
@@ -28,11 +29,14 @@ public:
         return m_materialFactory;
     }
 
+    const std::unique_ptr<MeshLoader>& GetMeshLoader() const override { return m_meshLoader; }
+
 private:
     glm::ivec2 Resolution() const;
 
     std::unique_ptr<Clock> m_clock;
     std::unique_ptr<MaterialFactory> m_materialFactory;
+    std::unique_ptr<MeshLoader> m_meshLoader;
     std::unique_ptr<FrameRenderer> m_frameRenderer;
     std::unique_ptr<Window> m_window;
 };

@@ -132,6 +132,7 @@ SRCS_FILES=	ComponentManager.cpp			\
 		Graphics/Material.cpp 			\
 		Graphics/MaterialFactory.cpp		\
 		Graphics/Mesh.cpp 			\
+		Graphics/MeshLoader.cpp			\
 		Graphics/Rendering.cpp 			\
 		Graphics/Texture.cpp 			\
 		

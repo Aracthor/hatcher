@@ -7,6 +7,7 @@
 #include "Clock.hpp"
 #include "FrameRenderer.hpp"
 #include "MaterialFactory.hpp"
+#include "MeshLoader.hpp"
 
 namespace hatcher
 {
@@ -15,6 +16,7 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
 {
     m_clock = std::make_unique<Clock>();
     m_materialFactory = std::make_unique<MaterialFactory>();
+    m_meshLoader = std::make_unique<MeshLoader>();
     m_window = std::make_unique<Window>(name, windowWidth, windowHeight);
     m_frameRenderer = std::make_unique<FrameRenderer>(m_clock.get(), Resolution());
 }
