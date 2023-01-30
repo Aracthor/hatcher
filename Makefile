@@ -150,7 +150,8 @@ BINS=			$(BIN_NATIVE_RELEASE)	\
 			$(BIN_NATIVE_DEBUG)	\
 			$(BIN_WEBASM_RELEASE)	\
 			$(BIN_WEBASM_DEBUG)	\
-			$(RESIDUE_WEBASM_RELASE)\
+
+RESIDUE_BINS=		$(RESIDUE_WEBASM_RELASE)\
 			$(RESIDUE_WEBASM_DEBUG)	\
 
 
@@ -225,6 +226,7 @@ fclean:
 	$(RM) $(OBJS) $(DEPS)
 	$(RMDIR) $(OBJS_DIRS)
 	$(RM) $(BINS)
+	$(RM) $(RESIDUE_BINS)
 	$(RMDIR) $(BIN_DIRS)
 
 re:	fclean native_release
