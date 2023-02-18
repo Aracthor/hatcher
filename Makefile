@@ -116,6 +116,7 @@ SRCS_FILES=	Camera.cpp 			\
 		DemoImguiRenderUpdater.cpp	\
 		DemoApplication.cpp		\
 		EntityCreatorRenderUpdater.cpp	\
+		HexagonalGrid.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\

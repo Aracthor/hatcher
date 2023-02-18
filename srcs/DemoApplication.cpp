@@ -10,6 +10,7 @@
 #include "hatcher/glm_pure.hpp"
 
 #include "Camera.hpp"
+#include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
 #include "Obstacle2DComponent.hpp"
 #include "ObstacleMeshComponent.hpp"
@@ -29,6 +30,7 @@ DemoApplication::DemoApplication()
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
     componentManager->AddComponentType<Obstacle2DComponent>();
+    componentManager->AddWorldComponent<HexagonalGrid>();
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
