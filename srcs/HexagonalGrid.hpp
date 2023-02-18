@@ -17,6 +17,9 @@ public:
         int r;
     };
 
+    HexagonalGrid();
+    ~HexagonalGrid();
+
     int GridSize() const { return m_gridSize; }
 
     TileCoord PositionToTileCoords(glm::vec2 position) const;
@@ -28,4 +31,7 @@ public:
 private:
     float m_hexaSize = 1.f;
     int m_gridSize = 10;
+
+    glm::mat2 m_hexToPosMatrix;
+    glm::mat2 m_posToHexMatrix;
 };
