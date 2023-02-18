@@ -107,7 +107,9 @@ private:
                 cameraMovement -= cameraRight;
         }
 
-        camera->target += glm::vec3(cameraMovement, 0.f) * movementAmplitude;
+        cameraMovement *= movementAmplitude;
+        camera->position += glm::vec3(cameraMovement, 0.f);
+        camera->target += glm::vec3(cameraMovement, 0.f);
     }
 
     glm::mat4 CalculateProjectionMatrix(const Camera* camera,
