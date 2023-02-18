@@ -19,7 +19,10 @@ public:
 
     int GridSize() const { return m_gridSize; }
 
+    TileCoord PositionToTileCoords(glm::vec2 position) const;
     glm::vec2 TileCoordToPosition(TileCoord coord) const;
+
+    glm::vec2 GetTileCenter(glm::vec2 position) const;
     glm::vec2 GetHexaAngle(TileCoord tile, int angleIndex) const;
 
 private:

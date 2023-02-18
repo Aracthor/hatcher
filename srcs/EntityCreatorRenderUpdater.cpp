@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
@@ -27,9 +28,11 @@ public:
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
+            const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
+            const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
 
             Entity newEntity = entityManager->CreateNewEntity();
-            Position2DComponent position2D{worldCoords2D};
+            Position2DComponent position2D{entitySpawnPosition};
             Movement2DComponent movement2D;
             movement2D.orientation = glm::vec2(1.f, 0.f);
             movement2D.speed = 0.f;
