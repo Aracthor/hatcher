@@ -85,12 +85,11 @@ private:
     void FillGridMesh(const HexagonalGrid* grid)
     {
         std::vector<float> positions;
-        const int gridSize = grid->GridSize();
-        const int hexagonCount = gridSize * gridSize * 4;
+        const int hexagonCount = m_gridDisplaySize * m_gridDisplaySize * 4;
         positions.reserve(hexagonCount * 24);
-        for (int r = -gridSize; r < gridSize + 1; r++)
+        for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
         {
-            for (int q = -gridSize; q < gridSize + 1; q++)
+            for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
             {
                 HexagonalGrid::TileCoord coord(q, r);
                 for (int i = 0; i < 6; i++)
@@ -110,6 +109,7 @@ private:
 
     bool m_gridDisplayEnabled = false;
     bool m_meshFilled = false;
+    int m_gridDisplaySize = 10;
     std::unique_ptr<Mesh> m_gridMesh;
 };
 
