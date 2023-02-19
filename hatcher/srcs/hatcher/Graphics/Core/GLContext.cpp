@@ -39,4 +39,14 @@ GLContext::~GLContext()
     SDL_GL_DeleteContext(m_contextId);
 }
 
+void GLContext::EnableDepthTest()
+{
+    GL_CHECK(glEnable(GL_DEPTH_TEST));
+}
+
+void GLContext::DisableDepthTest()
+{
+    GL_CHECK(glDisable(GL_DEPTH_TEST));
+}
+
 } // namespace hatcher

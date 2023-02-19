@@ -32,6 +32,16 @@ Window::~Window()
     SDL_Quit();
 }
 
+void Window::EnableDepthTest()
+{
+    m_context->EnableDepthTest();
+}
+
+void Window::DisableDepthTest()
+{
+    m_context->DisableDepthTest();
+}
+
 void Window::Clear()
 {
     m_imguiIntegration->NewFrame();

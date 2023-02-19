@@ -65,13 +65,16 @@ glm::vec3 FrameRenderer::WindowCoordsToWorldCoords(const glm::vec2 windowCoords)
     return glm::unProject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
 }
 
-void FrameRenderer::Render() const
+void FrameRenderer::RenderScene() const
 {
     for (const MeshToRender& meshToRender : m_meshesToRender)
     {
         meshToRender.mesh->Draw(meshToRender.modelMatrix, m_viewMatrix, m_projectionMatrix);
     }
+}
 
+void FrameRenderer::RenderUI() const
+{
     const float width = static_cast<float>(m_resolution.x);
     const float height = static_cast<float>(m_resolution.y);
     const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);

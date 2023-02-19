@@ -38,7 +38,10 @@ void Rendering::UpdateWorldRendering(IApplication* application, World* world)
 
 void Rendering::RenderWorld()
 {
-    m_frameRenderer->Render();
+    m_frameRenderer->RenderScene();
+    m_window->DisableDepthTest();
+    m_frameRenderer->RenderUI();
+    m_window->EnableDepthTest();
     m_window->Refresh();
 }
 

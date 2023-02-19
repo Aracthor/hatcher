@@ -13,6 +13,9 @@ public:
     GLContext(SDL_Window* window);
     ~GLContext();
 
+    void EnableDepthTest();
+    void DisableDepthTest();
+
     SDL_GLContext* SDLContext() { return &m_contextId; }
 
 private:

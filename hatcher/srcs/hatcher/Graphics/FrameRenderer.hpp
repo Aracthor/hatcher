@@ -27,7 +27,8 @@ public:
     Box2f ProjectBox3DToWindowCoords(const Box3f& box, const glm::mat4& modelMatrix) const override;
     glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const override;
 
-    void Render() const;
+    void RenderScene() const;
+    void RenderUI() const;
     void Clear();
 
 private:

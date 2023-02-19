@@ -18,6 +18,9 @@ public:
     void Clear();
     void Refresh();
 
+    void EnableDepthTest();
+    void DisableDepthTest();
+
     int Width() const { return m_width; }
     int Height() const { return m_height; }
 
