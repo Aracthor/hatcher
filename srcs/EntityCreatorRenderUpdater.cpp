@@ -38,7 +38,6 @@ public:
             Movement2DComponent movement2D;
             movement2D.orientation = glm::vec2(1.f, 0.f);
             movement2D.speed = 0.f;
-            movement2D.obstacleOffset = 0.5f;
             Selectable2DComponent selectable2D;
             selectable2D.selected = false;
             selectable2D.box = Box3f(glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.5f, 0.5f, 1.f));
