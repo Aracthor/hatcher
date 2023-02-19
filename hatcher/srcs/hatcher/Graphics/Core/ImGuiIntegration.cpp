@@ -2,6 +2,7 @@
 
 #include "backends/imgui_impl_opengl3.h"
 #include "backends/imgui_impl_sdl.h"
+#include "gl.hpp"
 #include "imgui.h"
 
 namespace hatcher
@@ -28,6 +29,7 @@ void ImGuiIntegration::NewFrame()
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
+    glGetError(); // ImGui::NewFrame seems to raise an error, we don't want to catch it...
 }
 
 void ImGuiIntegration::Render() const
