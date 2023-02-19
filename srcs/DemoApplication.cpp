@@ -12,8 +12,6 @@
 #include "Camera.hpp"
 #include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
-#include "Obstacle2DComponent.hpp"
-#include "ObstacleMeshComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 
@@ -44,24 +42,13 @@ DemoApplication::DemoApplication()
 
     componentManager->AddComponentType<Position2DComponent>();
     componentManager->AddComponentType<Movement2DComponent>();
-    componentManager->AddComponentType<Obstacle2DComponent>();
     componentManager->AddWorldComponent<HexagonalGrid>();
     InitHexaGrid(componentManager->WriteWorldComponent<HexagonalGrid>());
 
-    renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
     renderComponentManager->AddWorldComponent<Camera>();
 
     world->AddUpdater("MovingEntities");
-
-    Entity obstacleEntity = entityManager->CreateNewEntity();
-    Obstacle2DComponent obstacle2D{{
-        glm::vec2(2.5f, 3.0f),
-        glm::vec2(1.5f, 3.0f),
-        glm::vec2(1.5f, 1.0f),
-        glm::vec2(3.5f, 1.0f),
-    }};
-    componentManager->AttachComponent<Obstacle2DComponent>(obstacleEntity, obstacle2D);
 
     StartRendering("hatcher - demo", 800, 600);
 
@@ -73,7 +60,6 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("EntityCreator", GetRendering());
     world->AddRenderUpdater("MoveOrder", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
-    world->AddRenderUpdater("Obstacle", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
     world->AddRenderUpdater("SelectionRectangle", GetRendering());
 }

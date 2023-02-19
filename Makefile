@@ -120,7 +120,6 @@ SRCS_FILES=	Camera.cpp 			\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
-		ObstacleRenderUpdater.cpp	\
 		Pathfinding.cpp			\
 		SelectionRectangleRenderUpdater.cpp	\
 		SelectedRenderUpdater.cpp 	\
