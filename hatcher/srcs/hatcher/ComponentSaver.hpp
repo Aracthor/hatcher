@@ -10,8 +10,11 @@ namespace hatcher
 class ComponentSaver final : public ISaveLoader
 {
 public:
+    void operator<<(char value) override;
+    void operator<<(bool& value) override;
+    void operator<<(int& value) override;
+    void operator<<(uint& value) override;
     void operator<<(float& value) override;
-    void operator<<(glm::vec3& value) override;
 
     std::string Result() const;
 

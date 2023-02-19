@@ -19,6 +19,8 @@ private:
 
 public:
     EntityID GetNewID();
+    int EntityCount() const;
+    void ResetEntityCount(int count);
     void UnregisterEntityID(EntityID entityID);
 };
 

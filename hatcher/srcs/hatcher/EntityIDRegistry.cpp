@@ -18,6 +18,17 @@ EntityIDRegistry::EntityID EntityIDRegistry::GetNewID()
     return m_currentLargestEntityID++;
 }
 
+int EntityIDRegistry::EntityCount() const
+{
+    return m_currentLargestEntityID - m_unusedEntityIDStack.size();
+}
+
+void EntityIDRegistry::ResetEntityCount(int count)
+{
+    m_currentLargestEntityID = count;
+    m_unusedEntityIDStack = {};
+}
+
 void EntityIDRegistry::UnregisterEntityID(EntityID entityID)
 {
     m_unusedEntityIDStack.push(entityID);

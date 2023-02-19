@@ -18,6 +18,9 @@ public:
 
     Entity CreateNewEntity() override;
 
+    void Save(ISaveLoader& saveLoader) override;
+    void Load(ISaveLoader& saveLoader) override;
+
     ComponentManager* GetComponentManager() { return m_componentManager.get(); }
     ComponentManager* GetRenderingComponentManager() { return m_renderingComponentManager.get(); }
 

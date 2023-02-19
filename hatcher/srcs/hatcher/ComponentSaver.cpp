@@ -3,19 +3,32 @@
 namespace hatcher
 {
 
-void ComponentSaver::operator<<(float& value)
+void ComponentSaver::operator<<(char value)
+{
+    m_stream << value;
+}
+
+void ComponentSaver::operator<<(bool& value)
 {
     m_stream << value;
     m_stream << '\n';
 }
 
-void ComponentSaver::operator<<(glm::vec3& value)
+void ComponentSaver::operator<<(int& value)
 {
-    m_stream << value.x;
-    m_stream << ' ';
-    m_stream << value.y;
-    m_stream << ' ';
-    m_stream << value.z;
+    m_stream << value;
+    m_stream << '\n';
+}
+
+void ComponentSaver::operator<<(uint& value)
+{
+    m_stream << value;
+    m_stream << '\n';
+}
+
+void ComponentSaver::operator<<(float& value)
+{
+    m_stream << value;
     m_stream << '\n';
 }
 

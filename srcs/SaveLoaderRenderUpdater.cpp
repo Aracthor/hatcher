@@ -2,11 +2,12 @@
 #include <string>
 
 #include "hatcher/ComponentLoader.hpp"
-#include "hatcher/ComponentManager.hpp"
 #include "hatcher/ComponentSaver.hpp"
+#include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/assert.hpp"
 
 using namespace hatcher;
 
@@ -24,8 +25,7 @@ public:
         if (event.key.keysym.scancode == SDL_SCANCODE_F5)
         {
             ComponentSaver saver;
-            componentManager->SaveLoad(saver);
-            renderComponentManager->SaveLoad(saver);
+            entityManager->Save(saver);
             m_save = saver.Result();
             std::cout << "State saved." << std::endl;
         }
@@ -34,8 +34,7 @@ public:
             if (!m_save.empty())
             {
                 ComponentLoader loader(m_save);
-                componentManager->SaveLoad(loader);
-                renderComponentManager->SaveLoad(loader);
+                entityManager->Load(loader);
                 std::cout << "State loaded." << std::endl;
             }
             else

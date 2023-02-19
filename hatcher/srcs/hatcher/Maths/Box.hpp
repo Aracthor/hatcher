@@ -33,6 +33,9 @@ public:
     const Vec& Min() const { return m_min; }
     const Vec& Max() const { return m_max; }
 
+    Vec& Min() { return m_min; }
+    Vec& Max() { return m_max; }
+
     void SetMin(const Vec& min) { m_min = min; }
     void SetMax(const Vec& max) { m_max = max; }
 

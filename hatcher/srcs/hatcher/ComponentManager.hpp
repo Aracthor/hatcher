@@ -26,8 +26,10 @@ public:
     ~ComponentManager();
 
     void AddEntities(int count);
+    void ClearEntities();
 
-    void SaveLoad(ISaveLoader& saveLoader);
+    void Save(ISaveLoader& saveLoader);
+    void Load(ISaveLoader& saveLoader);
 
     int Count() const { return m_entityCount; }
 

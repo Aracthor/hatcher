@@ -8,11 +8,15 @@
 
 namespace hatcher
 {
+class ISaveLoader;
 
 class IComponentList
 {
 public:
     virtual void AddEntities(int count) = 0;
+    virtual void ClearEntities() = 0;
+    virtual bool HasComponent(uint index) const = 0;
+    virtual void SaveLoad(uint index, ISaveLoader& saveLoader) = 0;
 
     virtual ~IComponentList() = default;
 };
@@ -22,6 +26,9 @@ class IdentifiableComponentList final : public IComponentList
 {
 public:
     void AddEntities(int count) override;
+    void ClearEntities() override;
+    bool HasComponent(uint index) const override;
+    void SaveLoad(uint index, ISaveLoader& saveLoader) override;
 
     void AttachComponent(uint index, Component& component);
     span<const std::optional<Component>> GetComponentList() const;

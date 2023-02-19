@@ -33,4 +33,28 @@ Entity EntityManager::CreateNewEntity()
     return entity;
 }
 
+void EntityManager::Save(ISaveLoader& saveLoader)
+{
+    int entityCount = m_entityIDRegistry->EntityCount();
+    saveLoader << entityCount;
+    saveLoader << '\n';
+    m_componentManager->Save(saveLoader);
+    m_renderingComponentManager->Save(saveLoader);
+}
+
+void EntityManager::Load(ISaveLoader& saveLoader)
+{
+    int entityCount;
+    saveLoader << entityCount;
+    saveLoader << '\n';
+    m_maxEntityCount = entityCount;
+    m_entityIDRegistry->ResetEntityCount(entityCount);
+    m_componentManager->ClearEntities();
+    m_componentManager->AddEntities(entityCount);
+    m_componentManager->Load(saveLoader);
+    m_renderingComponentManager->ClearEntities();
+    m_renderingComponentManager->AddEntities(entityCount);
+    m_renderingComponentManager->Load(saveLoader);
+}
+
 } // namespace hatcher

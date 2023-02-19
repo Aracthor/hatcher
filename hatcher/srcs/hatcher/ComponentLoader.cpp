@@ -8,19 +8,32 @@ ComponentLoader::ComponentLoader(const std::string& data)
 {
 }
 
-void ComponentLoader::operator<<(float& value)
+void ComponentLoader::operator<<(char value)
+{
+    m_stream.ignore();
+}
+
+void ComponentLoader::operator<<(bool& value)
 {
     m_stream >> value;
     m_stream.ignore();
 }
 
-void ComponentLoader::operator<<(glm::vec3& value)
+void ComponentLoader::operator<<(int& value)
 {
-    m_stream >> value.x;
+    m_stream >> value;
     m_stream.ignore();
-    m_stream >> value.y;
+}
+
+void ComponentLoader::operator<<(uint& value)
+{
+    m_stream >> value;
     m_stream.ignore();
-    m_stream >> value.z;
+}
+
+void ComponentLoader::operator<<(float& value)
+{
+    m_stream >> value;
     m_stream.ignore();
 }
 

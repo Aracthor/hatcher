@@ -117,10 +117,13 @@ SRCS_FILES=	Camera.cpp 			\
 		DemoApplication.cpp		\
 		EntityCreatorRenderUpdater.cpp	\
 		HexagonalGrid.cpp		\
+		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		MovingEntitiesRenderUpdater.cpp	\
 		Pathfinding.cpp			\
+		Position2DComponent.cpp		\
+		Selectable2DComponent.cpp	\
 		SelectionRectangleRenderUpdater.cpp	\
 		SelectedRenderUpdater.cpp 	\
 		SaveLoaderRenderUpdater.cpp 	\
