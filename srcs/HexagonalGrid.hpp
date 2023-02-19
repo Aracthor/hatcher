@@ -10,7 +10,7 @@
 
 using namespace hatcher;
 
-class HexagonalGrid : public IWorldComponent
+class HexagonalGrid final : public IWorldComponent
 {
 public:
     struct TileCoord
@@ -55,8 +55,13 @@ public:
 
     void SetTileWalkable(TileCoord coord, bool walkable);
 
+    void SaveLoad(ISaveLoader& saveLoader) override;
+    void PostLoad() override;
+
 private:
     TileData& GetOrCreateData(TileCoord coord);
+
+    void UpdatePathfind();
 
     float m_hexaSize = 1.f;
     std::unordered_map<TileCoord, TileData, TileCoord::Hash> m_tilesData;

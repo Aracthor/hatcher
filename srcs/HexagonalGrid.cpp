@@ -1,5 +1,6 @@
 #include "HexagonalGrid.hpp"
 
+#include "hatcher/ISaveLoader.hpp"
 #include "hatcher/assert.hpp"
 
 namespace
@@ -140,6 +141,7 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
             {
                 const glm::vec2 neighbourPosition = TileCoordToPosition(neighbour);
                 m_pathfinding.LinkNodes(tilePosition, neighbourPosition);
+                m_pathfinding.LinkNodes(neighbourPosition, tilePosition);
             }
         }
     }
@@ -149,9 +151,48 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
     }
 }
 
+void HexagonalGrid::SaveLoad(ISaveLoader& saveLoader)
+{
+    saveLoader << m_hexaSize;
+    // TODO unordored_map
+}
+
+void HexagonalGrid::PostLoad()
+{
+    UpdatePathfind();
+}
+
 HexagonalGrid::TileData& HexagonalGrid::GetOrCreateData(TileCoord coord)
 {
     if (!HasTileData(coord))
         m_tilesData[coord] = defaultTile;
     return m_tilesData[coord];
+}
+
+void HexagonalGrid::UpdatePathfind()
+{
+    m_pathfinding = {};
+
+    for (const auto& tileData : m_tilesData)
+    {
+        if (tileData.second.walkable)
+        {
+            const glm::vec2 tilePosition = TileCoordToPosition(tileData.first);
+            m_pathfinding.CreateNode(tilePosition);
+        }
+    }
+
+    for (const auto& tileData : m_tilesData)
+    {
+        if (tileData.second.walkable)
+        {
+            const glm::vec2 tilePosition = TileCoordToPosition(tileData.first);
+            m_pathfinding.CreateNode(tilePosition);
+            for (TileCoord neighbour : tileData.first.Neighbours())
+            {
+                const glm::vec2 neighbourPosition = TileCoordToPosition(neighbour);
+                m_pathfinding.LinkNodes(tilePosition, neighbourPosition);
+            }
+        }
+    }
 }

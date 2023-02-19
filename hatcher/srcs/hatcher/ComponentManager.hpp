@@ -11,6 +11,7 @@
 namespace hatcher
 {
 class IComponentList;
+class ISaveLoader;
 class IWorldComponent;
 
 template <class Component>
@@ -25,6 +26,8 @@ public:
     ~ComponentManager();
 
     void AddEntities(int count);
+
+    void SaveLoad(ISaveLoader& saveLoader);
 
     int Count() const { return m_entityCount; }
 

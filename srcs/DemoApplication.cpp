@@ -60,6 +60,7 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("EntityCreator", GetRendering());
     world->AddRenderUpdater("MoveOrder", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
+    world->AddRenderUpdater("SaveLoader", GetRendering());
     world->AddRenderUpdater("Selected", GetRendering());
     world->AddRenderUpdater("SelectionRectangle", GetRendering());
 }

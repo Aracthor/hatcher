@@ -50,10 +50,7 @@ void Pathfinding::LinkNodes(glm::vec2 positionA, glm::vec2 positionB)
     HATCHER_ASSERT(nodeB);
     HATCHER_ASSERT(std::find(nodeA->links.begin(), nodeA->links.end(), nodeB) ==
                    nodeA->links.end());
-    HATCHER_ASSERT(std::find(nodeB->links.begin(), nodeB->links.end(), nodeA) ==
-                   nodeB->links.end());
     nodeA->links.emplace_back(nodeB);
-    nodeB->links.emplace_back(nodeA);
 }
 
 void Pathfinding::DeleteNode(glm::vec2 position)

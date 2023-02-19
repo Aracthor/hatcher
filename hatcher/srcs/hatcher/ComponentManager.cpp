@@ -19,4 +19,12 @@ void ComponentManager::AddEntities(int count)
     }
 }
 
+void ComponentManager::SaveLoad(ISaveLoader& saveLoader)
+{
+    for (auto& worldComponent : m_worldComponents)
+    {
+        worldComponent.second->SaveLoad(saveLoader);
+    }
+}
+
 } // namespace hatcher

@@ -123,6 +123,7 @@ SRCS_FILES=	Camera.cpp 			\
 		Pathfinding.cpp			\
 		SelectionRectangleRenderUpdater.cpp	\
 		SelectedRenderUpdater.cpp 	\
+		SaveLoaderRenderUpdater.cpp 	\
 		TransformationHelper.cpp	\
 		main.cpp			\
 
