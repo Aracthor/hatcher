@@ -80,8 +80,6 @@ HexagonalGrid::TileCoord HexagonalGrid::PositionToTileCoords(glm::vec2 position)
 
 glm::vec2 HexagonalGrid::TileCoordToPosition(TileCoord coord) const
 {
-    // const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f) * m_hexaSize;
-    // const glm::vec2 rVector = glm::vec2(sqrtf(3.f) / 2.f, 3.f / 2.f) * m_hexaSize;
     return glm::vec2(coord.q, coord.r) * m_hexToPosMatrix;
 }
 
