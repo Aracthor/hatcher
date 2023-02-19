@@ -9,6 +9,7 @@ enum Type
 {
     Lines,
     Triangles,
+    TriangleFan,
     Count
 };
 } // namespace Primitive

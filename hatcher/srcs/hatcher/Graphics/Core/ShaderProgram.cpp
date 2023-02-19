@@ -113,6 +113,16 @@ bool ShaderProgram::IsCurrentlyUsed() const
     return (currentProgramID == static_cast<GLint>(m_programID));
 }
 
+void ShaderProgram::SetFloatUniform(const char* name, float value) const
+{
+    HATCHER_ASSERT(IsCurrentlyUsed());
+    // TODO cache uniform locations ?
+    GLint uniformLocation;
+    GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
+    HATCHER_ASSERT_MESSAGE(uniformLocation >= 0, "uniform name: " << name);
+    GL_CHECK(glUniform1f(uniformLocation, value));
+}
+
 void ShaderProgram::SetVector4Uniform(const char* name, const float* vectorPtr) const
 {
     HATCHER_ASSERT(IsCurrentlyUsed());

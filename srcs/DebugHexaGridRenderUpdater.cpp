@@ -57,10 +57,17 @@ public:
         eventUpdater->RegisterListener(
             std::make_shared<DebugHexaGridEventListener>(m_gridDisplayEnabled));
 
-        std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
+        std::shared_ptr<Material> gridMaterial = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
-        material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
-        m_gridMesh = std::make_unique<Mesh>(material, Primitive::Lines);
+        gridMaterial->AddUniform("uniHeight", 0.01f);
+        gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
+        m_gridMesh = std::make_unique<Mesh>(gridMaterial, Primitive::Lines);
+
+        std::shared_ptr<Material> tileMaterial = rendering->GetMaterialFactory()->CreateMaterial(
+            "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        tileMaterial->AddUniform("uniHeight", 0.f);
+        tileMaterial->AddUniform("uniColor", glm::vec4(0.3, 0.3, 0.3, 1.0));
+        m_walkableTileMesh = std::make_unique<Mesh>(tileMaterial, Primitive::TriangleFan);
     }
 
     ~DebugGridHexaRenderUpdater() = default;
@@ -68,14 +75,31 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
+        const HexagonalGrid* grid = componentManager->ReadWorldComponent<HexagonalGrid>();
         if (!m_meshFilled)
         {
-            const HexagonalGrid* grid = componentManager->ReadWorldComponent<HexagonalGrid>();
             FillGridMesh(grid);
         }
 
         if (m_gridDisplayEnabled)
         {
+            for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
+            {
+                for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
+                {
+                    HexagonalGrid::TileCoord coord(q, r);
+                    if (!grid->HasTileData(coord))
+                        continue;
+                    const HexagonalGrid::TileData& tileData = grid->GetTileData(coord);
+                    if (tileData.walkable)
+                    {
+                        const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
+                        const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
+                        frameRenderer.AddMeshToRender(m_walkableTileMesh.get(), tileMatrix);
+                    }
+                }
+            }
+
             const glm::mat4 identityMatrix = glm::mat4(1.f);
             frameRenderer.AddMeshToRender(m_gridMesh.get(), identityMatrix);
         }
@@ -105,14 +129,26 @@ private:
                 };
             }
         }
-
         m_gridMesh->Set2DPositions(positions.data(), std::size(positions));
+
+        std::vector<float> tilePositions;
+        tilePositions.reserve(12);
+        const HexagonalGrid::TileCoord centerCoord(0, 0);
+        for (int i = 0; i < 6; i++)
+        {
+            const glm::vec2 anglePosition = grid->GetHexaAngle(centerCoord, i);
+            tilePositions.push_back(anglePosition.x);
+            tilePositions.push_back(anglePosition.y);
+        }
+        m_walkableTileMesh->Set2DPositions(tilePositions.data(), std::size(tilePositions));
     }
 
     bool m_gridDisplayEnabled = false;
     bool m_meshFilled = false;
     int m_gridDisplaySize = 10;
     std::unique_ptr<Mesh> m_gridMesh;
+
+    std::unique_ptr<Mesh> m_walkableTileMesh;
 };
 
 const int dummy = RegisterRenderUpdater<DebugGridHexaRenderUpdater>("DebugHexaGrid");

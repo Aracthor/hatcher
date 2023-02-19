@@ -7,10 +7,30 @@
 
 namespace hatcher
 {
+namespace
+{
 
-static_assert(Primitive::Count == 2);
+static_assert(Primitive::Count == 3);
+GLenum PrimitiveToGLPrimitive(Primitive::Type type)
+{
+    switch (type)
+    {
+    case Primitive::Lines:
+        return GL_LINES;
+    case Primitive::Triangles:
+        return GL_TRIANGLES;
+    case Primitive::TriangleFan:
+        return GL_TRIANGLE_FAN;
+    default:
+        HATCHER_ASSERT_MESSAGE(false, "Unknown primitive type.");
+        return -1;
+    }
+}
+
+} // namespace
+
 VertexArrayObject::VertexArrayObject(Primitive::Type primitive)
-    : m_mode((primitive == Primitive::Lines) ? GL_LINES : GL_TRIANGLES)
+    : m_mode(PrimitiveToGLPrimitive(primitive))
 {
     GL_CHECK(glGenVertexArrays(1, &m_id));
 }

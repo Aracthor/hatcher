@@ -17,7 +17,11 @@ Material::~Material() = default;
 void Material::Use() const
 {
     m_shaderProgram->Use();
-    for (auto uniform : m_uniforms)
+    for (auto uniform : m_floatUniforms)
+    {
+        m_shaderProgram->SetFloatUniform(uniform.first, uniform.second);
+    }
+    for (auto uniform : m_vec4Uniforms)
     {
         m_shaderProgram->SetVector4Uniform(uniform.first, glm::value_ptr(uniform.second));
     }
@@ -45,10 +49,16 @@ GLint Material::TextureCoordsAttribLocation() const
     return m_shaderProgram->GetAttribLocation("vertTextureCoord");
 }
 
+void Material::AddUniform(const char* name, float value)
+{
+    HATCHER_ASSERT(m_floatUniforms.find(name) == m_floatUniforms.end());
+    m_floatUniforms[name] = value;
+}
+
 void Material::AddUniform(const char* name, const glm::vec4& value)
 {
-    HATCHER_ASSERT(m_uniforms.find(name) == m_uniforms.end());
-    m_uniforms[name] = value;
+    HATCHER_ASSERT(m_vec4Uniforms.find(name) == m_vec4Uniforms.end());
+    m_vec4Uniforms[name] = value;
 }
 
 void Material::AddTexture(const char* name, const std::shared_ptr<const Texture>& texture)
