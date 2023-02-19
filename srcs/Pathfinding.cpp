@@ -1,202 +1,137 @@
 #include "Pathfinding.hpp"
 
+#include <algorithm>
 #include <set>
+#include <unordered_map>
 
-#include "hatcher/ComponentManager.hpp"
-#include "hatcher/Maths/Box.hpp"
+#include "hatcher/assert.hpp"
 
-#include "Obstacle2DComponent.hpp"
-
-using namespace hatcher;
-
-namespace Pathfinding
-{
 namespace
 {
-
-bool Intersects(const glm::vec2& a1, const glm::vec2& a2, const glm::vec2& b1, const glm::vec2& b2)
+struct NodeValueSorter
 {
-    const glm::vec2 a = a2 - a1;
-    const glm::vec2 b = b2 - b1;
-    const float dot = glm::dot(a, b);
+    using NodeCosts = std::unordered_map<const Pathfinding::Node*, float>;
 
-    if (dot == 0) // Parallel lines
-        return false;
+    const glm::vec2 endPos;
+    NodeCosts& costs;
 
-    const glm::vec2 c = b1 - a1;
-    const float t = glm::dot(c, b) / dot;
-    if (t < 0 || t > 1)
-        return false;
-
-    const float u = (c.x * a.y - c.y * a.x) / dot;
-    if (u < 0 || u > 1)
-        return false;
-
-    return true;
-}
-
-bool Intersects(const Box2f& box, const glm::vec2& a, const glm::vec2& b)
-{
-    if ((a.x <= box.Min().x && b.x <= box.Min().x) || (a.y <= box.Min().y && b.y <= box.Min().y) ||
-        (a.x >= box.Max().x && b.x >= box.Max().x) || (a.y >= box.Max().y && b.y >= box.Max().y))
-        return false;
-
-    glm::vec2 corners[4] = {
-        {box.Min().x, box.Min().y},
-        {box.Max().x, box.Min().y},
-        {box.Max().x, box.Max().y},
-        {box.Min().x, box.Max().y},
-    };
-
-    for (int i = 0; i < 4; i++)
+    NodeValueSorter(glm::vec2 endPos, NodeCosts& costs)
+        : endPos(endPos)
+        , costs(costs)
     {
-        int nextCorner = (i == 3) ? 0 : (i + 1);
-        if (Intersects(a, b, corners[i], corners[nextCorner]))
-            return true;
     }
 
-    return false;
-}
-
-struct Graph
-{
-    struct Node
+    int GetNodeValue(const Pathfinding::Node* node) const
     {
-        glm::vec2 pos;
-        std::vector<int> links;
-    };
-    std::vector<Node> nodes;
-
-    struct NodeValueSorter
-    {
-        const Graph& m_graph;
-        const std::vector<float>& m_costs;
-        const glm::vec2 m_endPos;
-
-        int GetNodeValue(int node) const
-        {
-            return m_costs[node] + glm::length(m_graph.nodes[node].pos - m_endPos);
-        }
-
-        bool operator()(int nodeA, int nodeB) const
-        {
-            const int nodeAValue = GetNodeValue(nodeA);
-            const int nodeBValue = GetNodeValue(nodeB);
-            return nodeAValue < nodeBValue;
-        };
-    };
-    using NodeSet = std::multiset<int, NodeValueSorter>;
-
-    std::vector<glm::vec2> Resolve(int start, int end)
-    {
-        const glm::vec2& objective = nodes[end].pos;
-        const int size = nodes.size();
-        std::vector<float> costs;
-        std::vector<int> previous;
-        costs.resize(size);
-        previous.resize(size, -1);
-        previous[start] = 0;
-
-        const NodeValueSorter sorter = {*this, costs, objective};
-        NodeSet toVisit(sorter);
-        toVisit.insert(start);
-        costs[start] = 0;
-        while (!toVisit.empty() && *toVisit.begin() != end)
-        {
-            const int nodeIndex = *toVisit.begin();
-            toVisit.erase(toVisit.begin());
-            const Node& node = nodes[nodeIndex];
-            for (int link : node.links)
-            {
-                if (previous[link] == -1)
-                {
-                    previous[link] = nodeIndex;
-                    costs[link] = costs[nodeIndex] + glm::length(node.pos - nodes[link].pos);
-                    toVisit.insert(link);
-                }
-            }
-        }
-
-        if (!toVisit.empty() && *toVisit.begin() == end)
-        {
-            std::vector<glm::vec2> result;
-            int nodeIndex = end;
-            while (nodeIndex != start)
-            {
-                result.push_back(nodes[nodeIndex].pos);
-                nodeIndex = previous[nodeIndex];
-            }
-            return result;
-        }
-
-        return {};
+        HATCHER_ASSERT(costs.find(node) != costs.end());
+        return costs.at(node) + glm::length(node->pos - endPos);
     }
+
+    bool operator()(const Pathfinding::Node* nodeA, const Pathfinding::Node* nodeB) const
+    {
+        const int nodeAValue = GetNodeValue(nodeA);
+        const int nodeBValue = GetNodeValue(nodeB);
+        return nodeAValue < nodeBValue;
+    };
 };
-
-bool CanBeLinked(const Graph::Node& nodeA, const Graph::Node& nodeB,
-                 const std::vector<Box2f>& boxes)
-{
-    for (const Box2f& box : boxes)
-    {
-        if (Intersects(box, nodeA.pos, nodeB.pos))
-            return false;
-    }
-    return true;
-}
-
-std::vector<Box2f> GetObstacleBoxes(const ComponentManager* componentManager, float borderOffset)
-{
-    std::vector<Box2f> boxes;
-
-    auto obstacles = componentManager->ReadComponents<Obstacle2DComponent>();
-    for (std::optional<const Obstacle2DComponent> obstacle : obstacles)
-    {
-        if (obstacle)
-        {
-            Box2f obstacleBox = Box2f(obstacle->corners.begin(), obstacle->corners.end());
-            obstacleBox.SetMin(obstacleBox.Min() - glm::vec2(borderOffset));
-            obstacleBox.SetMax(obstacleBox.Max() + glm::vec2(borderOffset));
-            boxes.push_back(obstacleBox);
-        }
-    }
-
-    return boxes;
-}
-
-Graph CreateGraph(const glm::vec2& start, const glm::vec2& end,
-                  const ComponentManager* componentManager, float borderOffset)
-{
-    std::vector<Box2f> boxes = GetObstacleBoxes(componentManager, borderOffset);
-
-    Graph graph;
-    graph.nodes.push_back({start});
-    graph.nodes.push_back({end});
-    for (const Box2f& box : boxes)
-    {
-        auto corners = box.GetCorners();
-        for (const glm::vec2& corner : corners)
-            graph.nodes.push_back({corner});
-    }
-
-    for (Graph::Node& node : graph.nodes)
-    {
-        for (int i = 0; i < (int)graph.nodes.size(); i++)
-        {
-            if (node.pos != graph.nodes[i].pos && CanBeLinked(node, graph.nodes[i], boxes))
-                node.links.push_back(i);
-        }
-    }
-
-    return graph;
-}
-
+using NodeSet = std::multiset<const Pathfinding::Node*, NodeValueSorter>;
 } // namespace
 
-std::vector<glm::vec2> GetPath(const glm::vec2& start, const glm::vec2& end,
-                               const ComponentManager* componentManager, float borderOffset)
+void Pathfinding::CreateNode(glm::vec2 position)
 {
-    Graph graph = CreateGraph(start, end, componentManager, borderOffset);
-    return graph.Resolve(0, 1);
+    m_nodes.emplace_back(new Node({.pos = position}));
 }
 
-} // namespace Pathfinding
+void Pathfinding::LinkNodes(glm::vec2 positionA, glm::vec2 positionB)
+{
+    std::shared_ptr<Node> nodeA = FindNodeByPosition(positionA);
+    std::shared_ptr<Node> nodeB = FindNodeByPosition(positionB);
+    HATCHER_ASSERT(nodeA);
+    HATCHER_ASSERT(nodeB);
+    HATCHER_ASSERT(std::find(nodeA->links.begin(), nodeA->links.end(), nodeB) ==
+                   nodeA->links.end());
+    HATCHER_ASSERT(std::find(nodeB->links.begin(), nodeB->links.end(), nodeA) ==
+                   nodeB->links.end());
+    nodeA->links.emplace_back(nodeB);
+    nodeB->links.emplace_back(nodeA);
+}
+
+void Pathfinding::DeleteNode(glm::vec2 position)
+{
+    std::shared_ptr<Node> node = FindNodeByPosition(position);
+    HATCHER_ASSERT(node);
+    for (auto& neighbour : node->links)
+    {
+        neighbour->links.erase(std::find(neighbour->links.begin(), neighbour->links.end(), node));
+    }
+
+    auto NodeIsAtPosition = [position](const std::shared_ptr<Node>& node) {
+        return node->pos == position;
+    };
+    auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
+    m_nodes.erase(it);
+}
+
+std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos) const
+{
+    const Node* startNode = FindNodeByPosition(startPos).get();
+    const Node* endNode = FindNodeByPosition(endPos).get();
+    if (!startNode || !endNode)
+        return {};
+
+    std::unordered_map<const Pathfinding::Node*, const Pathfinding::Node*> previous;
+    NodeValueSorter::NodeCosts nodeCosts;
+    NodeValueSorter sorter = NodeValueSorter(endPos, nodeCosts);
+    NodeSet toVisit(sorter);
+    nodeCosts[startNode] = 0.f;
+    previous[startNode] = nullptr;
+    toVisit.insert(startNode);
+
+    while (!toVisit.empty() && *toVisit.begin() != endNode)
+    {
+        const Node* node = *toVisit.begin();
+        toVisit.erase(toVisit.begin());
+        for (auto& neighbour : node->links)
+        {
+            if (previous.find(neighbour.get()) == previous.end())
+            {
+                previous[neighbour.get()] = node;
+                nodeCosts[neighbour.get()] =
+                    sorter.costs[node] + glm::length(node->pos - neighbour->pos);
+                toVisit.insert(neighbour.get());
+            }
+        }
+    }
+
+    if (!toVisit.empty() && *toVisit.begin() == endNode)
+    {
+        std::vector<glm::vec2> result;
+        const Node* node = endNode;
+        while (node != startNode)
+        {
+            result.push_back(node->pos);
+            node = previous[node];
+        }
+        return result;
+    }
+
+    return {};
+}
+
+std::shared_ptr<Pathfinding::Node> Pathfinding::FindNodeByPosition(glm::vec2 position)
+{
+    auto NodeIsAtPosition = [position](const std::shared_ptr<Node>& node) {
+        return node->pos == position;
+    };
+    auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
+    return (it == m_nodes.end()) ? std::shared_ptr<Pathfinding::Node>() : *it;
+}
+
+const std::shared_ptr<Pathfinding::Node> Pathfinding::FindNodeByPosition(glm::vec2 position) const
+{
+    auto NodeIsAtPosition = [position](const std::shared_ptr<Node>& node) {
+        return node->pos == position;
+    };
+    auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
+    return (it == m_nodes.end()) ? std::shared_ptr<Pathfinding::Node>() : *it;
+}

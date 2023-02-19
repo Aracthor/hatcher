@@ -59,6 +59,14 @@ HexagonalGrid::TileCoord::TileCoord(int q, int r)
 {
 }
 
+std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() const
+{
+    return {
+        TileCoord(q + 1, r + 0), TileCoord(q + 1, r - 1), TileCoord(q + 0, r + 1),
+        TileCoord(q + 0, r - 1), TileCoord(q - 1, r + 0), TileCoord(q - 1, r + 1),
+    };
+}
+
 HexagonalGrid::HexagonalGrid()
 {
     const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f) * m_hexaSize;
@@ -100,18 +108,6 @@ const HexagonalGrid::TileData& HexagonalGrid::GetTileData(glm::vec2 position) co
     return GetTileData(PositionToTileCoords(position));
 }
 
-HexagonalGrid::TileData& HexagonalGrid::GetTileData(TileCoord coords)
-{
-    if (!HasTileData(coords))
-        m_tilesData[coords] = defaultTile;
-    return m_tilesData.at(coords);
-}
-
-HexagonalGrid::TileData& HexagonalGrid::GetTileData(glm::vec2 position)
-{
-    return GetTileData(PositionToTileCoords(position));
-}
-
 glm::vec2 HexagonalGrid::GetTileCenter(glm::vec2 position) const
 {
     return TileCoordToPosition(PositionToTileCoords(position));
@@ -122,4 +118,40 @@ glm::vec2 HexagonalGrid::GetHexaAngle(TileCoord coord, int angleIndex) const
     const float angle = DegreeToRadian(30.f + float(angleIndex) * 60.f);
     const glm::vec2 hexagonCenter = TileCoordToPosition(coord);
     return hexagonCenter + glm::vec2(cosf(angle), sinf(angle)) * m_hexaSize;
+}
+
+std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(TileCoord start, TileCoord end) const
+{
+    const glm::vec2 startPos = TileCoordToPosition(start);
+    const glm::vec2 endPos = TileCoordToPosition(end);
+    return m_pathfinding.GetPath(startPos, endPos);
+}
+
+void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
+{
+    GetOrCreateData(coord).walkable = walkable;
+    const glm::vec2 tilePosition = TileCoordToPosition(coord);
+    if (walkable)
+    {
+        m_pathfinding.CreateNode(tilePosition);
+        for (TileCoord neighbour : coord.Neighbours())
+        {
+            if (GetTileData(neighbour).walkable)
+            {
+                const glm::vec2 neighbourPosition = TileCoordToPosition(neighbour);
+                m_pathfinding.LinkNodes(tilePosition, neighbourPosition);
+            }
+        }
+    }
+    else
+    {
+        m_pathfinding.DeleteNode(tilePosition);
+    }
+}
+
+HexagonalGrid::TileData& HexagonalGrid::GetOrCreateData(TileCoord coord)
+{
+    if (!HasTileData(coord))
+        m_tilesData[coord] = defaultTile;
+    return m_tilesData[coord];
 }

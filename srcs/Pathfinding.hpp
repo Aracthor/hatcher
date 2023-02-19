@@ -1,20 +1,28 @@
 #pragma once
 
+#include <memory>
 #include <vector>
 
 #include "hatcher/glm_pure.hpp"
 
-namespace hatcher
+class Pathfinding
 {
-class ComponentManager;
-} // namespace hatcher
+public:
+    void CreateNode(glm::vec2 position);
+    void LinkNodes(glm::vec2 positionA, glm::vec2 positionB);
+    void DeleteNode(glm::vec2 position);
 
-using namespace hatcher;
+    std::vector<glm::vec2> GetPath(glm::vec2 startPos, glm::vec2 endPos) const;
 
-namespace Pathfinding
-{
+    struct Node
+    {
+        glm::vec2 pos;
+        std::vector<std::shared_ptr<Node>> links;
+    };
 
-std::vector<glm::vec2> GetPath(const glm::vec2& start, const glm::vec2& end,
-                               const ComponentManager* componentManager, float borderOffset);
+private:
+    std::shared_ptr<Node> FindNodeByPosition(glm::vec2 position);
+    const std::shared_ptr<Node> FindNodeByPosition(glm::vec2 position) const;
 
-} // namespace Pathfinding
+    std::vector<std::shared_ptr<Node>> m_nodes;
+};

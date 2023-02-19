@@ -1,7 +1,6 @@
 #include "Camera.hpp"
 #include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
-#include "Pathfinding.hpp"
 #include "Position2DComponent.hpp"
 #include "Selectable2DComponent.hpp"
 
@@ -33,7 +32,8 @@ public:
             if (!hexaGrid->GetTileData(coords).walkable)
                 return;
 
-            const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
+            const HexagonalGrid::TileCoord tileDestination =
+                hexaGrid->PositionToTileCoords(worldCoords2D);
             auto movementComponents = componentManager->WriteComponents<Movement2DComponent>();
             auto selectableComponents =
                 renderComponentManager->ReadComponents<Selectable2DComponent>();
@@ -49,9 +49,10 @@ public:
                 if (selectableComponent && selectableComponent->selected && movementComponent)
                 {
                     HATCHER_ASSERT(positionComponent);
+                    const HexagonalGrid::TileCoord tileStart =
+                        hexaGrid->PositionToTileCoords(positionComponent->position);
                     std::vector<glm::vec2> path =
-                        Pathfinding::GetPath(positionComponent->position, entitySpawnPosition,
-                                             componentManager, movementComponent->obstacleOffset);
+                        hexaGrid->GetPathIfPossible(tileStart, tileDestination);
                     if (!path.empty())
                     {
                         movementComponent->path = path;

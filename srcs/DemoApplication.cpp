@@ -27,9 +27,10 @@ void InitHexaGrid(HexagonalGrid* grid)
     {
         for (int r = -5; r <= 5; r++)
         {
-            grid->GetTileData(HexagonalGrid::TileCoord(q, r)).walkable = true;
+            grid->SetTileWalkable(HexagonalGrid::TileCoord(q, r), true);
         }
     }
+    grid->SetTileWalkable(HexagonalGrid::TileCoord(0, 0), false);
 }
 } // namespace
 
