@@ -1,7 +1,6 @@
 #pragma once
 
 #include "hatcher/Maths/Box.hpp"
-#include "hatcher/glm_pure.hpp"
 
 using namespace hatcher;
 
