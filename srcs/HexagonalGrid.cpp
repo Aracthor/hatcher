@@ -30,7 +30,28 @@ HexagonalGrid::TileCoord HexaCoordRound(float q, float r)
 
     return {int(qRound), int(rRound)};
 }
+
+std::size_t hashCombine(std::size_t hashA, std::size_t hashB)
+{
+    return hashB ^ (hashA + 0x9e3779b9 + (hashB << 6) + (hashB >> 2));
+}
+
 } // namespace
+
+static_assert(sizeof(HexagonalGrid::TileData) == 1);
+HexagonalGrid::TileData HexagonalGrid::defaultTile = {
+    .walkable = false,
+};
+
+std::size_t HexagonalGrid::TileCoord::Hash::operator()(TileCoord coord) const
+{
+    return hashCombine(std::hash<int>()(coord.q), std::hash<int>()(coord.r));
+}
+
+bool HexagonalGrid::TileCoord::operator==(TileCoord other) const
+{
+    return q == other.q && r == other.r;
+}
 
 HexagonalGrid::TileCoord::TileCoord(int q, int r)
     : q(q)
@@ -62,6 +83,35 @@ glm::vec2 HexagonalGrid::TileCoordToPosition(TileCoord coord) const
     // const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f) * m_hexaSize;
     // const glm::vec2 rVector = glm::vec2(sqrtf(3.f) / 2.f, 3.f / 2.f) * m_hexaSize;
     return glm::vec2(coord.q, coord.r) * m_hexToPosMatrix;
+}
+
+bool HexagonalGrid::HasTileData(TileCoord coords) const
+{
+    return m_tilesData.find(coords) != m_tilesData.end();
+}
+
+const HexagonalGrid::TileData& HexagonalGrid::GetTileData(TileCoord coords) const
+{
+    if (!HasTileData(coords))
+        return defaultTile;
+    return m_tilesData.at(coords);
+}
+
+const HexagonalGrid::TileData& HexagonalGrid::GetTileData(glm::vec2 position) const
+{
+    return GetTileData(PositionToTileCoords(position));
+}
+
+HexagonalGrid::TileData& HexagonalGrid::GetTileData(TileCoord coords)
+{
+    if (!HasTileData(coords))
+        m_tilesData[coords] = defaultTile;
+    return m_tilesData.at(coords);
+}
+
+HexagonalGrid::TileData& HexagonalGrid::GetTileData(glm::vec2 position)
+{
+    return GetTileData(PositionToTileCoords(position));
 }
 
 glm::vec2 HexagonalGrid::GetTileCenter(glm::vec2 position) const

@@ -92,6 +92,8 @@ private:
             for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
             {
                 HexagonalGrid::TileCoord coord(q, r);
+                if (!grid->HasTileData(coord))
+                    continue;
                 for (int i = 0; i < 6; i++)
                 {
                     const glm::vec2 anglePosition = grid->GetHexaAngle(coord, i);

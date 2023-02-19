@@ -19,6 +19,20 @@
 
 using namespace hatcher;
 
+namespace
+{
+void InitHexaGrid(HexagonalGrid* grid)
+{
+    for (int q = -5; q <= 5; q++)
+    {
+        for (int r = -5; r <= 5; r++)
+        {
+            grid->GetTileData(HexagonalGrid::TileCoord(q, r)).walkable = true;
+        }
+    }
+}
+} // namespace
+
 DemoApplication::DemoApplication()
     : GameApplication()
 {
@@ -31,6 +45,7 @@ DemoApplication::DemoApplication()
     componentManager->AddComponentType<Movement2DComponent>();
     componentManager->AddComponentType<Obstacle2DComponent>();
     componentManager->AddWorldComponent<HexagonalGrid>();
+    InitHexaGrid(componentManager->WriteWorldComponent<HexagonalGrid>());
 
     renderComponentManager->AddComponentType<ObstacleMeshComponent>();
     renderComponentManager->AddComponentType<Selectable2DComponent>();
