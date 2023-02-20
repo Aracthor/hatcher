@@ -69,6 +69,7 @@ std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() c
 }
 
 HexagonalGrid::HexagonalGrid()
+    : m_hexaSize(sqrt(4.f / 3.f))
 {
     const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f);
     const glm::vec2 rVector = glm::vec2(qVector.x / 2.f, 3.f / 2.f);
