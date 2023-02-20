@@ -108,6 +108,9 @@ public:
 private:
     void FillGridMesh(const HexagonalGrid* grid)
     {
+        HATCHER_ASSERT(m_meshFilled == false);
+        m_meshFilled = true;
+
         std::vector<float> positions;
         const int hexagonCount = m_gridDisplaySize * m_gridDisplaySize * 4;
         positions.reserve(hexagonCount * 24);
