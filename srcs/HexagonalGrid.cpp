@@ -70,12 +70,13 @@ std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() c
 
 HexagonalGrid::HexagonalGrid()
 {
-    const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f) * m_hexaSize;
-    const glm::vec2 rVector = glm::vec2(qVector.x / 2.f, 3.f / 2.f) * m_hexaSize;
+    const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f);
+    const glm::vec2 rVector = glm::vec2(qVector.x / 2.f, 3.f / 2.f);
     m_hexToPosMatrix[0][0] = qVector.x;
     m_hexToPosMatrix[0][1] = rVector.x;
     m_hexToPosMatrix[1][0] = qVector.y;
     m_hexToPosMatrix[1][1] = rVector.y;
+    m_hexToPosMatrix *= m_hexaSize;
     m_posToHexMatrix = glm::inverse(m_hexToPosMatrix);
 }
 
