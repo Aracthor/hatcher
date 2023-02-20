@@ -31,6 +31,43 @@ void ISaveLoader::operator<<(std::vector<T>& vector)
     *this << ']';
 }
 
+template <class Key, class T, class Hash>
+void ISaveLoader::operator<<(std::unordered_map<Key, T, Hash>& map)
+{
+    if (!IsSaving())
+        map = {};
+
+    int size = map.size();
+    *this << size;
+    *this << ' ';
+    *this << '[';
+    for (int i = 0; i < size; i++)
+    {
+        if (IsSaving())
+        {
+            auto it = map.begin();
+            std::advance(it, i);
+            Key key = it->first;
+            T value = it->second;
+            *this << key;
+            *this << ';';
+            *this << value;
+            *this << ',';
+        }
+        else
+        {
+            Key key;
+            T value;
+            *this << key;
+            *this << ';';
+            *this << value;
+            *this << ',';
+            map.insert({key, value});
+        }
+    }
+    *this << ']';
+}
+
 template <glm::length_t L, typename T>
 void ISaveLoader::operator<<(glm::vec<L, T>& vector)
 {

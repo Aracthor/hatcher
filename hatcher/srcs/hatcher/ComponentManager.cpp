@@ -64,6 +64,7 @@ void ComponentManager::Load(ISaveLoader& saveLoader)
     for (auto& worldComponent : m_worldComponents)
     {
         worldComponent.second->SaveLoad(saveLoader);
+        worldComponent.second->PostLoad();
     }
 
     for (int entityID = 0; entityID < m_entityCount; entityID++)

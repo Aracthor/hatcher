@@ -14,6 +14,12 @@ void ComponentSaver::operator<<(bool& value)
     m_stream << '\n';
 }
 
+void ComponentSaver::operator<<(ubyte& value)
+{
+    m_stream << value;
+    m_stream << '\n';
+}
+
 void ComponentSaver::operator<<(int& value)
 {
     m_stream << value;

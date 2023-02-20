@@ -154,7 +154,7 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
 void HexagonalGrid::SaveLoad(ISaveLoader& saveLoader)
 {
     saveLoader << m_hexaSize;
-    // TODO unordored_map
+    saveLoader << m_tilesData;
 }
 
 void HexagonalGrid::PostLoad()
@@ -195,4 +195,17 @@ void HexagonalGrid::UpdatePathfind()
             }
         }
     }
+}
+
+void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileCoord& coord)
+{
+    saveLoader << coord.q;
+    saveLoader << coord.r;
+}
+
+void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileData& data)
+{
+    static_assert(sizeof(HexagonalGrid::TileData) == sizeof(ubyte));
+    ubyte& byte = reinterpret_cast<ubyte&>(data);
+    saveLoader << byte;
 }

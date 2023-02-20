@@ -13,6 +13,12 @@ void ComponentLoader::operator<<(char value)
     m_stream.ignore();
 }
 
+void ComponentLoader::operator<<(ubyte& value)
+{
+    m_stream >> value;
+    m_stream.ignore();
+}
+
 void ComponentLoader::operator<<(bool& value)
 {
     m_stream >> value;
