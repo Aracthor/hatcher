@@ -28,9 +28,9 @@ public:
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-            HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
+            const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
             if (!hexaGrid->GetTileData(worldCoords2D).walkable)
-                hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(worldCoords2D), true);
+                return;
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
             Entity newEntity = entityManager->CreateNewEntity();

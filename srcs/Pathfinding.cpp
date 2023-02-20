@@ -37,6 +37,11 @@ struct NodeValueSorter
 using NodeSet = std::multiset<const Pathfinding::Node*, NodeValueSorter>;
 } // namespace
 
+bool Pathfinding::ContainsNode(glm::vec2 position) const
+{
+    return FindNodeByPosition(position) != nullptr;
+}
+
 void Pathfinding::CreateNode(glm::vec2 position)
 {
     m_nodes.emplace_back(new Node({.pos = position}));

@@ -117,6 +117,7 @@ SRCS_FILES=	Camera.cpp 			\
 		EntityCreatorRenderUpdater.cpp	\
 		HexagonalGrid.cpp		\
 		HexaGridRenderUpdater.cpp	\
+		HexaGridControlPanelRenderUpdater.cpp	\
 		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\

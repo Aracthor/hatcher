@@ -132,7 +132,11 @@ std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(TileCoord start, TileCoo
 
 void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
 {
-    GetOrCreateData(coord).walkable = walkable;
+    TileData& data = GetOrCreateData(coord);
+    if (data.walkable == walkable)
+        return;
+
+    data.walkable = walkable;
     const glm::vec2 tilePosition = TileCoordToPosition(coord);
     if (walkable)
     {
@@ -149,7 +153,8 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
     }
     else
     {
-        m_pathfinding.DeleteNode(tilePosition);
+        if (m_pathfinding.ContainsNode(tilePosition))
+            m_pathfinding.DeleteNode(tilePosition);
     }
 }
 

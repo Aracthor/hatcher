@@ -58,6 +58,7 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("DemoImgui", GetRendering());
     world->AddRenderUpdater("EntityCreator", GetRendering());
     world->AddRenderUpdater("HexaGrid", GetRendering());
+    world->AddRenderUpdater("HexaGridControlPanel", GetRendering());
     world->AddRenderUpdater("MoveOrder", GetRendering());
     world->AddRenderUpdater("MovingEntities", GetRendering());
     world->AddRenderUpdater("SaveLoader", GetRendering());
