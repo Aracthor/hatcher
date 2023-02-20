@@ -18,10 +18,10 @@ using namespace hatcher;
 
 namespace
 {
-class DebugHexaGridEventListener final : public IEventListener
+class HexaGridEventListener final : public IEventListener
 {
 public:
-    DebugHexaGridEventListener(bool& gridDisplayEnabled)
+    HexaGridEventListener(bool& gridDisplayEnabled)
         : m_gridDisplayEnabled(gridDisplayEnabled)
     {
     }
@@ -49,13 +49,13 @@ private:
     bool& m_gridDisplayEnabled;
 };
 
-class DebugGridHexaRenderUpdater final : public RenderUpdater
+class HexaGridRenderUpdater final : public RenderUpdater
 {
 public:
-    DebugGridHexaRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    HexaGridRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
         eventUpdater->RegisterListener(
-            std::make_shared<DebugHexaGridEventListener>(m_gridDisplayEnabled));
+            std::make_shared<HexaGridEventListener>(m_gridDisplayEnabled));
 
         std::shared_ptr<Material> gridMaterial = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
@@ -70,7 +70,7 @@ public:
         m_walkableTileMesh = std::make_unique<Mesh>(tileMaterial, Primitive::TriangleFan);
     }
 
-    ~DebugGridHexaRenderUpdater() = default;
+    ~HexaGridRenderUpdater() = default;
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
@@ -143,7 +143,7 @@ private:
         m_walkableTileMesh->Set2DPositions(tilePositions.data(), std::size(tilePositions));
     }
 
-    bool m_gridDisplayEnabled = false;
+    bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
     int m_gridDisplaySize = 10;
     std::unique_ptr<Mesh> m_gridMesh;
@@ -151,6 +151,6 @@ private:
     std::unique_ptr<Mesh> m_walkableTileMesh;
 };
 
-const int dummy = RegisterRenderUpdater<DebugGridHexaRenderUpdater>("DebugHexaGrid");
+const int dummy = RegisterRenderUpdater<HexaGridRenderUpdater>("HexaGrid");
 
 } // namespace
