@@ -61,7 +61,7 @@ public:
             "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         gridMaterial->AddUniform("uniHeight", 0.01f);
         gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
-        m_gridMesh = std::make_unique<Mesh>(gridMaterial, Primitive::Lines);
+        m_gridTileMesh = std::make_unique<Mesh>(gridMaterial, Primitive::Lines);
 
         std::shared_ptr<Material> tileMaterial = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
@@ -96,12 +96,10 @@ public:
                         const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
                         const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
                         frameRenderer.AddMeshToRender(m_walkableTileMesh.get(), tileMatrix);
+                        frameRenderer.AddMeshToRender(m_gridTileMesh.get(), tileMatrix);
                     }
                 }
             }
-
-            const glm::mat4 identityMatrix = glm::mat4(1.f);
-            frameRenderer.AddMeshToRender(m_gridMesh.get(), identityMatrix);
         }
     }
 
@@ -110,29 +108,6 @@ private:
     {
         HATCHER_ASSERT(m_meshFilled == false);
         m_meshFilled = true;
-
-        std::vector<float> positions;
-        const int hexagonCount = m_gridDisplaySize * m_gridDisplaySize * 4;
-        positions.reserve(hexagonCount * 24);
-        for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
-        {
-            for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
-            {
-                HexagonalGrid::TileCoord coord(q, r);
-                if (!grid->HasTileData(coord))
-                    continue;
-                for (int i = 0; i < 6; i++)
-                {
-                    const glm::vec2 anglePosition = grid->GetHexaAngle(coord, i);
-                    const glm::vec2 nextAnglePosition = grid->GetHexaAngle(coord, i + 1);
-                    positions.push_back(anglePosition.x);
-                    positions.push_back(anglePosition.y);
-                    positions.push_back(nextAnglePosition.x);
-                    positions.push_back(nextAnglePosition.y);
-                };
-            }
-        }
-        m_gridMesh->Set2DPositions(positions.data(), std::size(positions));
 
         std::vector<float> tilePositions;
         tilePositions.reserve(12);
@@ -144,13 +119,14 @@ private:
             tilePositions.push_back(anglePosition.y);
         }
         m_walkableTileMesh->Set2DPositions(tilePositions.data(), std::size(tilePositions));
+        m_gridTileMesh->Set2DPositions(tilePositions.data(), std::size(tilePositions));
     }
 
     bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
     int m_gridDisplaySize = 10;
-    std::unique_ptr<Mesh> m_gridMesh;
 
+    std::unique_ptr<Mesh> m_gridTileMesh;
     std::unique_ptr<Mesh> m_walkableTileMesh;
 };
 
