@@ -81,9 +81,9 @@ public:
             FillGridMesh(grid);
         }
 
-        for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
+        for (int r = grid->GetTileCoordMin().r; r <= grid->GetTileCoordMax().r; r++)
         {
-            for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
+            for (int q = grid->GetTileCoordMin().q; q <= grid->GetTileCoordMax().q; q++)
             {
                 HexagonalGrid::TileCoord coord(q, r);
                 if (!grid->HasTileData(coord))
@@ -122,7 +122,6 @@ private:
 
     bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
-    int m_gridDisplaySize = 10;
 
     std::unique_ptr<Mesh> m_gridTileMesh;
     std::unique_ptr<Mesh> m_walkableTileMesh;

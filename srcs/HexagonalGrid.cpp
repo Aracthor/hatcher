@@ -70,6 +70,8 @@ std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() c
 
 HexagonalGrid::HexagonalGrid()
     : m_hexaSize(sqrt(2.f / 3.f))
+    , m_tileCoordMin(0, 0)
+    , m_tileCoordMax(0, 0)
 {
     const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f);
     const glm::vec2 rVector = glm::vec2(qVector.x / 2.f, 3.f / 2.f);
@@ -172,7 +174,13 @@ void HexagonalGrid::PostLoad()
 HexagonalGrid::TileData& HexagonalGrid::GetOrCreateData(TileCoord coord)
 {
     if (!HasTileData(coord))
+    {
+        m_tileCoordMin.q = std::min(m_tileCoordMin.q, coord.q);
+        m_tileCoordMin.r = std::min(m_tileCoordMin.r, coord.r);
+        m_tileCoordMax.q = std::max(m_tileCoordMax.q, coord.q);
+        m_tileCoordMax.r = std::max(m_tileCoordMax.r, coord.r);
         m_tilesData[coord] = defaultTile;
+    }
     return m_tilesData[coord];
 }
 

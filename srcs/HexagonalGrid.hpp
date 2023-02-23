@@ -50,6 +50,8 @@ public:
 
     glm::vec2 GetTileCenter(glm::vec2 position) const;
     glm::vec2 GetHexaAngle(TileCoord tile, int angleIndex) const;
+    TileCoord GetTileCoordMin() const { return m_tileCoordMin; }
+    TileCoord GetTileCoordMax() const { return m_tileCoordMax; }
 
     std::vector<glm::vec2> GetPathIfPossible(TileCoord start, TileCoord end) const;
 
@@ -67,6 +69,8 @@ private:
     std::unordered_map<TileCoord, TileData, TileCoord::Hash> m_tilesData;
 
     Pathfinding m_pathfinding;
+    TileCoord m_tileCoordMin;
+    TileCoord m_tileCoordMax;
 
     glm::mat2 m_hexToPosMatrix;
     glm::mat2 m_posToHexMatrix;
