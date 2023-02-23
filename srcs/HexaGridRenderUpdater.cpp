@@ -81,23 +81,21 @@ public:
             FillGridMesh(grid);
         }
 
-        if (m_gridDisplayEnabled)
+        for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
         {
-            for (int r = -m_gridDisplaySize; r < m_gridDisplaySize + 1; r++)
+            for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
             {
-                for (int q = -m_gridDisplaySize; q < m_gridDisplaySize + 1; q++)
+                HexagonalGrid::TileCoord coord(q, r);
+                if (!grid->HasTileData(coord))
+                    continue;
+                const HexagonalGrid::TileData& tileData = grid->GetTileData(coord);
+                if (tileData.walkable)
                 {
-                    HexagonalGrid::TileCoord coord(q, r);
-                    if (!grid->HasTileData(coord))
-                        continue;
-                    const HexagonalGrid::TileData& tileData = grid->GetTileData(coord);
-                    if (tileData.walkable)
-                    {
-                        const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
-                        const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
-                        frameRenderer.AddMeshToRender(m_walkableTileMesh.get(), tileMatrix);
+                    const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
+                    const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
+                    frameRenderer.AddMeshToRender(m_walkableTileMesh.get(), tileMatrix);
+                    if (m_gridDisplayEnabled)
                         frameRenderer.AddMeshToRender(m_gridTileMesh.get(), tileMatrix);
-                    }
                 }
             }
         }
