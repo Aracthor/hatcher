@@ -152,7 +152,7 @@ const onGlobalPageLoad = async () => {
             });
         };
 
-        await scriptLoadingUtility(`./js/bin/exec_debug.js`)
+        await scriptLoadingUtility(`./js/bin/exec_release.js`)
 
         logger.log("[JS] wasm script: loading successful");
 
