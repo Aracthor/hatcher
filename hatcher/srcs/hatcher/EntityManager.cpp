@@ -33,6 +33,14 @@ Entity EntityManager::CreateNewEntity()
     return entity;
 }
 
+void EntityManager::DeleteEntity(Entity entity)
+{
+    m_componentManager->RemoveEntity(entity);
+    if (m_renderingComponentManager)
+        m_renderingComponentManager->RemoveEntity(entity);
+    m_entityIDRegistry->UnregisterEntityID(entity.ID());
+}
+
 void EntityManager::Save(ISaveLoader& saveLoader)
 {
     int entityCount = m_entityIDRegistry->EntityCount();

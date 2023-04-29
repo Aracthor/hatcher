@@ -26,6 +26,7 @@ public:
     ~ComponentManager();
 
     void AddEntities(int count);
+    void RemoveEntity(Entity entity);
     void ClearEntities();
 
     void Save(ISaveLoader& saveLoader);

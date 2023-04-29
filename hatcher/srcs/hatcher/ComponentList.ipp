@@ -12,6 +12,12 @@ void IdentifiableComponentList<Component>::AddEntities(int count)
 }
 
 template <class Component>
+void IdentifiableComponentList<Component>::RemoveEntity(uint index)
+{
+    m_components[index] = {};
+}
+
+template <class Component>
 void IdentifiableComponentList<Component>::ClearEntities()
 {
     m_components.clear();

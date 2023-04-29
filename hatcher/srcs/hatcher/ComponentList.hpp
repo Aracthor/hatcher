@@ -14,6 +14,7 @@ class IComponentList
 {
 public:
     virtual void AddEntities(int count) = 0;
+    virtual void RemoveEntity(uint index) = 0;
     virtual void ClearEntities() = 0;
     virtual bool HasComponent(uint index) const = 0;
     virtual void SaveLoad(uint index, ISaveLoader& saveLoader) = 0;
@@ -26,6 +27,7 @@ class IdentifiableComponentList final : public IComponentList
 {
 public:
     void AddEntities(int count) override;
+    void RemoveEntity(uint index) override;
     void ClearEntities() override;
     bool HasComponent(uint index) const override;
     void SaveLoad(uint index, ISaveLoader& saveLoader) override;

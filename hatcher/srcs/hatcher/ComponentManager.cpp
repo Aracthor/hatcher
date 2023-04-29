@@ -20,6 +20,14 @@ void ComponentManager::AddEntities(int count)
     }
 }
 
+void ComponentManager::RemoveEntity(Entity entity)
+{
+    for (auto& it : m_componentLists)
+    {
+        it.second->RemoveEntity(entity.ID());
+    }
+}
+
 void ComponentManager::ClearEntities()
 {
     m_entityCount = 0;

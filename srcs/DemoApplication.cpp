@@ -55,6 +55,7 @@ DemoApplication::DemoApplication()
     world->AddRenderUpdater("Camera", GetRendering());
     world->AddRenderUpdater("CubeDisplay", GetRendering());
     world->AddRenderUpdater("DebugGrid", GetRendering());
+    world->AddRenderUpdater("DebugShortcuts", GetRendering());
     world->AddRenderUpdater("DemoImgui", GetRendering());
     world->AddRenderUpdater("EntityCreator", GetRendering());
     world->AddRenderUpdater("HexaGrid", GetRendering());

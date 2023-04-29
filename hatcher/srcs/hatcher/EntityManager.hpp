@@ -17,6 +17,7 @@ public:
     ~EntityManager();
 
     Entity CreateNewEntity() override;
+    void DeleteEntity(Entity entity) override;
 
     void Save(ISaveLoader& saveLoader) override;
     void Load(ISaveLoader& saveLoader) override;
