@@ -107,7 +107,8 @@ MeshData readFile(const std::string& fileName)
             }
             else if (command == "f")
             {
-                for (int i = 0; i < 3; i++)
+                std::vector<int> faceIndices;
+                while (!line.empty())
                 {
                     const std::string vertexToken = getNextToken(line, fileName);
                     const std::size_t separatorIndex = vertexToken.find('/');
@@ -121,7 +122,28 @@ MeshData readFile(const std::string& fileName)
                     texCoord.y = 1 - texCoord.y; // Because wavefront. I guess.
                     const int vertexIndex =
                         getOrCreateVertex(meshData.vertices, position, texCoord);
-                    meshData.indices.push_back(vertexIndex);
+                    faceIndices.push_back(vertexIndex);
+                }
+                switch (faceIndices.size())
+                {
+                case 3:
+                    meshData.indices.push_back(faceIndices[0]);
+                    meshData.indices.push_back(faceIndices[1]);
+                    meshData.indices.push_back(faceIndices[2]);
+                    break;
+                case 4:
+                    // TODO check if the face can be cutted on those indices ?
+                    meshData.indices.push_back(faceIndices[0]);
+                    meshData.indices.push_back(faceIndices[1]);
+                    meshData.indices.push_back(faceIndices[2]);
+                    meshData.indices.push_back(faceIndices[0]);
+                    meshData.indices.push_back(faceIndices[2]);
+                    meshData.indices.push_back(faceIndices[3]);
+                    break;
+                default:
+                    std::cerr << "Invalid vertex count for face: " << faceIndices.size()
+                              << std::endl;
+                    std::terminate();
                 }
             }
         }
