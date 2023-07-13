@@ -92,6 +92,6 @@ public:
     ControlPanel m_panel;
 };
 
-const int dummy = RegisterRenderUpdater<HexaGridControlPanelRenderUpdater>("HexaGridControlPanel");
+const int dummy = RegisterRenderUpdater<HexaGridControlPanelRenderUpdater>();
 
 } // namespace

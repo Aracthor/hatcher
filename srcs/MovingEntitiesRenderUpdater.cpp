@@ -86,6 +86,6 @@ private:
     std::unique_ptr<Mesh> m_mesh;
 };
 
-const int dummy = RegisterRenderUpdater<MovingEntitiesRenderUpdater>("MovingEntities");
+const int dummy = RegisterRenderUpdater<MovingEntitiesRenderUpdater>();
 
 } // namespace

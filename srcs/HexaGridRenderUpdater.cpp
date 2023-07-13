@@ -127,6 +127,6 @@ private:
     std::unique_ptr<Mesh> m_walkableTileMesh;
 };
 
-const int dummy = RegisterRenderUpdater<HexaGridRenderUpdater>("HexaGrid");
+const int dummy = RegisterRenderUpdater<HexaGridRenderUpdater>();
 
 } // namespace

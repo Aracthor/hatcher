@@ -71,6 +71,6 @@ public:
     }
 };
 
-const int dummy = RegisterRenderUpdater<EntityCreatorRenderUpdater>("EntityCreator");
+const int dummy = RegisterRenderUpdater<EntityCreatorRenderUpdater>();
 
 } // namespace

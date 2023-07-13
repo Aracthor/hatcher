@@ -69,6 +69,6 @@ public:
     }
 };
 
-const int dummy = RegisterRenderUpdater<SaveLoaderRenderUpdater>("SaveLoader");
+const int dummy = RegisterRenderUpdater<SaveLoaderRenderUpdater>();
 
 } // namespace

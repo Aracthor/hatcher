@@ -57,6 +57,7 @@ void GameApplication::Stop()
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
     m_rendering = std::make_unique<Rendering>(name, windowWidth, windowHeight);
+    m_world->CreateRenderUpdaters(m_rendering.get());
 }
 
 const IRendering* GameApplication::GetRendering() const

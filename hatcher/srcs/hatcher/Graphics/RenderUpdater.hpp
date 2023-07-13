@@ -20,11 +20,11 @@ public:
 using CreateRenderUpdaterFunction = RenderUpdater*(const IRendering* rendering,
                                                    IEventUpdater* eventUpdater);
 template <class UpdaterClass>
-int RegisterRenderUpdater(const char* name)
+int RegisterRenderUpdater()
 {
-    int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createFunction);
+    int RegisterRenderUpdater(CreateRenderUpdaterFunction * createFunction);
     return RegisterRenderUpdater(
-        name, [](const IRendering* rendering, IEventUpdater* eventUpdater) -> RenderUpdater* {
+        [](const IRendering* rendering, IEventUpdater* eventUpdater) -> RenderUpdater* {
             return new UpdaterClass(rendering, eventUpdater);
         });
 }

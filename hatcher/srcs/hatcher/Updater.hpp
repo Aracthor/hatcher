@@ -14,10 +14,10 @@ public:
 
 using CreateUpdaterFunction = Updater*();
 template <class UpdaterClass>
-int RegisterUpdater(const char* name)
+int RegisterUpdater()
 {
-    int RegisterUpdater(const char* name, CreateUpdaterFunction* createFunction);
-    return RegisterUpdater(name, []() -> Updater* { return new UpdaterClass(); });
+    int RegisterUpdater(CreateUpdaterFunction * createFunction);
+    return RegisterUpdater([]() -> Updater* { return new UpdaterClass(); });
 }
 
 } // namespace hatcher

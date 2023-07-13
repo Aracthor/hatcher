@@ -48,23 +48,7 @@ DemoApplication::DemoApplication()
     renderComponentManager->AddComponentType<Selectable2DComponent>();
     renderComponentManager->AddWorldComponent<Camera>();
 
-    world->AddUpdater("MovingEntities");
-
     StartRendering("hatcher - demo", 800, 600);
-
-    world->AddRenderUpdater("Camera", GetRendering());
-    world->AddRenderUpdater("CubeDisplay", GetRendering());
-    world->AddRenderUpdater("DebugGrid", GetRendering());
-    world->AddRenderUpdater("DebugShortcuts", GetRendering());
-    world->AddRenderUpdater("DemoImgui", GetRendering());
-    world->AddRenderUpdater("EntityCreator", GetRendering());
-    world->AddRenderUpdater("HexaGrid", GetRendering());
-    world->AddRenderUpdater("HexaGridControlPanel", GetRendering());
-    world->AddRenderUpdater("MoveOrder", GetRendering());
-    world->AddRenderUpdater("MovingEntities", GetRendering());
-    world->AddRenderUpdater("SaveLoader", GetRendering());
-    world->AddRenderUpdater("Selected", GetRendering());
-    world->AddRenderUpdater("SelectionRectangle", GetRendering());
 }
 
 DemoApplication::~DemoApplication() = default;

@@ -22,8 +22,7 @@ public:
 
     EntityManager* GetEntityManager() { return m_entityManager.get(); }
 
-    void AddUpdater(const char* name);
-    void AddRenderUpdater(const char* name, const IRendering* rendering);
+    void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
     void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer,

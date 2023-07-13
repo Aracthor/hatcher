@@ -80,6 +80,6 @@ private:
     std::unique_ptr<Mesh> m_mesh;
 };
 
-const int dummy = RegisterRenderUpdater<SelectedRenderUpdater>("Selected");
+const int dummy = RegisterRenderUpdater<SelectedRenderUpdater>();
 
 } // namespace

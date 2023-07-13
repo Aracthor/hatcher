@@ -86,6 +86,6 @@ public:
     }
 };
 
-const int dummy = RegisterRenderUpdater<MoveOrderRenderUpdater>("MoveOrder");
+const int dummy = RegisterRenderUpdater<MoveOrderRenderUpdater>();
 
 } // namespace

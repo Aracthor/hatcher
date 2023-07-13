@@ -101,6 +101,6 @@ private:
     std::unique_ptr<Mesh> m_gridMesh;
 };
 
-const int dummy = RegisterRenderUpdater<DebugGridRenderUpdater>("DebugGrid");
+const int dummy = RegisterRenderUpdater<DebugGridRenderUpdater>();
 
 } // namespace

@@ -1,8 +1,7 @@
 #include "World.hpp"
 
 #include <iostream>
-#include <map>
-#include <string>
+#include <vector>
 
 #include "EntityManager.hpp"
 #include "Updater.hpp"
@@ -16,40 +15,30 @@ namespace hatcher
 
 namespace
 {
-std::map<std::string, CreateUpdaterFunction*>& UpdaterCreators()
+std::vector<CreateUpdaterFunction*>& UpdaterCreators()
 {
-    static std::map<std::string, CreateUpdaterFunction*> updaterCreators;
+    static std::vector<CreateUpdaterFunction*> updaterCreators;
     return updaterCreators;
 }
 
-std::map<std::string, CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
+std::vector<CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
 {
-    static std::map<std::string, CreateRenderUpdaterFunction*> updaterCreators;
+    static std::vector<CreateRenderUpdaterFunction*> updaterCreators;
     return updaterCreators;
 }
 } // namespace
 
-int RegisterUpdater(const char* name, CreateUpdaterFunction* createFunction)
+int RegisterUpdater(CreateUpdaterFunction* createFunction)
 {
     auto& updaterCreators = UpdaterCreators();
-    if (updaterCreators.find(name) != updaterCreators.end())
-    {
-        std::cerr << "Updater registered twice: " << name << std::endl;
-        std::abort();
-    }
-    updaterCreators[name] = createFunction;
+    updaterCreators.push_back(createFunction);
     return 0;
 }
 
-int RegisterRenderUpdater(const char* name, CreateRenderUpdaterFunction* createFunction)
+int RegisterRenderUpdater(CreateRenderUpdaterFunction* createFunction)
 {
     auto& renderUpdaterCreators = RenderUpdaterCreators();
-    if (renderUpdaterCreators.find(name) != renderUpdaterCreators.end())
-    {
-        std::cerr << "RenderUpdater registered twice: " << name << std::endl;
-        std::abort();
-    }
-    renderUpdaterCreators[name] = createFunction;
+    renderUpdaterCreators.push_back(createFunction);
     return 0;
 }
 
@@ -59,33 +48,19 @@ World::World(const char* name)
     m_entityManager.reset(new EntityManager());
     for (auto entry : UpdaterCreators())
     {
-        m_updaters.emplace_back(entry.second());
+        m_updaters.emplace_back(entry());
     }
     m_eventUpdater = std::make_unique<EventUpdater>();
 }
 
 World::~World() = default;
 
-void World::AddUpdater(const char* name)
+void World::CreateRenderUpdaters(const IRendering* rendering)
 {
-    auto& updaterCreators = UpdaterCreators();
-    if (updaterCreators.find(name) == updaterCreators.end())
+    for (auto entry : RenderUpdaterCreators())
     {
-        std::cerr << "Unkown updater: " << name << std::endl;
-        std::abort();
+        m_renderUpdaters.emplace_back(entry(rendering, m_eventUpdater.get()));
     }
-    m_updaters.emplace_back(updaterCreators[name]());
-}
-
-void World::AddRenderUpdater(const char* name, const IRendering* rendering)
-{
-    auto& updaterCreators = RenderUpdaterCreators();
-    if (updaterCreators.find(name) == updaterCreators.end())
-    {
-        std::cerr << "Unkown render updater: " << name << std::endl;
-        std::abort();
-    }
-    m_renderUpdaters.emplace_back(RenderUpdaterCreators()[name](rendering, m_eventUpdater.get()));
 }
 
 void World::Update()

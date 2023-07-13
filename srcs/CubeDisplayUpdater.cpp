@@ -58,6 +58,6 @@ private:
     std::shared_ptr<Texture> m_texture;
 };
 
-const int dummy = RegisterRenderUpdater<CubeDisplayUpdater>("CubeDisplay");
+const int dummy = RegisterRenderUpdater<CubeDisplayUpdater>();
 
 } // namespace
