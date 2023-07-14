@@ -13,8 +13,8 @@ public:
     VertexBufferObject();
     ~VertexBufferObject();
 
-    void SetData(float* data, uint length, bool dynamic);
-    void SetData(ushort* data, uint length, bool dynamic);
+    void SetData(const float* data, uint length, bool dynamic);
+    void SetData(const ushort* data, uint length, bool dynamic);
 
     void Bind() const;
     uint ElementCount() const { return m_elementCount; }

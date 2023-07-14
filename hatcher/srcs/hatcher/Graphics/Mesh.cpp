@@ -22,17 +22,17 @@ Mesh::Mesh(const std::shared_ptr<const Material>& material, Primitive::Type prim
 
 Mesh::~Mesh() = default;
 
-void Mesh::Set2DPositions(float* positions, uint positionCount)
+void Mesh::Set2DPositions(const float* positions, uint positionCount)
 {
     SetPositions(positions, positionCount, 2);
 }
 
-void Mesh::Set3DPositions(float* positions, uint positionCount)
+void Mesh::Set3DPositions(const float* positions, uint positionCount)
 {
     SetPositions(positions, positionCount, 3);
 }
 
-void Mesh::SetTextureCoords(float* textureCoords, uint textureCoordsCount)
+void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)
 {
     m_VAO->Bind();
 
@@ -44,7 +44,7 @@ void Mesh::SetTextureCoords(float* textureCoords, uint textureCoordsCount)
     m_VAO->Unbind();
 }
 
-void Mesh::SetIndices(ushort* elements, uint elementCount)
+void Mesh::SetIndices(const ushort* elements, uint elementCount)
 {
     m_VAO->Bind();
 
@@ -66,7 +66,7 @@ void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
         m_VAO->DrawArrays();
 }
 
-void Mesh::SetPositions(float* positions, uint positionCount, int componentCount)
+void Mesh::SetPositions(const float* positions, uint positionCount, int componentCount)
 {
     m_VAO->Bind();
 

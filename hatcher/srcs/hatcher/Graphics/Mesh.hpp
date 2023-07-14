@@ -20,16 +20,16 @@ public:
          bool dynamic = false);
     ~Mesh();
 
-    void Set2DPositions(float* positions, uint positionCount);
-    void Set3DPositions(float* positions, uint positionCount);
-    void SetTextureCoords(float* positions, uint positionCount);
-    void SetIndices(ushort* elements, uint elementCount);
+    void Set2DPositions(const float* positions, uint positionCount);
+    void Set3DPositions(const float* positions, uint positionCount);
+    void SetTextureCoords(const float* positions, uint positionCount);
+    void SetIndices(const ushort* elements, uint elementCount);
 
     void Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
               const glm::mat4& projectionMatrix) const;
 
 private:
-    void SetPositions(float* positions, uint positionCount, int componentCount);
+    void SetPositions(const float* positions, uint positionCount, int componentCount);
 
     std::unique_ptr<VertexArrayObject> m_VAO;
     std::unique_ptr<VertexBufferObject> m_positionVBO;
