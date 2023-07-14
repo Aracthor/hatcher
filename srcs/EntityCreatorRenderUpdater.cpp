@@ -22,8 +22,9 @@ public:
                   ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
     {
+        const Uint8* keystate = SDL_GetKeyboardState(NULL);
         HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
-        if (event.button.button == SDL_BUTTON_MIDDLE)
+        if (event.button.button == SDL_BUTTON_RIGHT && keystate[SDL_SCANCODE_LCTRL])
         {
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
