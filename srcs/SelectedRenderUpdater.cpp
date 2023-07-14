@@ -7,7 +7,7 @@
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -44,13 +44,12 @@ public:
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
-        auto selectableComponents = renderComponentManager->ReadComponents<Selectable2DComponent>();
+        auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
         auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
         for (int i = 0; i < componentManager->Count(); i++)
         {
-            const std::optional<Selectable2DComponent>& selectableComponent =
-                selectableComponents[i];
+            const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
             const std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
             if (selectableComponent && selectableComponent->selected)

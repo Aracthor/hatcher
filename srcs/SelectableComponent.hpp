@@ -9,10 +9,10 @@ class ISaveLoader;
 
 using namespace hatcher;
 
-struct Selectable2DComponent
+struct SelectableComponent
 {
     Box3f box;
     bool selected;
 };
 
-void operator<<(ISaveLoader& saveLoader, Selectable2DComponent& component);
+void operator<<(ISaveLoader& saveLoader, SelectableComponent& component);

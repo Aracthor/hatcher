@@ -2,7 +2,7 @@
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"
@@ -77,8 +77,8 @@ public:
         }
         else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
         {
-            ComponentWriter<Selectable2DComponent> selectableComponents =
-                renderComponentManager->WriteComponents<Selectable2DComponent>();
+            ComponentWriter<SelectableComponent> selectableComponents =
+                renderComponentManager->WriteComponents<SelectableComponent>();
             ComponentReader<Position2DComponent> positionComponents =
                 componentManager->ReadComponents<Position2DComponent>();
             ComponentReader<Movement2DComponent> movementComponents =
@@ -88,7 +88,7 @@ public:
             HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
             for (int i = 0; i < componentManager->Count(); i++)
             {
-                std::optional<Selectable2DComponent>& selectableComponent = selectableComponents[i];
+                std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
                 if (selectableComponent)
                 {
                     HATCHER_ASSERT(positionComponents[i]);

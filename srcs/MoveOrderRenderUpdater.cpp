@@ -2,7 +2,7 @@
 #include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
@@ -36,14 +36,14 @@ public:
                 hexaGrid->PositionToTileCoords(worldCoords2D);
             auto movementComponents = componentManager->WriteComponents<Movement2DComponent>();
             auto selectableComponents =
-                renderComponentManager->ReadComponents<Selectable2DComponent>();
+                renderComponentManager->ReadComponents<SelectableComponent>();
             auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
 
             HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
             for (int i = 0; i < componentManager->Count(); i++)
             {
                 std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
-                const std::optional<Selectable2DComponent>& selectableComponent =
+                const std::optional<SelectableComponent>& selectableComponent =
                     selectableComponents[i];
                 const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
                 if (selectableComponent && selectableComponent->selected && movementComponent)

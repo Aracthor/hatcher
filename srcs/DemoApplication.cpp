@@ -13,7 +13,7 @@
 #include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 
 using namespace hatcher;
 
@@ -45,7 +45,7 @@ DemoApplication::DemoApplication()
     componentManager->AddWorldComponent<HexagonalGrid>();
     InitHexaGrid(componentManager->WriteWorldComponent<HexagonalGrid>());
 
-    renderComponentManager->AddComponentType<Selectable2DComponent>();
+    renderComponentManager->AddComponentType<SelectableComponent>();
     renderComponentManager->AddWorldComponent<Camera>();
 
     StartRendering("hatcher - demo", 800, 600);

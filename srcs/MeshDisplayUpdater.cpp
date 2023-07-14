@@ -11,7 +11,7 @@
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -42,8 +42,7 @@ public:
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
-        auto selectableComponents =
-            renderComponentManager->WriteComponents<Selectable2DComponent>();
+        auto selectableComponents = renderComponentManager->WriteComponents<SelectableComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {

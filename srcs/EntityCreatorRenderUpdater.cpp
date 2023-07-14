@@ -2,7 +2,7 @@
 #include "HexagonalGrid.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -38,12 +38,12 @@ public:
             Movement2DComponent movement2D;
             movement2D.orientation = glm::vec2(1.f, 0.f);
             movement2D.speed = 0.f;
-            Selectable2DComponent selectable2D;
-            selectable2D.selected = false;
+            SelectableComponent selectable;
+            selectable.selected = false;
 
             componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
             componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
-            renderComponentManager->AttachComponent<Selectable2DComponent>(newEntity, selectable2D);
+            renderComponentManager->AttachComponent<SelectableComponent>(newEntity, selectable);
         }
     }
 

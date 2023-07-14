@@ -1,8 +1,8 @@
-#include "Selectable2DComponent.hpp"
+#include "SelectableComponent.hpp"
 
 #include "hatcher/ISaveLoader.hpp"
 
-void operator<<(ISaveLoader& saveLoader, Selectable2DComponent& component)
+void operator<<(ISaveLoader& saveLoader, SelectableComponent& component)
 {
     saveLoader << component.box;
     saveLoader << component.selected;
