@@ -122,7 +122,6 @@ SRCS_FILES=	Camera.cpp 			\
 		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
-		MovingEntitiesRenderUpdater.cpp	\
 		Pathfinding.cpp			\
 		Position2DComponent.cpp		\
 		SelectableComponent.cpp		\
