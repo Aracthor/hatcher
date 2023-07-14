@@ -11,6 +11,7 @@
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
+#include "Selectable2DComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -18,10 +19,10 @@ using namespace hatcher;
 namespace
 {
 
-class CubeDisplayUpdater final : public RenderUpdater
+class MeshDisplayUpdater final : public RenderUpdater
 {
 public:
-    CubeDisplayUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    MeshDisplayUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
@@ -34,18 +35,23 @@ public:
             rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve.obj"));
     }
 
-    ~CubeDisplayUpdater() = default;
+    ~MeshDisplayUpdater() = default;
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
+        auto selectableComponents =
+            renderComponentManager->WriteComponents<Selectable2DComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
             if (positionComponents[i] && movementComponents[i])
             {
+                if (selectableComponents[i] && selectableComponents[i]->box.IsPoint())
+                    selectableComponents[i]->box = m_mesh->Box().Scaled(1.1f);
+
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
                     positionComponents[i], movementComponents[i]);
                 frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
@@ -58,6 +64,6 @@ private:
     std::shared_ptr<Texture> m_texture;
 };
 
-const int dummy = RegisterRenderUpdater<CubeDisplayUpdater>();
+const int dummy = RegisterRenderUpdater<MeshDisplayUpdater>();
 
 } // namespace

@@ -25,11 +25,24 @@ Mesh::~Mesh() = default;
 void Mesh::Set2DPositions(const float* positions, uint positionCount)
 {
     SetPositions(positions, positionCount, 2);
+    m_box = {};
+    for (uint i = 0; i < positionCount / 2; i++)
+    {
+        const uint vertexIndex = i * 2;
+        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1], 0.f));
+    }
 }
 
 void Mesh::Set3DPositions(const float* positions, uint positionCount)
 {
     SetPositions(positions, positionCount, 3);
+    m_box = {};
+    for (uint i = 0; i < positionCount / 3; i++)
+    {
+        const uint vertexIndex = i * 3;
+        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1],
+                                 positions[vertexIndex + 2]));
+    }
 }
 
 void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)

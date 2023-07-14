@@ -110,7 +110,6 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 
 SRCS_FILES=	Camera.cpp 			\
 		CameraRenderUpdater.cpp 	\
-		CubeDisplayUpdater.cpp		\
 		DebugGridRenderUpdater.cpp	\
 		DemoImguiRenderUpdater.cpp	\
 		DebugShortcutsRenderUpdater.cpp	\
@@ -119,6 +118,7 @@ SRCS_FILES=	Camera.cpp 			\
 		HexagonalGrid.cpp		\
 		HexaGridRenderUpdater.cpp	\
 		HexaGridControlPanelRenderUpdater.cpp	\
+		MeshDisplayUpdater.cpp		\
 		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\

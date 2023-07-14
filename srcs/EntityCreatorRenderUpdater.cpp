@@ -40,7 +40,6 @@ public:
             movement2D.speed = 0.f;
             Selectable2DComponent selectable2D;
             selectable2D.selected = false;
-            selectable2D.box = Box3f(glm::vec3(-0.5f, -0.5f, 0.f), glm::vec3(0.5f, 0.5f, 1.f));
 
             componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
             componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);

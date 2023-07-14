@@ -25,7 +25,9 @@ public:
 
     void AddPoint(const Vec& point);
     Box Translated(const Vec& translation) const;
+    Box Scaled(float scale) const;
 
+    bool IsPoint() const;
     bool Contains(const Vec& point) const;
     bool Contains(const Box<L, T>& box) const;
     bool Touches(const Box<L, T>& box) const;

@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "hatcher/Maths/Box.hpp"
 #include "hatcher/basic_types.hpp"
 #include "hatcher/glm_pure.hpp"
 
@@ -25,6 +26,7 @@ public:
     void SetTextureCoords(const float* positions, uint positionCount);
     void SetIndices(const ushort* elements, uint elementCount);
 
+    const Box3f& Box() const { return m_box; }
     void Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
               const glm::mat4& projectionMatrix) const;
 
@@ -36,6 +38,7 @@ private:
     std::unique_ptr<VertexBufferObject> m_textureCoordsVBO;
     std::unique_ptr<VertexBufferObject> m_elementVBO;
     std::shared_ptr<const Material> m_material;
+    Box3f m_box;
     bool m_dynamic;
 };
 

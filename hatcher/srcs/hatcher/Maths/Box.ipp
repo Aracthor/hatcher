@@ -57,6 +57,18 @@ Box<L, T> Box<L, T>::Translated(const Vec& translation) const
 }
 
 template <glm::length_t L, typename T>
+Box<L, T> Box<L, T>::Scaled(float scale) const
+{
+    return Box(m_min * scale, m_max * scale);
+}
+
+template <glm::length_t L, typename T>
+bool Box<L, T>::IsPoint() const
+{
+    return m_min == m_max;
+}
+
+template <glm::length_t L, typename T>
 bool Box<L, T>::Contains(const Vec& point) const
 {
     for (glm::length_t i = 0; i < L; i++)
