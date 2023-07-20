@@ -24,6 +24,7 @@ public:
     Box(Iterator first, Iterator last);
 
     void AddPoint(const Vec& point);
+    void Add(const Box<L, T>& box);
     Box Translated(const Vec& translation) const;
     Box Scaled(float scale) const;
 

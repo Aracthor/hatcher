@@ -51,6 +51,13 @@ void Box<L, T>::AddPoint(const Vec& point)
 }
 
 template <glm::length_t L, typename T>
+void Box<L, T>::Add(const Box<L, T>& box)
+{
+    AddPoint(box.Min());
+    AddPoint(box.Max());
+}
+
+template <glm::length_t L, typename T>
 Box<L, T> Box<L, T>::Translated(const Vec& translation) const
 {
     return Box(m_min + translation, m_max + translation);

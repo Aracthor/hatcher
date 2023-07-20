@@ -118,16 +118,16 @@ SRCS_FILES=	Camera.cpp 			\
 		HexagonalGrid.cpp		\
 		HexaGridRenderUpdater.cpp	\
 		HexaGridControlPanelRenderUpdater.cpp	\
-		MeshDisplayUpdater.cpp		\
 		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\
 		Pathfinding.cpp			\
 		Position2DComponent.cpp		\
+		SaveLoaderRenderUpdater.cpp 	\
 		SelectableComponent.cpp		\
 		SelectionRectangleRenderUpdater.cpp	\
 		SelectedRenderUpdater.cpp 	\
-		SaveLoaderRenderUpdater.cpp 	\
+		SteveRenderUpdater.cpp		\
 		TransformationHelper.cpp	\
 		main.cpp			\
 
