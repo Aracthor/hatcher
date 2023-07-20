@@ -71,20 +71,18 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer,
-                            const IRendering& rendering)
+void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer, const IRendering& rendering)
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->PollEvents(application, m_entityManager.get(),
-                                   m_entityManager->GetComponentManager(),
+        m_eventUpdater->PollEvents(application, m_entityManager.get(), m_entityManager->GetComponentManager(),
                                    m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(m_entityManager->GetComponentManager(),
-                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
+        renderUpdater->Update(m_entityManager->GetComponentManager(), m_entityManager->GetRenderingComponentManager(),
+                              frameRenderer);
     }
 }
 

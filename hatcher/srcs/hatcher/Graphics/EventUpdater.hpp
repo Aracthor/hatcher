@@ -19,9 +19,8 @@ class IFrameRenderer;
 class EventUpdater final : public IEventUpdater
 {
 public:
-    void PollEvents(IApplication* application, IEntityManager* entityManager,
-                    ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                    const IFrameRenderer& frameRenderer);
+    void PollEvents(IApplication* application, IEntityManager* entityManager, ComponentManager* componentManager,
+                    ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer);
 
     void RegisterListener(const std::shared_ptr<IEventListener>& eventListener) override;
 

@@ -58,9 +58,8 @@ public:
     {
     }
 
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
         {
@@ -92,11 +91,11 @@ public:
                 if (selectableComponent)
                 {
                     HATCHER_ASSERT(positionComponents[i]);
-                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
-                        positionComponents[i], movementComponents[i]);
+                    const glm::mat4 modelMatrix =
+                        TransformationHelper::ModelFromComponents(positionComponents[i], movementComponents[i]);
 
-                    const Box2f entitySelectionBox = frameRenderer.ProjectBox3DToWindowCoords(
-                        selectableComponent->box, modelMatrix);
+                    const Box2f entitySelectionBox =
+                        frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
                     selectableComponent->selected = selectionBox.Touches(entitySelectionBox);
                 }
             }
@@ -124,11 +123,10 @@ class SelectionRectangleRenderUpdater final : public RenderUpdater
 public:
     SelectionRectangleRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(
-            std::make_shared<SelectionRectangleEventListener>(m_selectionRectangle));
+        eventUpdater->RegisterListener(std::make_shared<SelectionRectangleEventListener>(m_selectionRectangle));
 
-        const std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+        const std::shared_ptr<Material> material =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
         m_selectionRectangleMesh = std::make_unique<Mesh>(material, Primitive::Lines);
 
         float positions[] = {

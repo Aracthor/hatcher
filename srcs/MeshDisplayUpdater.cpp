@@ -27,12 +27,10 @@ public:
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
             "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
 
-        m_texture =
-            rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
+        m_texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
         material->AddTexture("diffuseTexture", m_texture);
 
-        m_mesh.reset(
-            rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve.obj"));
+        m_mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve.obj"));
     }
 
     ~MeshDisplayUpdater() = default;
@@ -51,8 +49,8 @@ public:
                 if (selectableComponents[i] && selectableComponents[i]->box.IsPoint())
                     selectableComponents[i]->box = m_mesh->Box().Scaled(1.1f);
 
-                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(
-                    positionComponents[i], movementComponents[i]);
+                const glm::mat4 modelMatrix =
+                    TransformationHelper::ModelFromComponents(positionComponents[i], movementComponents[i]);
                 frameRenderer.AddMeshToRender(m_mesh.get(), modelMatrix);
             }
         }

@@ -25,9 +25,8 @@ public:
     {
     }
 
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN)
         {
@@ -45,8 +44,7 @@ public:
                 const glm::vec2 worldCoords2D =
                     camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
                 HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
-                hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(worldCoords2D),
-                                          m_panel.walkable);
+                hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(worldCoords2D), m_panel.walkable);
             }
         }
     }
@@ -69,8 +67,7 @@ class HexaGridControlPanelRenderUpdater final : public RenderUpdater
 public:
     HexaGridControlPanelRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(
-            std::make_shared<HexaGridControlPanelEventListener>(m_panel));
+        eventUpdater->RegisterListener(std::make_shared<HexaGridControlPanelEventListener>(m_panel));
     }
 
     ~HexaGridControlPanelRenderUpdater() = default;

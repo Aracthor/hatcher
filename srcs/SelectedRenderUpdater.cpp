@@ -20,8 +20,8 @@ class SelectedRenderUpdater final : public RenderUpdater
 public:
     SelectedRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        const std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/selection.vert", "shaders/selection.frag");
+        const std::shared_ptr<Material> material =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/selection.vert", "shaders/selection.frag");
         m_mesh = std::make_unique<Mesh>(material, Primitive::Lines);
 
         float positions[] = {

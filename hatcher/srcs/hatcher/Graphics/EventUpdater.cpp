@@ -10,8 +10,7 @@ namespace hatcher
 {
 
 void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityManager,
-                              ComponentManager* componentManager,
-                              ComponentManager* renderComponentManager,
+                              ComponentManager* componentManager, ComponentManager* renderComponentManager,
                               const IFrameRenderer& frameRenderer)
 {
     SDL_Event event;
@@ -32,8 +31,7 @@ void EventUpdater::PollEvents(IApplication* application, IEntityManager* entityM
                 event.motion.y = frameRenderer.Resolution().y - event.motion.y;
 
             for (auto& listener : m_eventListeners[eventType])
-                listener->GetEvent(event, entityManager, componentManager, renderComponentManager,
-                                   frameRenderer);
+                listener->GetEvent(event, entityManager, componentManager, renderComponentManager, frameRenderer);
         }
     }
 }

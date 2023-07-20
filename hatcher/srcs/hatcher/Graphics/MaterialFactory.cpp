@@ -15,8 +15,8 @@ std::shared_ptr<Material> MaterialFactory::CreateMaterial(const std::string& ver
 
     if (m_shaderProgramLibrary.find(key) == m_shaderProgramLibrary.end())
     {
-        m_shaderProgramLibrary[key] = std::make_shared<ShaderProgram>(
-            vertexShaderFileName.data(), fragmentShaderFileName.data());
+        m_shaderProgramLibrary[key] =
+            std::make_shared<ShaderProgram>(vertexShaderFileName.data(), fragmentShaderFileName.data());
     }
     HATCHER_ASSERT(m_shaderProgramLibrary.find(key) != m_shaderProgramLibrary.end());
     return std::make_unique<Material>(m_shaderProgramLibrary[key]);

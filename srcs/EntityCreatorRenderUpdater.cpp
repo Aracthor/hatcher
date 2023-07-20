@@ -18,9 +18,8 @@ using namespace hatcher;
 class EntityCreatorEventListener final : public IEventListener
 {
 public:
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
         HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);

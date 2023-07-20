@@ -50,8 +50,7 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
         }
         else
         {
-            std::cerr << "Unkown error compiling shader '" << parShaderFileName
-                      << "':" << std::endl;
+            std::cerr << "Unkown error compiling shader '" << parShaderFileName << "':" << std::endl;
         }
         std::terminate();
     }
@@ -62,8 +61,7 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
 
 } // namespace
 
-ShaderProgram::ShaderProgram(const char* parVertexShaderFileName,
-                             const char* parFragmentShaderFileName)
+ShaderProgram::ShaderProgram(const char* parVertexShaderFileName, const char* parFragmentShaderFileName)
 {
     m_vertexShaderID = CompileShader(parVertexShaderFileName, GL_VERTEX_SHADER);
     m_fragmentShaderID = CompileShader(parFragmentShaderFileName, GL_FRAGMENT_SHADER);

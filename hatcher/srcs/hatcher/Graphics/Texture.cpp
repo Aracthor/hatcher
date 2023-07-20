@@ -14,8 +14,7 @@ Texture::Texture(const char* fileName)
     SDL_Surface* surface = SDL_LoadBMP(fileName);
     if (surface == nullptr)
     {
-        std::cerr << "Cannot load texture file '" << fileName << "': " << SDL_GetError()
-                  << std::endl;
+        std::cerr << "Cannot load texture file '" << fileName << "': " << SDL_GetError() << std::endl;
         std::terminate();
     }
 
@@ -37,8 +36,7 @@ Texture::Texture(const char* fileName)
 
     GL_CHECK(glGenTextures(1, &m_textureID));
     Bind();
-    GL_CHECK(
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes));
+    GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes));
 
     // Set the filtering mode.
     GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));

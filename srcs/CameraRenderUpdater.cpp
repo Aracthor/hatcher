@@ -17,9 +17,8 @@ namespace
 class CameraEventListener final : public IEventListener
 {
 public:
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         Camera* camera = renderComponentManager->WriteWorldComponent<Camera>();
         if (event.type == SDL_MOUSEWHEEL)
@@ -112,8 +111,7 @@ private:
         camera->target += glm::vec3(cameraMovement, 0.f);
     }
 
-    glm::mat4 CalculateProjectionMatrix(const Camera* camera,
-                                        const IFrameRenderer& frameRenderer) const
+    glm::mat4 CalculateProjectionMatrix(const Camera* camera, const IFrameRenderer& frameRenderer) const
     {
         const glm::ivec2 resolution = frameRenderer.Resolution();
         const float halfWidth = resolution.x / 2.f * camera->pixelSize;

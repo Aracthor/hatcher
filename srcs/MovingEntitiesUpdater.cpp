@@ -15,10 +15,8 @@ class MovingEntitiesUpdater final : public Updater
 public:
     void Update(ComponentManager* componentManager) override
     {
-        ComponentWriter<Position2DComponent> positions =
-            componentManager->WriteComponents<Position2DComponent>();
-        ComponentWriter<Movement2DComponent> movements =
-            componentManager->WriteComponents<Movement2DComponent>();
+        ComponentWriter<Position2DComponent> positions = componentManager->WriteComponents<Position2DComponent>();
+        ComponentWriter<Movement2DComponent> movements = componentManager->WriteComponents<Movement2DComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
@@ -32,8 +30,7 @@ public:
                 {
                     const glm::vec2 nextObjective = movement2D.path.back();
                     const glm::vec2 direction = (nextObjective - positions[i]->position);
-                    movement2D.orientation =
-                        glm::normalize(movement2D.path.back() - position2D.position);
+                    movement2D.orientation = glm::normalize(movement2D.path.back() - position2D.position);
                     if (glm::length(direction) < movementLength)
                     {
                         position2D.position = nextObjective;

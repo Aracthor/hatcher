@@ -26,9 +26,8 @@ public:
     {
     }
 
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         HATCHER_ASSERT(event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_J)
@@ -54,17 +53,16 @@ class HexaGridRenderUpdater final : public RenderUpdater
 public:
     HexaGridRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(
-            std::make_shared<HexaGridEventListener>(m_gridDisplayEnabled));
+        eventUpdater->RegisterListener(std::make_shared<HexaGridEventListener>(m_gridDisplayEnabled));
 
-        std::shared_ptr<Material> gridMaterial = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        std::shared_ptr<Material> gridMaterial =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         gridMaterial->AddUniform("uniHeight", 0.01f);
         gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
         m_gridTileMesh = std::make_unique<Mesh>(gridMaterial, Primitive::Lines);
 
-        std::shared_ptr<Material> tileMaterial = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        std::shared_ptr<Material> tileMaterial =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         tileMaterial->AddUniform("uniHeight", 0.f);
         tileMaterial->AddUniform("uniColor", glm::vec4(0.3, 0.3, 0.3, 1.0));
         m_walkableTileMesh = std::make_unique<Mesh>(tileMaterial, Primitive::TriangleFan);

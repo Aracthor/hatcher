@@ -7,8 +7,7 @@
 namespace hatcher
 {
 
-Mesh::Mesh(const std::shared_ptr<const Material>& material, Primitive::Type primitive,
-           bool dynamic /* = false */)
+Mesh::Mesh(const std::shared_ptr<const Material>& material, Primitive::Type primitive, bool dynamic /* = false */)
     : m_material(material)
     , m_dynamic(dynamic)
 {
@@ -40,8 +39,7 @@ void Mesh::Set3DPositions(const float* positions, uint positionCount)
     for (uint i = 0; i < positionCount / 3; i++)
     {
         const uint vertexIndex = i * 3;
-        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1],
-                                 positions[vertexIndex + 2]));
+        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1], positions[vertexIndex + 2]));
     }
 }
 
@@ -67,8 +65,7 @@ void Mesh::SetIndices(const ushort* elements, uint elementCount)
     m_VAO->Unbind();
 }
 
-void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
-                const glm::mat4& projectionMatrix) const
+void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const
 {
     m_material->Use();
     m_material->SetTransformationMatrices(modelMatrix, viewMatrix, projectionMatrix);

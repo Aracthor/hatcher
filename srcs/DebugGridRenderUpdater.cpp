@@ -25,9 +25,8 @@ public:
     {
     }
 
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager,
-                  ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         HATCHER_ASSERT(event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_U)
@@ -53,11 +52,10 @@ class DebugGridRenderUpdater final : public RenderUpdater
 public:
     DebugGridRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
     {
-        eventUpdater->RegisterListener(
-            std::make_shared<DebugGridEventListener>(m_gridDisplayEnabled));
+        eventUpdater->RegisterListener(std::make_shared<DebugGridEventListener>(m_gridDisplayEnabled));
 
-        std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        std::shared_ptr<Material> material =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
         m_gridMesh = std::make_unique<Mesh>(material, Primitive::Lines);
 

@@ -53,8 +53,7 @@ std::string getNextToken(std::string& line, const std::string& fileName)
     return token;
 }
 
-int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position,
-                      glm::vec2 texCoord)
+int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, glm::vec2 texCoord)
 {
     MeshData::Vertex vertex({position, texCoord});
     auto it = std::find(vertices.begin(), vertices.end(), vertex);
@@ -96,8 +95,7 @@ MeshData readFile(const std::string& fileName)
                 const std::string x = getNextToken(line, fileName);
                 const std::string y = getNextToken(line, fileName);
                 const std::string z = getNextToken(line, fileName);
-                wavefrontPositions.emplace_back(::atof(x.c_str()), ::atof(y.c_str()),
-                                                ::atof(z.c_str()));
+                wavefrontPositions.emplace_back(::atof(x.c_str()), ::atof(y.c_str()), ::atof(z.c_str()));
             }
             else if (command == "vt")
             {
@@ -114,14 +112,12 @@ MeshData readFile(const std::string& fileName)
                     const std::size_t separatorIndex = vertexToken.find('/');
                     const std::size_t afterSeparator = vertexToken.size() - separatorIndex - 1;
                     const int positionIndex = ::atoi(vertexToken.substr(0, separatorIndex).c_str());
-                    const int texCoordIndex =
-                        ::atoi(vertexToken.substr(separatorIndex + 1, afterSeparator).c_str());
+                    const int texCoordIndex = ::atoi(vertexToken.substr(separatorIndex + 1, afterSeparator).c_str());
                     // - 1 because for some reason, in wavefront, indices start at 1 instead of 0...
                     const glm::vec3 position = wavefrontPositions[positionIndex - 1];
                     glm::vec2 texCoord = wavefrontTexCoords[texCoordIndex - 1];
                     texCoord.y = 1 - texCoord.y; // Because wavefront. I guess.
-                    const int vertexIndex =
-                        getOrCreateVertex(meshData.vertices, position, texCoord);
+                    const int vertexIndex = getOrCreateVertex(meshData.vertices, position, texCoord);
                     faceIndices.push_back(vertexIndex);
                 }
                 switch (faceIndices.size())
@@ -141,8 +137,7 @@ MeshData readFile(const std::string& fileName)
                     meshData.indices.push_back(faceIndices[3]);
                     break;
                 default:
-                    std::cerr << "Invalid vertex count for face: " << faceIndices.size()
-                              << std::endl;
+                    std::cerr << "Invalid vertex count for face: " << faceIndices.size() << std::endl;
                     std::terminate();
                 }
             }
@@ -154,8 +149,7 @@ MeshData readFile(const std::string& fileName)
 
 } // namespace
 
-Mesh* MeshLoader::LoadWavefront(const std::shared_ptr<const Material>& material,
-                                const std::string& fileName) const
+Mesh* MeshLoader::LoadWavefront(const std::shared_ptr<const Material>& material, const std::string& fileName) const
 {
     MeshData meshData = readFile(fileName);
     std::vector<float> positionsData;

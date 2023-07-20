@@ -50,8 +50,7 @@ void VertexArrayObject::Unbind()
     GL_CHECK(glBindVertexArray(0));
 }
 
-void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLint componentCount,
-                                  GLuint layoutLocation)
+void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLint componentCount, GLuint layoutLocation)
 {
     HATCHER_ASSERT(IsBinded());
 
