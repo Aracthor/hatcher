@@ -14,6 +14,7 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
+#include "SteveAnimationComponent.hpp"
 
 using namespace hatcher;
 
@@ -46,6 +47,7 @@ DemoApplication::DemoApplication()
     InitHexaGrid(componentManager->WriteWorldComponent<HexagonalGrid>());
 
     renderComponentManager->AddComponentType<SelectableComponent>();
+    renderComponentManager->AddComponentType<SteveAnimationComponent>();
     renderComponentManager->AddWorldComponent<Camera>();
 
     StartRendering("hatcher - demo", 800, 600);

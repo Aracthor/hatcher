@@ -3,6 +3,7 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
+#include "SteveAnimationComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -40,10 +41,14 @@ public:
             movement2D.speed = 0.f;
             SelectableComponent selectable;
             selectable.selected = false;
+            SteveAnimationComponent animation;
+            animation.rightLegAngle = 0.f;
+            animation.rightLegRising = false;
 
             componentManager->WriteComponents<Position2DComponent>()[newEntity] = position2D;
             componentManager->WriteComponents<Movement2DComponent>()[newEntity] = movement2D;
             renderComponentManager->WriteComponents<SelectableComponent>()[newEntity] = selectable;
+            renderComponentManager->WriteComponents<SteveAnimationComponent>()[newEntity] = animation;
         }
     }
 

@@ -1,4 +1,5 @@
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -12,6 +13,7 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
+#include "SteveAnimationComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -53,11 +55,12 @@ public:
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
+        auto animationComponents = renderComponentManager->WriteComponents<SteveAnimationComponent>();
         auto selectableComponents = renderComponentManager->WriteComponents<SelectableComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
-            if (positionComponents[i] && movementComponents[i])
+            if (positionComponents[i] && movementComponents[i] && animationComponents[i])
             {
                 if (selectableComponents[i] && selectableComponents[i]->box.IsPoint())
                 {
@@ -70,11 +73,44 @@ public:
 
                 const glm::mat4 modelMatrix =
                     TransformationHelper::ModelFromComponents(positionComponents[i], movementComponents[i]);
-                for (const BodyPart* bodyPart : m_bodyParts)
-                {
-                    frameRenderer.AddMeshToRender(bodyPart->mesh.get(), modelMatrix * bodyPart->matrix);
-                }
+                SteveAnimationComponent& animation = *animationComponents[i];
+                const bool moving = !movementComponents[i]->path.empty();
+                UpdateAnimationComponent(animation, moving, frameRenderer.GetClock());
+                const glm::mat4 rightLegMatrix =
+                    glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
+                const glm::mat4 leftLegMatrix =
+                    glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
+                frameRenderer.AddMeshToRender(m_torso.mesh.get(), modelMatrix * m_torso.matrix);
+                frameRenderer.AddMeshToRender(m_head.mesh.get(), modelMatrix * m_head.matrix);
+                frameRenderer.AddMeshToRender(m_rightArm.mesh.get(), modelMatrix * m_rightArm.matrix);
+                frameRenderer.AddMeshToRender(m_leftArm.mesh.get(), modelMatrix * m_leftArm.matrix);
+                frameRenderer.AddMeshToRender(m_rightLeg.mesh.get(), modelMatrix * rightLegMatrix);
+                frameRenderer.AddMeshToRender(m_leftLeg.mesh.get(), modelMatrix * leftLegMatrix);
             }
+        }
+    }
+
+    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving, const Clock* clock)
+    {
+        const float legMoveSpeed = 0.005f;
+        const float legMaxAngle = M_PI / 4.f;
+        if (moving)
+        {
+            const float legSign = animationComponent.rightLegRising ? -1.f : 1.f;
+            animationComponent.rightLegAngle += legSign * legMoveSpeed * clock->GetElapsedTime();
+            if (std::abs(animationComponent.rightLegAngle) > legMaxAngle)
+            {
+                const float angleToBackdown = std::abs(animationComponent.rightLegAngle) - legMaxAngle;
+                animationComponent.rightLegAngle -= legSign * angleToBackdown * 2.f;
+                animationComponent.rightLegRising = !animationComponent.rightLegRising;
+            }
+        }
+        else if (animationComponent.rightLegAngle != 0.f)
+        {
+            const float legSign = (animationComponent.rightLegAngle > 0.f) ? -1.f : 1.f;
+            animationComponent.rightLegAngle += legSign * legMoveSpeed * clock->GetElapsedTime();
+            if (animationComponent.rightLegAngle * legSign > 0.f)
+                animationComponent.rightLegAngle = 0.f;
         }
     }
 
