@@ -15,9 +15,38 @@ class ISaveLoader;
 class IWorldComponent;
 
 template <class Component>
-using ComponentReader = span<const std::optional<Component>>;
+class ComponentReader
+{
+public:
+    inline ComponentReader(span<const std::optional<Component>>&& data)
+        : m_data(data)
+    {
+    }
+
+    inline const std::optional<Component>& operator[](int index) const { return m_data[index]; }
+    inline const std::optional<Component>& operator[](Entity entity) const { return m_data[entity.ID()]; }
+
+private:
+    span<const std::optional<Component>> m_data;
+};
+
 template <class Component>
-using ComponentWriter = span<std::optional<Component>>;
+class ComponentWriter
+{
+public:
+    inline ComponentWriter(span<std::optional<Component>>&& data)
+        : m_data(data)
+    {
+    }
+
+    inline const std::optional<Component>& operator[](int index) const { return m_data[index]; }
+    inline std::optional<Component>& operator[](int index) { return m_data[index]; }
+    inline const std::optional<Component>& operator[](Entity entity) const { return m_data[entity.ID()]; }
+    inline std::optional<Component>& operator[](Entity entity) { return m_data[entity.ID()]; }
+
+private:
+    span<std::optional<Component>> m_data;
+};
 
 class ComponentManager
 {
@@ -39,9 +68,6 @@ public:
 
     template <class Component>
     void AddWorldComponent();
-
-    template <class Component>
-    void AttachComponent(Entity entity, Component& component);
 
     template <class Component>
     ComponentReader<Component> ReadComponents() const;

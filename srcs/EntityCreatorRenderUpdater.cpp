@@ -41,9 +41,9 @@ public:
             SelectableComponent selectable;
             selectable.selected = false;
 
-            componentManager->AttachComponent<Position2DComponent>(newEntity, position2D);
-            componentManager->AttachComponent<Movement2DComponent>(newEntity, movement2D);
-            renderComponentManager->AttachComponent<SelectableComponent>(newEntity, selectable);
+            componentManager->WriteComponents<Position2DComponent>()[newEntity] = position2D;
+            componentManager->WriteComponents<Movement2DComponent>()[newEntity] = movement2D;
+            renderComponentManager->WriteComponents<SelectableComponent>()[newEntity] = selectable;
         }
     }
 

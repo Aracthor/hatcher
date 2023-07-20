@@ -33,19 +33,6 @@ void ComponentManager::AddWorldComponent()
 }
 
 template <class Component>
-void ComponentManager::AttachComponent(Entity entity, Component& component)
-{
-    using RealComponentList = IdentifiableComponentList<Component>*;
-
-    constexpr uint key = ComponentKey<Component>();
-    HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
-                           "Requesting a missing component type: " << typeid(Component).name());
-    IComponentList* componentList = m_componentLists[key].get();
-    RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
-    realComponentList->AttachComponent(entity.ID(), component);
-}
-
-template <class Component>
 ComponentReader<Component> ComponentManager::ReadComponents() const
 {
     using RealComponentList = const IdentifiableComponentList<Component>*;
