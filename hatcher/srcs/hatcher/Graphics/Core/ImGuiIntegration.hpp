@@ -17,6 +17,7 @@ public:
     void Render() const;
 
     void ProcessEvent(const SDL_Event& event);
+    bool IsInterfaceWindowHovered() const;
 };
 
 } // namespace hatcher

@@ -43,4 +43,9 @@ void ImGuiIntegration::ProcessEvent(const SDL_Event& event)
     ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
+bool ImGuiIntegration::IsInterfaceWindowHovered() const
+{
+    return ImGui::IsWindowHovered(ImGuiHoveredFlags_AnyWindow);
+}
+
 } // namespace hatcher

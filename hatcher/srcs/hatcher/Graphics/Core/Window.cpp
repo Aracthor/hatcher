@@ -49,6 +49,8 @@ std::vector<SDL_Event> Window::PollEvents()
     while (SDL_PollEvent(&event))
     {
         m_imguiIntegration->ProcessEvent(event);
+        if (m_imguiIntegration->IsInterfaceWindowHovered())
+            continue;
 
         // We invert Y axis for mouse events because there seems to be an inversion between
         // OpenGL and SDL2.
