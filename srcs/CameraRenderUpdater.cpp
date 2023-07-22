@@ -34,20 +34,19 @@ public:
 
             camera->pixelSize = std::clamp(camera->pixelSize, 0.001f, 0.1f);
         }
-        else if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_F)
+        else if (event.type == SDL_MOUSEMOTION && event.motion.state & SDL_BUTTON_MIDDLE)
         {
-            m_verticalMode = !m_verticalMode;
-            if (m_verticalMode)
-            {
-                camera->position = glm::vec3(0, 0, 100);
-                camera->up = glm::vec3(0, 1, 0);
-            }
-            else
-            {
-                camera->position = glm::vec3(-90, -90, 100);
-                camera->up = glm::vec3(sqrtf(2.f) / 2.f, sqrtf(2.f) / 2.f, 0.f);
-            }
-            camera->position += camera->target;
+            const float cameraRotationSpeed = 0.01f;
+            m_angle.x -= cameraRotationSpeed * event.motion.xrel;
+            m_angle.y -= cameraRotationSpeed * event.motion.yrel;
+            m_angle.y = std::clamp(m_angle.y, 0.f, float(M_PI) / 2.f);
+            camera->position.x = glm::sin(m_angle.y) * glm::cos(m_angle.x);
+            camera->position.y = glm::sin(m_angle.y) * glm::sin(m_angle.x);
+            camera->position.z = glm::cos(m_angle.y);
+            camera->position = camera->position * 100.f + camera->target;
+            camera->up.x = -glm::cos(m_angle.x);
+            camera->up.y = -glm::sin(m_angle.x);
+            camera->up.z = glm::sin(m_angle.y);
         }
     }
 
@@ -55,13 +54,13 @@ public:
     {
         static const SDL_EventType events[] = {
             SDL_MOUSEWHEEL,
-            SDL_KEYDOWN,
+            SDL_MOUSEMOTION,
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
 
 private:
-    bool m_verticalMode = false;
+    glm::vec2 m_angle = glm::vec2(M_PI / 4.f, M_PI / 4.f);
 };
 
 class CameraRenderUpdater final : public RenderUpdater
