@@ -1,7 +1,5 @@
 #pragma once
 
-#include "hatcher/Maths/Box.hpp"
-
 namespace hatcher
 {
 class ISaveLoader;
