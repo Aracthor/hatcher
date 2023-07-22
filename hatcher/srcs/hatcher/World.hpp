@@ -25,7 +25,7 @@ public:
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
-    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer, const IRendering& rendering);
+    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer);
 
 private:
     std::string m_name;

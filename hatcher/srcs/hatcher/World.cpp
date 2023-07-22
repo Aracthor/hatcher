@@ -71,7 +71,7 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer, const IRendering& rendering)
+void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {
