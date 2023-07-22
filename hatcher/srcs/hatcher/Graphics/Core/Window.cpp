@@ -42,6 +42,27 @@ void Window::DisableDepthTest()
     m_context->DisableDepthTest();
 }
 
+std::vector<SDL_Event> Window::PollEvents()
+{
+    std::vector<SDL_Event> events;
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        m_imguiIntegration->ProcessEvent(event);
+
+        // We invert Y axis for mouse events because there seems to be an inversion between
+        // OpenGL and SDL2.
+        const SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
+        if (eventType == SDL_MOUSEBUTTONDOWN || eventType == SDL_MOUSEBUTTONUP)
+            event.button.y = m_height - event.button.y;
+        if (eventType == SDL_MOUSEMOTION)
+            event.motion.y = m_height - event.motion.y;
+
+        events.push_back(event);
+    }
+    return events;
+}
+
 void Window::Clear()
 {
     m_imguiIntegration->NewFrame();

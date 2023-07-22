@@ -71,14 +71,18 @@ void World::Update()
     }
 }
 
-void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer)
+void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->PollEvents(application, m_entityManager.get(), m_entityManager->GetComponentManager(),
-                                   m_entityManager->GetRenderingComponentManager(), frameRenderer);
+        m_eventUpdater->ProcessEvents(events, application, m_entityManager.get(),
+                                      m_entityManager->GetComponentManager(),
+                                      m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
+}
 
+void World::UpdateRendering(IFrameRenderer& frameRenderer)
+{
     for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
         renderUpdater->Update(m_entityManager->GetComponentManager(), m_entityManager->GetRenderingComponentManager(),

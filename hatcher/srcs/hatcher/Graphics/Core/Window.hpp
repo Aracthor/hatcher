@@ -1,8 +1,10 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 struct SDL_Window;
+union SDL_Event;
 
 namespace hatcher
 {
@@ -17,6 +19,8 @@ public:
 
     void Clear();
     void Refresh();
+
+    std::vector<SDL_Event> PollEvents();
 
     void EnableDepthTest();
     void DisableDepthTest();

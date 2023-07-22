@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 
+#include "span.hpp"
+
+union SDL_Event;
 namespace hatcher
 {
 class EntityManager;
@@ -25,7 +28,8 @@ public:
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
-    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer);
+    void UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer);
+    void UpdateRendering(IFrameRenderer& frameRenderer);
 
 private:
     std::string m_name;

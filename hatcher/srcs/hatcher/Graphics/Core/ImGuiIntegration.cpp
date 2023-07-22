@@ -38,4 +38,9 @@ void ImGuiIntegration::Render() const
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
+void ImGuiIntegration::ProcessEvent(const SDL_Event& event)
+{
+    ImGui_ImplSDL2_ProcessEvent(&event);
+}
+
 } // namespace hatcher

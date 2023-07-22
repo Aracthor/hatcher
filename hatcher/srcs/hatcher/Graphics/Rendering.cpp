@@ -1,5 +1,7 @@
 #include "Rendering.hpp"
 
+#include <SDL2/SDL_events.h>
+
 #include "Core/Window.hpp"
 
 #include "hatcher/World.hpp"
@@ -33,7 +35,10 @@ void Rendering::UpdateWorldRendering(IApplication* application, World* world)
     m_frameRenderer->Clear();
     m_window->Clear();
     m_clock->Update();
-    world->UpdateRendering(application, *m_frameRenderer);
+
+    const std::vector<SDL_Event> events = m_window->PollEvents();
+    world->UpdateFromEvents(span<const SDL_Event>(events), application, *m_frameRenderer);
+    world->UpdateRendering(*m_frameRenderer);
 }
 
 void Rendering::RenderWorld()

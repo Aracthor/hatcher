@@ -1,5 +1,6 @@
 #pragma once
 
+union SDL_Event;
 struct SDL_Window;
 typedef void* SDL_GLContext;
 
@@ -14,6 +15,8 @@ public:
 
     void NewFrame();
     void Render() const;
+
+    void ProcessEvent(const SDL_Event& event);
 };
 
 } // namespace hatcher
