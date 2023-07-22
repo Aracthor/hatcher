@@ -12,15 +12,16 @@ class IFrameRenderer;
 
 struct Camera final : public IWorldComponent
 {
-    glm::vec3 position;
-    glm::vec3 target;
-    glm::vec3 up;
+    glm::vec3 target = {0.f, 0.f, 0.f};
+    glm::vec2 angles = {M_PI / 4.f, M_PI / 4.f};
 
     float pixelSize = 0.01f;
 
-    Camera();
-
     glm::vec2 MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const;
+
+    glm::vec3 Position() const;
+    glm::vec3 Target() const;
+    glm::vec3 Up() const;
 
     void SaveLoad(ISaveLoader& saveLoader) override;
 };

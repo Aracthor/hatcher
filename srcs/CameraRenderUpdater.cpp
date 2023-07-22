@@ -37,16 +37,9 @@ public:
         else if (event.type == SDL_MOUSEMOTION && event.motion.state & SDL_BUTTON_MIDDLE)
         {
             const float cameraRotationSpeed = 0.01f;
-            m_angle.x -= cameraRotationSpeed * event.motion.xrel;
-            m_angle.y -= cameraRotationSpeed * event.motion.yrel;
-            m_angle.y = std::clamp(m_angle.y, 0.f, float(M_PI) / 2.f);
-            camera->position.x = glm::sin(m_angle.y) * glm::cos(m_angle.x);
-            camera->position.y = glm::sin(m_angle.y) * glm::sin(m_angle.x);
-            camera->position.z = glm::cos(m_angle.y);
-            camera->position = camera->position * 100.f + camera->target;
-            camera->up.x = -glm::cos(m_angle.x);
-            camera->up.y = -glm::sin(m_angle.x);
-            camera->up.z = glm::sin(m_angle.y);
+            camera->angles.x -= cameraRotationSpeed * event.motion.xrel;
+            camera->angles.y -= cameraRotationSpeed * event.motion.yrel;
+            camera->angles.y = std::clamp(camera->angles.y, 0.f, float(M_PI) / 2.f);
         }
     }
 
@@ -58,9 +51,6 @@ public:
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
-
-private:
-    glm::vec2 m_angle = glm::vec2(M_PI / 4.f, M_PI / 4.f);
 };
 
 class CameraRenderUpdater final : public RenderUpdater
@@ -79,7 +69,7 @@ public:
         HandleCameraMotion(camera, frameRenderer.GetClock());
 
         frameRenderer.SetProjectionMatrix(CalculateProjectionMatrix(camera, frameRenderer));
-        frameRenderer.SetViewMatrix(glm::lookAt(camera->position, camera->target, camera->up));
+        frameRenderer.SetViewMatrix(glm::lookAt(camera->Position(), camera->Target(), camera->Up()));
     }
 
 private:
@@ -89,7 +79,7 @@ private:
 
         const float elapsedTime = clock->GetElapsedTime();
         const float movementAmplitude = elapsedTime * camera->pixelSize;
-        const glm::vec2 cameraUp = camera->up;
+        const glm::vec2 cameraUp = camera->Up();
         const glm::vec2 cameraRight = {cameraUp.y, -cameraUp.x};
         glm::vec2 cameraMovement = glm::vec2(0.f);
 
@@ -106,7 +96,6 @@ private:
         }
 
         cameraMovement *= movementAmplitude;
-        camera->position += glm::vec3(cameraMovement, 0.f);
         camera->target += glm::vec3(cameraMovement, 0.f);
     }
 

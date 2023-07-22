@@ -3,34 +3,41 @@
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/ISaveLoader.hpp"
 
-Camera::Camera()
-{
-    const float angleX = M_PI / 4.f;
-    const float angleY = M_PI / 4.f;
-
-    target = {0.f, 0.f, 0.f};
-    position.x = glm::sin(angleY) * glm::cos(angleX);
-    position.y = glm::sin(angleY) * glm::sin(angleX);
-    position.z = glm::cos(angleY);
-    position = position * 100.f;
-    up.x = -glm::cos(angleX);
-    up.y = -glm::sin(angleX);
-    up.z = glm::sin(angleY);
-}
-
 glm::vec2 Camera::MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const
 {
     const glm::vec3 worldCoords = frameRenderer.WindowCoordsToWorldCoords(glm::vec2(x, y));
-    const glm::vec3 cameraToTarget = position - target;
+    const glm::vec3 cameraToTarget = Position() - Target();
     const float t = worldCoords.z / cameraToTarget.z;
     const glm::vec3 projectedWorldCoords = worldCoords - cameraToTarget * t;
     return static_cast<glm::vec2>(projectedWorldCoords);
 }
 
+glm::vec3 Camera::Position() const
+{
+    glm::vec3 sphericalCoordinates;
+    sphericalCoordinates.x = glm::sin(angles.y) * glm::cos(angles.x);
+    sphericalCoordinates.y = glm::sin(angles.y) * glm::sin(angles.x);
+    sphericalCoordinates.z = glm::cos(angles.y);
+    return sphericalCoordinates * 100.f + target;
+}
+
+glm::vec3 Camera::Target() const
+{
+    return target;
+}
+
+glm::vec3 Camera::Up() const
+{
+    glm::vec3 up;
+    up.x = -glm::cos(angles.x);
+    up.y = -glm::sin(angles.x);
+    up.z = glm::sin(angles.y);
+    return up;
+}
+
 void Camera::SaveLoad(ISaveLoader& saveLoader)
 {
-    saveLoader << position;
     saveLoader << target;
-    saveLoader << up;
+    saveLoader << angles;
     saveLoader << pixelSize;
 }
