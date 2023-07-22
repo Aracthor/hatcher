@@ -38,7 +38,6 @@ public:
             Position2DComponent position2D{entitySpawnPosition};
             Movement2DComponent movement2D;
             movement2D.orientation = glm::vec2(1.f, 0.f);
-            movement2D.speed = 0.f;
             SelectableComponent selectable;
             selectable.selected = false;
             SteveAnimationComponent animation;
