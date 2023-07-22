@@ -24,8 +24,6 @@ public:
     int Width() const { return m_width; }
     int Height() const { return m_height; }
 
-    SDL_Window* window() { return m_window; }
-
 private:
     int m_width;
     int m_height;
