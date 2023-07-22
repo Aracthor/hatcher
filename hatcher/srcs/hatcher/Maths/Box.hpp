@@ -17,7 +17,7 @@ private:
     using Vec = glm::vec<L, T>;
 
 public:
-    Box() = default;
+    Box();
     Box(const Vec& point);
     Box(const Vec& min, const Vec& max);
     template <class Iterator>
@@ -28,6 +28,7 @@ public:
     Box Translated(const Vec& translation) const;
     Box Scaled(float scale) const;
 
+    bool IsEmpty() const;
     bool IsPoint() const;
     bool Contains(const Vec& point) const;
     bool Contains(const Box<L, T>& box) const;

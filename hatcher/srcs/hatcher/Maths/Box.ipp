@@ -15,6 +15,13 @@ constexpr int Box<L, T>::_pow2(glm::length_t n)
 }
 
 template <glm::length_t L, typename T>
+Box<L, T>::Box()
+    : m_min(std::numeric_limits<float>::max())
+    , m_max(std::numeric_limits<float>::lowest())
+{
+}
+
+template <glm::length_t L, typename T>
 Box<L, T>::Box(const Vec& point)
     : m_min(point)
     , m_max(point)
@@ -67,6 +74,12 @@ template <glm::length_t L, typename T>
 Box<L, T> Box<L, T>::Scaled(float scale) const
 {
     return Box(m_min * scale, m_max * scale);
+}
+
+template <glm::length_t L, typename T>
+bool Box<L, T>::IsEmpty() const
+{
+    return m_min.x > m_max.x;
 }
 
 template <glm::length_t L, typename T>

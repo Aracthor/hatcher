@@ -62,7 +62,7 @@ public:
         {
             if (positionComponents[i] && movementComponents[i] && animationComponents[i])
             {
-                if (selectableComponents[i] && selectableComponents[i]->box.IsPoint())
+                if (selectableComponents[i] && selectableComponents[i]->box.IsEmpty())
                 {
                     for (const BodyPart* bodyPart : m_bodyParts)
                     {
