@@ -17,7 +17,7 @@ struct MeshData
     struct Vertex
     {
         glm::vec3 position;
-        glm::vec2 textureCoord;
+        std::optional<glm::vec2> textureCoord;
 
         bool operator==(const Vertex& other) const
         {
@@ -53,7 +53,7 @@ std::string getNextToken(std::string& line, const std::string& fileName)
     return token;
 }
 
-int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, glm::vec2 texCoord)
+int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, std::optional<glm::vec2> texCoord)
 {
     MeshData::Vertex vertex({position, texCoord});
     auto it = std::find(vertices.begin(), vertices.end(), vertex);
@@ -115,8 +115,12 @@ MeshData readFile(const std::string& fileName)
                     const int texCoordIndex = ::atoi(vertexToken.substr(separatorIndex + 1, afterSeparator).c_str());
                     // - 1 because for some reason, in wavefront, indices start at 1 instead of 0...
                     const glm::vec3 position = wavefrontPositions[positionIndex - 1];
-                    glm::vec2 texCoord = wavefrontTexCoords[texCoordIndex - 1];
-                    texCoord.y = 1 - texCoord.y; // Because wavefront. I guess.
+                    std::optional<glm::vec2> texCoord;
+                    if (!wavefrontTexCoords.empty())
+                    {
+                        texCoord = wavefrontTexCoords[texCoordIndex - 1];
+                        texCoord->y = 1 - texCoord->y; // Because wavefront. I guess.
+                    }
                     const int vertexIndex = getOrCreateVertex(meshData.vertices, position, texCoord);
                     faceIndices.push_back(vertexIndex);
                 }
@@ -162,13 +166,18 @@ Mesh* MeshLoader::LoadWavefront(const std::shared_ptr<const Material>& material,
         positionsData.push_back(vertex.position.x);
         positionsData.push_back(vertex.position.y);
         positionsData.push_back(vertex.position.z);
-        textureCoordsData.push_back(vertex.textureCoord.x);
-        textureCoordsData.push_back(vertex.textureCoord.y);
+        if (vertex.textureCoord)
+        {
+            textureCoordsData.push_back(vertex.textureCoord->x);
+            textureCoordsData.push_back(vertex.textureCoord->y);
+        }
     }
 
+    HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
     Mesh* mesh = new Mesh(material, Primitive::Triangles);
     mesh->Set3DPositions(positionsData.data(), positionsData.size());
-    mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
+    if (!textureCoordsData.empty())
+        mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
     mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
     return mesh;
 }
