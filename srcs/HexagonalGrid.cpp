@@ -202,11 +202,11 @@ void HexagonalGrid::UpdatePathfind()
         if (tileData.second.walkable)
         {
             const glm::vec2 tilePosition = TileCoordToPosition(tileData.first);
-            m_pathfinding.CreateNode(tilePosition);
             for (TileCoord neighbour : tileData.first.Neighbours())
             {
                 const glm::vec2 neighbourPosition = TileCoordToPosition(neighbour);
-                m_pathfinding.LinkNodes(tilePosition, neighbourPosition);
+                if (m_pathfinding.ContainsNode(neighbourPosition))
+                    m_pathfinding.LinkNodes(tilePosition, neighbourPosition);
             }
         }
     }
