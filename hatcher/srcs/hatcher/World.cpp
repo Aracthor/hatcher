@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "CommandManager.hpp"
 #include "ComponentRegisterer.hpp"
 #include "EntityManager.hpp"
 #include "Updater.hpp"
@@ -73,6 +74,7 @@ World::World(const char* name)
     {
         m_updaters.emplace_back(creator->Create());
     }
+    m_commandManager = std::make_unique<CommandManager>();
     m_eventUpdater = std::make_unique<EventUpdater>();
 }
 
@@ -96,13 +98,15 @@ void World::Update()
     {
         updater->Update(m_entityManager->GetComponentManager());
     }
+    m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
+                                      m_entityManager->GetRenderingComponentManager());
 }
 
 void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->ProcessEvents(events, application, m_entityManager.get(),
+        m_eventUpdater->ProcessEvents(events, application, m_commandManager.get(),
                                       m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }

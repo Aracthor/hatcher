@@ -2,6 +2,8 @@
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/ICommand.hpp"
+#include "hatcher/ICommandManager.hpp"
 #include "hatcher/assert.hpp"
 
 #include "imgui.h"
@@ -17,6 +19,27 @@ struct ControlPanel
     bool walkable = false;
 };
 
+class SetTileWaklableCommand final : public ICommand
+{
+public:
+    SetTileWaklableCommand(glm::vec2 worldCoords2D, bool walkable)
+        : m_worldCoords2D(worldCoords2D)
+        , m_walkable(walkable)
+    {
+    }
+
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
+                 ComponentManager* renderingComponentManager) override
+    {
+        HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
+        hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(m_worldCoords2D), m_walkable);
+    }
+
+private:
+    const glm::vec2 m_worldCoords2D;
+    const bool m_walkable;
+};
+
 class HexaGridControlPanelEventListener final : public IEventListener
 {
 public:
@@ -25,7 +48,7 @@ public:
     {
     }
 
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN)
@@ -43,8 +66,7 @@ public:
                 const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
                 const glm::vec2 worldCoords2D =
                     camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-                HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
-                hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(worldCoords2D), m_panel.walkable);
+                commandManager->AddCommand(new SetTileWaklableCommand(worldCoords2D, m_panel.walkable));
             }
         }
     }

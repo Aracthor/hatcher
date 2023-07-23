@@ -7,9 +7,9 @@
 namespace hatcher
 {
 
-void EventUpdater::ProcessEvents(span<const SDL_Event> events, IApplication* application, IEntityManager* entityManager,
-                                 ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                                 const IFrameRenderer& frameRenderer)
+void EventUpdater::ProcessEvents(span<const SDL_Event> events, IApplication* application,
+                                 ICommandManager* commandManager, const ComponentManager* componentManager,
+                                 ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer)
 {
     for (const SDL_Event& event : events)
     {
@@ -19,7 +19,7 @@ void EventUpdater::ProcessEvents(span<const SDL_Event> events, IApplication* app
         else if (m_eventListeners.find(eventType) != m_eventListeners.end())
         {
             for (auto& listener : m_eventListeners[eventType])
-                listener->GetEvent(event, entityManager, componentManager, renderComponentManager, frameRenderer);
+                listener->GetEvent(event, commandManager, componentManager, renderComponentManager, frameRenderer);
         }
     }
 }

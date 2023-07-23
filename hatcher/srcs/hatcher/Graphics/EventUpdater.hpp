@@ -14,15 +14,15 @@ namespace hatcher
 {
 class ComponentManager;
 class IApplication;
-class IEntityManager;
+class ICommandManager;
 class IEventListener;
 class IFrameRenderer;
 
 class EventUpdater final : public IEventUpdater
 {
 public:
-    void ProcessEvents(span<const SDL_Event> events, IApplication* application, IEntityManager* entityManager,
-                       ComponentManager* componentManager, ComponentManager* renderComponentManager,
+    void ProcessEvents(span<const SDL_Event> events, IApplication* application, ICommandManager* commandManager,
+                       const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                        const IFrameRenderer& frameRenderer);
 
     void RegisterListener(const std::shared_ptr<IEventListener>& eventListener) override;

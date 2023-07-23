@@ -8,16 +8,38 @@
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/ICommand.hpp"
+#include "hatcher/ICommandManager.hpp"
 
 namespace
 {
 
 using namespace hatcher;
 
+class MoveOrderCommand final : public ICommand
+{
+public:
+    MoveOrderCommand(Entity entity, const std::vector<glm::vec2>& path)
+        : m_entity(entity)
+        , m_path(path)
+    {
+    }
+
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
+                 ComponentManager* renderingComponentManager) override
+    {
+        componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
+    }
+
+private:
+    const Entity m_entity;
+    const std::vector<glm::vec2> m_path;
+};
+
 class MoveOrderEventListener final : public IEventListener
 {
 public:
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
@@ -32,14 +54,14 @@ public:
                 return;
 
             const HexagonalGrid::TileCoord tileDestination = hexaGrid->PositionToTileCoords(worldCoords2D);
-            auto movementComponents = componentManager->WriteComponents<Movement2DComponent>();
+            auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
             auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
             auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
 
             HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
             for (int i = 0; i < componentManager->Count(); i++)
             {
-                std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
+                const std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
                 const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
                 const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
                 if (selectableComponent && selectableComponent->selected && movementComponent)
@@ -50,7 +72,7 @@ public:
                     std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(tileStart, tileDestination);
                     if (!path.empty())
                     {
-                        movementComponent->path = path;
+                        commandManager->AddCommand(new MoveOrderCommand(Entity(i), path));
                     }
                 }
             }

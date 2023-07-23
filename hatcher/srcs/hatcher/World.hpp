@@ -9,6 +9,7 @@
 union SDL_Event;
 namespace hatcher
 {
+class CommandManager;
 class EntityManager;
 class EventUpdater;
 class IApplication;
@@ -37,6 +38,8 @@ private:
     std::unique_ptr<EntityManager> m_entityManager;
 
     std::vector<std::unique_ptr<Updater>> m_updaters;
+    std::unique_ptr<CommandManager> m_commandManager;
+
     std::unique_ptr<EventUpdater> m_eventUpdater;
     std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
 };

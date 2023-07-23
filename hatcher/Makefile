@@ -112,7 +112,8 @@ IMGUI_OBJS_NATIVE=	$(IMGUI_SRCS:$(IMGUI_REPO)%.cpp=$(OBJS_NATIVE_IMGUI_DIR)%.o)
 IMGUI_OBJS_WEBASM=	$(IMGUI_SRCS:$(IMGUI_REPO)%.cpp=$(OBJS_WEBASM_IMGUI_DIR)%.o)
 
 
-SRCS_FILES=	ComponentLoader.cpp			\
+SRCS_FILES=	CommandManager.cpp			\
+		ComponentLoader.cpp			\
 		ComponentManager.cpp			\
 		ComponentSaver.cpp			\
 		EntityManager.cpp			\

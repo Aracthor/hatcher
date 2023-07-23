@@ -10,16 +10,54 @@
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/ICommand.hpp"
+#include "hatcher/ICommandManager.hpp"
 
 namespace
 {
 
 using namespace hatcher;
 
+class CreateEntityCommand final : public ICommand
+{
+public:
+    CreateEntityCommand(glm::vec2 spawnPosition)
+        : m_spawnPosition(spawnPosition)
+    {
+    }
+
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
+                 ComponentManager* renderingComponentManager) override
+    {
+        Entity newEntity = entityManager->CreateNewEntity();
+        Position2DComponent position2D{m_spawnPosition};
+        Movement2DComponent movement2D;
+        movement2D.orientation = glm::vec2(1.f, 0.f);
+
+        componentManager->WriteComponents<Position2DComponent>()[newEntity] = position2D;
+        componentManager->WriteComponents<Movement2DComponent>()[newEntity] = movement2D;
+
+        if (renderingComponentManager)
+        {
+            SelectableComponent selectable;
+            selectable.selected = false;
+            SteveAnimationComponent animation;
+            animation.rightLegAngle = 0.f;
+            animation.rightLegRising = false;
+
+            renderingComponentManager->WriteComponents<SelectableComponent>()[newEntity] = selectable;
+            renderingComponentManager->WriteComponents<SteveAnimationComponent>()[newEntity] = animation;
+        }
+    }
+
+private:
+    const glm::vec2 m_spawnPosition;
+};
+
 class EntityCreatorEventListener final : public IEventListener
 {
 public:
-    void GetEvent(const SDL_Event& event, IEntityManager* entityManager, ComponentManager* componentManager,
+    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
@@ -34,20 +72,7 @@ public:
                 return;
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
-            Entity newEntity = entityManager->CreateNewEntity();
-            Position2DComponent position2D{entitySpawnPosition};
-            Movement2DComponent movement2D;
-            movement2D.orientation = glm::vec2(1.f, 0.f);
-            SelectableComponent selectable;
-            selectable.selected = false;
-            SteveAnimationComponent animation;
-            animation.rightLegAngle = 0.f;
-            animation.rightLegRising = false;
-
-            componentManager->WriteComponents<Position2DComponent>()[newEntity] = position2D;
-            componentManager->WriteComponents<Movement2DComponent>()[newEntity] = movement2D;
-            renderComponentManager->WriteComponents<SelectableComponent>()[newEntity] = selectable;
-            renderComponentManager->WriteComponents<SteveAnimationComponent>()[newEntity] = animation;
+            commandManager->AddCommand(new CreateEntityCommand(entitySpawnPosition));
         }
     }
 
