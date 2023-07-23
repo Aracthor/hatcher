@@ -1,6 +1,5 @@
 #pragma once
 
-#include "basic_types.hpp"
 #include "constexpr_hash.hpp"
 #include "constexpr_typeid.hpp"
 
