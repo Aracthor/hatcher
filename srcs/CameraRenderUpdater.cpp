@@ -115,6 +115,6 @@ private:
     }
 };
 
-const int dummy = RegisterRenderUpdater<CameraRenderUpdater>();
+RenderUpdaterRegisterer<CameraRenderUpdater> registerer;
 
 } // namespace

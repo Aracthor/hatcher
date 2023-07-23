@@ -46,6 +46,6 @@ public:
     }
 };
 
-const int dummy = RegisterUpdater<MovingEntitiesUpdater>();
+UpdaterRegisterer<MovingEntitiesUpdater> registerer;
 
 } // namespace

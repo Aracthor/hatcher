@@ -15,40 +15,36 @@ namespace hatcher
 
 namespace
 {
-std::vector<CreateUpdaterFunction*>& UpdaterCreators()
+std::vector<const IUpdaterCreator*>& UpdaterCreators()
 {
-    static std::vector<CreateUpdaterFunction*> updaterCreators;
+    static std::vector<const IUpdaterCreator*> updaterCreators;
     return updaterCreators;
 }
 
-std::vector<CreateRenderUpdaterFunction*>& RenderUpdaterCreators()
+std::vector<const IRenderUpdaterCreator*>& RenderUpdaterCreators()
 {
-    static std::vector<CreateRenderUpdaterFunction*> updaterCreators;
-    return updaterCreators;
+    static std::vector<const IRenderUpdaterCreator*> renderUpdaterCreators;
+    return renderUpdaterCreators;
 }
 } // namespace
 
-int RegisterUpdater(CreateUpdaterFunction* createFunction)
+void RegisterUpdater(const IUpdaterCreator* creator)
 {
-    auto& updaterCreators = UpdaterCreators();
-    updaterCreators.push_back(createFunction);
-    return 0;
+    UpdaterCreators().push_back(creator);
 }
 
-int RegisterRenderUpdater(CreateRenderUpdaterFunction* createFunction)
+void RegisterRenderUpdater(const IRenderUpdaterCreator* creator)
 {
-    auto& renderUpdaterCreators = RenderUpdaterCreators();
-    renderUpdaterCreators.push_back(createFunction);
-    return 0;
+    RenderUpdaterCreators().push_back(creator);
 }
 
 World::World(const char* name)
     : m_name(name)
 {
     m_entityManager.reset(new EntityManager());
-    for (auto entry : UpdaterCreators())
+    for (auto creator : UpdaterCreators())
     {
-        m_updaters.emplace_back(entry());
+        m_updaters.emplace_back(creator->Create());
     }
     m_eventUpdater = std::make_unique<EventUpdater>();
 }
@@ -57,9 +53,9 @@ World::~World() = default;
 
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
-    for (auto entry : RenderUpdaterCreators())
+    for (auto creator : RenderUpdaterCreators())
     {
-        m_renderUpdaters.emplace_back(entry(rendering, m_eventUpdater.get()));
+        m_renderUpdaters.emplace_back(creator->Create(rendering, m_eventUpdater.get()));
     }
 }
 

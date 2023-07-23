@@ -171,6 +171,6 @@ private:
     std::unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
-const int dummy = RegisterRenderUpdater<SelectionRectangleRenderUpdater>();
+RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> registerer;
 
 } // namespace

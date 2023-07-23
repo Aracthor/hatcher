@@ -68,6 +68,6 @@ public:
     }
 };
 
-const int dummy = RegisterRenderUpdater<SaveLoaderRenderUpdater>();
+RenderUpdaterRegisterer<SaveLoaderRenderUpdater> registerer;
 
 } // namespace

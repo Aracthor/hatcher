@@ -16,14 +16,24 @@ public:
                         IFrameRenderer& frameRenderer) = 0;
 };
 
-using CreateRenderUpdaterFunction = RenderUpdater*(const IRendering* rendering, IEventUpdater* eventUpdater);
-template <class UpdaterClass>
-int RegisterRenderUpdater()
+class IRenderUpdaterCreator
 {
-    int RegisterRenderUpdater(CreateRenderUpdaterFunction * createFunction);
-    return RegisterRenderUpdater([](const IRendering* rendering, IEventUpdater* eventUpdater) -> RenderUpdater* {
-        return new UpdaterClass(rendering, eventUpdater);
-    });
-}
+public:
+    virtual RenderUpdater* Create(const IRendering* rendering, IEventUpdater* eventUpdater) const = 0;
+};
+
+void RegisterRenderUpdater(const IRenderUpdaterCreator* creator);
+
+template <class RenderUpdaterClass>
+class RenderUpdaterRegisterer final : public IRenderUpdaterCreator
+{
+public:
+    RenderUpdaterRegisterer() { RegisterRenderUpdater(this); }
+
+    RenderUpdater* Create(const IRendering* rendering, IEventUpdater* eventUpdater) const override
+    {
+        return new RenderUpdaterClass(rendering, eventUpdater);
+    }
+};
 
 } // namespace hatcher

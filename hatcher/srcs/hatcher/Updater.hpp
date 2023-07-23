@@ -12,12 +12,21 @@ public:
     virtual void Update(ComponentManager* componentManager) = 0;
 };
 
-using CreateUpdaterFunction = Updater*();
-template <class UpdaterClass>
-int RegisterUpdater()
+class IUpdaterCreator
 {
-    int RegisterUpdater(CreateUpdaterFunction * createFunction);
-    return RegisterUpdater([]() -> Updater* { return new UpdaterClass(); });
-}
+public:
+    virtual Updater* Create() const = 0;
+};
+
+void RegisterUpdater(const IUpdaterCreator* creator);
+
+template <class UpdaterClass>
+class UpdaterRegisterer final : public IUpdaterCreator
+{
+public:
+    UpdaterRegisterer() { RegisterUpdater(this); }
+
+    Updater* Create() const override { return new UpdaterClass(); }
+};
 
 } // namespace hatcher

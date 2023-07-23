@@ -59,6 +59,6 @@ private:
     bool m_showDemo = false;
 };
 
-const int dummy = RegisterRenderUpdater<DemoImguiRenderUpdater>();
+RenderUpdaterRegisterer<DemoImguiRenderUpdater> registerer;
 
 } // namespace

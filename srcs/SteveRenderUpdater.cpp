@@ -131,6 +131,6 @@ private:
     std::shared_ptr<Texture> m_texture;
 };
 
-const int dummy = RegisterRenderUpdater<SteveRenderUpdater>();
+RenderUpdaterRegisterer<SteveRenderUpdater> registerer;
 
 } // namespace

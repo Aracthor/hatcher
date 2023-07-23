@@ -59,6 +59,6 @@ public:
     }
 };
 
-const int dummy = RegisterRenderUpdater<DebugShortcutsRenderUpdater>();
+RenderUpdaterRegisterer<DebugShortcutsRenderUpdater> registerer;
 
 } // namespace
