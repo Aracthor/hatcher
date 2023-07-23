@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "ComponentRegisterer.hpp"
 #include "EntityManager.hpp"
 #include "Updater.hpp"
 #include "assert.hpp"
@@ -26,6 +27,18 @@ std::vector<const IRenderUpdaterCreator*>& RenderUpdaterCreators()
     static std::vector<const IRenderUpdaterCreator*> renderUpdaterCreators;
     return renderUpdaterCreators;
 }
+
+std::vector<const IComponentTypeCreator*>& ComponentTypeCreators()
+{
+    static std::vector<const IComponentTypeCreator*> creators;
+    return creators;
+}
+
+std::vector<const IComponentTypeCreator*>& RenderComponentTypeCreators()
+{
+    static std::vector<const IComponentTypeCreator*> creators;
+    return creators;
+}
 } // namespace
 
 void RegisterUpdater(const IUpdaterCreator* creator)
@@ -38,10 +51,24 @@ void RegisterRenderUpdater(const IRenderUpdaterCreator* creator)
     RenderUpdaterCreators().push_back(creator);
 }
 
+void RegisterComponentTypeCreator(const IComponentTypeCreator* creator)
+{
+    ComponentTypeCreators().push_back(creator);
+}
+
+void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
+{
+    RenderComponentTypeCreators().push_back(creator);
+}
+
 World::World(const char* name)
     : m_name(name)
 {
     m_entityManager.reset(new EntityManager());
+    for (auto creator : ComponentTypeCreators())
+    {
+        creator->CreateComponentType(m_entityManager->GetComponentManager());
+    }
     for (auto creator : UpdaterCreators())
     {
         m_updaters.emplace_back(creator->Create());
@@ -53,6 +80,10 @@ World::~World() = default;
 
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
+    for (auto creator : RenderComponentTypeCreators())
+    {
+        creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
+    }
     for (auto creator : RenderUpdaterCreators())
     {
         m_renderUpdaters.emplace_back(creator->Create(rendering, m_eventUpdater.get()));
