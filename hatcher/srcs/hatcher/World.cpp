@@ -94,6 +94,7 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
 
 void World::Update()
 {
+    m_entityManager->StartUpdate();
     for (std::unique_ptr<Updater>& updater : m_updaters)
     {
         updater->Update(m_entityManager->GetComponentManager());

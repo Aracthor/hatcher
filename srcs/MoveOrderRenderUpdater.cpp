@@ -10,6 +10,7 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
+#include "hatcher/IEntityManager.hpp"
 
 namespace
 {
@@ -28,8 +29,11 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
+        if (!entityManager->IsEntityDeleted(m_entity))
+            componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
     }
+
+    span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }
 
 private:
     const Entity m_entity;

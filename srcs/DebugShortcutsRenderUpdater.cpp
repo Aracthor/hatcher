@@ -1,10 +1,10 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
+#include "hatcher/IEntityManager.hpp"
 #include "hatcher/assert.hpp"
 
 #include "SelectableComponent.hpp"
@@ -27,8 +27,11 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        entityManager->DeleteEntity(m_entity);
+        if (!entityManager->IsEntityDeleted(m_entity))
+            entityManager->DeleteEntity(m_entity);
     }
+
+    span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }
 
 private:
     const Entity m_entity;

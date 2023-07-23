@@ -17,6 +17,11 @@ EntityManager::EntityManager()
 
 EntityManager::~EntityManager() = default;
 
+void EntityManager::StartUpdate()
+{
+    m_deletedEntities.clear();
+}
+
 Entity EntityManager::CreateNewEntity()
 {
     Entity entity = Entity(m_entityIDRegistry->GetNewID());
@@ -35,10 +40,16 @@ Entity EntityManager::CreateNewEntity()
 
 void EntityManager::DeleteEntity(Entity entity)
 {
+    m_deletedEntities.push_back(entity);
     m_componentManager->RemoveEntity(entity);
     if (m_renderingComponentManager)
         m_renderingComponentManager->RemoveEntity(entity);
     m_entityIDRegistry->UnregisterEntityID(entity.ID());
+}
+
+bool EntityManager::IsEntityDeleted(Entity entity) const
+{
+    return std::find(m_deletedEntities.begin(), m_deletedEntities.end(), entity) != m_deletedEntities.end();
 }
 
 void EntityManager::Save(ISaveLoader& saveLoader)

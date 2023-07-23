@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "IEntityManager.hpp"
 
@@ -16,8 +17,11 @@ public:
     EntityManager();
     ~EntityManager();
 
+    void StartUpdate();
+
     Entity CreateNewEntity() override;
     void DeleteEntity(Entity entity) override;
+    bool IsEntityDeleted(Entity entity) const override;
 
     void Save(ISaveLoader& saveLoader) override;
     void Load(ISaveLoader& saveLoader) override;
@@ -30,6 +34,7 @@ private:
 
     int m_maxEntityCount = 0;
     std::unique_ptr<EntityIDRegistry> m_entityIDRegistry;
+    std::vector<Entity> m_deletedEntities;
 
     std::unique_ptr<ComponentManager> m_componentManager;
     std::unique_ptr<ComponentManager> m_renderingComponentManager;
