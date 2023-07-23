@@ -1,6 +1,4 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -40,12 +38,25 @@ private:
     const bool m_walkable;
 };
 
-class HexaGridControlPanelEventListener final : public IEventListener
+class HexaGridControlPanelRenderUpdater final : public RenderUpdater
 {
 public:
-    HexaGridControlPanelEventListener(ControlPanel& panel)
-        : m_panel(panel)
+    HexaGridControlPanelRenderUpdater(const IRendering* rendering) {}
+
+    ~HexaGridControlPanelRenderUpdater() = default;
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
     {
+        if (!m_panel.enabled)
+            return;
+
+        ImGui::SetNextWindowSize({200, 100}, ImGuiCond_FirstUseEver);
+        if (ImGui::Begin("HexaGrid Control Panel", &m_panel.enabled))
+        {
+            ImGui::Checkbox("Walkable", &m_panel.walkable);
+        }
+        ImGui::End();
     }
 
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
@@ -78,34 +89,6 @@ public:
             SDL_MOUSEBUTTONDOWN,
         };
         return span<const SDL_EventType>(events, std::size(events));
-    }
-
-private:
-    ControlPanel& m_panel;
-};
-
-class HexaGridControlPanelRenderUpdater final : public RenderUpdater
-{
-public:
-    HexaGridControlPanelRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<HexaGridControlPanelEventListener>(m_panel));
-    }
-
-    ~HexaGridControlPanelRenderUpdater() = default;
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
-        if (!m_panel.enabled)
-            return;
-
-        ImGui::SetNextWindowSize({200, 100}, ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("HexaGrid Control Panel", &m_panel.enabled))
-        {
-            ImGui::Checkbox("Walkable", &m_panel.walkable);
-        }
-        ImGui::End();
     }
 
     ControlPanel m_panel;

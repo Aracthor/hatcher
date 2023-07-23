@@ -7,8 +7,6 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityManager.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -54,9 +52,16 @@ private:
     const glm::vec2 m_spawnPosition;
 };
 
-class EntityCreatorEventListener final : public IEventListener
+class EntityCreatorRenderUpdater final : public RenderUpdater
 {
 public:
+    EntityCreatorRenderUpdater(const IRendering* rendering) {}
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+    }
+
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
@@ -82,20 +87,6 @@ public:
             SDL_MOUSEBUTTONDOWN,
         };
         return span<const SDL_EventType>(events, std::size(events));
-    }
-};
-
-class EntityCreatorRenderUpdater final : public RenderUpdater
-{
-public:
-    EntityCreatorRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<EntityCreatorEventListener>());
-    }
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
     }
 };
 

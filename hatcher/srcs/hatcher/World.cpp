@@ -88,7 +88,9 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
     }
     for (auto creator : RenderUpdaterCreators())
     {
-        m_renderUpdaters.emplace_back(creator->Create(rendering, m_eventUpdater.get()));
+        RenderUpdater* renderUpdater = creator->Create(rendering);
+        m_renderUpdaters.emplace_back(renderUpdater);
+        m_eventUpdater->RegisterListener(renderUpdater);
     }
 }
 

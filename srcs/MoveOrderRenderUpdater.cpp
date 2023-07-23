@@ -5,8 +5,6 @@
 #include "SelectableComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -40,9 +38,17 @@ private:
     const std::vector<glm::vec2> m_path;
 };
 
-class MoveOrderEventListener final : public IEventListener
+class MoveOrderRenderUpdater final : public RenderUpdater
 {
 public:
+    MoveOrderRenderUpdater(const IRendering* rendering) {}
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+        // TODO show current path ?
+    }
+
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
@@ -89,21 +95,6 @@ public:
             SDL_MOUSEBUTTONDOWN,
         };
         return span<const SDL_EventType>(events, std::size(events));
-    }
-};
-
-class MoveOrderRenderUpdater final : public RenderUpdater
-{
-public:
-    MoveOrderRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<MoveOrderEventListener>());
-    }
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
-        // TODO show current path ?
     }
 };
 

@@ -6,8 +6,6 @@
 
 #include <SDL2/SDL_events.h>
 
-#include "IEventUpdater.hpp"
-
 #include "hatcher/span.hpp"
 
 namespace hatcher
@@ -18,17 +16,17 @@ class ICommandManager;
 class IEventListener;
 class IFrameRenderer;
 
-class EventUpdater final : public IEventUpdater
+class EventUpdater final
 {
 public:
     void ProcessEvents(span<const SDL_Event> events, IApplication* application, ICommandManager* commandManager,
                        const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                        const IFrameRenderer& frameRenderer);
 
-    void RegisterListener(const std::shared_ptr<IEventListener>& eventListener) override;
+    void RegisterListener(IEventListener* eventListener);
 
 private:
-    std::map<SDL_EventType, std::vector<std::shared_ptr<IEventListener>>> m_eventListeners;
+    std::map<SDL_EventType, std::vector<IEventListener*>> m_eventListeners;
 };
 
 } // namespace hatcher

@@ -2,8 +2,6 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -16,44 +14,11 @@ using namespace hatcher;
 
 namespace
 {
-
-class DebugGridEventListener final : public IEventListener
-{
-public:
-    DebugGridEventListener(bool& gridDisplayEnabled)
-        : m_gridDisplayEnabled(gridDisplayEnabled)
-    {
-    }
-
-    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
-    {
-        HATCHER_ASSERT(event.type == SDL_KEYDOWN);
-        if (event.key.keysym.scancode == SDL_SCANCODE_U)
-        {
-            m_gridDisplayEnabled = !m_gridDisplayEnabled;
-        }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_KEYDOWN,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
-    }
-
-private:
-    bool& m_gridDisplayEnabled;
-};
-
 class DebugGridRenderUpdater final : public RenderUpdater
 {
 public:
-    DebugGridRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    DebugGridRenderUpdater(const IRendering* rendering)
     {
-        eventUpdater->RegisterListener(std::make_shared<DebugGridEventListener>(m_gridDisplayEnabled));
-
         std::shared_ptr<Material> material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
@@ -91,6 +56,24 @@ public:
 
             frameRenderer.AddMeshToRender(m_gridMesh.get(), modelMatrix);
         }
+    }
+
+    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
+                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
+    {
+        HATCHER_ASSERT(event.type == SDL_KEYDOWN);
+        if (event.key.keysym.scancode == SDL_SCANCODE_U)
+        {
+            m_gridDisplayEnabled = !m_gridDisplayEnabled;
+        }
+    }
+
+    span<const SDL_EventType> EventTypesToListen() const override
+    {
+        static const SDL_EventType events[] = {
+            SDL_KEYDOWN,
+        };
+        return span<const SDL_EventType>(events, std::size(events));
     }
 
 private:

@@ -24,7 +24,7 @@ namespace
 class SteveRenderUpdater final : public RenderUpdater
 {
 public:
-    SteveRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    SteveRenderUpdater(const IRendering* rendering)
         : m_bodyParts({&m_torso, &m_head, &m_leftArm, &m_rightArm, &m_leftLeg, &m_rightLeg})
     {
         std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(

@@ -18,7 +18,7 @@ namespace
 class SelectedRenderUpdater final : public RenderUpdater
 {
 public:
-    SelectedRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
+    SelectedRenderUpdater(const IRendering* rendering)
     {
         const std::shared_ptr<Material> material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/selection.vert", "shaders/selection.frag");

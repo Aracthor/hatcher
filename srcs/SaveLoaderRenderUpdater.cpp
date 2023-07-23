@@ -4,8 +4,6 @@
 #include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentSaver.hpp"
 #include "hatcher/EntityManager.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -65,9 +63,16 @@ private:
 };
 
 // TODO make this updater part of core hatcher instead of specific to each application ?
-class SaveLoaderEventListener final : public IEventListener
+class SaveLoaderRenderUpdater final : public RenderUpdater
 {
 public:
+    SaveLoaderRenderUpdater(const IRendering* rendering) {}
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+    }
+
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
@@ -90,21 +95,8 @@ public:
         return span<const SDL_EventType>(events, std::size(events));
     }
 
+private:
     std::string m_save;
-};
-
-class SaveLoaderRenderUpdater final : public RenderUpdater
-{
-public:
-    SaveLoaderRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<SaveLoaderEventListener>());
-    }
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
-    }
 };
 
 RenderUpdaterRegisterer<SaveLoaderRenderUpdater> registerer;

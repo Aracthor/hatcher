@@ -7,8 +7,6 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -50,12 +48,50 @@ private:
     Box2f m_currentRectangle;
 };
 
-class SelectionRectangleEventListener final : public IEventListener
+class SelectionRectangleRenderUpdater final : public RenderUpdater
 {
 public:
-    SelectionRectangleEventListener(SelectionRectangle& selectionRectangle)
-        : m_selectionRectangle(selectionRectangle)
+    SelectionRectangleRenderUpdater(const IRendering* rendering)
     {
+        const std::shared_ptr<Material> material =
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+        m_selectionRectangleMesh = std::make_unique<Mesh>(material, Primitive::Lines);
+
+        float positions[] = {
+            -1.f, -1.f,
+
+            1.f,  -1.f,
+
+            1.f,  1.f,
+
+            -1.f, 1.f,
+        };
+        ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
+
+        m_selectionRectangleMesh->Set2DPositions(positions, std::size(positions));
+        m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
+    }
+
+    ~SelectionRectangleRenderUpdater() = default;
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
+    {
+        if (m_selectionRectangle.IsSelecting())
+        {
+            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
+            const glm::vec2 rectangleCenter = selectionBox.Center();
+            const glm::vec2 rectangleSize = selectionBox.Extents();
+
+            const glm::vec3 position = {rectangleCenter.x, rectangleCenter.y, 0.f};
+            const glm::vec3 scale = {rectangleSize.x / 2.f, rectangleSize.y / 2.f, 0.f};
+
+            glm::mat4 modelMatrix = glm::mat4(1.f);
+            modelMatrix = glm::translate(modelMatrix, position);
+            modelMatrix = glm::scale(modelMatrix, scale);
+
+            frameRenderer.AddUIMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
+        }
     }
 
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
@@ -112,58 +148,6 @@ public:
             SDL_MOUSEMOTION,
         };
         return span<const SDL_EventType>(events, std::size(events));
-    }
-
-private:
-    SelectionRectangle& m_selectionRectangle;
-};
-
-class SelectionRectangleRenderUpdater final : public RenderUpdater
-{
-public:
-    SelectionRectangleRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<SelectionRectangleEventListener>(m_selectionRectangle));
-
-        const std::shared_ptr<Material> material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
-        m_selectionRectangleMesh = std::make_unique<Mesh>(material, Primitive::Lines);
-
-        float positions[] = {
-            -1.f, -1.f,
-
-            1.f,  -1.f,
-
-            1.f,  1.f,
-
-            -1.f, 1.f,
-        };
-        ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
-
-        m_selectionRectangleMesh->Set2DPositions(positions, std::size(positions));
-        m_selectionRectangleMesh->SetIndices(indices, std::size(indices));
-    }
-
-    ~SelectionRectangleRenderUpdater() = default;
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
-        if (m_selectionRectangle.IsSelecting())
-        {
-            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
-            const glm::vec2 rectangleCenter = selectionBox.Center();
-            const glm::vec2 rectangleSize = selectionBox.Extents();
-
-            const glm::vec3 position = {rectangleCenter.x, rectangleCenter.y, 0.f};
-            const glm::vec3 scale = {rectangleSize.x / 2.f, rectangleSize.y / 2.f, 0.f};
-
-            glm::mat4 modelMatrix = glm::mat4(1.f);
-            modelMatrix = glm::translate(modelMatrix, position);
-            modelMatrix = glm::scale(modelMatrix, scale);
-
-            frameRenderer.AddUIMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
-        }
     }
 
 private:

@@ -1,5 +1,3 @@
-#include "hatcher/Graphics/IEventListener.hpp"
-#include "hatcher/Graphics/IEventUpdater.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
@@ -10,12 +8,16 @@ using namespace hatcher;
 namespace
 {
 
-class DemoImguiEventListener final : public IEventListener
+class DemoImguiRenderUpdater final : public RenderUpdater
 {
 public:
-    DemoImguiEventListener(bool& showDemo)
-        : m_showDemo(showDemo)
+    DemoImguiRenderUpdater(const IRendering* rendering) {}
+
+    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                IFrameRenderer& frameRenderer) override
     {
+        if (m_showDemo)
+            ImGui::ShowDemoWindow(&m_showDemo);
     }
 
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
@@ -34,25 +36,6 @@ public:
             SDL_KEYDOWN,
         };
         return span<const SDL_EventType>(events, std::size(events));
-    }
-
-private:
-    bool& m_showDemo;
-};
-
-class DemoImguiRenderUpdater final : public RenderUpdater
-{
-public:
-    DemoImguiRenderUpdater(const IRendering* rendering, IEventUpdater* eventUpdater)
-    {
-        eventUpdater->RegisterListener(std::make_shared<DemoImguiEventListener>(m_showDemo));
-    }
-
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
-    {
-        if (m_showDemo)
-            ImGui::ShowDemoWindow(&m_showDemo);
     }
 
 private:

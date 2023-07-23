@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IEventListener.hpp"
+
 namespace hatcher
 {
 class ComponentManager;
@@ -7,19 +9,24 @@ class IEventUpdater;
 class IFrameRenderer;
 class IRendering;
 
-class RenderUpdater
+class RenderUpdater : public IEventListener
 {
 public:
     virtual ~RenderUpdater() = default;
 
     virtual void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                         IFrameRenderer& frameRenderer) = 0;
+
+    virtual void GetEvent(const SDL_Event& event, ICommandManager* commandManager,
+                          const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                          const IFrameRenderer& frameRenderer){};
+    virtual span<const SDL_EventType> EventTypesToListen() const { return {}; }
 };
 
 class IRenderUpdaterCreator
 {
 public:
-    virtual RenderUpdater* Create(const IRendering* rendering, IEventUpdater* eventUpdater) const = 0;
+    virtual RenderUpdater* Create(const IRendering* rendering) const = 0;
 };
 
 void RegisterRenderUpdater(const IRenderUpdaterCreator* creator);
@@ -30,10 +37,7 @@ class RenderUpdaterRegisterer final : public IRenderUpdaterCreator
 public:
     RenderUpdaterRegisterer() { RegisterRenderUpdater(this); }
 
-    RenderUpdater* Create(const IRendering* rendering, IEventUpdater* eventUpdater) const override
-    {
-        return new RenderUpdaterClass(rendering, eventUpdater);
-    }
+    RenderUpdater* Create(const IRendering* rendering) const override { return new RenderUpdaterClass(rendering); }
 };
 
 } // namespace hatcher
