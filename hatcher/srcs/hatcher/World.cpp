@@ -75,13 +75,13 @@ World::World(const char* name)
         m_updaters.emplace_back(creator->Create());
     }
     m_commandManager = std::make_unique<CommandManager>();
-    m_eventUpdater = std::make_unique<EventUpdater>();
 }
 
 World::~World() = default;
 
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
+    m_eventUpdater = std::make_unique<EventUpdater>();
     for (auto creator : RenderComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
