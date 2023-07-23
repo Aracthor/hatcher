@@ -69,7 +69,7 @@ std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() c
 }
 
 HexagonalGrid::HexagonalGrid()
-    : m_hexaSize(sqrt(2.f / 3.f))
+    : m_hexaSize(sqrt(4.f / 3.f) / 2.f)
     , m_tileCoordMin(0, 0)
     , m_tileCoordMax(0, 0)
 {
