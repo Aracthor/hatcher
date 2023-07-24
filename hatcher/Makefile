@@ -13,6 +13,7 @@ IMGUI_REPO_URL=		https://github.com/ocornut/imgui.git
 
 JS_DIR=			js/
 SRCS_DIR=		srcs/hatcher/
+TEST_DIR=		unit_testing/
 INC_DIR=		srcs/
 OBJS_DIR=		objs/
 BIN_DIR=		bin/
@@ -45,11 +46,13 @@ OBJS_WEBASM_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
 OBJS_WEBASM_DEBUG_SUBSUBDIRS=	$(SRCS_SUBSUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
 OBJS_WEBASM_IMGUI_DIR=		$(OBJS_WEBASM_DIR)$(IMGUI_REPO)
 OBJS_WEBASM_IMGUI_SUBDIRS=	$(IMGUI_SUBDIRS:%=$(OBJS_WEBASM_IMGUI_DIR)%)
+OBJS_TEST_DIR=			$(OBJS_DIR)$(TEST_DIR)
 WEBASM_BIN_DIR=			$(BIN_DIR)
 
 
 # Order matters here : subfolders must be on top of their root folder, because it is the order used to delete them.
-OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBSUBDIRS)	\
+OBJS_DIRS=		$(OBJS_TEST_DIR)			\
+			$(OBJS_NATIVE_RELEASE_SUBSUBDIRS)	\
 			$(OBJS_NATIVE_RELEASE_SUBDIRS)		\
 			$(OBJS_NATIVE_RELEASE_DIR)		\
 			$(OBJS_NATIVE_DEBUG_SUBSUBDIRS)		\
@@ -86,6 +89,8 @@ CXX_NATIVE_FLAGS=
 EMXX_FLAGS=		-s USE_SDL=2 		\
 
 CXX_IMGUI_NATIVE_FLAGS=	`sdl2-config --cflags`	\
+
+LD_TEST_BIN_FLAGS=	-l$(PROJECT_NAME)_release -L $(BIN_DIR)
 
 
 IMGUI_SRCS_FILES=	imgui.cpp			\
@@ -132,18 +137,25 @@ SRCS_FILES=	CommandManager.cpp			\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
-LIB_NAME=	libhatcher
+TEST_SRCS_FILES=SaveLoader.cpp				\
+
+TEST_SRCS=	$(addprefix $(TEST_DIR),$(TEST_SRCS_FILES))
+
+PROJECT_NAME=	hatcher
+LIB_NAME=	lib$(PROJECT_NAME)
 
 OBJS_NATIVE_RELEASE=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_NATIVE_RELEASE_DIR)%.o)
 OBJS_NATIVE_DEBUG=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_NATIVE_DEBUG_DIR)%.o)
 OBJS_WEBASM_RELEASE=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_WEBASM_RELEASE_DIR)%.o)
 OBJS_WEBASM_DEBUG=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_WEBASM_DEBUG_DIR)%.o)
+OBJS_TEST=		$(TEST_SRCS:$(TEST_DIR)%.cpp=$(OBJS_TEST_DIR)%.o)
 OBJS=			$(OBJS_NATIVE_RELEASE)	\
 			$(OBJS_NATIVE_DEBUG)	\
 			$(OBJS_WEBASM_RELEASE)	\
 			$(OBJS_WEBASM_DEBUG)	\
 			$(IMGUI_OBJS_NATIVE)	\
 			$(IMGUI_OBJS_WEBASM)	\
+			$(OBJS_TEST)		\
 
 DEPS=			$(OBJS:.o=.dep)
 
@@ -159,12 +171,15 @@ BIN_WEBASM_RELEASE=	$(BIN_DIR)$(LIB_NAME)_webasm_release.a
 
 BIN_WEBASM_DEBUG=	$(BIN_DIR)$(LIB_NAME)_webasm_debug.a
 
+BIN_TEST=		$(BIN_DIR)unit_testing
+
 BINS=			$(BIN_NATIVE_RELEASE)	\
 			$(BIN_NATIVE_DEBUG)	\
 			$(BIN_WEBASM_RELEASE)	\
 			$(BIN_WEBASM_DEBUG)	\
 			$(BIN_IMGUI_NATIVE)	\
 			$(BIN_IMGUI_WEBASM)	\
+			$(BIN_TEST)		\
 
 
 .SECONDARY:
@@ -261,6 +276,16 @@ $(BIN_WEBASM_DEBUG):	$(OBJS_WEBASM_DEBUG) $(BIN_IMGUI_WEBASM) | $(WEBASM_BIN_DIR
 	$(EMARXX) $(BIN_WEBASM_DEBUG) $(OBJS_WEBASM_DEBUG)
 
 
+$(OBJS_TEST_DIR):	| $(OBJS_DIR)
+	$(MKDIR) $@
+
+$(OBJS_TEST_DIR)%.o:	$(TEST_DIR)%.cpp	| $(OBJS_TEST_DIR)
+	$(CXX) $(CXX_NATIVE_FLAGS) $(CXX_RELEASE_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
+
+$(BIN_TEST):	$(BIN_NATIVE_RELEASE) $(OBJS_TEST) | $(BIN_DIR)
+	$(CXX) $(OBJS_TEST) -o $(BIN_TEST) $(LD_TEST_BIN_FLAGS)
+
+
 all:	$(BINS)
 
 clean:
@@ -272,6 +297,9 @@ fclean: clean
 	$(RMDIR) $(BIN_DIR)
 
 re:	fclean native_release
+
+test:	$(BIN_TEST)
+	./$(BIN_TEST)
 
 # aliases command
 native_release:	$(BIN_NATIVE_RELEASE)
