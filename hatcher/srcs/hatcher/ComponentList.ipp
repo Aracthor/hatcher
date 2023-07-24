@@ -38,13 +38,6 @@ void IdentifiableComponentList<Component>::SaveLoad(uint index, ISaveLoader& sav
 }
 
 template <class Component>
-void IdentifiableComponentList<Component>::AttachComponent(uint index, Component& component)
-{
-    HATCHER_ASSERT(index < m_components.size());
-    m_components[index] = component;
-}
-
-template <class Component>
 span<const std::optional<Component>> IdentifiableComponentList<Component>::GetComponentList() const
 {
     return span<const std::optional<Component>>(m_components);

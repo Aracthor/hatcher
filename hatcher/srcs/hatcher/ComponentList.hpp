@@ -32,7 +32,6 @@ public:
     bool HasComponent(uint index) const override;
     void SaveLoad(uint index, ISaveLoader& saveLoader) override;
 
-    void AttachComponent(uint index, Component& component);
     span<const std::optional<Component>> GetComponentList() const;
     span<std::optional<Component>> GetComponentList();
 
