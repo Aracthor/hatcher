@@ -13,7 +13,7 @@ class ComponentLoader final : public ISaveLoader
 public:
     ComponentLoader(const std::string& data);
 
-    void operator<<(char value) override;
+    void separator(char c) override;
     void operator<<(bool& value) override;
     void operator<<(ubyte& value) override;
     void operator<<(int& value) override;

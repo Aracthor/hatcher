@@ -12,7 +12,7 @@ ComponentLoader::ComponentLoader(const std::string& data)
     m_stream >> std::setprecision(std::numeric_limits<float>::digits);
 }
 
-void ComponentLoader::operator<<(char value)
+void ComponentLoader::separator(char c)
 {
     m_stream.ignore();
 }
@@ -20,31 +20,31 @@ void ComponentLoader::operator<<(char value)
 void ComponentLoader::operator<<(ubyte& value)
 {
     m_stream >> value;
-    m_stream.ignore();
+    separator(' ');
 }
 
 void ComponentLoader::operator<<(bool& value)
 {
     m_stream >> value;
-    m_stream.ignore();
+    separator(' ');
 }
 
 void ComponentLoader::operator<<(int& value)
 {
     m_stream >> value;
-    m_stream.ignore();
+    separator(' ');
 }
 
 void ComponentLoader::operator<<(uint& value)
 {
     m_stream >> value;
-    m_stream.ignore();
+    separator(' ');
 }
 
 void ComponentLoader::operator<<(float& value)
 {
     m_stream >> value;
-    m_stream.ignore();
+    separator(' ');
 }
 
 } // namespace hatcher

@@ -14,7 +14,7 @@ namespace hatcher
 class ISaveLoader
 {
 public:
-    virtual void operator<<(char value) = 0;
+    virtual void separator(char c) = 0;
     virtual void operator<<(bool& value) = 0;
     virtual void operator<<(ubyte& value) = 0;
     virtual void operator<<(int& value) = 0;

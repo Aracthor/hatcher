@@ -11,39 +11,39 @@ ComponentSaver::ComponentSaver()
     m_stream << std::setprecision(std::numeric_limits<float>::digits);
 }
 
-void ComponentSaver::operator<<(char value)
+void ComponentSaver::separator(char c)
 {
-    m_stream << value;
+    m_stream << c;
 }
 
 void ComponentSaver::operator<<(bool& value)
 {
     m_stream << value;
-    m_stream << '\n';
+    separator(' ');
 }
 
 void ComponentSaver::operator<<(ubyte& value)
 {
     m_stream << value;
-    m_stream << '\n';
+    separator(' ');
 }
 
 void ComponentSaver::operator<<(int& value)
 {
     m_stream << value;
-    m_stream << '\n';
+    separator(' ');
 }
 
 void ComponentSaver::operator<<(uint& value)
 {
     m_stream << value;
-    m_stream << '\n';
+    separator(' ');
 }
 
 void ComponentSaver::operator<<(float& value)
 {
     m_stream << value;
-    m_stream << '\n';
+    separator(' ');
 }
 
 std::string ComponentSaver::Result() const

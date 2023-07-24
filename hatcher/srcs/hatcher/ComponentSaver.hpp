@@ -12,7 +12,7 @@ class ComponentSaver final : public ISaveLoader
 public:
     ComponentSaver();
 
-    void operator<<(char value) override;
+    void separator(char value) override;
     void operator<<(bool& value) override;
     void operator<<(ubyte& value) override;
     void operator<<(int& value) override;

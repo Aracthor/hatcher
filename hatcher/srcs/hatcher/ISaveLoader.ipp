@@ -6,7 +6,7 @@ void ISaveLoader::operator<<(std::optional<T>& optional)
 {
     bool hasValue = optional.has_value();
     *this << hasValue;
-    *this << ' ';
+    separator(' ');
     if (hasValue)
     {
         T value = *optional;
@@ -21,14 +21,14 @@ void ISaveLoader::operator<<(std::vector<T>& vector)
     int size = vector.size();
     *this << size;
     vector.resize(size);
-    *this << ' ';
-    *this << '[';
+    separator(' ');
+    separator('[');
     for (auto& value : vector)
     {
         *this << value;
-        *this << ',';
+        separator(',');
     }
-    *this << ']';
+    separator(']');
 }
 
 template <class Key, class T, class Hash>
@@ -39,8 +39,8 @@ void ISaveLoader::operator<<(std::unordered_map<Key, T, Hash>& map)
 
     int size = map.size();
     *this << size;
-    *this << ' ';
-    *this << '[';
+    separator(' ');
+    separator('[');
     for (int i = 0; i < size; i++)
     {
         if (IsSaving())
@@ -50,22 +50,22 @@ void ISaveLoader::operator<<(std::unordered_map<Key, T, Hash>& map)
             Key key = it->first;
             T value = it->second;
             *this << key;
-            *this << ';';
+            separator(';');
             *this << value;
-            *this << ',';
+            separator(',');
         }
         else
         {
             Key key;
             T value;
             *this << key;
-            *this << ';';
+            separator(';');
             *this << value;
-            *this << ',';
+            separator(',');
             map.insert({key, value});
         }
     }
-    *this << ']';
+    separator(']');
 }
 
 template <glm::length_t L, typename T>
@@ -74,19 +74,19 @@ void ISaveLoader::operator<<(glm::vec<L, T>& vector)
     for (int i = 0; i < L; i++)
     {
         if (i > 0)
-            *this << ' ';
+            separator(' ');
         *this << vector[i];
     }
-    *this << '\n';
+    separator('\n');
 }
 
 template <glm::length_t L, typename T>
 void ISaveLoader::operator<<(Box<L, T>& box)
 {
     *this << box.Min();
-    *this << ' ';
+    separator(' ');
     *this << box.Max();
-    *this << '\n';
+    separator('\n');
 }
 
 } // namespace hatcher
