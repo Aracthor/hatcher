@@ -4,6 +4,8 @@
 
 #include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentSaver.hpp"
+#include "hatcher/Maths/Box.hpp"
+#include "hatcher/glm_pure.hpp"
 
 using namespace hatcher;
 
@@ -14,6 +16,31 @@ int testEquals(const T& a, const T& b)
         std::cerr << std::setprecision(std::numeric_limits<float>::digits) << "unit test fail: " << a << " != " << b
                   << std::endl;
     return a != b;
+}
+
+template <glm::length_t L, typename T>
+std::ostream& operator<<(std::ostream& stream, const glm::vec<L, T>& vec)
+{
+    stream << '[';
+    for (glm::length_t i = 0; i < L; i++)
+    {
+        if (i > 0)
+            stream << ',';
+        stream << vec[i];
+    }
+    stream << ']';
+    return stream;
+}
+
+template <glm::length_t L, typename T>
+std::ostream& operator<<(std::ostream& stream, const Box<L, T>& box)
+{
+    stream << '{';
+    stream << box.Min();
+    stream << ';';
+    stream << box.Max();
+    stream << '}';
+    return stream;
 }
 
 int testInt()
@@ -72,12 +99,68 @@ int testFloat()
     return fails;
 }
 
+int testVector()
+{
+    glm::vec3 input[] = {
+        {0.f, 0.f, 0.f},
+        {2.f, -42.f, 42.f},
+        {2.1f, -78.5f, 1.f},
+    };
+    constexpr int testCount = std::size(input);
+    glm::vec3 output[testCount];
+
+    ComponentSaver saver;
+    ISaveLoader& abstractSaver = saver;
+    for (int i = 0; i < testCount; i++)
+        abstractSaver << input[i];
+
+    ComponentLoader loader(saver.Result());
+    ISaveLoader& abstractLoader = loader;
+    for (int i = 0; i < testCount; i++)
+        abstractLoader << output[i];
+
+    int fails = 0;
+    for (int i = 0; i < testCount; i++)
+        fails += testEquals(output[i], input[i]);
+
+    return fails;
+}
+
+int testBox()
+{
+    Box3f input[] = {
+        {},
+        {{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}},
+        {{2.f, -78.5f, 1.f}, {2.1f, -42.f, 2.3f}},
+    };
+    constexpr int testCount = std::size(input);
+    Box3f output[testCount];
+
+    ComponentSaver saver;
+    ISaveLoader& abstractSaver = saver;
+    for (int i = 0; i < testCount; i++)
+        abstractSaver << input[i];
+
+    ComponentLoader loader(saver.Result());
+    ISaveLoader& abstractLoader = loader;
+    for (int i = 0; i < testCount; i++)
+        abstractLoader << output[i];
+
+    int fails = 0;
+    for (int i = 0; i < testCount; i++)
+        fails += testEquals(output[i], input[i]);
+
+    return fails;
+}
+
 int main()
 {
     int fails = 0;
 
     fails += testInt();
     fails += testFloat();
+    fails += testVector();
+    fails += testBox();
 
     return fails;
 }
