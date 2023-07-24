@@ -1,3 +1,4 @@
+#include <iomanip>
 #include <iostream>
 #include <limits>
 
@@ -10,7 +11,8 @@ template <typename T>
 int testEquals(const T& a, const T& b)
 {
     if (a != b)
-        std::cerr << "unit test fail: " << a << " != " << b << std::endl;
+        std::cerr << std::setprecision(std::numeric_limits<float>::digits) << "unit test fail: " << a << " != " << b
+                  << std::endl;
     return a != b;
 }
 
@@ -47,6 +49,10 @@ int testFloat()
         42.f,
         8.3f,
         -78.f,
+        std::numeric_limits<float>::lowest(),
+        std::numeric_limits<float>::min(),
+        -std::numeric_limits<float>::min(),
+        std::numeric_limits<float>::max(),
     };
     constexpr int testCount = std::size(input);
     float output[testCount];

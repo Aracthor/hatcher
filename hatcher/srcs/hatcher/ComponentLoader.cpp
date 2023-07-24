@@ -1,11 +1,15 @@
 #include "ComponentLoader.hpp"
 
+#include <iomanip>
+#include <limits>
+
 namespace hatcher
 {
 
 ComponentLoader::ComponentLoader(const std::string& data)
     : m_stream(data)
 {
+    m_stream >> std::setprecision(std::numeric_limits<float>::digits);
 }
 
 void ComponentLoader::operator<<(char value)

@@ -10,6 +10,8 @@ namespace hatcher
 class ComponentSaver final : public ISaveLoader
 {
 public:
+    ComponentSaver();
+
     void operator<<(char value) override;
     void operator<<(bool& value) override;
     void operator<<(ubyte& value) override;

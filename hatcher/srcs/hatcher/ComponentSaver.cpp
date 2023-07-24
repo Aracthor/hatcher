@@ -1,7 +1,15 @@
 #include "ComponentSaver.hpp"
 
+#include <iomanip>
+#include <limits>
+
 namespace hatcher
 {
+
+ComponentSaver::ComponentSaver()
+{
+    m_stream << std::setprecision(std::numeric_limits<float>::digits);
+}
 
 void ComponentSaver::operator<<(char value)
 {
