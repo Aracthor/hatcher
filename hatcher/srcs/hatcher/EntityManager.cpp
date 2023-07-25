@@ -4,6 +4,7 @@
 #include "ComponentManager.hpp"
 #include "ComponentSaver.hpp"
 #include "Entity.hpp"
+#include "EntityDescriptor.hpp"
 #include "EntityIDRegistry.hpp"
 
 namespace hatcher
@@ -24,7 +25,7 @@ void EntityManager::StartUpdate()
     m_deletedEntities.clear();
 }
 
-Entity EntityManager::CreateNewEntity()
+Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
 {
     Entity entity = Entity(m_entityIDRegistry->GetNewID());
     if (entity.ID() >= m_maxEntityCount)
@@ -35,6 +36,14 @@ Entity EntityManager::CreateNewEntity()
         m_componentManager->AddEntities(entitiesAdded);
         if (m_renderingComponentManager)
             m_renderingComponentManager->AddEntities(entitiesAdded);
+    }
+
+    ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
+    m_componentManager->LoadEntityComponents(loader, entity.ID());
+    if (m_renderingComponentManager)
+    {
+        ComponentLoader renderingLoader = ComponentLoader(descriptor->GetRenderingComponentData());
+        m_renderingComponentManager->LoadEntityComponents(renderingLoader, entity.ID());
     }
 
     return entity;

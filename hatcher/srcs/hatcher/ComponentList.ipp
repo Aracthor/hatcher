@@ -41,7 +41,8 @@ template <class Component>
 void IdentifiableComponentList<Component>::SaveLoad(uint index, ISaveLoader& saveLoader)
 {
     HATCHER_ASSERT(index < m_components.size());
-    saveLoader << m_components[index];
+    HATCHER_ASSERT(m_components[index].has_value());
+    saveLoader << *m_components[index];
 }
 
 template <class Component>

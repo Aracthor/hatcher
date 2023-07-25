@@ -6,13 +6,14 @@ namespace hatcher
 {
 class ComponentLoader;
 class ComponentSaver;
+class IEntityDescriptor;
 
 class IEntityManager
 {
 public:
     virtual ~IEntityManager() = default;
 
-    virtual Entity CreateNewEntity() = 0;
+    virtual Entity CreateNewEntity(const IEntityDescriptor* descriptor) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
     virtual bool IsEntityDeleted(Entity entity) const = 0;
 

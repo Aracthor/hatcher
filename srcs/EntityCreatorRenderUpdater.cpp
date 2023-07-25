@@ -6,6 +6,7 @@
 #include "SteveAnimationComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/EntityDescriptor.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -19,43 +20,50 @@ using namespace hatcher;
 class CreateEntityCommand final : public ICommand
 {
 public:
-    CreateEntityCommand(glm::vec2 spawnPosition)
-        : m_spawnPosition(spawnPosition)
+    CreateEntityCommand(const IEntityDescriptor* entityDescriptor, glm::vec2 spawnPosition)
+        : m_entityDescriptor(entityDescriptor)
+        , m_spawnPosition(spawnPosition)
     {
     }
 
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        Entity newEntity = entityManager->CreateNewEntity();
-        Position2DComponent position2D{m_spawnPosition};
-        Movement2DComponent movement2D;
-        movement2D.orientation = glm::vec2(1.f, 0.f);
-
-        componentManager->WriteComponents<Position2DComponent>()[newEntity] = position2D;
-        componentManager->WriteComponents<Movement2DComponent>()[newEntity] = movement2D;
-
-        if (renderingComponentManager)
-        {
-            SelectableComponent selectable;
-            selectable.selected = false;
-            SteveAnimationComponent animation;
-            animation.rightLegAngle = 0.f;
-            animation.rightLegRising = false;
-
-            renderingComponentManager->WriteComponents<SelectableComponent>()[newEntity] = selectable;
-            renderingComponentManager->WriteComponents<SteveAnimationComponent>()[newEntity] = animation;
-        }
+        Entity newEntity = entityManager->CreateNewEntity(m_entityDescriptor);
+        componentManager->WriteComponents<Position2DComponent>()[newEntity]->position = m_spawnPosition;
     }
 
 private:
+    const IEntityDescriptor* m_entityDescriptor;
     const glm::vec2 m_spawnPosition;
 };
 
 class EntityCreatorRenderUpdater final : public RenderUpdater
 {
 public:
-    EntityCreatorRenderUpdater(const IRendering* rendering) {}
+    EntityCreatorRenderUpdater(const IRendering* rendering)
+    {
+        EntityDescriptorBuilder steveEntityDescriptorBuilder;
+        Position2DComponent position2D;
+        position2D.position = {};
+        Movement2DComponent movement2D;
+        movement2D.orientation = glm::vec2(1.f, 0.f);
+
+        steveEntityDescriptorBuilder.AddComponent(position2D);
+        steveEntityDescriptorBuilder.AddComponent(movement2D);
+
+        SelectableComponent selectable;
+        selectable.selected = false;
+        selectable.box = {};
+        SteveAnimationComponent animation;
+        animation.rightLegAngle = 0.f;
+        animation.rightLegRising = false;
+
+        steveEntityDescriptorBuilder.AddRenderingComponent(selectable);
+        steveEntityDescriptorBuilder.AddRenderingComponent(animation);
+
+        m_steveEntityDescriptor.reset(steveEntityDescriptorBuilder.CreateDescriptor());
+    }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
@@ -77,7 +85,8 @@ public:
                 return;
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
-            commandManager->AddCommand(new CreateEntityCommand(entitySpawnPosition));
+
+            commandManager->AddCommand(new CreateEntityCommand(m_steveEntityDescriptor.get(), entitySpawnPosition));
         }
     }
 
@@ -88,6 +97,9 @@ public:
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
+
+private:
+    std::unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
 };
 
 RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;

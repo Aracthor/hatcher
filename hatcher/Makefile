@@ -113,6 +113,7 @@ SRCS_FILES=	CommandManager.cpp			\
 		ComponentLoader.cpp			\
 		ComponentManager.cpp			\
 		ComponentSaver.cpp			\
+		EntityDescriptor.cpp			\
 		EntityManager.cpp			\
 		EntityIDRegistry.cpp	    		\
 		GameApplication.cpp 			\

@@ -21,6 +21,9 @@ public:
 
     std::string Result() const;
 
+    template <class Component>
+    void SaveComponent(Component& component);
+
 private:
     bool IsSaving() const override { return true; }
 
@@ -28,3 +31,5 @@ private:
 };
 
 } // namespace hatcher
+
+#include "ComponentSaver.ipp"

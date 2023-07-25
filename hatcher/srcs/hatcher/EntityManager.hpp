@@ -10,6 +10,7 @@ namespace hatcher
 class ComponentManager;
 class Entity;
 class EntityIDRegistry;
+class IEntityDescriptor;
 
 class EntityManager final : public IEntityManager
 {
@@ -19,7 +20,7 @@ public:
 
     void StartUpdate();
 
-    Entity CreateNewEntity() override;
+    Entity CreateNewEntity(const IEntityDescriptor* descriptor) override;
     void DeleteEntity(Entity entity) override;
     bool IsEntityDeleted(Entity entity) const override;
 
