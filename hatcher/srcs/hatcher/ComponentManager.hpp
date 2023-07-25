@@ -58,8 +58,9 @@ public:
     void RemoveEntity(Entity entity);
     void ClearEntities();
 
-    void Save(ISaveLoader& saveLoader);
-    void Load(ISaveLoader& saveLoader);
+    void Save(ISaveLoader& saver);
+    void Load(ISaveLoader& saver);
+    void LoadEntityComponents(ISaveLoader& loader, int entityID);
 
     int Count() const { return m_entityCount; }
 

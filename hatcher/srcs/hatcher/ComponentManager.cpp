@@ -37,11 +37,11 @@ void ComponentManager::ClearEntities()
     }
 }
 
-void ComponentManager::Save(ISaveLoader& saveLoader)
+void ComponentManager::Save(ISaveLoader& saver)
 {
     for (auto& worldComponent : m_worldComponents)
     {
-        worldComponent.second->SaveLoad(saveLoader);
+        worldComponent.second->SaveLoad(saver);
     }
 
     for (int entityID = 0; entityID < m_entityCount; entityID++)
@@ -51,43 +51,50 @@ void ComponentManager::Save(ISaveLoader& saveLoader)
         {
             componentCount += componentList.second->HasComponent(entityID);
         }
-        saveLoader << componentCount;
-        saveLoader.separator('\n');
+        saver << componentCount;
+        saver.separator('\n');
         for (auto& componentList : m_componentLists)
         {
             if (componentList.second->HasComponent(entityID))
             {
                 uint componentID = componentList.first;
-                saveLoader << componentID;
-                saveLoader.separator('\n');
-                componentList.second->SaveLoad(entityID, saveLoader);
-                saveLoader.separator('\n');
+                saver << componentID;
+                saver.separator('\n');
+                componentList.second->SaveLoad(entityID, saver);
+                saver.separator('\n');
             }
         }
     }
 }
 
-void ComponentManager::Load(ISaveLoader& saveLoader)
+void ComponentManager::Load(ISaveLoader& loader)
 {
     for (auto& worldComponent : m_worldComponents)
     {
-        worldComponent.second->SaveLoad(saveLoader);
+        worldComponent.second->SaveLoad(loader);
         worldComponent.second->PostLoad();
     }
 
     for (int entityID = 0; entityID < m_entityCount; entityID++)
     {
-        int componentCount;
-        saveLoader << componentCount;
-        saveLoader.separator('\n');
-        for (int i = 0; i < componentCount; i++)
-        {
-            uint componentID;
-            saveLoader << componentID;
-            saveLoader.separator('\n');
-            m_componentLists[componentID]->SaveLoad(entityID, saveLoader);
-            saveLoader.separator('\n');
-        }
+        LoadEntityComponents(loader, entityID);
+    }
+}
+
+void ComponentManager::LoadEntityComponents(ISaveLoader& loader, int entityID)
+{
+    int componentCount;
+    loader << componentCount;
+    loader.separator('\n');
+    for (int i = 0; i < componentCount; i++)
+    {
+        uint componentID;
+        loader << componentID;
+        loader.separator('\n');
+        HATCHER_ASSERT(m_componentLists.find(componentID) != m_componentLists.end());
+        m_componentLists[componentID]->CreateComponent(entityID);
+        m_componentLists[componentID]->SaveLoad(entityID, loader);
+        loader.separator('\n');
     }
 }
 

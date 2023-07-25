@@ -31,6 +31,13 @@ bool IdentifiableComponentList<Component>::HasComponent(uint index) const
 }
 
 template <class Component>
+void IdentifiableComponentList<Component>::CreateComponent(uint index)
+{
+    HATCHER_ASSERT(index < m_components.size());
+    m_components[index] = Component();
+}
+
+template <class Component>
 void IdentifiableComponentList<Component>::SaveLoad(uint index, ISaveLoader& saveLoader)
 {
     HATCHER_ASSERT(index < m_components.size());
