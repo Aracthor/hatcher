@@ -10,8 +10,9 @@
 
 namespace hatcher
 {
+class ComponentLoader;
+class ComponentSaver;
 class IComponentList;
-class ISaveLoader;
 class IWorldComponent;
 
 template <class Component>
@@ -58,9 +59,9 @@ public:
     void RemoveEntity(Entity entity);
     void ClearEntities();
 
-    void Save(ISaveLoader& saver);
-    void Load(ISaveLoader& saver);
-    void LoadEntityComponents(ISaveLoader& loader, int entityID);
+    void Save(ComponentSaver& saver);
+    void Load(ComponentLoader& loader);
+    void LoadEntityComponents(ComponentLoader& loader, int entityID);
 
     int Count() const { return m_entityCount; }
 

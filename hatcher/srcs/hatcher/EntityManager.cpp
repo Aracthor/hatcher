@@ -1,6 +1,8 @@
 #include "EntityManager.hpp"
 
+#include "ComponentLoader.hpp"
 #include "ComponentManager.hpp"
+#include "ComponentSaver.hpp"
 #include "Entity.hpp"
 #include "EntityIDRegistry.hpp"
 
@@ -52,28 +54,28 @@ bool EntityManager::IsEntityDeleted(Entity entity) const
     return std::find(m_deletedEntities.begin(), m_deletedEntities.end(), entity) != m_deletedEntities.end();
 }
 
-void EntityManager::Save(ISaveLoader& saveLoader)
+void EntityManager::Save(ComponentSaver& saver)
 {
     int entityCount = m_entityIDRegistry->EntityCount();
-    saveLoader << entityCount;
-    saveLoader.separator('\n');
-    m_componentManager->Save(saveLoader);
-    m_renderingComponentManager->Save(saveLoader);
+    saver << entityCount;
+    saver.separator('\n');
+    m_componentManager->Save(saver);
+    m_renderingComponentManager->Save(saver);
 }
 
-void EntityManager::Load(ISaveLoader& saveLoader)
+void EntityManager::Load(ComponentLoader& loader)
 {
     int entityCount;
-    saveLoader << entityCount;
-    saveLoader.separator('\n');
+    loader << entityCount;
+    loader.separator('\n');
     m_maxEntityCount = entityCount;
     m_entityIDRegistry->ResetEntityCount(entityCount);
     m_componentManager->ClearEntities();
     m_componentManager->AddEntities(entityCount);
-    m_componentManager->Load(saveLoader);
+    m_componentManager->Load(loader);
     m_renderingComponentManager->ClearEntities();
     m_renderingComponentManager->AddEntities(entityCount);
-    m_renderingComponentManager->Load(saveLoader);
+    m_renderingComponentManager->Load(loader);
 }
 
 } // namespace hatcher

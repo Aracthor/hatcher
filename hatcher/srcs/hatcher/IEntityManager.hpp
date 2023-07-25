@@ -4,7 +4,8 @@
 
 namespace hatcher
 {
-class ISaveLoader;
+class ComponentLoader;
+class ComponentSaver;
 
 class IEntityManager
 {
@@ -15,8 +16,8 @@ public:
     virtual void DeleteEntity(Entity entity) = 0;
     virtual bool IsEntityDeleted(Entity entity) const = 0;
 
-    virtual void Save(ISaveLoader& saveLoader) = 0;
-    virtual void Load(ISaveLoader& saveLoader) = 0;
+    virtual void Save(ComponentSaver& saver) = 0;
+    virtual void Load(ComponentLoader& loader) = 0;
 };
 
 } // namespace hatcher

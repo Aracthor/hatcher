@@ -23,8 +23,8 @@ public:
     void DeleteEntity(Entity entity) override;
     bool IsEntityDeleted(Entity entity) const override;
 
-    void Save(ISaveLoader& saveLoader) override;
-    void Load(ISaveLoader& saveLoader) override;
+    void Save(ComponentSaver& saveLoader) override;
+    void Load(ComponentLoader& saveLoader) override;
 
     ComponentManager* GetComponentManager() { return m_componentManager.get(); }
     ComponentManager* GetRenderingComponentManager() { return m_renderingComponentManager.get(); }
