@@ -153,6 +153,52 @@ int testBox()
     return fails;
 }
 
+int testCombined()
+{
+    glm::vec2 inputVec = {2.5f, -1.5f};
+    uint inputCount1 = 2u;
+    int inputCount2 = 42;
+    bool inputBool = false;
+    Box3f inputBox{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}};
+
+    ComponentSaver saver;
+    ISaveLoader& abstractSaver = saver;
+    abstractSaver << inputVec;
+    abstractSaver << inputCount1;
+    abstractSaver << inputCount2;
+    abstractSaver.separator('\n');
+    abstractSaver.separator('\n');
+    abstractSaver.separator('\n');
+    abstractSaver << inputBool;
+    abstractSaver << inputBox;
+
+    glm::vec2 outputVec;
+    uint outputCount1;
+    int outputCount2;
+    Box3f outputBox;
+    bool outputBool;
+
+    ComponentLoader loader(saver.Result());
+    ISaveLoader& abstractLoader = loader;
+    abstractLoader << outputVec;
+    abstractLoader << outputCount1;
+    abstractLoader << outputCount2;
+    abstractLoader.separator('\n');
+    abstractLoader.separator('\n');
+    abstractLoader.separator('\n');
+    abstractLoader << outputBool;
+    abstractLoader << outputBox;
+
+    int fails = 0;
+    fails += testEquals(outputVec, {2.5f, -1.5f});
+    fails += testEquals(outputCount1, 2u);
+    fails += testEquals(outputCount2, 42);
+    fails += testEquals(outputBox, {{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}});
+    fails += testEquals(outputBool, false);
+
+    return fails;
+}
+
 int main()
 {
     int fails = 0;
@@ -161,6 +207,7 @@ int main()
     fails += testFloat();
     fails += testVector();
     fails += testBox();
+    fails += testCombined();
 
     return fails;
 }
