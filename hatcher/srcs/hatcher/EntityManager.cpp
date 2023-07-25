@@ -65,8 +65,7 @@ bool EntityManager::IsEntityDeleted(Entity entity) const
 
 void EntityManager::Save(ComponentSaver& saver)
 {
-    int entityCount = m_entityIDRegistry->EntityCount();
-    saver << entityCount;
+    saver << m_maxEntityCount;
     saver.separator('\n');
     m_componentManager->Save(saver);
     m_renderingComponentManager->Save(saver);
@@ -74,16 +73,14 @@ void EntityManager::Save(ComponentSaver& saver)
 
 void EntityManager::Load(ComponentLoader& loader)
 {
-    int entityCount;
-    loader << entityCount;
+    loader << m_maxEntityCount;
     loader.separator('\n');
-    m_maxEntityCount = entityCount;
-    m_entityIDRegistry->ResetEntityCount(entityCount);
+    m_entityIDRegistry->ResetEntityCount(m_maxEntityCount);
     m_componentManager->ClearEntities();
-    m_componentManager->AddEntities(entityCount);
+    m_componentManager->AddEntities(m_maxEntityCount);
     m_componentManager->Load(loader);
     m_renderingComponentManager->ClearEntities();
-    m_renderingComponentManager->AddEntities(entityCount);
+    m_renderingComponentManager->AddEntities(m_maxEntityCount);
     m_renderingComponentManager->Load(loader);
 }
 
