@@ -32,7 +32,7 @@ void InitHexaGrid(HexagonalGrid* grid)
 DemoApplication::DemoApplication()
     : GameApplication()
 {
-    std::shared_ptr<World> world = CreateNewWorld("default");
+    World* world = CreateNewWorld("default");
     EntityManager* entityManager = world->GetEntityManager();
     ComponentManager* componentManager = entityManager->GetComponentManager();
     ComponentManager* renderComponentManager = entityManager->GetRenderingComponentManager();

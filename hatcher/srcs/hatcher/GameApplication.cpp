@@ -40,10 +40,10 @@ int GameApplication::Run()
     return 0;
 }
 
-std::shared_ptr<World> GameApplication::CreateNewWorld(const char* name)
+World* GameApplication::CreateNewWorld(const char* name)
 {
-    m_world = std::make_shared<World>(name);
-    return m_world;
+    m_world = std::make_unique<World>(name);
+    return m_world.get();
 }
 
 void GameApplication::Stop()

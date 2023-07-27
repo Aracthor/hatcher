@@ -18,7 +18,7 @@ public:
     GameApplication();
     virtual ~GameApplication();
 
-    std::shared_ptr<World> CreateNewWorld(const char* name);
+    World* CreateNewWorld(const char* name);
 
     int Run();
 
@@ -33,7 +33,7 @@ private:
     void Update();
     void Render();
 
-    std::shared_ptr<World> m_world;
+    std::unique_ptr<World> m_world;
 
     std::unique_ptr<Rendering> m_rendering;
 
