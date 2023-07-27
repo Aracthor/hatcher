@@ -19,12 +19,12 @@ public:
     struct Node
     {
         glm::vec2 pos;
-        std::vector<std::shared_ptr<Node>> links;
+        std::vector<Node*> links;
     };
 
 private:
-    std::shared_ptr<Node> FindNodeByPosition(glm::vec2 position);
-    const std::shared_ptr<Node> FindNodeByPosition(glm::vec2 position) const;
+    Node* FindNodeByPosition(glm::vec2 position);
+    const Node* FindNodeByPosition(glm::vec2 position) const;
 
-    std::vector<std::shared_ptr<Node>> m_nodes;
+    std::vector<std::unique_ptr<Node>> m_nodes;
 };
