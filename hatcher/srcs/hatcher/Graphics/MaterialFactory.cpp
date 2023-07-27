@@ -8,6 +8,9 @@
 namespace hatcher
 {
 
+MaterialFactory::MaterialFactory() = default;
+MaterialFactory::~MaterialFactory() = default;
+
 std::unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& vertexShaderFileName,
                                                           const std::string& fragmentShaderFileName)
 {
@@ -22,14 +25,14 @@ std::unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& ver
     return std::make_unique<Material>(m_shaderProgramLibrary[key]);
 }
 
-std::shared_ptr<Texture> MaterialFactory::TextureFromFile(const std::string& fileName)
+const Texture* MaterialFactory::TextureFromFile(const std::string& fileName)
 {
     if (m_textureLibrary.find(fileName) == m_textureLibrary.end())
     {
-        m_textureLibrary[fileName] = std::make_shared<Texture>(fileName.c_str());
+        m_textureLibrary[fileName] = std::make_unique<Texture>(fileName.c_str());
     }
     HATCHER_ASSERT(m_textureLibrary.find(fileName) != m_textureLibrary.end());
-    return m_textureLibrary[fileName];
+    return m_textureLibrary[fileName].get();
 }
 
 } // namespace hatcher

@@ -122,6 +122,7 @@ private:
         glm::mat4 matrix;
     };
 
+    const Texture* m_texture;
     std::unique_ptr<Material> m_material;
     BodyPart m_torso;
     BodyPart m_head;
@@ -130,7 +131,6 @@ private:
     BodyPart m_leftLeg;
     BodyPart m_rightLeg;
     std::array<BodyPart*, 6> m_bodyParts;
-    std::shared_ptr<Texture> m_texture;
 };
 
 RenderUpdaterRegisterer<SteveRenderUpdater> registerer;
