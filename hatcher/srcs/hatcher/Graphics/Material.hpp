@@ -14,7 +14,7 @@ class Texture;
 class Material
 {
 public:
-    explicit Material(const std::shared_ptr<const ShaderProgram> shaderProgrma);
+    explicit Material(const ShaderProgram* shaderProgrma);
     ~Material();
 
     void Use() const;
@@ -29,7 +29,7 @@ public:
     void AddTexture(const char* name, const Texture* texture);
 
 private:
-    std::shared_ptr<const ShaderProgram> m_shaderProgram;
+    const ShaderProgram* m_shaderProgram;
     // TODO find a better way to handle different types of uniforms
     std::map<const char*, float> m_floatUniforms;
     std::map<const char*, glm::vec4> m_vec4Uniforms;

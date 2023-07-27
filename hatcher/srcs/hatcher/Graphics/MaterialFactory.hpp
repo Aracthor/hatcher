@@ -24,7 +24,7 @@ public:
 
 private:
     using ProgramKey = std::pair<std::string, std::string>;
-    std::map<ProgramKey, std::shared_ptr<ShaderProgram>> m_shaderProgramLibrary;
+    std::map<ProgramKey, std::unique_ptr<ShaderProgram>> m_shaderProgramLibrary;
     std::map<std::string, std::unique_ptr<Texture>> m_textureLibrary;
 };
 

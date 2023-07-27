@@ -19,10 +19,10 @@ std::unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& ver
     if (m_shaderProgramLibrary.find(key) == m_shaderProgramLibrary.end())
     {
         m_shaderProgramLibrary[key] =
-            std::make_shared<ShaderProgram>(vertexShaderFileName.data(), fragmentShaderFileName.data());
+            std::make_unique<ShaderProgram>(vertexShaderFileName.data(), fragmentShaderFileName.data());
     }
     HATCHER_ASSERT(m_shaderProgramLibrary.find(key) != m_shaderProgramLibrary.end());
-    return std::make_unique<Material>(m_shaderProgramLibrary[key]);
+    return std::make_unique<Material>(m_shaderProgramLibrary[key].get());
 }
 
 const Texture* MaterialFactory::TextureFromFile(const std::string& fileName)

@@ -7,7 +7,7 @@
 namespace hatcher
 {
 
-Material::Material(const std::shared_ptr<const ShaderProgram> shaderProgram)
+Material::Material(const ShaderProgram* shaderProgram)
     : m_shaderProgram(shaderProgram)
 {
 }
