@@ -8,7 +8,7 @@
 namespace hatcher
 {
 
-std::shared_ptr<Material> MaterialFactory::CreateMaterial(const std::string& vertexShaderFileName,
+std::unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& vertexShaderFileName,
                                                           const std::string& fragmentShaderFileName)
 {
     ProgramKey key = ProgramKey(vertexShaderFileName, fragmentShaderFileName);

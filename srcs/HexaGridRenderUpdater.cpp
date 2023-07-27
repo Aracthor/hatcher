@@ -21,17 +21,17 @@ class HexaGridRenderUpdater final : public RenderUpdater
 public:
     HexaGridRenderUpdater(const IRendering* rendering)
     {
-        std::shared_ptr<Material> gridMaterial =
+        m_gridMaterial =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
-        gridMaterial->AddUniform("uniHeight", 0.01f);
-        gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
-        m_gridTileMesh = std::make_unique<Mesh>(gridMaterial, Primitive::Lines);
+        m_gridMaterial->AddUniform("uniHeight", 0.01f);
+        m_gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
+        m_gridTileMesh = std::make_unique<Mesh>(m_gridMaterial.get(), Primitive::Lines);
 
-        std::shared_ptr<Material> tileMaterial =
+        m_tileMaterial =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
-        tileMaterial->AddUniform("uniHeight", 0.f);
-        tileMaterial->AddUniform("uniColor", glm::vec4(0.3, 0.3, 0.3, 1.0));
-        m_walkableTileMesh = std::make_unique<Mesh>(tileMaterial, Primitive::TriangleFan);
+        m_tileMaterial->AddUniform("uniHeight", 0.f);
+        m_tileMaterial->AddUniform("uniColor", glm::vec4(0.3, 0.3, 0.3, 1.0));
+        m_walkableTileMesh = std::make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleFan);
     }
 
     ~HexaGridRenderUpdater() = default;
@@ -105,6 +105,8 @@ private:
     bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
 
+    std::unique_ptr<Material> m_gridMaterial;
+    std::unique_ptr<Material> m_tileMaterial;
     std::unique_ptr<Mesh> m_gridTileMesh;
     std::unique_ptr<Mesh> m_walkableTileMesh;
 };

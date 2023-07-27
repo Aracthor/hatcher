@@ -27,12 +27,13 @@ public:
     SteveRenderUpdater(const IRendering* rendering)
         : m_bodyParts({&m_torso, &m_head, &m_leftArm, &m_rightArm, &m_leftLeg, &m_rightLeg})
     {
-        std::shared_ptr<Material> material = rendering->GetMaterialFactory()->CreateMaterial(
-            "shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
+        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_3D.vert",
+                                                                     "shaders/hello_texture.frag");
 
         m_texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
-        material->AddTexture("diffuseTexture", m_texture);
+        m_material->AddTexture("diffuseTexture", m_texture);
 
+        const Material* material = m_material.get();
         m_torso.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/torso.obj"));
         m_head.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/head.obj"));
         m_leftArm.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/left_arm.obj"));
@@ -121,6 +122,7 @@ private:
         glm::mat4 matrix;
     };
 
+    std::unique_ptr<Material> m_material;
     BodyPart m_torso;
     BodyPart m_head;
     BodyPart m_leftArm;

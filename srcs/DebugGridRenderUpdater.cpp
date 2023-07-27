@@ -19,10 +19,10 @@ class DebugGridRenderUpdater final : public RenderUpdater
 public:
     DebugGridRenderUpdater(const IRendering* rendering)
     {
-        std::shared_ptr<Material> material =
+        m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
-        material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
-        m_gridMesh = std::make_unique<Mesh>(material, Primitive::Lines);
+        m_material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
+        m_gridMesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         std::vector<float> positions;
         positions.reserve(m_gridSize * 8);
@@ -79,6 +79,7 @@ public:
 private:
     bool m_gridDisplayEnabled = false;
     int m_gridSize = 150;
+    std::unique_ptr<Material> m_material;
     std::unique_ptr<Mesh> m_gridMesh;
 };
 

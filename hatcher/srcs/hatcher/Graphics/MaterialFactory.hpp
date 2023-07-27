@@ -15,7 +15,7 @@ class Texture;
 class MaterialFactory
 {
 public:
-    std::shared_ptr<Material> CreateMaterial(const std::string& vertexShaderFileName,
+    std::unique_ptr<Material> CreateMaterial(const std::string& vertexShaderFileName,
                                              const std::string& fragmentShaderFileName);
     std::shared_ptr<Texture> TextureFromFile(const std::string& fileName);
 

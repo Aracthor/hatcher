@@ -153,7 +153,7 @@ MeshData readFile(const std::string& fileName)
 
 } // namespace
 
-Mesh* MeshLoader::LoadWavefront(const std::shared_ptr<const Material>& material, const std::string& fileName) const
+Mesh* MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
 {
     MeshData meshData = readFile(fileName);
     std::vector<float> positionsData;

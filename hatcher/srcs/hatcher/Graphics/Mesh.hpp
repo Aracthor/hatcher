@@ -17,7 +17,7 @@ class VertexBufferObject;
 class Mesh
 {
 public:
-    Mesh(const std::shared_ptr<const Material>& material, Primitive::Type primitive, bool dynamic = false);
+    Mesh(const Material* material, Primitive::Type primitive, bool dynamic = false);
     ~Mesh();
 
     void Set2DPositions(const float* positions, uint positionCount);
@@ -35,7 +35,7 @@ private:
     std::unique_ptr<VertexBufferObject> m_positionVBO;
     std::unique_ptr<VertexBufferObject> m_textureCoordsVBO;
     std::unique_ptr<VertexBufferObject> m_elementVBO;
-    std::shared_ptr<const Material> m_material;
+    const Material* m_material;
     Box3f m_box;
     bool m_dynamic;
 };

@@ -1,6 +1,7 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
+#include "hatcher/Graphics/Material.hpp"
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -20,9 +21,9 @@ class SelectedRenderUpdater final : public RenderUpdater
 public:
     SelectedRenderUpdater(const IRendering* rendering)
     {
-        const std::shared_ptr<Material> material =
+        m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/selection.vert", "shaders/selection.frag");
-        m_mesh = std::make_unique<Mesh>(material, Primitive::Lines);
+        m_mesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,
@@ -76,6 +77,7 @@ public:
     }
 
 private:
+    std::unique_ptr<Material> m_material;
     std::unique_ptr<Mesh> m_mesh;
 };
 

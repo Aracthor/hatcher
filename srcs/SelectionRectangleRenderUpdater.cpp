@@ -53,9 +53,9 @@ class SelectionRectangleRenderUpdater final : public RenderUpdater
 public:
     SelectionRectangleRenderUpdater(const IRendering* rendering)
     {
-        const std::shared_ptr<Material> material =
+        m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
-        m_selectionRectangleMesh = std::make_unique<Mesh>(material, Primitive::Lines);
+        m_selectionRectangleMesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,
@@ -152,6 +152,7 @@ public:
 
 private:
     SelectionRectangle m_selectionRectangle;
+    std::unique_ptr<Material> m_material;
     std::unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
