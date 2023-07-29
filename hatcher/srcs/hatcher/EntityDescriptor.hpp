@@ -10,6 +10,8 @@ namespace hatcher
 class IEntityDescriptor
 {
 public:
+    virtual ~IEntityDescriptor() = default;
+
     virtual const std::string& GetComponentData() const = 0;
     virtual const std::string& GetRenderingComponentData() const = 0;
 };
