@@ -65,7 +65,7 @@ void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
 World::World(const char* name)
     : m_name(name)
 {
-    m_entityManager.reset(new EntityManager());
+    m_entityManager = std::make_unique<EntityManager>();
     for (auto creator : ComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());

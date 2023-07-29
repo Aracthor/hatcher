@@ -12,7 +12,7 @@ namespace hatcher
 
 EntityManager::EntityManager()
 {
-    m_entityIDRegistry.reset(new EntityIDRegistry());
+    m_entityIDRegistry = std::make_unique<EntityIDRegistry>();
 
     m_componentManager = std::make_unique<ComponentManager>();
     m_renderingComponentManager = std::make_unique<ComponentManager>();
