@@ -21,13 +21,12 @@ Window::Window(const char* name, int width, int height)
     }
     m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
                                 SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-    m_context.reset(new GLContext(m_window));
+    m_context = std::make_unique<GLContext>(m_window);
     m_imguiIntegration = std::make_unique<ImGuiIntegration>(m_window, m_context->SDLContext());
 }
 
 Window::~Window()
 {
-    m_context.release();
     SDL_DestroyWindow(m_window);
     SDL_Quit();
 }
