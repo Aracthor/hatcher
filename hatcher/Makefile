@@ -139,6 +139,7 @@ SRCS_FILES=	CommandManager.cpp			\
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 TEST_SRCS_FILES=SaveLoader.cpp				\
+		unique_ptr.cpp 				\
 
 TEST_SRCS=	$(addprefix $(TEST_DIR),$(TEST_SRCS_FILES))
 
