@@ -5,6 +5,7 @@
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/unique_ptr.hpp"
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
@@ -23,7 +24,7 @@ public:
     {
         m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/selection.vert", "shaders/selection.frag");
-        m_mesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
+        m_mesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,
@@ -77,8 +78,8 @@ public:
     }
 
 private:
-    std::unique_ptr<Material> m_material;
-    std::unique_ptr<Mesh> m_mesh;
+    unique_ptr<Material> m_material;
+    unique_ptr<Mesh> m_mesh;
 };
 
 RenderUpdaterRegisterer<SelectedRenderUpdater> registerer;

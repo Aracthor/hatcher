@@ -118,12 +118,12 @@ public:
 private:
     struct BodyPart
     {
-        std::unique_ptr<Mesh> mesh;
+        unique_ptr<Mesh> mesh;
         glm::mat4 matrix;
     };
 
     const Texture* m_texture;
-    std::unique_ptr<Material> m_material;
+    unique_ptr<Material> m_material;
     BodyPart m_torso;
     BodyPart m_head;
     BodyPart m_leftArm;

@@ -9,6 +9,8 @@
 
 using namespace hatcher;
 
+namespace
+{
 template <typename T>
 int testEquals(const T& a, const T& b)
 {
@@ -17,6 +19,7 @@ int testEquals(const T& a, const T& b)
                   << std::endl;
     return a != b;
 }
+} // namespace
 
 template <glm::length_t L, typename T>
 std::ostream& operator<<(std::ostream& stream, const glm::vec<L, T>& vec)
@@ -199,6 +202,8 @@ int testCombined()
     return fails;
 }
 
+int testUniquePtr();
+
 int main()
 {
     int fails = 0;
@@ -208,6 +213,7 @@ int main()
     fails += testVector();
     fails += testBox();
     fails += testCombined();
+    fails += testUniquePtr();
 
     return fails;
 }

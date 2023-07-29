@@ -11,6 +11,7 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
+#include "hatcher/unique_ptr.hpp"
 
 namespace
 {
@@ -99,7 +100,7 @@ public:
     }
 
 private:
-    std::unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
+    unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
 };
 
 RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;

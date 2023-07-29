@@ -1,10 +1,10 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "IApplication.hpp"
 #include "basic_types.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -33,9 +33,9 @@ private:
     void Update();
     void Render();
 
-    std::unique_ptr<World> m_world;
+    unique_ptr<World> m_world;
 
-    std::unique_ptr<Rendering> m_rendering;
+    unique_ptr<Rendering> m_rendering;
 
     uint m_renderFramerateLimit = 60;
     bool m_running = false;

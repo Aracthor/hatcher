@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include <string>
+
+#include "hatcher/unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -11,7 +12,7 @@ class Mesh;
 class MeshLoader
 {
 public:
-    std::unique_ptr<Mesh> LoadWavefront(const Material* material, const std::string& fileName) const;
+    unique_ptr<Mesh> LoadWavefront(const Material* material, const std::string& fileName) const;
 };
 
 } // namespace hatcher

@@ -1,7 +1,8 @@
 #pragma once
 
-#include <memory>
 #include <vector>
+
+#include "hatcher/unique_ptr.hpp"
 
 struct SDL_Window;
 union SDL_Event;
@@ -32,8 +33,8 @@ private:
     int m_width;
     int m_height;
     SDL_Window* m_window;
-    std::unique_ptr<GLContext> m_context;
-    std::unique_ptr<ImGuiIntegration> m_imguiIntegration;
+    unique_ptr<GLContext> m_context;
+    unique_ptr<ImGuiIntegration> m_imguiIntegration;
 };
 
 } // namespace hatcher

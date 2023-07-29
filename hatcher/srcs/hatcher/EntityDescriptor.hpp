@@ -1,9 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <string>
 
 #include "ComponentSaver.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -36,7 +36,7 @@ public:
         m_renderingSaver.SaveComponent(copy);
     }
 
-    std::unique_ptr<IEntityDescriptor> CreateDescriptor();
+    unique_ptr<IEntityDescriptor> CreateDescriptor();
 
 private:
     int m_componentCount = 0;

@@ -1,9 +1,9 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "IEntityManager.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -34,11 +34,11 @@ private:
     void AddEntities(int count);
 
     int m_maxEntityCount = 0;
-    std::unique_ptr<EntityIDRegistry> m_entityIDRegistry;
+    unique_ptr<EntityIDRegistry> m_entityIDRegistry;
     std::vector<Entity> m_deletedEntities;
 
-    std::unique_ptr<ComponentManager> m_componentManager;
-    std::unique_ptr<ComponentManager> m_renderingComponentManager;
+    unique_ptr<ComponentManager> m_componentManager;
+    unique_ptr<ComponentManager> m_renderingComponentManager;
 };
 
 } // namespace hatcher

@@ -1,5 +1,3 @@
-#include <memory>
-
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
@@ -14,6 +12,7 @@
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
+#include "hatcher/unique_ptr.hpp"
 
 using namespace hatcher;
 
@@ -55,7 +54,7 @@ public:
     {
         m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
-        m_selectionRectangleMesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
+        m_selectionRectangleMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {
             -1.f, -1.f,
@@ -152,8 +151,8 @@ public:
 
 private:
     SelectionRectangle m_selectionRectangle;
-    std::unique_ptr<Material> m_material;
-    std::unique_ptr<Mesh> m_selectionRectangleMesh;
+    unique_ptr<Material> m_material;
+    unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
 RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> registerer;

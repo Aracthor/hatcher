@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 
 #include "Core/gl_types.hpp"
 #include "hatcher/glm_pure.hpp"

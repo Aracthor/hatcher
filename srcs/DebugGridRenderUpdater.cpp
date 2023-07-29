@@ -1,5 +1,3 @@
-#include <memory>
-
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -9,6 +7,7 @@
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
+#include "hatcher/unique_ptr.hpp"
 
 using namespace hatcher;
 
@@ -22,7 +21,7 @@ public:
         m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         m_material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
-        m_gridMesh = std::make_unique<Mesh>(m_material.get(), Primitive::Lines);
+        m_gridMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         std::vector<float> positions;
         positions.reserve(m_gridSize * 8);
@@ -79,8 +78,8 @@ public:
 private:
     bool m_gridDisplayEnabled = false;
     int m_gridSize = 150;
-    std::unique_ptr<Material> m_material;
-    std::unique_ptr<Mesh> m_gridMesh;
+    unique_ptr<Material> m_material;
+    unique_ptr<Mesh> m_gridMesh;
 };
 
 RenderUpdaterRegisterer<DebugGridRenderUpdater> registerer;

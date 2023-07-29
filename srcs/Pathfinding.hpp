@@ -1,9 +1,11 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "hatcher/glm_pure.hpp"
+#include "hatcher/unique_ptr.hpp"
+
+using namespace hatcher;
 
 class Pathfinding
 {
@@ -26,5 +28,5 @@ private:
     Node* FindNodeByPosition(glm::vec2 position);
     const Node* FindNodeByPosition(glm::vec2 position) const;
 
-    std::vector<std::unique_ptr<Node>> m_nodes;
+    std::vector<unique_ptr<Node>> m_nodes;
 };

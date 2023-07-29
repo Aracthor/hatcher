@@ -65,7 +65,7 @@ void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
 World::World(const char* name)
     : m_name(name)
 {
-    m_entityManager = std::make_unique<EntityManager>();
+    m_entityManager = make_unique<EntityManager>();
     for (auto creator : ComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
@@ -74,14 +74,14 @@ World::World(const char* name)
     {
         m_updaters.emplace_back(creator->Create());
     }
-    m_commandManager = std::make_unique<CommandManager>();
+    m_commandManager = make_unique<CommandManager>();
 }
 
 World::~World() = default;
 
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
-    m_eventUpdater = std::make_unique<EventUpdater>();
+    m_eventUpdater = make_unique<EventUpdater>();
     for (auto creator : RenderComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
@@ -97,7 +97,7 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
 void World::Update()
 {
     m_entityManager->StartUpdate();
-    for (std::unique_ptr<Updater>& updater : m_updaters)
+    for (unique_ptr<Updater>& updater : m_updaters)
     {
         updater->Update(m_entityManager->GetComponentManager());
     }
@@ -117,7 +117,7 @@ void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* applica
 
 void World::UpdateRendering(IFrameRenderer& frameRenderer)
 {
-    for (std::unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
+    for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
         renderUpdater->Update(m_entityManager->GetComponentManager(), m_entityManager->GetRenderingComponentManager(),
                               frameRenderer);

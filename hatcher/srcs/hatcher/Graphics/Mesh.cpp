@@ -11,10 +11,10 @@ Mesh::Mesh(const Material* material, Primitive::Type primitive, bool dynamic /* 
     : m_material(material)
     , m_dynamic(dynamic)
 {
-    m_VAO = std::make_unique<VertexArrayObject>(primitive);
+    m_VAO = make_unique<VertexArrayObject>(primitive);
     m_VAO->Bind();
 
-    m_positionVBO = std::make_unique<VertexBufferObject>();
+    m_positionVBO = make_unique<VertexBufferObject>();
 
     m_VAO->Unbind();
 }
@@ -48,7 +48,7 @@ void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)
     m_VAO->Bind();
 
     GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
-    m_textureCoordsVBO = std::make_unique<VertexBufferObject>();
+    m_textureCoordsVBO = make_unique<VertexBufferObject>();
     m_textureCoordsVBO->SetData(textureCoords, textureCoordsCount, m_dynamic);
     m_VAO->AttribVBO(*m_textureCoordsVBO, 2, textureCoordsAttribLocation);
 
@@ -59,7 +59,7 @@ void Mesh::SetIndices(const ushort* elements, uint elementCount)
 {
     m_VAO->Bind();
 
-    m_elementVBO = std::make_unique<VertexBufferObject>();
+    m_elementVBO = make_unique<VertexBufferObject>();
     m_elementVBO->SetData(elements, elementCount, m_dynamic);
 
     m_VAO->Unbind();

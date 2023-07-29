@@ -1,10 +1,10 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "ICommand.hpp"
 #include "ICommandManager.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -20,7 +20,7 @@ public:
                          ComponentManager* renderingComponentManager);
 
 private:
-    std::vector<std::unique_ptr<ICommand>> m_commands;
+    std::vector<unique_ptr<ICommand>> m_commands;
 };
 
 } // namespace hatcher

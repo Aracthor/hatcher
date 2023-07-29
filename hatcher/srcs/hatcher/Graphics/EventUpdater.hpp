@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <vector>
 
 #include <SDL2/SDL_events.h>

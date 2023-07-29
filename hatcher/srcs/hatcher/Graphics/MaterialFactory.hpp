@@ -1,9 +1,10 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility> // std::pair
+
+#include "hatcher/unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -18,14 +19,14 @@ public:
     MaterialFactory();
     ~MaterialFactory();
 
-    std::unique_ptr<Material> CreateMaterial(const std::string& vertexShaderFileName,
-                                             const std::string& fragmentShaderFileName);
+    unique_ptr<Material> CreateMaterial(const std::string& vertexShaderFileName,
+                                        const std::string& fragmentShaderFileName);
     const Texture* TextureFromFile(const std::string& fileName);
 
 private:
     using ProgramKey = std::pair<std::string, std::string>;
-    std::map<ProgramKey, std::unique_ptr<ShaderProgram>> m_shaderProgramLibrary;
-    std::map<std::string, std::unique_ptr<Texture>> m_textureLibrary;
+    std::map<ProgramKey, unique_ptr<ShaderProgram>> m_shaderProgramLibrary;
+    std::map<std::string, unique_ptr<Texture>> m_textureLibrary;
 };
 
 } // namespace hatcher

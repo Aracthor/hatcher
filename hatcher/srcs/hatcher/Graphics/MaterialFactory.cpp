@@ -11,25 +11,25 @@ namespace hatcher
 MaterialFactory::MaterialFactory() = default;
 MaterialFactory::~MaterialFactory() = default;
 
-std::unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& vertexShaderFileName,
-                                                          const std::string& fragmentShaderFileName)
+unique_ptr<Material> MaterialFactory::CreateMaterial(const std::string& vertexShaderFileName,
+                                                     const std::string& fragmentShaderFileName)
 {
     ProgramKey key = ProgramKey(vertexShaderFileName, fragmentShaderFileName);
 
     if (m_shaderProgramLibrary.find(key) == m_shaderProgramLibrary.end())
     {
         m_shaderProgramLibrary[key] =
-            std::make_unique<ShaderProgram>(vertexShaderFileName.data(), fragmentShaderFileName.data());
+            make_unique<ShaderProgram>(vertexShaderFileName.data(), fragmentShaderFileName.data());
     }
     HATCHER_ASSERT(m_shaderProgramLibrary.find(key) != m_shaderProgramLibrary.end());
-    return std::make_unique<Material>(m_shaderProgramLibrary[key].get());
+    return make_unique<Material>(m_shaderProgramLibrary[key].get());
 }
 
 const Texture* MaterialFactory::TextureFromFile(const std::string& fileName)
 {
     if (m_textureLibrary.find(fileName) == m_textureLibrary.end())
     {
-        m_textureLibrary[fileName] = std::make_unique<Texture>(fileName.c_str());
+        m_textureLibrary[fileName] = make_unique<Texture>(fileName.c_str());
     }
     HATCHER_ASSERT(m_textureLibrary.find(fileName) != m_textureLibrary.end());
     return m_textureLibrary[fileName].get();

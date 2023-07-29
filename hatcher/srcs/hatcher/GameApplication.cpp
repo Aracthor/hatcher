@@ -42,7 +42,7 @@ int GameApplication::Run()
 
 World* GameApplication::CreateNewWorld(const char* name)
 {
-    m_world = std::make_unique<World>(name);
+    m_world = make_unique<World>(name);
     return m_world.get();
 }
 
@@ -56,7 +56,7 @@ void GameApplication::Stop()
 
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
-    m_rendering = std::make_unique<Rendering>(name, windowWidth, windowHeight);
+    m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight);
     m_world->CreateRenderUpdaters(m_rendering.get());
 }
 

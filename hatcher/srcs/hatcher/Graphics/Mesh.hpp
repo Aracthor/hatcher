@@ -1,10 +1,9 @@
 #pragma once
 
-#include <memory>
-
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/basic_types.hpp"
 #include "hatcher/glm_pure.hpp"
+#include "hatcher/unique_ptr.hpp"
 
 #include "Primitive.hpp"
 
@@ -31,10 +30,10 @@ public:
 private:
     void SetPositions(const float* positions, uint positionCount, int componentCount);
 
-    std::unique_ptr<VertexArrayObject> m_VAO;
-    std::unique_ptr<VertexBufferObject> m_positionVBO;
-    std::unique_ptr<VertexBufferObject> m_textureCoordsVBO;
-    std::unique_ptr<VertexBufferObject> m_elementVBO;
+    unique_ptr<VertexArrayObject> m_VAO;
+    unique_ptr<VertexBufferObject> m_positionVBO;
+    unique_ptr<VertexBufferObject> m_textureCoordsVBO;
+    unique_ptr<VertexBufferObject> m_elementVBO;
     const Material* m_material;
     Box3f m_box;
     bool m_dynamic;

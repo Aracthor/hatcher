@@ -66,7 +66,7 @@ void Pathfinding::DeleteNode(glm::vec2 position)
         neighbour->links.erase(std::find(neighbour->links.begin(), neighbour->links.end(), node));
     }
 
-    auto NodeIsAtPosition = [position](const std::unique_ptr<Node>& node) { return node->pos == position; };
+    auto NodeIsAtPosition = [position](const unique_ptr<Node>& node) { return node->pos == position; };
     auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
     m_nodes.erase(it);
 }
@@ -118,14 +118,14 @@ std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos
 
 Pathfinding::Node* Pathfinding::FindNodeByPosition(glm::vec2 position)
 {
-    auto NodeIsAtPosition = [position](const std::unique_ptr<Node>& node) { return node->pos == position; };
+    auto NodeIsAtPosition = [position](const unique_ptr<Node>& node) { return node->pos == position; };
     auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
     return (it == m_nodes.end()) ? nullptr : it->get();
 }
 
 const Pathfinding::Node* Pathfinding::FindNodeByPosition(glm::vec2 position) const
 {
-    auto NodeIsAtPosition = [position](const std::unique_ptr<Node>& node) { return node->pos == position; };
+    auto NodeIsAtPosition = [position](const unique_ptr<Node>& node) { return node->pos == position; };
     auto it = std::find_if(m_nodes.begin(), m_nodes.end(), NodeIsAtPosition);
     return (it == m_nodes.end()) ? nullptr : it->get();
 }

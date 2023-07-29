@@ -1,12 +1,12 @@
 #pragma once
 
-#include <memory>
 #include <optional>
 #include <unordered_map>
 
 #include "Entity.hpp"
 #include "basic_types.hpp"
 #include "span.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -83,8 +83,8 @@ public:
 
 private:
     int m_entityCount = 0;
-    std::unordered_map<uint, std::unique_ptr<IComponentList>> m_componentLists;
-    std::unordered_map<uint, std::unique_ptr<IWorldComponent>> m_worldComponents;
+    std::unordered_map<uint, unique_ptr<IComponentList>> m_componentLists;
+    std::unordered_map<uint, unique_ptr<IWorldComponent>> m_worldComponents;
 };
 
 } // namespace hatcher

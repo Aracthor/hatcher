@@ -1,10 +1,10 @@
 #pragma once
 
-#include <memory>
 #include <string>
 #include <vector>
 
 #include "span.hpp"
+#include "unique_ptr.hpp"
 
 union SDL_Event;
 namespace hatcher
@@ -35,13 +35,13 @@ public:
 private:
     std::string m_name;
 
-    std::unique_ptr<EntityManager> m_entityManager;
+    unique_ptr<EntityManager> m_entityManager;
 
-    std::vector<std::unique_ptr<Updater>> m_updaters;
-    std::unique_ptr<CommandManager> m_commandManager;
+    std::vector<unique_ptr<Updater>> m_updaters;
+    unique_ptr<CommandManager> m_commandManager;
 
-    std::unique_ptr<EventUpdater> m_eventUpdater;
-    std::vector<std::unique_ptr<RenderUpdater>> m_renderUpdaters;
+    unique_ptr<EventUpdater> m_eventUpdater;
+    std::vector<unique_ptr<RenderUpdater>> m_renderUpdaters;
 };
 
 } // namespace hatcher
