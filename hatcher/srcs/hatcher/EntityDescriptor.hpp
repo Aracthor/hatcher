@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 #include "ComponentSaver.hpp"
@@ -35,7 +36,7 @@ public:
         m_renderingSaver.SaveComponent(copy);
     }
 
-    IEntityDescriptor* CreateDescriptor();
+    std::unique_ptr<IEntityDescriptor> CreateDescriptor();
 
 private:
     int m_componentCount = 0;

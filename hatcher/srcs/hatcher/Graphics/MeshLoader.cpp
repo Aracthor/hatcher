@@ -153,7 +153,7 @@ MeshData readFile(const std::string& fileName)
 
 } // namespace
 
-Mesh* MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
+std::unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
 {
     MeshData meshData = readFile(fileName);
     std::vector<float> positionsData;
@@ -179,7 +179,7 @@ Mesh* MeshLoader::LoadWavefront(const Material* material, const std::string& fil
     if (!textureCoordsData.empty())
         mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
     mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
-    return mesh;
+    return std::unique_ptr<Mesh>(mesh);
 }
 
 } // namespace hatcher

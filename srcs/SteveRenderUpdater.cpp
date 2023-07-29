@@ -34,12 +34,12 @@ public:
         m_material->AddTexture("diffuseTexture", m_texture);
 
         const Material* material = m_material.get();
-        m_torso.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/torso.obj"));
-        m_head.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/head.obj"));
-        m_leftArm.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/left_arm.obj"));
-        m_rightArm.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/right_arm.obj"));
-        m_leftLeg.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/left_leg.obj"));
-        m_rightLeg.mesh.reset(rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/right_leg.obj"));
+        m_torso.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/torso.obj");
+        m_head.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/head.obj");
+        m_leftArm.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/left_arm.obj");
+        m_rightArm.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/right_arm.obj");
+        m_leftLeg.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/left_leg.obj");
+        m_rightLeg.mesh = rendering->GetMeshLoader()->LoadWavefront(material, "assets/meshes/steve/right_leg.obj");
 
         m_torso.matrix = glm::mat4(1.f);
         m_head.matrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, 1.2f));

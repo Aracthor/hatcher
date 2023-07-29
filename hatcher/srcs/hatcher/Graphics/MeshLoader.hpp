@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <string>
 
 namespace hatcher
@@ -10,7 +11,7 @@ class Mesh;
 class MeshLoader
 {
 public:
-    Mesh* LoadWavefront(const Material* material, const std::string& fileName) const;
+    std::unique_ptr<Mesh> LoadWavefront(const Material* material, const std::string& fileName) const;
 };
 
 } // namespace hatcher

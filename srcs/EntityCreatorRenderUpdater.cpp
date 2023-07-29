@@ -62,7 +62,7 @@ public:
         steveEntityDescriptorBuilder.AddRenderingComponent(selectable);
         steveEntityDescriptorBuilder.AddRenderingComponent(animation);
 
-        m_steveEntityDescriptor.reset(steveEntityDescriptorBuilder.CreateDescriptor());
+        m_steveEntityDescriptor = steveEntityDescriptorBuilder.CreateDescriptor();
     }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
