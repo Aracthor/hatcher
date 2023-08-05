@@ -1,6 +1,5 @@
 #include "World.hpp"
 
-#include <iostream>
 #include <vector>
 
 #include "CommandManager.hpp"

@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "IApplication.hpp"
 #include "basic_types.hpp"
 #include "unique_ptr.hpp"
