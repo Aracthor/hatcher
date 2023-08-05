@@ -63,6 +63,7 @@ void Material::AddUniform(const char* name, const glm::vec4& value)
 
 void Material::AddTexture(const char* name, const Texture* texture)
 {
+    HATCHER_ASSERT(texture != nullptr);
     HATCHER_ASSERT(m_textures.find(name) == m_textures.end());
     m_textures[name] = texture;
 }
