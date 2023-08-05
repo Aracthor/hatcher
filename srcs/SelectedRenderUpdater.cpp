@@ -7,7 +7,6 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/unique_ptr.hpp"
 
-#include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
@@ -48,16 +47,13 @@ public:
     {
         auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
         auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
-        auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
         for (int i = 0; i < componentManager->Count(); i++)
         {
             const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
-            const std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
             if (selectableComponent && selectableComponent->selected)
             {
-                const glm::mat4 modelMatrix =
-                    TransformationHelper::ModelFromComponents(positionComponent, movementComponent);
+                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
 
                 const Box2f selectionBox =
                     frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);

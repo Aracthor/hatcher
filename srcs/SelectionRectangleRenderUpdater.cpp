@@ -115,8 +115,6 @@ public:
                 renderComponentManager->WriteComponents<SelectableComponent>();
             ComponentReader<Position2DComponent> positionComponents =
                 componentManager->ReadComponents<Position2DComponent>();
-            ComponentReader<Movement2DComponent> movementComponents =
-                componentManager->ReadComponents<Movement2DComponent>();
             const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
 
             HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
@@ -126,8 +124,7 @@ public:
                 if (selectableComponent)
                 {
                     HATCHER_ASSERT(positionComponents[i]);
-                    const glm::mat4 modelMatrix =
-                        TransformationHelper::ModelFromComponents(positionComponents[i], movementComponents[i]);
+                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
 
                     const Box2f entitySelectionBox =
                         frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);

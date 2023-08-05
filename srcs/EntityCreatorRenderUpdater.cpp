@@ -47,8 +47,8 @@ public:
         EntityDescriptorBuilder steveEntityDescriptorBuilder;
         Position2DComponent position2D;
         position2D.position = {};
+        position2D.orientation = glm::vec2(1.f, 0.f);
         Movement2DComponent movement2D;
-        movement2D.orientation = glm::vec2(1.f, 0.f);
 
         steveEntityDescriptorBuilder.AddComponent(position2D);
         steveEntityDescriptorBuilder.AddComponent(movement2D);

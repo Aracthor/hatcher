@@ -30,7 +30,7 @@ public:
                 {
                     const glm::vec2 nextObjective = movement2D.path.back();
                     const glm::vec2 direction = (nextObjective - positions[i]->position);
-                    movement2D.orientation = glm::normalize(movement2D.path.back() - position2D.position);
+                    position2D.orientation = glm::normalize(movement2D.path.back() - position2D.position);
                     if (glm::length(direction) < movementLength)
                     {
                         position2D.position = nextObjective;

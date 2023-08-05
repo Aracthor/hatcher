@@ -72,8 +72,7 @@ public:
                     }
                 }
 
-                const glm::mat4 modelMatrix =
-                    TransformationHelper::ModelFromComponents(positionComponents[i], movementComponents[i]);
+                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
                 const bool moving = !movementComponents[i]->path.empty();
                 UpdateAnimationComponent(animation, moving, frameRenderer.GetClock());
