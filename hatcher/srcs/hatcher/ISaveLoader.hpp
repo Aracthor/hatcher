@@ -5,6 +5,7 @@
 #include "hatcher/glm_pure.hpp"
 
 #include <optional>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -16,10 +17,13 @@ class ISaveLoader
 public:
     virtual void separator(char c) = 0;
     virtual void operator<<(bool& value) = 0;
+    virtual void operator<<(char& value) = 0;
     virtual void operator<<(ubyte& value) = 0;
     virtual void operator<<(int& value) = 0;
     virtual void operator<<(uint& value) = 0;
     virtual void operator<<(float& value) = 0;
+
+    inline void operator<<(std::string& string);
 
     template <typename T>
     void operator<<(std::optional<T>& optional);

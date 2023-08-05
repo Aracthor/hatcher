@@ -14,6 +14,7 @@ public:
 
     void separator(char value) override;
     void operator<<(bool& value) override;
+    void operator<<(char& value) override;
     void operator<<(ubyte& value) override;
     void operator<<(int& value) override;
     void operator<<(uint& value) override;

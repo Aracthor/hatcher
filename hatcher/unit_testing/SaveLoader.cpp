@@ -156,6 +156,33 @@ int testBox()
     return fails;
 }
 
+int testString()
+{
+    std::string input[] = {
+        "Hello World!",
+        "",
+        "Ohi\nworld!",
+    };
+    constexpr int testCount = std::size(input);
+    std::string output[testCount];
+
+    ComponentSaver saver;
+    ISaveLoader& abstractSaver = saver;
+    for (int i = 0; i < testCount; i++)
+        abstractSaver << input[i];
+
+    ComponentLoader loader(saver.Result());
+    ISaveLoader& abstractLoader = loader;
+    for (int i = 0; i < testCount; i++)
+        abstractLoader << output[i];
+
+    int fails = 0;
+    for (int i = 0; i < testCount; i++)
+        fails += testEquals(output[i], input[i]);
+
+    return fails;
+}
+
 int testCombined()
 {
     glm::vec2 inputVec = {2.5f, -1.5f};
@@ -163,6 +190,7 @@ int testCombined()
     int inputCount2 = 42;
     bool inputBool = false;
     Box3f inputBox{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}};
+    std::string inputString = "Hello World!";
 
     ComponentSaver saver;
     ISaveLoader& abstractSaver = saver;
@@ -174,12 +202,14 @@ int testCombined()
     abstractSaver.separator('\n');
     abstractSaver << inputBool;
     abstractSaver << inputBox;
+    abstractSaver << inputString;
 
     glm::vec2 outputVec;
     uint outputCount1;
     int outputCount2;
     Box3f outputBox;
     bool outputBool;
+    std::string outputString;
 
     ComponentLoader loader(saver.Result());
     ISaveLoader& abstractLoader = loader;
@@ -191,6 +221,7 @@ int testCombined()
     abstractLoader.separator('\n');
     abstractLoader << outputBool;
     abstractLoader << outputBox;
+    abstractLoader << outputString;
 
     int fails = 0;
     fails += testEquals(outputVec, {2.5f, -1.5f});
@@ -198,6 +229,7 @@ int testCombined()
     fails += testEquals(outputCount2, 42);
     fails += testEquals(outputBox, {{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}});
     fails += testEquals(outputBool, false);
+    fails += testEquals(outputString, std::string("Hello World!"));
 
     return fails;
 }
@@ -212,6 +244,7 @@ int main()
     fails += testFloat();
     fails += testVector();
     fails += testBox();
+    fails += testString();
     fails += testCombined();
     fails += testUniquePtr();
 

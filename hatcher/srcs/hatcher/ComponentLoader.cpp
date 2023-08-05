@@ -17,13 +17,18 @@ void ComponentLoader::separator(char c)
     m_stream.ignore();
 }
 
-void ComponentLoader::operator<<(ubyte& value)
+void ComponentLoader::operator<<(bool& value)
 {
     m_stream >> value;
     separator(' ');
 }
 
-void ComponentLoader::operator<<(bool& value)
+void ComponentLoader::operator<<(char& value)
+{
+    value = m_stream.get();
+}
+
+void ComponentLoader::operator<<(ubyte& value)
 {
     m_stream >> value;
     separator(' ');

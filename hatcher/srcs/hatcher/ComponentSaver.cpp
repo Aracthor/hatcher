@@ -22,6 +22,11 @@ void ComponentSaver::operator<<(bool& value)
     separator(' ');
 }
 
+void ComponentSaver::operator<<(char& value)
+{
+    m_stream << value;
+}
+
 void ComponentSaver::operator<<(ubyte& value)
 {
     m_stream << value;

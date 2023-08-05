@@ -1,6 +1,20 @@
 namespace hatcher
 {
 
+void ISaveLoader::operator<<(std::string& string)
+{
+    int size = string.size();
+    *this << size;
+    string.resize(size);
+    separator(' ');
+    separator('"');
+    for (char& value : string)
+    {
+        *this << value;
+    }
+    separator('"');
+}
+
 template <typename T>
 void ISaveLoader::operator<<(std::optional<T>& optional)
 {
