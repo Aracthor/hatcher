@@ -127,6 +127,8 @@ SRCS_FILES=	Camera.cpp 			\
 		SelectableComponent.cpp		\
 		SelectionRectangleRenderUpdater.cpp	\
 		SelectedRenderUpdater.cpp 	\
+		StaticMeshComponent.cpp 	\
+		StaticMeshRenderUpdater.cpp 	\
 		SteveRenderUpdater.cpp		\
 		SteveAnimationComponent.cpp	\
 		TransformationHelper.cpp	\

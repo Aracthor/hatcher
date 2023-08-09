@@ -65,8 +65,9 @@ int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 positio
     return vertices.size() - 1;
 }
 
-MeshData readFile(const std::string& fileName)
+MeshData readFile(const std::string& fileName, Primitive::Type primitive)
 {
+    HATCHER_ASSERT(primitive == Primitive::Lines || primitive == Primitive::Triangles);
     MeshData meshData;
     std::ifstream ifs;
 
@@ -127,18 +128,44 @@ MeshData readFile(const std::string& fileName)
                 switch (faceIndices.size())
                 {
                 case 3:
-                    meshData.indices.push_back(faceIndices[0]);
-                    meshData.indices.push_back(faceIndices[1]);
-                    meshData.indices.push_back(faceIndices[2]);
+                    if (primitive == Primitive::Lines)
+                    {
+                        meshData.indices.push_back(faceIndices[0]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[0]);
+                    }
+                    else
+                    {
+                        meshData.indices.push_back(faceIndices[0]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[2]);
+                    }
                     break;
                 case 4:
-                    // TODO check if the face can be cutted on those indices ?
-                    meshData.indices.push_back(faceIndices[0]);
-                    meshData.indices.push_back(faceIndices[1]);
-                    meshData.indices.push_back(faceIndices[2]);
-                    meshData.indices.push_back(faceIndices[0]);
-                    meshData.indices.push_back(faceIndices[2]);
-                    meshData.indices.push_back(faceIndices[3]);
+                    if (primitive == Primitive::Lines)
+                    {
+                        meshData.indices.push_back(faceIndices[0]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[3]);
+                        meshData.indices.push_back(faceIndices[3]);
+                        meshData.indices.push_back(faceIndices[0]);
+                    }
+                    else
+                    {
+                        // TODO check if the face can be cutted on those indices ?
+                        meshData.indices.push_back(faceIndices[0]);
+                        meshData.indices.push_back(faceIndices[1]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[0]);
+                        meshData.indices.push_back(faceIndices[2]);
+                        meshData.indices.push_back(faceIndices[3]);
+                    }
                     break;
                 default:
                     std::cerr << "Invalid vertex count for face: " << faceIndices.size() << std::endl;
@@ -153,9 +180,10 @@ MeshData readFile(const std::string& fileName)
 
 } // namespace
 
-unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
+unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName,
+                                           Primitive::Type primitive) const
 {
-    MeshData meshData = readFile(fileName);
+    MeshData meshData = readFile(fileName, primitive);
     std::vector<float> positionsData;
     std::vector<float> textureCoordsData;
 
@@ -166,7 +194,7 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
         positionsData.push_back(vertex.position.x);
         positionsData.push_back(vertex.position.y);
         positionsData.push_back(vertex.position.z);
-        if (vertex.textureCoord)
+        if (primitive != Primitive::Lines && vertex.textureCoord)
         {
             textureCoordsData.push_back(vertex.textureCoord->x);
             textureCoordsData.push_back(vertex.textureCoord->y);
@@ -174,7 +202,7 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
     }
 
     HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
-    Mesh* mesh = new Mesh(material, Primitive::Triangles);
+    Mesh* mesh = new Mesh(material, primitive);
     mesh->Set3DPositions(positionsData.data(), positionsData.size());
     if (!textureCoordsData.empty())
         mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());

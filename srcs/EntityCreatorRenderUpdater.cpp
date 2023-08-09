@@ -3,6 +3,7 @@
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
+#include "StaticMeshComponent.hpp"
 #include "SteveAnimationComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
@@ -44,26 +45,47 @@ class EntityCreatorRenderUpdater final : public RenderUpdater
 public:
     EntityCreatorRenderUpdater(const IRendering* rendering)
     {
-        EntityDescriptorBuilder steveEntityDescriptorBuilder;
-        Position2DComponent position2D;
-        position2D.position = {};
-        position2D.orientation = glm::vec2(1.f, 0.f);
-        Movement2DComponent movement2D;
+        {
+            EntityDescriptorBuilder steveEntityDescriptorBuilder;
+            Position2DComponent position2D;
+            position2D.position = {};
+            position2D.orientation = glm::vec2(1.f, 0.f);
+            Movement2DComponent movement2D;
 
-        steveEntityDescriptorBuilder.AddComponent(position2D);
-        steveEntityDescriptorBuilder.AddComponent(movement2D);
+            steveEntityDescriptorBuilder.AddComponent(position2D);
+            steveEntityDescriptorBuilder.AddComponent(movement2D);
 
-        SelectableComponent selectable;
-        selectable.selected = false;
-        selectable.box = {};
-        SteveAnimationComponent animation;
-        animation.rightLegAngle = 0.f;
-        animation.rightLegRising = false;
+            SelectableComponent selectable;
+            selectable.selected = false;
+            selectable.box = {};
+            SteveAnimationComponent animation;
+            animation.rightLegAngle = 0.f;
+            animation.rightLegRising = false;
 
-        steveEntityDescriptorBuilder.AddRenderingComponent(selectable);
-        steveEntityDescriptorBuilder.AddRenderingComponent(animation);
+            steveEntityDescriptorBuilder.AddRenderingComponent(selectable);
+            steveEntityDescriptorBuilder.AddRenderingComponent(animation);
 
-        m_steveEntityDescriptor = steveEntityDescriptorBuilder.CreateDescriptor();
+            m_steveEntityDescriptor = steveEntityDescriptorBuilder.CreateDescriptor();
+        }
+        {
+            EntityDescriptorBuilder lockerEntityDescriptorBuilder;
+            Position2DComponent position2D;
+            position2D.position = {};
+            position2D.orientation = glm::vec2(1.f, 0.f);
+
+            lockerEntityDescriptorBuilder.AddComponent(position2D);
+
+            SelectableComponent selectable;
+            selectable.selected = false;
+            selectable.box = {};
+            StaticMeshComponent staticMesh;
+            staticMesh.type = StaticMeshComponent::Locker;
+
+            lockerEntityDescriptorBuilder.AddRenderingComponent(selectable);
+            lockerEntityDescriptorBuilder.AddRenderingComponent(staticMesh);
+
+            m_lockerEntityDescriptor = lockerEntityDescriptorBuilder.CreateDescriptor();
+        }
     }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
@@ -76,7 +98,7 @@ public:
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
         HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
-        if (event.button.button == SDL_BUTTON_RIGHT && keystate[SDL_SCANCODE_LCTRL])
+        if (keystate[SDL_SCANCODE_LCTRL])
         {
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
@@ -86,8 +108,13 @@ public:
                 return;
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
+            const IEntityDescriptor* entityDescriptor = nullptr;
+            if (event.button.button == SDL_BUTTON_RIGHT)
+                entityDescriptor = m_steveEntityDescriptor.get();
+            else if (event.button.button == SDL_BUTTON_MIDDLE)
+                entityDescriptor = m_lockerEntityDescriptor.get();
 
-            commandManager->AddCommand(new CreateEntityCommand(m_steveEntityDescriptor.get(), entitySpawnPosition));
+            commandManager->AddCommand(new CreateEntityCommand(entityDescriptor, entitySpawnPosition));
         }
     }
 
@@ -101,6 +128,7 @@ public:
 
 private:
     unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
+    unique_ptr<IEntityDescriptor> m_lockerEntityDescriptor;
 };
 
 RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;
