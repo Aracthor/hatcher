@@ -27,6 +27,8 @@ public:
 
     const unique_ptr<MeshLoader>& GetMeshLoader() const override { return m_meshLoader; }
 
+    const unique_ptr<Clock>& GetClock() const { return m_clock; }
+
 private:
     glm::ivec2 Resolution() const;
 

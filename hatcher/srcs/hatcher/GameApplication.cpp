@@ -32,7 +32,11 @@ int GameApplication::Run()
 #else
     while (m_running)
     {
-        usleep(1000000 / m_renderFramerateLimit);
+        const float minFrameTimeInMs = 1000.f / m_renderFramerateLimit;
+        const float elapsedTimeInMs = m_rendering->GetClock();
+        const float timeToWaitInMs = minFrameTimeInMs - elapsedTimeInMs;
+        if (timeToWaitInMs > 0.f)
+            usleep(timeToWaitInMs * 1000.f);
         mainLoop(this);
     }
 #endif
