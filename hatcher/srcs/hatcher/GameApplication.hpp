@@ -6,6 +6,7 @@
 
 namespace hatcher
 {
+class FileSystem;
 class IRendering;
 class Rendering;
 class World;
@@ -13,7 +14,7 @@ class World;
 class GameApplication : public IApplication
 {
 public:
-    GameApplication();
+    GameApplication(const char* commandName);
     virtual ~GameApplication();
 
     World* CreateNewWorld(const char* name);
@@ -31,6 +32,7 @@ private:
     void Update();
     void Render();
 
+    unique_ptr<FileSystem> m_fileSystem;
     unique_ptr<World> m_world;
 
     unique_ptr<Rendering> m_rendering;

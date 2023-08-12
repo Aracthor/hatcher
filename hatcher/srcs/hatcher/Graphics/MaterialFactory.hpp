@@ -9,6 +9,7 @@
 namespace hatcher
 {
 
+class FileSystem;
 class Material;
 class ShaderProgram;
 class Texture;
@@ -16,7 +17,7 @@ class Texture;
 class MaterialFactory
 {
 public:
-    MaterialFactory();
+    explicit MaterialFactory(const FileSystem* fileSystem);
     ~MaterialFactory();
 
     unique_ptr<Material> CreateMaterial(const std::string& vertexShaderFileName,
@@ -24,6 +25,7 @@ public:
     const Texture* TextureFromFile(const std::string& fileName);
 
 private:
+    const FileSystem* m_fileSystem;
     using ProgramKey = std::pair<std::string, std::string>;
     std::map<ProgramKey, unique_ptr<ShaderProgram>> m_shaderProgramLibrary;
     std::map<std::string, unique_ptr<Texture>> m_textureLibrary;

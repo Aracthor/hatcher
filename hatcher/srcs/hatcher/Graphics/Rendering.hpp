@@ -7,6 +7,7 @@
 namespace hatcher
 {
 class Clock;
+class FileSystem;
 class FrameRenderer;
 class IApplication;
 class MaterialFactory;
@@ -17,7 +18,7 @@ class World;
 class Rendering : public IRendering
 {
 public:
-    Rendering(const char* name, int windowWidth, int windowHeight);
+    Rendering(const char* name, int windowWidth, int windowHeight, const FileSystem* fileSystem);
     ~Rendering();
 
     void UpdateWorldRendering(IApplication* application, World* parWorld);

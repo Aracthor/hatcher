@@ -1,8 +1,8 @@
 #include "DemoApplication.hpp"
 
-int main()
+int main(int argc, char** argv)
 {
-    DemoApplication demo;
+    DemoApplication demo(argv[0]);
 
     return demo.Run();
 }

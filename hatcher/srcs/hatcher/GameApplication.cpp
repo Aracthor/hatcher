@@ -8,12 +8,16 @@
 
 #include "Graphics/Rendering.hpp"
 
+#include "FileSystem.hpp"
 #include "World.hpp"
 
 namespace hatcher
 {
 
-GameApplication::GameApplication() = default;
+GameApplication::GameApplication(const char* commandName)
+    : m_fileSystem(new FileSystem(commandName))
+{
+}
 
 GameApplication::~GameApplication() = default;
 
@@ -60,7 +64,7 @@ void GameApplication::Stop()
 
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
-    m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight);
+    m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight, m_fileSystem.get());
     m_world->CreateRenderUpdaters(m_rendering.get());
 }
 

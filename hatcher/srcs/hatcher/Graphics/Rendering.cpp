@@ -14,11 +14,11 @@
 namespace hatcher
 {
 
-Rendering::Rendering(const char* name, int windowWidth, int windowHeight)
+Rendering::Rendering(const char* name, int windowWidth, int windowHeight, const FileSystem* fileSystem)
 {
     m_clock = make_unique<Clock>();
-    m_materialFactory = make_unique<MaterialFactory>();
-    m_meshLoader = make_unique<MeshLoader>();
+    m_materialFactory = make_unique<MaterialFactory>(fileSystem);
+    m_meshLoader = make_unique<MeshLoader>(fileSystem);
     m_window = make_unique<Window>(name, windowWidth, windowHeight);
     m_frameRenderer = make_unique<FrameRenderer>(m_clock.get(), Resolution());
 }

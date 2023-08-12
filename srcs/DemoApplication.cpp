@@ -29,8 +29,8 @@ void InitHexaGrid(HexagonalGrid* grid)
 }
 } // namespace
 
-DemoApplication::DemoApplication()
-    : GameApplication()
+DemoApplication::DemoApplication(const char* commandName)
+    : GameApplication(commandName)
 {
     World* world = CreateNewWorld("default");
     EntityManager* entityManager = world->GetEntityManager();

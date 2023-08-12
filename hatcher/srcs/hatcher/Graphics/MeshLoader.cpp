@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Mesh.hpp"
+#include "hatcher/FileSystem.hpp"
 #include "hatcher/assert.hpp"
 
 namespace hatcher
@@ -180,10 +181,16 @@ MeshData readFile(const std::string& fileName, Primitive::Type primitive)
 
 } // namespace
 
+MeshLoader::MeshLoader(const FileSystem* fileSystem)
+    : m_fileSystem(fileSystem)
+{
+}
+
 unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName,
                                            Primitive::Type primitive) const
 {
-    MeshData meshData = readFile(fileName, primitive);
+    const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
+    MeshData meshData = readFile(pathToFile, primitive);
     std::vector<float> positionsData;
     std::vector<float> textureCoordsData;
 

@@ -7,6 +7,6 @@ using namespace hatcher;
 class DemoApplication final : public GameApplication
 {
 public:
-    DemoApplication();
+    DemoApplication(const char* commandName);
     ~DemoApplication();
 };
