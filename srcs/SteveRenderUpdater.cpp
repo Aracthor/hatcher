@@ -1,5 +1,4 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -77,7 +76,7 @@ public:
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
                 const bool moving = !movementComponents[i]->path.empty();
-                UpdateAnimationComponent(animation, moving, frameRenderer.GetClock());
+                UpdateAnimationComponent(animation, moving);
                 const glm::mat4 rightLegMatrix =
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
@@ -92,14 +91,14 @@ public:
         }
     }
 
-    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving, const Clock* clock)
+    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving)
     {
-        const float legMoveSpeed = 0.005f;
+        const float legMoveSpeed = 0.1f;
         const float legMaxAngle = M_PI / 4.f;
         if (moving)
         {
             const float legSign = animationComponent.rightLegRising ? -1.f : 1.f;
-            animationComponent.rightLegAngle += legSign * legMoveSpeed * clock->GetElapsedTime();
+            animationComponent.rightLegAngle += legSign * legMoveSpeed;
             if (std::abs(animationComponent.rightLegAngle) > legMaxAngle)
             {
                 const float angleToBackdown = std::abs(animationComponent.rightLegAngle) - legMaxAngle;
@@ -110,7 +109,7 @@ public:
         else if (animationComponent.rightLegAngle != 0.f)
         {
             const float legSign = (animationComponent.rightLegAngle > 0.f) ? -1.f : 1.f;
-            animationComponent.rightLegAngle += legSign * legMoveSpeed * clock->GetElapsedTime();
+            animationComponent.rightLegAngle += legSign * legMoveSpeed;
             if (animationComponent.rightLegAngle * legSign > 0.f)
                 animationComponent.rightLegAngle = 0.f;
         }
