@@ -46,7 +46,9 @@ public:
                             movementLength = 0.f;
                         }
                     }
-                    position2D.orientation = glm::normalize(position2D.position - startPosition);
+                    const float distance = glm::length(position2D.position - startPosition);
+                    if (distance > 0.001) // micro-steps give an absurd orientation because of floating precision.
+                        position2D.orientation = (position2D.position - startPosition) / distance;
                 }
             }
         }
