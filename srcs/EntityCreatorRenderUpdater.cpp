@@ -114,7 +114,8 @@ public:
             else if (event.button.button == SDL_BUTTON_MIDDLE)
                 entityDescriptor = m_lockerEntityDescriptor.get();
 
-            commandManager->AddCommand(new CreateEntityCommand(entityDescriptor, entitySpawnPosition));
+            if (entityDescriptor)
+                commandManager->AddCommand(new CreateEntityCommand(entityDescriptor, entitySpawnPosition));
         }
     }
 

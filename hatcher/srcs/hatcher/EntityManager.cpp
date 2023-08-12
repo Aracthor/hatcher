@@ -38,6 +38,7 @@ Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
             m_renderingComponentManager->AddEntities(entitiesAdded);
     }
 
+    HATCHER_ASSERT(descriptor != nullptr);
     ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
     m_componentManager->LoadEntityComponents(loader, entity.ID());
     if (m_renderingComponentManager)
