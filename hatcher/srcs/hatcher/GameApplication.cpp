@@ -6,6 +6,7 @@
 #include <emscripten.h>
 #endif
 
+#include "Graphics/Clock.hpp"
 #include "Graphics/Rendering.hpp"
 
 #include "FileSystem.hpp"
@@ -34,14 +35,17 @@ int GameApplication::Run()
     emscripten_set_main_loop_timing(EM_TIMING_SETTIMEOUT, m_renderFramerateLimit);
     emscripten_set_main_loop_arg(mainLoop, this, 0, true);
 #else
+    Clock frameClock;
     while (m_running)
     {
         const float minFrameTimeInMs = 1000.f / m_renderFramerateLimit;
-        const float elapsedTimeInMs = m_rendering->GetClock();
+        const float elapsedTimeInMs = frameClock.GetElapsedTime();
         const float timeToWaitInMs = minFrameTimeInMs - elapsedTimeInMs;
         if (timeToWaitInMs > 0.f)
             usleep(timeToWaitInMs * 1000.f);
+        frameClock.Update();
         mainLoop(this);
+        frameClock.Update();
     }
 #endif
 
