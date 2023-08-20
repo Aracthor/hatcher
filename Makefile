@@ -119,6 +119,9 @@ SRCS_FILES=	Camera.cpp 			\
 		HexagonalGrid.cpp		\
 		HexaGridRenderUpdater.cpp	\
 		HexaGridControlPanelRenderUpdater.cpp	\
+		InventoryComponent.cpp		\
+		InventoryPanelRenderUpdater.cpp	\
+		ItemComponent.cpp		\
 		Movement2DComponent.cpp		\
 		MoveOrderRenderUpdater.cpp	\
 		MovingEntitiesUpdater.cpp	\

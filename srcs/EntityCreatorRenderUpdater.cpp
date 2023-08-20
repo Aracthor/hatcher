@@ -1,5 +1,7 @@
 #include "Camera.hpp"
 #include "HexagonalGrid.hpp"
+#include "InventoryComponent.hpp"
+#include "ItemComponent.hpp"
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
@@ -22,8 +24,10 @@ using namespace hatcher;
 class CreateEntityCommand final : public ICommand
 {
 public:
-    CreateEntityCommand(const IEntityDescriptor* entityDescriptor, glm::vec2 spawnPosition)
+    CreateEntityCommand(const IEntityDescriptor* entityDescriptor,
+                        const span<const unique_ptr<IEntityDescriptor>> inventoryDescriptors, glm::vec2 spawnPosition)
         : m_entityDescriptor(entityDescriptor)
+        , m_inventoryDescriptors(inventoryDescriptors)
         , m_spawnPosition(spawnPosition)
     {
     }
@@ -33,10 +37,24 @@ public:
     {
         Entity newEntity = entityManager->CreateNewEntity(m_entityDescriptor);
         componentManager->WriteComponents<Position2DComponent>()[newEntity]->position = m_spawnPosition;
+
+        std::vector<Entity::IDType> inventoryStorage;
+        for (const unique_ptr<IEntityDescriptor>& itemDescriptor : m_inventoryDescriptors)
+        {
+            Entity newItem = entityManager->CreateNewEntity(itemDescriptor.get());
+            inventoryStorage.push_back(newItem.ID());
+        }
+        if (!inventoryStorage.empty())
+        {
+            auto inventoryComponents = componentManager->WriteComponents<InventoryComponent>();
+            HATCHER_ASSERT(inventoryComponents[newEntity]);
+            inventoryComponents[newEntity]->storage = inventoryStorage;
+        }
     }
 
 private:
     const IEntityDescriptor* m_entityDescriptor;
+    const span<const unique_ptr<IEntityDescriptor>> m_inventoryDescriptors;
     const glm::vec2 m_spawnPosition;
 };
 
@@ -51,9 +69,11 @@ public:
             position2D.position = {};
             position2D.orientation = glm::vec2(1.f, 0.f);
             Movement2DComponent movement2D;
+            InventoryComponent inventory;
 
             steveEntityDescriptorBuilder.AddComponent(position2D);
             steveEntityDescriptorBuilder.AddComponent(movement2D);
+            steveEntityDescriptorBuilder.AddComponent(inventory);
 
             SelectableComponent selectable;
             selectable.selected = false;
@@ -68,12 +88,23 @@ public:
             m_steveEntityDescriptor = steveEntityDescriptorBuilder.CreateDescriptor();
         }
         {
+            EntityDescriptorBuilder steveEMCardEntityDescriptorBuilder;
+            ItemComponent item;
+            item.name = "EM Card";
+            steveEMCardEntityDescriptorBuilder.AddComponent(item);
+
+            m_steveInventoryDescriptors.push_back(steveEMCardEntityDescriptorBuilder.CreateDescriptor());
+        }
+
+        {
             EntityDescriptorBuilder lockerEntityDescriptorBuilder;
             Position2DComponent position2D;
             position2D.position = {};
             position2D.orientation = glm::vec2(1.f, 0.f);
+            InventoryComponent inventory;
 
             lockerEntityDescriptorBuilder.AddComponent(position2D);
+            lockerEntityDescriptorBuilder.AddComponent(inventory);
 
             SelectableComponent selectable;
             selectable.selected = false;
@@ -109,13 +140,20 @@ public:
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
             const IEntityDescriptor* entityDescriptor = nullptr;
+            span<const unique_ptr<IEntityDescriptor>> inventoryDescriptors = {};
             if (event.button.button == SDL_BUTTON_RIGHT)
+            {
                 entityDescriptor = m_steveEntityDescriptor.get();
+                inventoryDescriptors = {m_steveInventoryDescriptors};
+            }
             else if (event.button.button == SDL_BUTTON_MIDDLE)
+            {
                 entityDescriptor = m_lockerEntityDescriptor.get();
+            }
 
             if (entityDescriptor)
-                commandManager->AddCommand(new CreateEntityCommand(entityDescriptor, entitySpawnPosition));
+                commandManager->AddCommand(
+                    new CreateEntityCommand(entityDescriptor, inventoryDescriptors, entitySpawnPosition));
         }
     }
 
@@ -130,6 +168,7 @@ public:
 private:
     unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
     unique_ptr<IEntityDescriptor> m_lockerEntityDescriptor;
+    std::vector<unique_ptr<IEntityDescriptor>> m_steveInventoryDescriptors;
 };
 
 RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;
