@@ -4,6 +4,7 @@
 
 #include "InventoryComponent.hpp"
 #include "ItemComponent.hpp"
+#include "NameComponent.hpp"
 #include "SelectableComponent.hpp"
 
 #include "imgui.h"
@@ -23,23 +24,25 @@ public:
             return;
 
         const auto inventoryComponents = componentManager->ReadComponents<InventoryComponent>();
-        const auto itemComponents = componentManager->ReadComponents<ItemComponent>();
         const auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
+        const auto nameComponents = componentManager->ReadComponents<NameComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
             if (selectableComponents[i] && selectableComponents[i]->selected && inventoryComponents[i])
             {
+                HATCHER_ASSERT(nameComponents[i]);
                 const InventoryComponent& inventory = *inventoryComponents[i];
                 ImGui::PushID(i);
-                ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Once);
-                if (ImGui::Begin("Inventory"), &m_enabled)
+                ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiCond_Once);
+                const std::string windowName = "Inventory - " + nameComponents[i]->name;
+                if (ImGui::Begin(windowName.c_str()), &m_enabled)
                 {
                     ImGui::Text("Storage: %ld", inventory.storage.size());
                     for (Entity::IDType itemID : inventory.storage)
                     {
-                        HATCHER_ASSERT(itemComponents[itemID]);
-                        ImGui::Selectable(itemComponents[itemID]->name.c_str());
+                        HATCHER_ASSERT(nameComponents[itemID]);
+                        ImGui::Selectable(nameComponents[itemID]->name.c_str());
                     }
                 }
                 ImGui::End();

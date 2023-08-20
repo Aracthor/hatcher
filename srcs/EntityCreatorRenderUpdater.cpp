@@ -3,6 +3,7 @@
 #include "InventoryComponent.hpp"
 #include "ItemComponent.hpp"
 #include "Movement2DComponent.hpp"
+#include "NameComponent.hpp"
 #include "Position2DComponent.hpp"
 #include "SelectableComponent.hpp"
 #include "StaticMeshComponent.hpp"
@@ -69,10 +70,13 @@ public:
             position2D.position = {};
             position2D.orientation = glm::vec2(1.f, 0.f);
             Movement2DComponent movement2D;
+            NameComponent name;
+            name.name = "Steve";
             InventoryComponent inventory;
 
             steveEntityDescriptorBuilder.AddComponent(position2D);
             steveEntityDescriptorBuilder.AddComponent(movement2D);
+            steveEntityDescriptorBuilder.AddComponent(name);
             steveEntityDescriptorBuilder.AddComponent(inventory);
 
             SelectableComponent selectable;
@@ -90,8 +94,10 @@ public:
         {
             EntityDescriptorBuilder steveEMCardEntityDescriptorBuilder;
             ItemComponent item;
-            item.name = "EM Card";
+            NameComponent name;
+            name.name = "EM Card";
             steveEMCardEntityDescriptorBuilder.AddComponent(item);
+            steveEMCardEntityDescriptorBuilder.AddComponent(name);
 
             m_steveInventoryDescriptors.push_back(steveEMCardEntityDescriptorBuilder.CreateDescriptor());
         }
@@ -102,9 +108,12 @@ public:
             position2D.position = {};
             position2D.orientation = glm::vec2(1.f, 0.f);
             InventoryComponent inventory;
+            NameComponent name;
+            name.name = "Locker";
 
             lockerEntityDescriptorBuilder.AddComponent(position2D);
             lockerEntityDescriptorBuilder.AddComponent(inventory);
+            lockerEntityDescriptorBuilder.AddComponent(name);
 
             SelectableComponent selectable;
             selectable.selected = false;

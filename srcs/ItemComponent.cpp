@@ -3,10 +3,7 @@
 #include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/ISaveLoader.hpp"
 
-void operator<<(ISaveLoader& saveLoader, ItemComponent& component)
-{
-    saveLoader << component.name;
-}
+void operator<<(ISaveLoader& saveLoader, ItemComponent& component) {}
 
 namespace
 {
