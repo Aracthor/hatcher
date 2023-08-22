@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
@@ -35,8 +37,9 @@ public:
                 const InventoryComponent& inventory = *inventoryComponents[i];
                 ImGui::PushID(i);
                 ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiCond_Once);
-                const std::string windowName = "Inventory - " + nameComponents[i]->name;
-                if (ImGui::Begin(windowName.c_str()), &m_enabled)
+                std::ostringstream windowNameOss;
+                windowNameOss << "Inventory - " << nameComponents[i]->name << "##" << i;
+                if (ImGui::Begin(windowNameOss.str().c_str()), &m_enabled)
                 {
                     ImGui::Text("Storage: %ld", inventory.storage.size());
                     for (Entity::IDType itemID : inventory.storage)
