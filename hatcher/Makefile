@@ -192,17 +192,7 @@ BINS=			$(BIN_NATIVE_RELEASE)	\
 include $(shell test -d $(OBJS_DIR) && find $(OBJS_DIR) -name "*.dep")
 
 %/:
-	$(MKDIR) $@
-
-$(OBJS_NATIVE_DIR):		| $$(dir $$(@D))
-$(OBJS_NATIVE_RELEASE_DIR):	| $$(dir $$(@D))
-$(OBJS_NATIVE_RELEASE_SUBDIRS):	| $$(dir $$(@D))
-$(OBJS_NATIVE_RELEASE_SUBSUBDIRS):| $$(dir $$(@D))
-$(OBJS_NATIVE_DEBUG_DIR):	| $$(dir $$(@D))
-$(OBJS_NATIVE_DEBUG_SUBDIRS):	| $$(dir $$(@D))
-$(OBJS_NATIVE_DEBUG_SUBSUBDIRS):| $$(dir $$(@D))
-$(OBJS_NATIVE_IMGUI_DIR):	| $$(dir $$(@D))
-$(OBJS_NATIVE_IMGUI_SUBDIRS):	| $$(dir $$(@D))
+	$(MKDIR) -p $@
 
 
 $(OBJS_NATIVE_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $$(@D)/ $(IMGUI_REPO)
@@ -213,16 +203,6 @@ $(OBJS_NATIVE_DEBUG_DIR)%.o:	$(SRCS_DIR)%.cpp | $$(@D)/ $(IMGUI_REPO)
 
 $(OBJS_NATIVE_IMGUI_DIR)%.o:	$(IMGUI_REPO)%.cpp | $$(@D)/
 	$(CXX) $(CXX_NATIVE_FLAGS) $(CXX_RELEASE_FLAGS) $(CXX_IMGUI_NATIVE_FLAGS) -c $< -o $@
-
-$(OBJS_WEBASM_DIR):		| $$(dir $$(@D))
-$(OBJS_WEBASM_RELEASE_DIR):	| $$(dir $$(@D))
-$(OBJS_WEBASM_RELEASE_SUBDIRS):	| $$(dir $$(@D))
-$(OBJS_WEBASM_RELEASE_SUBSUBDIRS):| $$(dir $$(@D))
-$(OBJS_WEBASM_DEBUG_DIR):	| $$(dir $$(@D))
-$(OBJS_WEBASM_DEBUG_SUBDIRS):	| $$(dir $$(@D))
-$(OBJS_WEBASM_DEBUG_SUBSUBDIRS):| $$(dir $$(@D))
-$(OBJS_WEBASM_IMGUI_DIR):	| $$(dir $$(@D))
-$(OBJS_WEBASM_IMGUI_SUBDIRS):	| $$(dir $$(@D))
 
 $(OBJS_WEBASM_RELEASE_DIR)%.o:	$(SRCS_DIR)%.cpp | $$(@D)/ $(IMGUI_REPO)
 	$(EMXX) $(EMXX_FLAGS) $(CXX_RELEASE_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
@@ -256,8 +236,6 @@ $(BIN_WEBASM_RELEASE):	$(OBJS_WEBASM_RELEASE) $(BIN_IMGUI_WEBASM) | $(WEBASM_BIN
 $(BIN_WEBASM_DEBUG):	$(OBJS_WEBASM_DEBUG) $(BIN_IMGUI_WEBASM) | $(WEBASM_BIN_DIR)
 	$(EMARXX) $(BIN_WEBASM_DEBUG) $(OBJS_WEBASM_DEBUG)
 
-
-$(OBJS_TEST_DIR):	| $$(dir $$(@D))
 
 $(OBJS_TEST_DIR)%.o:	$(TEST_DIR)%.cpp	| $$(@D)/
 	$(CXX) $(CXX_NATIVE_FLAGS) $(CXX_RELEASE_FLAGS) -MMD -MF $(@:.o=.dep) -c $< -o $@
