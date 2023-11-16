@@ -1,8 +1,8 @@
-#include "DemoApplication.hpp"
+#include "hatcher/GameApplication.hpp"
 
 int main(int argc, char** argv)
 {
-    DemoApplication demo(argv[0]);
-
+    hatcher::GameApplication demo(argv[0]);
+    demo.StartRendering("hatcher - demo", 800, 600);
     return demo.Run();
 }

@@ -112,7 +112,6 @@ SRCS_FILES=	Camera.cpp 			\
 		DebugGridRenderUpdater.cpp	\
 		DemoImguiRenderUpdater.cpp	\
 		DebugShortcutsRenderUpdater.cpp	\
-		DemoApplication.cpp		\
 		EntityCreatorRenderUpdater.cpp	\
 		FPSPanelRenderUpdater.cpp	\
 		HexagonalGrid.cpp		\

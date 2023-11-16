@@ -17,6 +17,7 @@ namespace hatcher
 
 GameApplication::GameApplication(const char* commandName)
     : m_fileSystem(new FileSystem(commandName))
+    , m_world(CreateNewWorld())
 {
 }
 

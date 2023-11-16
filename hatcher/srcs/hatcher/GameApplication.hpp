@@ -15,7 +15,7 @@ class GameApplication : public IApplication
 {
 public:
     GameApplication(const char* commandName);
-    virtual ~GameApplication();
+    ~GameApplication();
 
     World* CreateNewWorld();
 
@@ -23,12 +23,11 @@ public:
 
     void Stop() override;
 
-protected:
     void StartRendering(const char* name, int windowWidth, int windowHeight);
 
+private:
     const IRendering* GetRendering() const;
 
-private:
     void Update();
     void Render();
 
