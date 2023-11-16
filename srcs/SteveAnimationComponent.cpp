@@ -11,5 +11,5 @@ void operator<<(ISaveLoader& saveLoader, SteveAnimationComponent& component)
 
 namespace
 {
-RenderComponentTypeRegisterer<SteveAnimationComponent> registerer;
+ComponentTypeRegisterer<SteveAnimationComponent, EComponentList::Rendering> registerer;
 } // namespace

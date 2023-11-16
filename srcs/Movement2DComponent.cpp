@@ -10,5 +10,5 @@ void operator<<(ISaveLoader& saveLoader, Movement2DComponent& component)
 
 namespace
 {
-ComponentTypeRegisterer<Movement2DComponent> registerer;
+ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> registerer;
 } // namespace

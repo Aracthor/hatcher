@@ -10,5 +10,5 @@ void operator<<(ISaveLoader& saveLoader, InventoryComponent& component)
 
 namespace
 {
-ComponentTypeRegisterer<InventoryComponent> registerer;
+ComponentTypeRegisterer<InventoryComponent, EComponentList::Gameplay> registerer;
 } // namespace

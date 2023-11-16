@@ -28,29 +28,20 @@ std::vector<const IRenderUpdaterCreator*>& RenderUpdaterCreators()
     return renderUpdaterCreators;
 }
 
-std::vector<const IComponentTypeCreator*>& ComponentTypeCreators()
+using TComponentCreators = std::vector<const IComponentTypeCreator*>[EComponentList::COUNT];
+
+TComponentCreators& ComponentTypeCreators()
 {
-    static std::vector<const IComponentTypeCreator*> creators;
+    static TComponentCreators creators;
     return creators;
 }
 
-std::vector<const IComponentTypeCreator*>& RenderComponentTypeCreators()
+TComponentCreators& WorldComponentTypeCreators()
 {
-    static std::vector<const IComponentTypeCreator*> creators;
+    static TComponentCreators creators;
     return creators;
 }
 
-std::vector<const IComponentTypeCreator*>& WorldComponentTypeCreators()
-{
-    static std::vector<const IComponentTypeCreator*> creators;
-    return creators;
-}
-
-std::vector<const IComponentTypeCreator*>& RenderWorldComponentTypeCreators()
-{
-    static std::vector<const IComponentTypeCreator*> creators;
-    return creators;
-}
 } // namespace
 
 void RegisterUpdater(const IUpdaterCreator* creator)
@@ -63,34 +54,24 @@ void RegisterRenderUpdater(const IRenderUpdaterCreator* creator)
     RenderUpdaterCreators().push_back(creator);
 }
 
-void RegisterComponentTypeCreator(const IComponentTypeCreator* creator)
+void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type)
 {
-    ComponentTypeCreators().push_back(creator);
+    ComponentTypeCreators()[type].push_back(creator);
 }
 
-void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
+void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type)
 {
-    RenderComponentTypeCreators().push_back(creator);
-}
-
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator)
-{
-    WorldComponentTypeCreators().push_back(creator);
-}
-
-void RegisterRenderWorldComponentTypeCreator(const IComponentTypeCreator* creator)
-{
-    RenderWorldComponentTypeCreators().push_back(creator);
+    WorldComponentTypeCreators()[type].push_back(creator);
 }
 
 World::World()
 {
     m_entityManager = make_unique<EntityManager>();
-    for (auto creator : ComponentTypeCreators())
+    for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
     }
-    for (auto creator : WorldComponentTypeCreators())
+    for (auto creator : WorldComponentTypeCreators()[EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
     }
@@ -106,11 +87,11 @@ World::~World() = default;
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
     m_eventUpdater = make_unique<EventUpdater>();
-    for (auto creator : RenderComponentTypeCreators())
+    for (auto creator : ComponentTypeCreators()[EComponentList::Rendering])
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
     }
-    for (auto creator : RenderWorldComponentTypeCreators())
+    for (auto creator : WorldComponentTypeCreators()[EComponentList::Rendering])
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
     }

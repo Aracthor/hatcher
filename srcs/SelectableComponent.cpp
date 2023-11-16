@@ -11,5 +11,5 @@ void operator<<(ISaveLoader& saveLoader, SelectableComponent& component)
 
 namespace
 {
-RenderComponentTypeRegisterer<SelectableComponent> registerer;
+ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> registerer;
 } // namespace

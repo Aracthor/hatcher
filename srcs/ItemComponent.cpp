@@ -7,5 +7,5 @@ void operator<<(ISaveLoader& saveLoader, ItemComponent& component) {}
 
 namespace
 {
-ComponentTypeRegisterer<ItemComponent> registerer;
+ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> registerer;
 } // namespace

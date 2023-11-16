@@ -5,22 +5,30 @@
 namespace hatcher
 {
 
+namespace EComponentList
+{
+enum Type
+{
+    Gameplay,
+    Rendering,
+    COUNT
+};
+} // namespace EComponentList
+
 class IComponentTypeCreator
 {
 public:
     virtual void CreateComponentType(ComponentManager* componentManager) const = 0;
 };
 
-void RegisterComponentTypeCreator(const IComponentTypeCreator* creator);
-void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator);
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator);
-void RegisterRenderWorldComponentTypeCreator(const IComponentTypeCreator* creator);
+void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type);
+void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type);
 
-template <class ComponentType>
+template <class ComponentType, EComponentList::Type list>
 class ComponentTypeRegisterer final : public IComponentTypeCreator
 {
 public:
-    ComponentTypeRegisterer() { RegisterComponentTypeCreator(this); }
+    ComponentTypeRegisterer() { RegisterComponentTypeCreator(this, list); }
 
     void CreateComponentType(ComponentManager* componentManager) const override
     {
@@ -28,35 +36,11 @@ public:
     }
 };
 
-template <class ComponentType>
-class RenderComponentTypeRegisterer final : public IComponentTypeCreator
-{
-public:
-    RenderComponentTypeRegisterer() { RegisterRenderComponentTypeCreator(this); }
-
-    void CreateComponentType(ComponentManager* componentManager) const override
-    {
-        componentManager->AddComponentType<ComponentType>();
-    }
-};
-
-template <class ComponentType>
+template <class ComponentType, EComponentList::Type list>
 class WorldComponentTypeRegisterer final : public IComponentTypeCreator
 {
 public:
-    WorldComponentTypeRegisterer() { RegisterWorldComponentTypeCreator(this); }
-
-    void CreateComponentType(ComponentManager* componentManager) const override
-    {
-        componentManager->AddWorldComponent<ComponentType>();
-    }
-};
-
-template <class ComponentType>
-class RenderWorldComponentTypeRegisterer final : public IComponentTypeCreator
-{
-public:
-    RenderWorldComponentTypeRegisterer() { RegisterRenderWorldComponentTypeCreator(this); }
+    WorldComponentTypeRegisterer() { RegisterWorldComponentTypeCreator(this, list); }
 
     void CreateComponentType(ComponentManager* componentManager) const override
     {

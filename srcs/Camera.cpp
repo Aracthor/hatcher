@@ -45,5 +45,5 @@ void Camera::SaveLoad(ISaveLoader& saveLoader)
 
 namespace
 {
-RenderWorldComponentTypeRegisterer<Camera> registerer;
+WorldComponentTypeRegisterer<Camera, EComponentList::Rendering> registerer;
 } // namespace

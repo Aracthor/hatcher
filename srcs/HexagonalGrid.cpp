@@ -237,5 +237,5 @@ void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileData& data)
 
 namespace
 {
-WorldComponentTypeRegisterer<HexagonalGrid> registerer;
+WorldComponentTypeRegisterer<HexagonalGrid, EComponentList::Gameplay> registerer;
 } // namespace

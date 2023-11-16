@@ -10,5 +10,5 @@ void operator<<(ISaveLoader& saveLoader, StaticMeshComponent& component)
 
 namespace
 {
-RenderComponentTypeRegisterer<StaticMeshComponent> registerer;
+ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> registerer;
 } // namespace
