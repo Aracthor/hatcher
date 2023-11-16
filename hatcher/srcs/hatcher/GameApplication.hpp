@@ -17,7 +17,7 @@ public:
     GameApplication(const char* commandName);
     virtual ~GameApplication();
 
-    World* CreateNewWorld(const char* name);
+    World* CreateNewWorld();
 
     int Run();
 

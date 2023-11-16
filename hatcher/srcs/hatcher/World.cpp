@@ -61,8 +61,7 @@ void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
     RenderComponentTypeCreators().push_back(creator);
 }
 
-World::World(const char* name)
-    : m_name(name)
+World::World()
 {
     m_entityManager = make_unique<EntityManager>();
     for (auto creator : ComponentTypeCreators())

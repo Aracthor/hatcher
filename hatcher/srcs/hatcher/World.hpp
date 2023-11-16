@@ -21,7 +21,7 @@ class Updater;
 class World final
 {
 public:
-    World(const char* name);
+    World();
     ~World();
 
     EntityManager* GetEntityManager() { return m_entityManager.get(); }
@@ -33,8 +33,6 @@ public:
     void UpdateRendering(IFrameRenderer& frameRenderer);
 
 private:
-    std::string m_name;
-
     unique_ptr<EntityManager> m_entityManager;
 
     std::vector<unique_ptr<Updater>> m_updaters;

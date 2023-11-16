@@ -32,7 +32,7 @@ void InitHexaGrid(HexagonalGrid* grid)
 DemoApplication::DemoApplication(const char* commandName)
     : GameApplication(commandName)
 {
-    World* world = CreateNewWorld("default");
+    World* world = CreateNewWorld();
     EntityManager* entityManager = world->GetEntityManager();
     ComponentManager* componentManager = entityManager->GetComponentManager();
     ComponentManager* renderComponentManager = entityManager->GetRenderingComponentManager();

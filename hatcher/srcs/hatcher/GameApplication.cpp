@@ -52,9 +52,9 @@ int GameApplication::Run()
     return 0;
 }
 
-World* GameApplication::CreateNewWorld(const char* name)
+World* GameApplication::CreateNewWorld()
 {
-    m_world = make_unique<World>(name);
+    m_world = make_unique<World>();
     return m_world.get();
 }
 
