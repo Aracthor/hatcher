@@ -39,6 +39,18 @@ std::vector<const IComponentTypeCreator*>& RenderComponentTypeCreators()
     static std::vector<const IComponentTypeCreator*> creators;
     return creators;
 }
+
+std::vector<const IComponentTypeCreator*>& WorldComponentTypeCreators()
+{
+    static std::vector<const IComponentTypeCreator*> creators;
+    return creators;
+}
+
+std::vector<const IComponentTypeCreator*>& RenderWorldComponentTypeCreators()
+{
+    static std::vector<const IComponentTypeCreator*> creators;
+    return creators;
+}
 } // namespace
 
 void RegisterUpdater(const IUpdaterCreator* creator)
@@ -61,10 +73,24 @@ void RegisterRenderComponentTypeCreator(const IComponentTypeCreator* creator)
     RenderComponentTypeCreators().push_back(creator);
 }
 
+void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator)
+{
+    WorldComponentTypeCreators().push_back(creator);
+}
+
+void RegisterRenderWorldComponentTypeCreator(const IComponentTypeCreator* creator)
+{
+    RenderWorldComponentTypeCreators().push_back(creator);
+}
+
 World::World()
 {
     m_entityManager = make_unique<EntityManager>();
     for (auto creator : ComponentTypeCreators())
+    {
+        creator->CreateComponentType(m_entityManager->GetComponentManager());
+    }
+    for (auto creator : WorldComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
     }
@@ -81,6 +107,10 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
 {
     m_eventUpdater = make_unique<EventUpdater>();
     for (auto creator : RenderComponentTypeCreators())
+    {
+        creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
+    }
+    for (auto creator : RenderWorldComponentTypeCreators())
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
     }

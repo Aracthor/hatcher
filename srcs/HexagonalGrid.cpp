@@ -1,5 +1,6 @@
 #include "HexagonalGrid.hpp"
 
+#include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/ISaveLoader.hpp"
 #include "hatcher/assert.hpp"
 
@@ -81,6 +82,15 @@ HexagonalGrid::HexagonalGrid()
     m_hexToPosMatrix[1][1] = rVector.y;
     m_hexToPosMatrix *= m_hexaSize;
     m_posToHexMatrix = glm::inverse(m_hexToPosMatrix);
+
+    for (int q = -5; q <= 5; q++)
+    {
+        for (int r = -5; r <= 5; r++)
+        {
+            SetTileWalkable(HexagonalGrid::TileCoord(q, r), true);
+        }
+    }
+    SetTileWalkable(HexagonalGrid::TileCoord(0, 0), false);
 }
 
 HexagonalGrid::~HexagonalGrid() = default;
@@ -224,3 +234,8 @@ void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileData& data)
     ubyte& byte = reinterpret_cast<ubyte&>(data);
     saveLoader << byte;
 }
+
+namespace
+{
+WorldComponentTypeRegisterer<HexagonalGrid> registerer;
+} // namespace

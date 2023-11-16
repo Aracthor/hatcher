@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 
+#include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/ISaveLoader.hpp"
 
@@ -41,3 +42,8 @@ void Camera::SaveLoad(ISaveLoader& saveLoader)
     saveLoader << angles;
     saveLoader << pixelSize;
 }
+
+namespace
+{
+RenderWorldComponentTypeRegisterer<Camera> registerer;
+} // namespace
