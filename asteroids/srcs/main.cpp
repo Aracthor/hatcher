@@ -3,6 +3,7 @@
 #include "hatcher/GameApplication.hpp"
 #include "hatcher/World.hpp"
 
+#include "CollidableComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 
@@ -23,6 +24,10 @@ unique_ptr<IEntityDescriptor> PlayerEntityDescriptor()
     player.turningRight = false;
     player.accelerating = false;
     builder.AddComponent<>(player);
+
+    CollidableComponent collidable;
+    collidable.size = 24.f;
+    builder.AddComponent<>(collidable);
 
     return builder.CreateDescriptor();
 }
