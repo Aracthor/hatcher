@@ -6,6 +6,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		MovingEntitiesUpdater.cpp	\
 		PlayerComponent.cpp		\
 		PlayerControlUpdater.cpp	\
+		PlayerCreatorUpdater.cpp	\
 		PlayerMovementUpdater.cpp	\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
