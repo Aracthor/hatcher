@@ -25,8 +25,7 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        if (!entityManager->IsEntityDeleted(m_entity))
-            entityManager->DeleteEntity(m_entity);
+        entityManager->DeleteEntity(m_entity);
     }
 
     span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }

@@ -27,8 +27,7 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        if (!entityManager->IsEntityDeleted(m_entity))
-            componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
+        componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
     }
 
     span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }

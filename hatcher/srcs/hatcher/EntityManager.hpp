@@ -18,11 +18,10 @@ public:
     EntityManager();
     ~EntityManager();
 
-    void StartUpdate();
+    void UpdateDeletedEntities();
 
     Entity CreateNewEntity(const IEntityDescriptor* descriptor) override;
     void DeleteEntity(Entity entity) override;
-    bool IsEntityDeleted(Entity entity) const override;
 
     void Save(ComponentSaver& saveLoader) override;
     void Load(ComponentLoader& saveLoader) override;
@@ -35,7 +34,7 @@ private:
 
     int m_maxEntityCount = 0;
     unique_ptr<EntityIDRegistry> m_entityIDRegistry;
-    std::vector<Entity> m_deletedEntities;
+    std::vector<Entity> m_entitiesToDelete;
 
     unique_ptr<ComponentManager> m_componentManager;
     unique_ptr<ComponentManager> m_renderingComponentManager;

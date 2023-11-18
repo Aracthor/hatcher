@@ -20,9 +20,16 @@ EntityManager::EntityManager()
 
 EntityManager::~EntityManager() = default;
 
-void EntityManager::StartUpdate()
+void EntityManager::UpdateDeletedEntities()
 {
-    m_deletedEntities.clear();
+    for (Entity entity : m_entitiesToDelete)
+    {
+        m_componentManager->RemoveEntity(entity);
+        if (m_renderingComponentManager)
+            m_renderingComponentManager->RemoveEntity(entity);
+        m_entityIDRegistry->UnregisterEntityID(entity.ID());
+    }
+    m_entitiesToDelete.clear();
 }
 
 Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
@@ -52,16 +59,8 @@ Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
 
 void EntityManager::DeleteEntity(Entity entity)
 {
-    m_deletedEntities.push_back(entity);
-    m_componentManager->RemoveEntity(entity);
-    if (m_renderingComponentManager)
-        m_renderingComponentManager->RemoveEntity(entity);
-    m_entityIDRegistry->UnregisterEntityID(entity.ID());
-}
-
-bool EntityManager::IsEntityDeleted(Entity entity) const
-{
-    return std::find(m_deletedEntities.begin(), m_deletedEntities.end(), entity) != m_deletedEntities.end();
+    if (std::find(m_entitiesToDelete.begin(), m_entitiesToDelete.end(), entity) == m_entitiesToDelete.end())
+        m_entitiesToDelete.push_back(entity);
 }
 
 void EntityManager::Save(ComponentSaver& saver)

@@ -105,13 +105,13 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
 
 void World::Update()
 {
-    m_entityManager->StartUpdate();
     for (unique_ptr<Updater>& updater : m_updaters)
     {
         updater->Update(m_entityManager->GetComponentManager());
     }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager());
+    m_entityManager->UpdateDeletedEntities();
 }
 
 void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer)

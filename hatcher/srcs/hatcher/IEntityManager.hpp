@@ -15,7 +15,6 @@ public:
 
     virtual Entity CreateNewEntity(const IEntityDescriptor* descriptor) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
-    virtual bool IsEntityDeleted(Entity entity) const = 0;
 
     virtual void Save(ComponentSaver& saver) = 0;
     virtual void Load(ComponentLoader& loader) = 0;
