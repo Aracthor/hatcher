@@ -12,7 +12,7 @@ namespace
 
 class PlayerMovementUpdater final : public Updater
 {
-    void Update(ComponentManager* componentManager) override
+    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto positionComponents = componentManager->WriteComponents<PositionComponent>();
         auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
@@ -34,7 +34,6 @@ class PlayerMovementUpdater final : public Updater
                     positionComponent->speed += orientation * 0.1f;
                 }
                 positionComponent->speed *= 0.99f;
-                positionComponent->position += positionComponent->speed;
             }
         }
     }

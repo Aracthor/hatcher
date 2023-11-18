@@ -107,7 +107,7 @@ void World::Update()
 {
     for (unique_ptr<Updater>& updater : m_updaters)
     {
-        updater->Update(m_entityManager->GetComponentManager());
+        updater->Update(m_entityManager.get(), m_entityManager->GetComponentManager());
     }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager());

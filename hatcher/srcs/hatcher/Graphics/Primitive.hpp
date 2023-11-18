@@ -8,6 +8,7 @@ namespace Primitive
 enum Type
 {
     Lines,
+    LineStrip,
     Triangles,
     TriangleFan,
     Count
