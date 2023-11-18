@@ -48,10 +48,9 @@ public:
             const auto& positionComponent = positionComponents[i];
             if (positionComponent)
             {
-                const float angle = glm::orientedAngle(glm::vec2(1.f, 0.f), positionComponent->orientation);
                 glm::mat4 modelMatrix = glm::mat4(1.f);
                 modelMatrix = glm::translate(modelMatrix, glm::vec3(positionComponent->position, 0.f));
-                modelMatrix = glm::rotate(modelMatrix, angle, glm::vec3(0.f, 0.f, 1.f));
+                modelMatrix = glm::rotate(modelMatrix, positionComponent->angle, glm::vec3(0.f, 0.f, 1.f));
                 frameRenderer.AddMeshToRender(m_playerMesh.get(), modelMatrix);
             }
         }

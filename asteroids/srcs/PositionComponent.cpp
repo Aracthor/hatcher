@@ -6,7 +6,8 @@
 void operator<<(ISaveLoader& saveLoader, PositionComponent& component)
 {
     saveLoader << component.position;
-    saveLoader << component.orientation;
+    saveLoader << component.angle;
+    saveLoader << component.speed;
 }
 
 namespace

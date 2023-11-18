@@ -1,4 +1,7 @@
 SRCS_FILES=	MeshDisplayUpdater.cpp		\
+		PlayerComponent.cpp		\
+		PlayerControlUpdater.cpp	\
+		PlayerMovementUpdater.cpp	\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		main.cpp

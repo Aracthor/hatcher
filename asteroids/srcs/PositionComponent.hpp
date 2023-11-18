@@ -12,7 +12,8 @@ using namespace hatcher;
 struct PositionComponent
 {
     glm::vec2 position;
-    glm::vec2 orientation;
+    float angle;
+    glm::vec2 speed;
 };
 
 void operator<<(ISaveLoader& saveLoader, PositionComponent& component);
