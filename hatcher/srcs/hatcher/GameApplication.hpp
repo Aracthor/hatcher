@@ -17,6 +17,8 @@ public:
     GameApplication(const char* commandName);
     ~GameApplication();
 
+    World* GetWorld() { return m_world.get(); };
+
     int Run();
 
     void Stop() override;
