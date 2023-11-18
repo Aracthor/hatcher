@@ -2,8 +2,8 @@
 #include "Position2DComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
-#include "hatcher/glm_pure.hpp"
 
 using namespace hatcher;
 

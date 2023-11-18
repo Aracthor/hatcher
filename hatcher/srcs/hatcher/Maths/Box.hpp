@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "hatcher/glm_pure.hpp"
+#include "glm_pure.hpp"
 
 namespace hatcher
 {

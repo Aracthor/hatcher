@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IRendering.hpp"
-#include "hatcher/glm_pure.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/unique_ptr.hpp"
 
 namespace hatcher

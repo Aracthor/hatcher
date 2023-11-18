@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "hatcher/IWorldComponent.hpp"
-#include "hatcher/glm_pure.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 
 #include "Pathfinding.hpp"
 

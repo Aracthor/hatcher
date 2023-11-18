@@ -1,8 +1,8 @@
 #pragma once
 
 #include "hatcher/Maths/Box.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/basic_types.hpp"
-#include "hatcher/glm_pure.hpp"
 
 #include <optional>
 #include <string>

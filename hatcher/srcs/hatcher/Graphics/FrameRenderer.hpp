@@ -4,7 +4,7 @@
 
 #include "IFrameRenderer.hpp"
 
-#include "hatcher/glm_pure.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 
 namespace hatcher
 {

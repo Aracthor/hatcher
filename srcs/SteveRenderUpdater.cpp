@@ -7,7 +7,7 @@
 #include "hatcher/Graphics/MeshLoader.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/Graphics/Texture.hpp"
-#include "hatcher/glm_pure.hpp"
+#include "hatcher/Maths/glm_pure.hpp"
 
 #include "Movement2DComponent.hpp"
 #include "Position2DComponent.hpp"
