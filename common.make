@@ -8,7 +8,7 @@ JS_DIR=			js/
 SRCS_DIR=		srcs/
 INC_DIR=		srcs/
 OBJS_DIR=		objs/
-HATCHER_DIR=		hatcher/
+HATCHER_DIR=		../hatcher/
 IMGUI_REPO=		imgui/
 BIN_DIR=		bin/
 NATIVE_DIR=		native/
@@ -107,39 +107,7 @@ LD_WEBASM_DEBUG_FLAGS=	$(HATCHER_WEBASM_DEBUG)		\
 			-s GL_DEBUG=1 			\
 
 
-SRCS_FILES=	Camera.cpp 			\
-		CameraRenderUpdater.cpp 	\
-		DebugGridRenderUpdater.cpp	\
-		DemoImguiRenderUpdater.cpp	\
-		DebugShortcutsRenderUpdater.cpp	\
-		EntityCreatorRenderUpdater.cpp	\
-		FPSPanelRenderUpdater.cpp	\
-		HexagonalGrid.cpp		\
-		HexaGridRenderUpdater.cpp	\
-		HexaGridControlPanelRenderUpdater.cpp	\
-		InventoryComponent.cpp		\
-		InventoryPanelRenderUpdater.cpp	\
-		ItemComponent.cpp		\
-		Movement2DComponent.cpp		\
-		MoveOrderRenderUpdater.cpp	\
-		MovingEntitiesUpdater.cpp	\
-		NameComponent.cpp		\
-		Pathfinding.cpp			\
-		Position2DComponent.cpp		\
-		SaveLoaderRenderUpdater.cpp 	\
-		SelectableComponent.cpp		\
-		SelectionRectangleRenderUpdater.cpp	\
-		SelectedRenderUpdater.cpp 	\
-		StaticMeshComponent.cpp 	\
-		StaticMeshRenderUpdater.cpp 	\
-		SteveRenderUpdater.cpp		\
-		SteveAnimationComponent.cpp	\
-		TransformationHelper.cpp	\
-		main.cpp			\
-
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
-
-NATIVE_NAME=	exec
 
 OBJS_NATIVE_RELEASE=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_NATIVE_RELEASE_DIR)%.o)
 OBJS_NATIVE_DEBUG=	$(SRCS:$(SRCS_DIR)%.cpp=$(OBJS_NATIVE_DEBUG_DIR)%.o)
