@@ -4,6 +4,7 @@
 #include "hatcher/World.hpp"
 
 #include "CollidableComponent.hpp"
+#include "MeshComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 
@@ -28,6 +29,10 @@ unique_ptr<IEntityDescriptor> PlayerEntityDescriptor()
     CollidableComponent collidable;
     collidable.size = 24.f;
     builder.AddComponent<>(collidable);
+
+    MeshComponent mesh;
+    mesh.ID = MeshComponent::Player;
+    builder.AddRenderingComponent<>(mesh);
 
     return builder.CreateDescriptor();
 }

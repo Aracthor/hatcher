@@ -1,6 +1,7 @@
 SRCS_FILES=	AsteroidComponent.cpp		\
 		AsteroidCreatorUpdater.cpp	\
 		CollidableComponent.cpp		\
+		MeshComponent.cpp		\
 		MeshDisplayUpdater.cpp		\
 		MovingEntitiesUpdater.cpp	\
 		PlayerComponent.cpp		\

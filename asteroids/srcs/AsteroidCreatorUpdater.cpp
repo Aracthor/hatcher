@@ -6,6 +6,7 @@
 
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
+#include "MeshComponent.hpp"
 #include "PositionComponent.hpp"
 
 using namespace hatcher;
@@ -36,6 +37,12 @@ public:
 
         AsteroidComponent asteroid;
         builder.AddComponent<>(asteroid);
+
+        // Gameplay updater shouldn't know anything about Rendering.
+        // TODO break this dependency.
+        MeshComponent mesh;
+        mesh.ID = MeshComponent::Asteroid;
+        builder.AddRenderingComponent<>(mesh);
 
         m_asteroidDescriptor = builder.CreateDescriptor();
 
