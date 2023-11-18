@@ -17,7 +17,7 @@ namespace hatcher
 
 GameApplication::GameApplication(const char* commandName)
     : m_fileSystem(new FileSystem(commandName))
-    , m_world(CreateNewWorld())
+    , m_world(make_unique<World>())
 {
 }
 
@@ -51,12 +51,6 @@ int GameApplication::Run()
 #endif
 
     return 0;
-}
-
-World* GameApplication::CreateNewWorld()
-{
-    m_world = make_unique<World>();
-    return m_world.get();
 }
 
 void GameApplication::Stop()

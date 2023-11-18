@@ -17,8 +17,6 @@ public:
     GameApplication(const char* commandName);
     ~GameApplication();
 
-    World* CreateNewWorld();
-
     int Run();
 
     void Stop() override;
