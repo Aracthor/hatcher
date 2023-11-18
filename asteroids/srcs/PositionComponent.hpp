@@ -7,8 +7,6 @@ namespace hatcher
 class ISaveLoader;
 } // namespace hatcher
 
-using namespace hatcher;
-
 struct PositionComponent
 {
     glm::vec2 position;
@@ -16,4 +14,4 @@ struct PositionComponent
     glm::vec2 speed;
 };
 
-void operator<<(ISaveLoader& saveLoader, PositionComponent& component);
+void operator<<(hatcher::ISaveLoader& saveLoader, PositionComponent& component);

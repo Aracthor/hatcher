@@ -3,6 +3,8 @@
 #include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/ISaveLoader.hpp"
 
+using namespace hatcher;
+
 void operator<<(ISaveLoader& saveLoader, PositionComponent& component)
 {
     saveLoader << component.position;

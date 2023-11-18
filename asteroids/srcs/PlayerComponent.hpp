@@ -5,8 +5,6 @@ namespace hatcher
 class ISaveLoader;
 } // namespace hatcher
 
-using namespace hatcher;
-
 struct PlayerComponent
 {
     bool turningLeft;
@@ -14,4 +12,4 @@ struct PlayerComponent
     bool accelerating;
 };
 
-void operator<<(ISaveLoader& saveLoader, PlayerComponent& component);
+void operator<<(hatcher::ISaveLoader& saveLoader, PlayerComponent& component);
