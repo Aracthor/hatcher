@@ -26,8 +26,6 @@ public:
     void StartRendering(const char* name, int windowWidth, int windowHeight);
 
 private:
-    const IRendering* GetRendering() const;
-
     void Update();
     void Render();
 
