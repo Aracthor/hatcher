@@ -91,7 +91,10 @@ LD_WEBASM_COMMON_FLAGS=	-s WASM=1	\
 			-s MAX_WEBGL_VERSION=2					\
 			-s FULL_ES3=1 						\
 			--preload-file shaders/					\
-			--preload-file assets/					\
+
+ifneq ("$(wildcard assets/)","")
+LD_WEBASM_COMMON_FLAGS+=--preload-file assets/
+endif
 
 LD_WEBASM_RELEASE_FLAGS=$(HATCHER_WEBASM_RELEASE)	\
 			$(IMGUI_WEBASM)			\
