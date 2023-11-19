@@ -30,8 +30,6 @@ public:
     ComponentManager* GetRenderingComponentManager() { return m_renderingComponentManager.get(); }
 
 private:
-    void AddEntities(int count);
-
     int m_maxEntityCount = 0;
     unique_ptr<EntityIDRegistry> m_entityIDRegistry;
     std::vector<Entity> m_entitiesToDelete;
