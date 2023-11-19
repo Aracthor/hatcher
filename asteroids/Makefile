@@ -9,6 +9,8 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		PlayerControlUpdater.cpp	\
 		PlayerCreatorUpdater.cpp	\
 		PlayerMovementUpdater.cpp	\
+		ProjectileComponent.cpp		\
+		ProjectileUpdater.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		ScreenBorderTeleportUpdater.cpp	\

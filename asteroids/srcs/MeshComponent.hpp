@@ -9,8 +9,9 @@ struct MeshComponent
 {
     enum Identifier : unsigned int
     {
-        Player,
         Asteroid,
+        Player,
+        Shoot,
         COUNT,
     };
     unsigned int ID;
