@@ -14,6 +14,7 @@ public:
     virtual ~IEntityManager() = default;
 
     virtual Entity CreateNewEntity(const IEntityDescriptor* descriptor) = 0;
+    virtual Entity CloneEntity(Entity entity) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
 
     virtual void Save(ComponentSaver& saver) = 0;

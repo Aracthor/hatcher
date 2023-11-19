@@ -21,6 +21,14 @@ void ComponentManager::AddEntities(int count)
     }
 }
 
+void ComponentManager::CopyEntity(Entity entityDest, Entity entitySrc)
+{
+    for (auto& it : m_componentLists)
+    {
+        it.second->CopyEntity(entityDest.ID(), entitySrc.ID());
+    }
+}
+
 void ComponentManager::RemoveEntity(Entity entity)
 {
     for (auto& it : m_componentLists)

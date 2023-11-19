@@ -5,7 +5,10 @@
 
 using namespace hatcher;
 
-void operator<<(ISaveLoader& saveLoader, AsteroidComponent& component) {}
+void operator<<(ISaveLoader& saveLoader, AsteroidComponent& component)
+{
+    saveLoader << component.subdivision;
+}
 
 namespace
 {

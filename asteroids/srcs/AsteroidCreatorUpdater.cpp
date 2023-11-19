@@ -36,6 +36,7 @@ public:
         builder.AddComponent<>(collidable);
 
         AsteroidComponent asteroid;
+        asteroid.subdivision = 2;
         builder.AddComponent<>(asteroid);
 
         // Gameplay updater shouldn't know anything about Rendering.

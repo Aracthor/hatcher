@@ -32,7 +32,7 @@ void EntityManager::UpdateDeletedEntities()
     m_entitiesToDelete.clear();
 }
 
-Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
+Entity EntityManager::CreateNewEntity()
 {
     Entity entity = Entity(m_entityIDRegistry->GetNewID());
     if (entity.ID() >= m_maxEntityCount)
@@ -44,7 +44,12 @@ Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
         if (m_renderingComponentManager)
             m_renderingComponentManager->AddEntities(entitiesAdded);
     }
+    return entity;
+}
 
+Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
+{
+    const Entity entity = CreateNewEntity();
     HATCHER_ASSERT(descriptor != nullptr);
     ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
     m_componentManager->LoadEntityComponents(loader, entity.ID());
@@ -55,6 +60,15 @@ Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
     }
 
     return entity;
+}
+
+Entity EntityManager::CloneEntity(Entity entity)
+{
+    const Entity newEntity = CreateNewEntity();
+    m_componentManager->CopyEntity(newEntity, entity);
+    if (m_renderingComponentManager)
+        m_renderingComponentManager->CopyEntity(newEntity, entity);
+    return newEntity;
 }
 
 void EntityManager::DeleteEntity(Entity entity)

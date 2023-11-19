@@ -12,6 +12,12 @@ void IdentifiableComponentList<Component>::AddEntities(int count)
 }
 
 template <class Component>
+void IdentifiableComponentList<Component>::CopyEntity(uint indexDest, uint indexSrc)
+{
+    m_components[indexDest] = m_components[indexSrc];
+}
+
+template <class Component>
 void IdentifiableComponentList<Component>::RemoveEntity(uint index)
 {
     m_components[index] = {};

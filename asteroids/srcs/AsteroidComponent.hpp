@@ -7,6 +7,7 @@ class ISaveLoader;
 
 struct AsteroidComponent
 {
+    int subdivision;
 };
 
 void operator<<(hatcher::ISaveLoader& saveLoader, AsteroidComponent& component);
