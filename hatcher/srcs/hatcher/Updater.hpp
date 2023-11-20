@@ -3,6 +3,7 @@
 namespace hatcher
 {
 class ComponentManager;
+class Entity;
 class IEntityManager;
 
 class Updater
@@ -11,6 +12,7 @@ public:
     virtual ~Updater() {}
 
     virtual void Update(IEntityManager* entityManager, ComponentManager* componentManager) = 0;
+    virtual void OnDeletedEntity(Entity entity, ComponentManager* componentManager) {}
 };
 
 class IUpdaterCreator

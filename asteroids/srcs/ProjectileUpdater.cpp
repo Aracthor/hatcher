@@ -3,6 +3,7 @@
 #include "hatcher/Updater.hpp"
 
 #include "ProjectileComponent.hpp"
+#include "ShooterComponent.hpp"
 
 using namespace hatcher;
 
@@ -22,6 +23,34 @@ class ProjecitleUpdater final : public Updater
                 projectileComponent->lifespan -= 1;
                 if (projectileComponent->lifespan <= 0.f)
                     entityManager->DeleteEntity(Entity(i));
+            }
+        }
+    }
+
+    void OnDeletedEntity(Entity entity, ComponentManager* componentManager) override
+    {
+        auto projectileComponents = componentManager->WriteComponents<ProjectileComponent>();
+        auto shooterComponents = componentManager->WriteComponents<ShooterComponent>();
+        if (projectileComponents[entity])
+        {
+            const Entity::IDType shooterID = projectileComponents[entity]->shooter;
+            if (shooterID != Entity::Invalid().ID())
+            {
+                auto& shooterComponent = shooterComponents[shooterID];
+                HATCHER_ASSERT(shooterComponent);
+                auto it = std::remove(shooterComponent->shoots.begin(), shooterComponent->shoots.end(), entity.ID());
+                HATCHER_ASSERT(it != shooterComponent->shoots.end());
+                shooterComponent->shoots.erase(it, shooterComponent->shoots.end());
+            }
+        }
+        if (shooterComponents[entity])
+        {
+            for (const Entity::IDType projectileID : shooterComponents[entity]->shoots)
+            {
+                auto& projectileComponent = projectileComponents[projectileID];
+                HATCHER_ASSERT(projectileComponent);
+                HATCHER_ASSERT(projectileComponent->shooter != Entity::Invalid().ID());
+                projectileComponent->shooter = Entity::Invalid().ID();
             }
         }
     }

@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "IEntityManager.hpp"
+#include "span.hpp"
 #include "unique_ptr.hpp"
 
 namespace hatcher
@@ -18,6 +19,7 @@ public:
     EntityManager();
     ~EntityManager();
 
+    span<const Entity> EntitiesToDelete() const { return span<const Entity>(m_entitiesToDelete); }
     void UpdateNewAndDeletedEntities();
 
     EntityEgg CreateNewEntity(const IEntityDescriptor* descriptor) override;

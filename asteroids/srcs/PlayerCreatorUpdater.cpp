@@ -8,6 +8,7 @@
 #include "MeshComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
+#include "ShooterComponent.hpp"
 
 using namespace hatcher;
 
@@ -36,6 +37,9 @@ public:
         CollidableComponent collidable;
         collidable.size = 24.f;
         builder.AddComponent<>(collidable);
+
+        ShooterComponent shooter;
+        builder.AddComponent<>(shooter);
 
         MeshComponent mesh;
         mesh.ID = MeshComponent::Player;

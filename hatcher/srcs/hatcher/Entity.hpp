@@ -16,6 +16,8 @@ private:
     IDType m_ID;
 
 public:
+    static Entity Invalid() { return Entity(-1); }
+
     explicit Entity(IDType id)
         : m_ID(id)
     {

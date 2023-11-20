@@ -14,6 +14,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		ScreenBorderTeleportUpdater.cpp	\
+		ShooterComponent.cpp		\
 		main.cpp
 
 NATIVE_NAME=	asteroids

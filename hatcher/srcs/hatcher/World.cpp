@@ -113,6 +113,13 @@ void World::Update()
     }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager());
+    for (const Entity entity : m_entityManager->EntitiesToDelete())
+    {
+        for (unique_ptr<Updater>& updater : m_updaters)
+        {
+            updater->OnDeletedEntity(entity, m_entityManager->GetComponentManager());
+        }
+    }
     m_entityManager->UpdateNewAndDeletedEntities();
 }
 

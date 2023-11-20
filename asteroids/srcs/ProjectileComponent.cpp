@@ -8,6 +8,7 @@ using namespace hatcher;
 void operator<<(ISaveLoader& saveLoader, ProjectileComponent& component)
 {
     saveLoader << component.lifespan;
+    saveLoader << component.shooter;
 }
 
 namespace

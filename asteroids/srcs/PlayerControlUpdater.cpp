@@ -12,6 +12,7 @@
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
+#include "ShooterComponent.hpp"
 
 using namespace hatcher;
 
@@ -56,20 +57,30 @@ public:
     {
         auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
         auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
-        auto positionComponents = componentManager->WriteComponents<PositionComponent>();
+        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
+        auto shooterComponents = componentManager->WriteComponents<ShooterComponent>();
         for (int i = 0; i < componentManager->Count(); i++)
         {
             if (playerComponents[i])
             {
                 const auto& positionComponent = positionComponents[i];
+                auto& shooterComponent = shooterComponents[i];
                 HATCHER_ASSERT(positionComponent);
-                const glm::vec2 direction = {glm::cos(positionComponent->angle), glm::sin(positionComponent->angle)};
-                const glm::vec2 start = positionComponent->position + direction * (collidableComponents[i]->size + 3);
-                const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
-                EntityEgg newProjectile = entityManager->CreateNewEntity(m_shootDescriptor);
-                auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
-                projectilePositionComponent->position = start;
-                projectilePositionComponent->speed = startSpeed;
+                HATCHER_ASSERT(shooterComponent);
+                if (shooterComponent->shoots.size() < 4)
+                {
+                    const glm::vec2 direction = {glm::cos(positionComponent->angle),
+                                                 glm::sin(positionComponent->angle)};
+                    const glm::vec2 start =
+                        positionComponent->position + direction * (collidableComponents[i]->size + 3);
+                    const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
+                    EntityEgg newProjectile = entityManager->CreateNewEntity(m_shootDescriptor);
+                    newProjectile.GetComponent<ProjectileComponent>()->shooter = i;
+                    auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
+                    projectilePositionComponent->position = start;
+                    projectilePositionComponent->speed = startSpeed;
+                    shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
+                }
             }
         }
     }
@@ -97,6 +108,7 @@ public:
 
         ProjectileComponent projectile;
         projectile.lifespan = 50.f;
+        projectile.shooter = Entity::Invalid().ID();
         builder.AddComponent<>(projectile);
 
         MeshComponent mesh;
