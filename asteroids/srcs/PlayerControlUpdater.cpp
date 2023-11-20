@@ -1,6 +1,7 @@
 #include "hatcher/CommandManager.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -61,13 +62,14 @@ public:
             if (playerComponents[i])
             {
                 const auto& positionComponent = positionComponents[i];
-                HATCHER_ASSERT(positionComponent[i]);
+                HATCHER_ASSERT(positionComponent);
                 const glm::vec2 direction = {glm::cos(positionComponent->angle), glm::sin(positionComponent->angle)};
                 const glm::vec2 start = positionComponent->position + direction * (collidableComponents[i]->size + 3);
                 const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
-                const Entity newProjectile = entityManager->CreateNewEntity(m_shootDescriptor);
-                positionComponents[newProjectile]->position = start;
-                positionComponents[newProjectile]->speed = startSpeed;
+                EntityEgg newProjectile = entityManager->CreateNewEntity(m_shootDescriptor);
+                auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
+                projectilePositionComponent->position = start;
+                projectilePositionComponent->speed = startSpeed;
             }
         }
     }

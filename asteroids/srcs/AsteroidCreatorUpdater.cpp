@@ -1,5 +1,6 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Updater.hpp"
@@ -67,8 +68,8 @@ private:
             const Box<2, float> centerBox = {{300, 200}, {500, 400}};
             for (int i = 0; i < 4; i++)
             {
-                Entity newEntity = entityManager->CreateNewEntity(m_asteroidDescriptor.get());
-                auto& positionComponent = componentManager->WriteComponents<PositionComponent>()[newEntity];
+                EntityEgg newEntityEgg = entityManager->CreateNewEntity(m_asteroidDescriptor.get());
+                auto& positionComponent = newEntityEgg.GetComponent<PositionComponent>();
                 do
                 {
                     positionComponent->position = glm::vec2(rand() % 800, rand() % 600);

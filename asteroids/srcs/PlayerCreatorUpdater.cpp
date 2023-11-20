@@ -1,5 +1,6 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 

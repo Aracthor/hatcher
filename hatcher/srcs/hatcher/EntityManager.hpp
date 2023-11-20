@@ -20,8 +20,8 @@ public:
 
     void UpdateDeletedEntities();
 
-    Entity CreateNewEntity(const IEntityDescriptor* descriptor) override;
-    Entity CloneEntity(Entity entity) override;
+    EntityEgg CreateNewEntity(const IEntityDescriptor* descriptor) override;
+    EntityEgg CloneEntity(Entity entity) override;
     void DeleteEntity(Entity entity) override;
 
     void Save(ComponentSaver& saveLoader) override;

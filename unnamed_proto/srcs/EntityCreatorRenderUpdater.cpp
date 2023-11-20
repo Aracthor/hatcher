@@ -11,6 +11,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -36,20 +37,19 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        Entity newEntity = entityManager->CreateNewEntity(m_entityDescriptor);
-        componentManager->WriteComponents<Position2DComponent>()[newEntity]->position = m_spawnPosition;
+        EntityEgg entityEgg = entityManager->CreateNewEntity(m_entityDescriptor);
+        entityEgg.GetComponent<Position2DComponent>()->position = m_spawnPosition;
 
         std::vector<Entity::IDType> inventoryStorage;
         for (const unique_ptr<IEntityDescriptor>& itemDescriptor : m_inventoryDescriptors)
         {
-            Entity newItem = entityManager->CreateNewEntity(itemDescriptor.get());
-            inventoryStorage.push_back(newItem.ID());
+            EntityEgg newItem = entityManager->CreateNewEntity(itemDescriptor.get());
+            inventoryStorage.push_back(newItem.NewEntityID().ID());
         }
         if (!inventoryStorage.empty())
         {
-            auto inventoryComponents = componentManager->WriteComponents<InventoryComponent>();
-            HATCHER_ASSERT(inventoryComponents[newEntity]);
-            inventoryComponents[newEntity]->storage = inventoryStorage;
+            auto& inventoryComponent = entityEgg.GetComponent<InventoryComponent>();
+            inventoryComponent->storage = inventoryStorage;
         }
     }
 

@@ -5,6 +5,7 @@
 #include "ComponentSaver.hpp"
 #include "Entity.hpp"
 #include "EntityDescriptor.hpp"
+#include "EntityEgg.hpp"
 #include "EntityIDRegistry.hpp"
 
 namespace hatcher
@@ -47,28 +48,27 @@ Entity EntityManager::CreateNewEntity()
     return entity;
 }
 
-Entity EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
+EntityEgg EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
 {
-    const Entity entity = CreateNewEntity();
+    const Entity newEntity = CreateNewEntity();
     HATCHER_ASSERT(descriptor != nullptr);
     ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
-    m_componentManager->LoadEntityComponents(loader, entity.ID());
+    m_componentManager->LoadEntityComponents(loader, newEntity.ID());
     if (m_renderingComponentManager)
     {
         ComponentLoader renderingLoader = ComponentLoader(descriptor->GetRenderingComponentData());
-        m_renderingComponentManager->LoadEntityComponents(renderingLoader, entity.ID());
+        m_renderingComponentManager->LoadEntityComponents(renderingLoader, newEntity.ID());
     }
-
-    return entity;
+    return EntityEgg(newEntity, newEntity, m_componentManager.get(), m_renderingComponentManager.get());
 }
 
-Entity EntityManager::CloneEntity(Entity entity)
+EntityEgg EntityManager::CloneEntity(Entity entity)
 {
     const Entity newEntity = CreateNewEntity();
     m_componentManager->CopyEntity(newEntity, entity);
     if (m_renderingComponentManager)
         m_renderingComponentManager->CopyEntity(newEntity, entity);
-    return newEntity;
+    return EntityEgg(newEntity, newEntity, m_componentManager.get(), m_renderingComponentManager.get());
 }
 
 void EntityManager::DeleteEntity(Entity entity)

@@ -1,4 +1,5 @@
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -34,19 +35,16 @@ class CollisionUpdater final : public Updater
             // There is a bug here if the new entity induce a resize of component vectors,
             // because we are currently iterating on a span of this vector.
             // TODO fix this, probably by adding those entities in vector at the end of the frame.
-            const Entity subdivisionA = entityManager->CloneEntity(entity);
-            const Entity subdivisionB = entityManager->CloneEntity(entity);
-            auto asteroidComponents = componentManager->WriteComponents<AsteroidComponent>();
-            auto collidableComponents = componentManager->WriteComponents<CollidableComponent>();
-            auto positionComponents = componentManager->WriteComponents<PositionComponent>();
-            asteroidComponents[subdivisionA]->subdivision -= 1;
-            asteroidComponents[subdivisionB]->subdivision -= 1;
-            collidableComponents[subdivisionA]->size /= 2.f;
-            collidableComponents[subdivisionB]->size /= 2.f;
-            positionComponents[subdivisionA]->speed += RandomSpeed();
-            positionComponents[subdivisionA]->angle = glm::radians(float(rand() % 360));
-            positionComponents[subdivisionB]->speed += RandomSpeed();
-            positionComponents[subdivisionB]->angle = glm::radians(float(rand() % 360));
+            EntityEgg subdivisionA = entityManager->CloneEntity(entity);
+            EntityEgg subdivisionB = entityManager->CloneEntity(entity);
+            subdivisionA.GetComponent<AsteroidComponent>()->subdivision -= 1;
+            subdivisionB.GetComponent<AsteroidComponent>()->subdivision -= 1;
+            subdivisionA.GetComponent<CollidableComponent>()->size /= 2.f;
+            subdivisionB.GetComponent<CollidableComponent>()->size /= 2.f;
+            subdivisionA.GetComponent<PositionComponent>()->speed += RandomSpeed();
+            subdivisionA.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
+            subdivisionB.GetComponent<PositionComponent>()->speed += RandomSpeed();
+            subdivisionB.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
         }
     }
 
