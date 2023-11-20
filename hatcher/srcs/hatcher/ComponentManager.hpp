@@ -56,7 +56,7 @@ public:
     ~ComponentManager();
 
     void AddEntities(int count);
-    void CopyEntity(Entity entityDest, Entity entitySrc);
+    void CopyEntity(const ComponentManager* other, Entity entityDest, Entity entitySrc);
     void RemoveEntity(Entity entity);
     void ClearEntities();
 

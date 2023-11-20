@@ -14,7 +14,7 @@ class IComponentList
 {
 public:
     virtual void AddEntities(int count) = 0;
-    virtual void CopyEntity(uint indexDest, uint indexSrc) = 0;
+    virtual void CopyEntity(const IComponentList* other, int indexDest, int indexSrc) = 0;
     virtual void RemoveEntity(uint index) = 0;
     virtual void ClearEntities() = 0;
     virtual bool HasComponent(uint index) const = 0;
@@ -29,7 +29,7 @@ class IdentifiableComponentList final : public IComponentList
 {
 public:
     void AddEntities(int count) override;
-    void CopyEntity(uint indexDest, uint indexSrc) override;
+    void CopyEntity(const IComponentList* other, int indexDest, int indexSrc) override;
     void RemoveEntity(uint index) override;
     void ClearEntities() override;
     bool HasComponent(uint index) const override;

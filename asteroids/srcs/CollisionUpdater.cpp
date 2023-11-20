@@ -32,9 +32,6 @@ class CollisionUpdater final : public Updater
     {
         if (asteroid.subdivision > 0)
         {
-            // There is a bug here if the new entity induce a resize of component vectors,
-            // because we are currently iterating on a span of this vector.
-            // TODO fix this, probably by adding those entities in vector at the end of the frame.
             EntityEgg subdivisionA = entityManager->CloneEntity(entity);
             EntityEgg subdivisionB = entityManager->CloneEntity(entity);
             subdivisionA.GetComponent<AsteroidComponent>()->subdivision -= 1;

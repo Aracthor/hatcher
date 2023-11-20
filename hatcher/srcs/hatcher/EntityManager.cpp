@@ -11,18 +11,51 @@
 namespace hatcher
 {
 
+void ResizeComponentManagerIfNecessary(int newSize, int& currentSize, ComponentManager* componentManager,
+                                       ComponentManager* renderingComponentManager)
+{
+    if (newSize > currentSize)
+    {
+        const int entitiesAdded = newSize - currentSize;
+        componentManager->AddEntities(entitiesAdded);
+        if (renderingComponentManager)
+            renderingComponentManager->AddEntities(entitiesAdded);
+        currentSize = newSize;
+    }
+}
+
 EntityManager::EntityManager()
 {
     m_entityIDRegistry = make_unique<EntityIDRegistry>();
 
     m_componentManager = make_unique<ComponentManager>();
     m_renderingComponentManager = make_unique<ComponentManager>();
+
+    m_temporaryComponentManager = make_unique<ComponentManager>();
+    m_temporaryRenderingComponentManager = make_unique<ComponentManager>();
 }
 
 EntityManager::~EntityManager() = default;
 
-void EntityManager::UpdateDeletedEntities()
+void EntityManager::UpdateNewAndDeletedEntities()
 {
+    for (int i = 0; i < (int)m_entitiesToAdd.size(); i++)
+    {
+        const Entity temporaryEntity = Entity(i);
+        const Entity newEntity = m_entitiesToAdd[i];
+        ResizeComponentManagerIfNecessary(newEntity.ID() + 1, m_maxEntityCount, m_componentManager.get(),
+                                          m_renderingComponentManager.get());
+        m_componentManager->CopyEntity(m_temporaryComponentManager.get(), newEntity, temporaryEntity);
+        if (m_renderingComponentManager)
+            m_renderingComponentManager->CopyEntity(m_temporaryRenderingComponentManager.get(), newEntity,
+                                                    temporaryEntity);
+
+        m_temporaryComponentManager->RemoveEntity(temporaryEntity);
+        if (m_temporaryRenderingComponentManager)
+            m_temporaryRenderingComponentManager->RemoveEntity(temporaryEntity);
+    }
+    m_entitiesToAdd.clear();
+
     for (Entity entity : m_entitiesToDelete)
     {
         m_componentManager->RemoveEntity(entity);
@@ -36,39 +69,38 @@ void EntityManager::UpdateDeletedEntities()
 Entity EntityManager::CreateNewEntity()
 {
     Entity entity = Entity(m_entityIDRegistry->GetNewID());
-    if (entity.ID() >= m_maxEntityCount)
-    {
-        const int newMaxEntityCount = entity.ID() + 1;
-        const int entitiesAdded = newMaxEntityCount - m_maxEntityCount;
-        m_maxEntityCount = entity.ID() + 1;
-        m_componentManager->AddEntities(entitiesAdded);
-        if (m_renderingComponentManager)
-            m_renderingComponentManager->AddEntities(entitiesAdded);
-    }
+    m_entitiesToAdd.push_back(entity);
+    ResizeComponentManagerIfNecessary(m_entitiesToAdd.size(), m_maxTemporaryEntityCount,
+                                      m_temporaryComponentManager.get(), m_temporaryRenderingComponentManager.get());
     return entity;
 }
 
 EntityEgg EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
 {
     const Entity newEntity = CreateNewEntity();
+    const Entity::IDType temporaryID = m_entitiesToAdd.size() - 1;
     HATCHER_ASSERT(descriptor != nullptr);
     ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
-    m_componentManager->LoadEntityComponents(loader, newEntity.ID());
-    if (m_renderingComponentManager)
+    m_temporaryComponentManager->LoadEntityComponents(loader, temporaryID);
+    if (m_temporaryRenderingComponentManager)
     {
         ComponentLoader renderingLoader = ComponentLoader(descriptor->GetRenderingComponentData());
-        m_renderingComponentManager->LoadEntityComponents(renderingLoader, newEntity.ID());
+        m_temporaryRenderingComponentManager->LoadEntityComponents(renderingLoader, temporaryID);
     }
-    return EntityEgg(newEntity, newEntity, m_componentManager.get(), m_renderingComponentManager.get());
+
+    return EntityEgg(newEntity, Entity(temporaryID), m_temporaryComponentManager.get(),
+                     m_temporaryRenderingComponentManager.get());
 }
 
 EntityEgg EntityManager::CloneEntity(Entity entity)
 {
     const Entity newEntity = CreateNewEntity();
-    m_componentManager->CopyEntity(newEntity, entity);
-    if (m_renderingComponentManager)
-        m_renderingComponentManager->CopyEntity(newEntity, entity);
-    return EntityEgg(newEntity, newEntity, m_componentManager.get(), m_renderingComponentManager.get());
+    const Entity temporaryEntity = Entity(m_entitiesToAdd.size() - 1);
+    m_temporaryComponentManager->CopyEntity(m_componentManager.get(), temporaryEntity, entity);
+    if (m_temporaryRenderingComponentManager)
+        m_temporaryRenderingComponentManager->CopyEntity(m_renderingComponentManager.get(), temporaryEntity, entity);
+    return EntityEgg(newEntity, temporaryEntity, m_temporaryComponentManager.get(),
+                     m_temporaryRenderingComponentManager.get());
 }
 
 void EntityManager::DeleteEntity(Entity entity)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Entity.hpp"
+#include "EntityEgg.hpp"
 
 namespace hatcher
 {

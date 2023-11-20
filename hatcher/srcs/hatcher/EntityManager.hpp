@@ -18,7 +18,7 @@ public:
     EntityManager();
     ~EntityManager();
 
-    void UpdateDeletedEntities();
+    void UpdateNewAndDeletedEntities();
 
     EntityEgg CreateNewEntity(const IEntityDescriptor* descriptor) override;
     EntityEgg CloneEntity(Entity entity) override;
@@ -30,15 +30,23 @@ public:
     ComponentManager* GetComponentManager() { return m_componentManager.get(); }
     ComponentManager* GetRenderingComponentManager() { return m_renderingComponentManager.get(); }
 
+    ComponentManager* GetTemporaryComponentManager() { return m_temporaryComponentManager.get(); }
+    ComponentManager* GetTemporaryRenderingComponentManager() { return m_temporaryRenderingComponentManager.get(); }
+
 private:
     Entity CreateNewEntity();
 
-    int m_maxEntityCount = 0;
     unique_ptr<EntityIDRegistry> m_entityIDRegistry;
+    std::vector<Entity> m_entitiesToAdd;
     std::vector<Entity> m_entitiesToDelete;
 
+    int m_maxEntityCount = 0;
     unique_ptr<ComponentManager> m_componentManager;
     unique_ptr<ComponentManager> m_renderingComponentManager;
+
+    int m_maxTemporaryEntityCount = 0;
+    unique_ptr<ComponentManager> m_temporaryComponentManager;
+    unique_ptr<ComponentManager> m_temporaryRenderingComponentManager;
 };
 
 } // namespace hatcher

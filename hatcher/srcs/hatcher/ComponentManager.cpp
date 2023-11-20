@@ -21,11 +21,11 @@ void ComponentManager::AddEntities(int count)
     }
 }
 
-void ComponentManager::CopyEntity(Entity entityDest, Entity entitySrc)
+void ComponentManager::CopyEntity(const ComponentManager* other, Entity entityDest, Entity entitySrc)
 {
     for (auto& it : m_componentLists)
     {
-        it.second->CopyEntity(entityDest.ID(), entitySrc.ID());
+        it.second->CopyEntity(other->m_componentLists.at(it.first).get(), entityDest.ID(), entitySrc.ID());
     }
 }
 

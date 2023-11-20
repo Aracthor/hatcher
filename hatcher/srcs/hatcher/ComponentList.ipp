@@ -1,6 +1,7 @@
 #include "assert.hpp"
 
 #include "ISaveLoader.hpp"
+#include "checked_cast.hpp"
 
 namespace hatcher
 {
@@ -12,9 +13,11 @@ void IdentifiableComponentList<Component>::AddEntities(int count)
 }
 
 template <class Component>
-void IdentifiableComponentList<Component>::CopyEntity(uint indexDest, uint indexSrc)
+void IdentifiableComponentList<Component>::CopyEntity(const IComponentList* other, int indexDest, int indexSrc)
 {
-    m_components[indexDest] = m_components[indexSrc];
+    using Self = IdentifiableComponentList<Component>;
+    const Self* otherList = checked_cast<const Self*>(other);
+    m_components[indexDest] = otherList->m_components[indexSrc];
 }
 
 template <class Component>

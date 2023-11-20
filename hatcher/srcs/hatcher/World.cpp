@@ -70,6 +70,7 @@ World::World()
     for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
+        creator->CreateComponentType(m_entityManager->GetTemporaryComponentManager());
     }
     for (auto creator : WorldComponentTypeCreators()[EComponentList::Gameplay])
     {
@@ -90,6 +91,7 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
     for (auto creator : ComponentTypeCreators()[EComponentList::Rendering])
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
+        creator->CreateComponentType(m_entityManager->GetTemporaryRenderingComponentManager());
     }
     for (auto creator : WorldComponentTypeCreators()[EComponentList::Rendering])
     {
@@ -111,7 +113,7 @@ void World::Update()
     }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager());
-    m_entityManager->UpdateDeletedEntities();
+    m_entityManager->UpdateNewAndDeletedEntities();
 }
 
 void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer)
