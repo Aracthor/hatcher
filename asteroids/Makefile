@@ -13,6 +13,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		ProjectileUpdater.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
+		SaveLoaderRenderUpdater.cpp	\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
 		main.cpp
