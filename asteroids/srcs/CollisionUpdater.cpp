@@ -53,12 +53,13 @@ class CollisionUpdater final : public Updater
         // O(n^2) algorithm complexity. But for this project-exemple, it is enough.
         for (int i = 0; i < componentManager->Count() - 1; i++)
         {
+            bool collided = false;
             const auto& positionComponentA = positionComponents[i];
             const auto& collidableComponentA = collidableComponents[i];
             if (collidableComponentA)
             {
                 HATCHER_ASSERT(positionComponentA);
-                for (int j = i + 1; j < componentManager->Count(); j++)
+                for (int j = i + 1; j < componentManager->Count() && !collided; j++)
                 {
                     const auto& positionComponentB = positionComponents[j];
                     const auto& collidableComponentB = collidableComponents[j];
@@ -70,6 +71,7 @@ class CollisionUpdater final : public Updater
                         {
                             if (!asteroidComponents[i] || !asteroidComponents[j])
                             {
+                                collided = true;
                                 if (asteroidComponents[i])
                                     SubdivideAsteroid(entityManager, componentManager, Entity(i),
                                                       *asteroidComponents[i]);
