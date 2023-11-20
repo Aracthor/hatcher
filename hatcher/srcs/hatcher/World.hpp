@@ -23,8 +23,6 @@ public:
     World();
     ~World();
 
-    EntityManager* GetEntityManager() { return m_entityManager.get(); }
-
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
