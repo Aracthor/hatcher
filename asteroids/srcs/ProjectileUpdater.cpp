@@ -1,5 +1,4 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "ProjectileComponent.hpp"
@@ -12,20 +11,7 @@ namespace
 
 class ProjecitleUpdater final : public Updater
 {
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
-    {
-        auto projectileComponents = componentManager->WriteComponents<ProjectileComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
-        {
-            auto& projectileComponent = projectileComponents[i];
-            if (projectileComponent)
-            {
-                projectileComponent->lifespan -= 1;
-                if (projectileComponent->lifespan <= 0.f)
-                    entityManager->DeleteEntity(Entity(i));
-            }
-        }
-    }
+    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override {}
 
     void OnDeletedEntity(Entity entity, ComponentManager* componentManager) override
     {

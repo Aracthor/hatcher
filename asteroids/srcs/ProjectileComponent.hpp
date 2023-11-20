@@ -9,7 +9,6 @@ class ISaveLoader;
 
 struct ProjectileComponent
 {
-    float lifespan;
     hatcher::Entity::IDType shooter;
 };
 

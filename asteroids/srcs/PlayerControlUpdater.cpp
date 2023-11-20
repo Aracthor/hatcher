@@ -8,6 +8,7 @@
 #include "hatcher/assert.hpp"
 
 #include "CollidableComponent.hpp"
+#include "LifespanComponent.hpp"
 #include "MeshComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
@@ -107,9 +108,12 @@ public:
         builder.AddComponent<>(collidable);
 
         ProjectileComponent projectile;
-        projectile.lifespan = 50.f;
         projectile.shooter = Entity::Invalid().ID();
         builder.AddComponent<>(projectile);
+
+        LifespanComponent lifespan;
+        lifespan.duration = 50;
+        builder.AddComponent<>(lifespan);
 
         MeshComponent mesh;
         mesh.ID = MeshComponent::Shoot;
