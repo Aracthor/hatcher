@@ -90,6 +90,23 @@ public:
             m_meshes[MeshComponent::Shoot]->SetIndices(indices, std::size(indices));
         }
         {
+            m_meshes[MeshComponent::Wreckage] = make_unique<Mesh>(m_material.get(), Primitive::LineStrip);
+
+            float positions[] = {
+                0.f,  1.f,
+
+                1.f,  0.f,
+
+                0.f,  -1.f,
+
+                -1.f, 0.f,
+            };
+            ushort indices[] = {0, 1, 2, 3, 0};
+
+            m_meshes[MeshComponent::Wreckage]->Set2DPositions(positions, std::size(positions));
+            m_meshes[MeshComponent::Wreckage]->SetIndices(indices, std::size(indices));
+        }
+        {
             m_playerAcceleratingMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
             float positions[] = {

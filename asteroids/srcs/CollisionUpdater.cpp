@@ -1,10 +1,13 @@
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/EntityDescriptor.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
+#include "LifespanComponent.hpp"
+#include "MeshComponent.hpp"
 #include "PositionComponent.hpp"
 
 using namespace hatcher;
@@ -18,19 +21,40 @@ float lerp(float a, float b, float t)
 
 class CollisionUpdater final : public Updater
 {
-    glm::vec2 RandomSpeed()
+public:
+    CollisionUpdater()
+    {
+        EntityDescriptorBuilder builder;
+
+        PositionComponent position;
+        position.position = {0.f, 0.f};
+        position.angle = 0.f;
+        position.speed = {0.f, 0.f};
+        builder.AddComponent<>(position);
+
+        LifespanComponent lifespan;
+        lifespan.duration = 0.f;
+        builder.AddComponent<>(lifespan);
+
+        MeshComponent mesh;
+        mesh.ID = MeshComponent::Wreckage;
+        builder.AddRenderingComponent<>(mesh);
+
+        m_wreckageEntityDescriptor = builder.CreateDescriptor();
+    }
+
+private:
+    glm::vec2 RandomSpeed(float speedMin, float speedMax)
     {
         const float directionAngle = glm::radians(float(rand() % 360));
-        const float speedMin = 1.f;
-        const float speedMax = 2.f;
         const float speed = lerp(speedMin, speedMax, float(rand() % 1000) / 1000.f);
         return glm::vec2(glm::cos(directionAngle), glm::sin(directionAngle)) * speed;
     }
 
-    void SubdivideAsteroid(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity,
-                           const AsteroidComponent& asteroid)
+    void SubdivideAsteroid(IEntityManager* entityManager, Entity entity, glm::vec2 position, float size,
+                           int subdivision)
     {
-        if (asteroid.subdivision > 0)
+        if (subdivision > 0)
         {
             EntityEgg subdivisionA = entityManager->CloneEntity(entity);
             EntityEgg subdivisionB = entityManager->CloneEntity(entity);
@@ -38,10 +62,19 @@ class CollisionUpdater final : public Updater
             subdivisionB.GetComponent<AsteroidComponent>()->subdivision -= 1;
             subdivisionA.GetComponent<CollidableComponent>()->size /= 2.f;
             subdivisionB.GetComponent<CollidableComponent>()->size /= 2.f;
-            subdivisionA.GetComponent<PositionComponent>()->speed += RandomSpeed();
+            subdivisionA.GetComponent<PositionComponent>()->speed += RandomSpeed(1.f, 2.f);
             subdivisionA.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
-            subdivisionB.GetComponent<PositionComponent>()->speed += RandomSpeed();
+            subdivisionB.GetComponent<PositionComponent>()->speed += RandomSpeed(1.f, 2.f);
             subdivisionB.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
+        }
+
+        for (int i = 0; i < 5; i++)
+        {
+            EntityEgg wreckage = entityManager->CreateNewEntity(m_wreckageEntityDescriptor.get());
+            wreckage.GetComponent<PositionComponent>()->position = position;
+            wreckage.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
+            wreckage.GetComponent<PositionComponent>()->speed = RandomSpeed(0.5f, 1.f);
+            wreckage.GetComponent<LifespanComponent>()->duration = rand() % (int)size * 3;
         }
     }
 
@@ -73,11 +106,11 @@ class CollisionUpdater final : public Updater
                             {
                                 collided = true;
                                 if (asteroidComponents[i])
-                                    SubdivideAsteroid(entityManager, componentManager, Entity(i),
-                                                      *asteroidComponents[i]);
+                                    SubdivideAsteroid(entityManager, Entity(i), positionComponentA->position,
+                                                      collidableComponentA->size, asteroidComponents[i]->subdivision);
                                 if (asteroidComponents[j])
-                                    SubdivideAsteroid(entityManager, componentManager, Entity(j),
-                                                      *asteroidComponents[j]);
+                                    SubdivideAsteroid(entityManager, Entity(j), positionComponentB->position,
+                                                      collidableComponentB->size, asteroidComponents[j]->subdivision);
                                 entityManager->DeleteEntity(Entity(i));
                                 entityManager->DeleteEntity(Entity(j));
                             }
@@ -87,6 +120,8 @@ class CollisionUpdater final : public Updater
             }
         }
     }
+
+    unique_ptr<IEntityDescriptor> m_wreckageEntityDescriptor;
 };
 
 UpdaterRegisterer<CollisionUpdater> registerer;
