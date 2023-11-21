@@ -93,13 +93,13 @@ public:
             m_meshes[MeshComponent::Wreckage] = make_unique<Mesh>(m_material.get(), Primitive::LineStrip);
 
             float positions[] = {
-                0.f,  1.f,
+                0.f,  2.f,
 
-                1.f,  0.f,
+                2.f,  0.f,
 
-                0.f,  -1.f,
+                0.f,  -2.f,
 
-                -1.f, 0.f,
+                -2.f, 0.f,
             };
             ushort indices[] = {0, 1, 2, 3, 0};
 
