@@ -61,11 +61,20 @@ private:
 
         if (!hasPlayer)
         {
-            entityManager->CreateNewEntity(m_playerEntityDescriptor.get());
+            if (m_cyclesToWait > 0)
+            {
+                m_cyclesToWait -= 1;
+            }
+            else
+            {
+                m_cyclesToWait = 50;
+                entityManager->CreateNewEntity(m_playerEntityDescriptor.get());
+            }
         }
     }
 
     unique_ptr<IEntityDescriptor> m_playerEntityDescriptor;
+    int m_cyclesToWait = 0;
 };
 
 UpdaterRegisterer<PlayerCreatorUpdater> registerer;
