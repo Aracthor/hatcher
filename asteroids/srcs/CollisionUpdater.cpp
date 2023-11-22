@@ -24,23 +24,22 @@ class CollisionUpdater final : public Updater
 public:
     CollisionUpdater()
     {
-        EntityDescriptorBuilder builder;
-
-        PositionComponent position;
-        position.position = {0.f, 0.f};
-        position.angle = 0.f;
-        position.speed = {0.f, 0.f};
-        builder.AddComponent<>(position);
-
-        LifespanComponent lifespan;
-        lifespan.duration = 0.f;
-        builder.AddComponent<>(lifespan);
-
-        MeshComponent mesh;
-        mesh.ID = MeshComponent::Wreckage;
-        builder.AddRenderingComponent<>(mesh);
-
-        m_wreckageEntityDescriptor = builder.CreateDescriptor();
+        m_wreckageEntityDescriptor = CreateEntityDescriptor(
+            {
+                LifespanComponent{
+                    .duration = 0.f,
+                },
+                PositionComponent{
+                    .position = {0.f, 0.f},
+                    .angle = 0.f,
+                    .speed = {0.f, 0.f},
+                },
+            },
+            {
+                MeshComponent{
+                    .ID = MeshComponent::Wreckage,
+                },
+            });
     }
 
 private:

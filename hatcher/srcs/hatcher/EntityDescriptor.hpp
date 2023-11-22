@@ -17,32 +17,28 @@ public:
     virtual const std::string& GetRenderingComponentData() const = 0;
 };
 
-class EntityDescriptorBuilder
+class ComponentDescriptorList
 {
 public:
-    template <class Component>
-    void AddComponent(const Component& component)
+    ComponentDescriptorList() = default;
+
+    template <class Component, class... Others>
+    ComponentDescriptorList(const Component& component, Others... others)
+        : ComponentDescriptorList(others...)
     {
-        Component copy = component;
         m_componentCount++;
+        Component copy = component;
         m_saver.SaveComponent(copy);
     }
 
-    template <class Component>
-    void AddRenderingComponent(const Component& component)
-    {
-        Component copy = component;
-        m_renderingComponentCount++;
-        m_renderingSaver.SaveComponent(copy);
-    }
-
-    unique_ptr<IEntityDescriptor> CreateDescriptor();
+    std::string Result() const;
 
 private:
     int m_componentCount = 0;
-    int m_renderingComponentCount = 0;
     ComponentSaver m_saver;
-    ComponentSaver m_renderingSaver;
 };
+
+unique_ptr<IEntityDescriptor> CreateEntityDescriptor(const ComponentDescriptorList& componentList,
+                                                     const ComponentDescriptorList& renderingComponentList);
 
 } // namespace hatcher

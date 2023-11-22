@@ -95,31 +95,28 @@ class PlayerControlUpdater final : public RenderUpdater
 public:
     PlayerControlUpdater(const IRendering* rendering)
     {
-        EntityDescriptorBuilder builder;
-
-        PositionComponent position;
-        position.position = {0.f, 0.f};
-        position.angle = 0.f;
-        position.speed = {0.f, 0.f};
-        builder.AddComponent<>(position);
-
-        CollidableComponent collidable;
-        collidable.size = 2.f;
-        builder.AddComponent<>(collidable);
-
-        ProjectileComponent projectile;
-        projectile.shooter = Entity::Invalid().ID();
-        builder.AddComponent<>(projectile);
-
-        LifespanComponent lifespan;
-        lifespan.duration = 50;
-        builder.AddComponent<>(lifespan);
-
-        MeshComponent mesh;
-        mesh.ID = MeshComponent::Shoot;
-        builder.AddRenderingComponent<>(mesh);
-
-        m_shootDescriptor = builder.CreateDescriptor();
+        m_shootDescriptor = CreateEntityDescriptor(
+            {
+                CollidableComponent{
+                    .size = 2.f,
+                },
+                LifespanComponent{
+                    .duration = 50,
+                },
+                PositionComponent{
+                    .position = {0.f, 0.f},
+                    .angle = 0.f,
+                    .speed = {0.f, 0.f},
+                },
+                ProjectileComponent{
+                    .shooter = Entity::Invalid().ID(),
+                },
+            },
+            {
+                MeshComponent{
+                    .ID = MeshComponent::Shoot,
+                },
+            });
     }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,

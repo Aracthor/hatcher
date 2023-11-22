@@ -20,32 +20,28 @@ class PlayerCreatorUpdater final : public Updater
 public:
     PlayerCreatorUpdater()
     {
-        EntityDescriptorBuilder builder;
-
-        PositionComponent position;
-        position.position = {400.f, 300.f};
-        position.angle = M_PI / 2.f;
-        position.speed = {0.f, 0.f};
-        builder.AddComponent<>(position);
-
-        PlayerComponent player;
-        player.turningLeft = false;
-        player.turningRight = false;
-        player.accelerating = false;
-        builder.AddComponent<>(player);
-
-        CollidableComponent collidable;
-        collidable.size = 24.f;
-        builder.AddComponent<>(collidable);
-
-        ShooterComponent shooter;
-        builder.AddComponent<>(shooter);
-
-        MeshComponent mesh;
-        mesh.ID = MeshComponent::Player;
-        builder.AddRenderingComponent<>(mesh);
-
-        m_playerEntityDescriptor = builder.CreateDescriptor();
+        m_playerEntityDescriptor = CreateEntityDescriptor(
+            {
+                CollidableComponent{
+                    .size = 24.f,
+                },
+                PlayerComponent{
+                    .turningLeft = false,
+                    .turningRight = false,
+                    .accelerating = false,
+                },
+                PositionComponent{
+                    .position = {400.f, 300.f},
+                    .angle = M_PI / 2.f,
+                    .speed = {0.f, 0.f},
+                },
+                ShooterComponent{},
+            },
+            {
+                MeshComponent{
+                    .ID = MeshComponent::Player,
+                },
+            });
     }
 
 private:

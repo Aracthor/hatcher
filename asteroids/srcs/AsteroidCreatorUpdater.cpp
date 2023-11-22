@@ -24,29 +24,27 @@ class AsteroidCreatorUpdater final : public Updater
 public:
     AsteroidCreatorUpdater()
     {
-        EntityDescriptorBuilder builder;
-
-        PositionComponent position;
-        position.position = {0.f, 0.f};
-        position.angle = 0.f;
-        position.speed = {0.f, 0.f};
-        builder.AddComponent<>(position);
-
-        CollidableComponent collidable;
-        collidable.size = 50.f;
-        builder.AddComponent<>(collidable);
-
-        AsteroidComponent asteroid;
-        asteroid.subdivision = 2;
-        builder.AddComponent<>(asteroid);
-
-        // Gameplay updater shouldn't know anything about Rendering.
-        // TODO break this dependency.
-        MeshComponent mesh;
-        mesh.ID = MeshComponent::Asteroid;
-        builder.AddRenderingComponent<>(mesh);
-
-        m_asteroidDescriptor = builder.CreateDescriptor();
+        m_asteroidDescriptor = CreateEntityDescriptor(
+            {
+                AsteroidComponent{
+                    .subdivision = 2,
+                },
+                CollidableComponent{
+                    .size = 50.f,
+                },
+                PositionComponent{
+                    .position = {0.f, 0.f},
+                    .angle = 0.f,
+                    .speed = {0.f, 0.f},
+                },
+            },
+            // Gameplay updater shouldn't know anything about Rendering.
+            // TODO break this dependency.
+            {
+                MeshComponent{
+                    .ID = MeshComponent::Asteroid,
+                },
+            });
 
         // TODO to have our own pseudorandom number generator.
         srandom(::time(nullptr));

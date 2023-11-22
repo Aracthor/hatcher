@@ -64,68 +64,58 @@ class EntityCreatorRenderUpdater final : public RenderUpdater
 public:
     EntityCreatorRenderUpdater(const IRendering* rendering)
     {
-        {
-            EntityDescriptorBuilder steveEntityDescriptorBuilder;
-            Position2DComponent position2D;
-            position2D.position = {};
-            position2D.orientation = glm::vec2(1.f, 0.f);
-            Movement2DComponent movement2D;
-            NameComponent name;
-            name.name = "Steve";
-            InventoryComponent inventory;
+        m_steveEntityDescriptor = CreateEntityDescriptor(
+            {
+                InventoryComponent{},
+                Movement2DComponent{},
+                NameComponent{
+                    .name = "Steve",
+                },
+                Position2DComponent{
+                    .position = {},
+                    .orientation = {1.f, 0.f},
+                },
+            },
+            {
+                SelectableComponent{
+                    .box = {},
+                    .selected = false,
+                },
+                SteveAnimationComponent{
+                    .rightLegAngle = 0.f,
+                    .rightLegRising = false,
+                },
+            });
 
-            steveEntityDescriptorBuilder.AddComponent(position2D);
-            steveEntityDescriptorBuilder.AddComponent(movement2D);
-            steveEntityDescriptorBuilder.AddComponent(name);
-            steveEntityDescriptorBuilder.AddComponent(inventory);
+        m_steveInventoryDescriptors.push_back(CreateEntityDescriptor(
+            {
+                ItemComponent{},
+                NameComponent{
+                    .name = "EM Card",
+                },
+            },
+            {}));
 
-            SelectableComponent selectable;
-            selectable.selected = false;
-            selectable.box = {};
-            SteveAnimationComponent animation;
-            animation.rightLegAngle = 0.f;
-            animation.rightLegRising = false;
-
-            steveEntityDescriptorBuilder.AddRenderingComponent(selectable);
-            steveEntityDescriptorBuilder.AddRenderingComponent(animation);
-
-            m_steveEntityDescriptor = steveEntityDescriptorBuilder.CreateDescriptor();
-        }
-        {
-            EntityDescriptorBuilder steveEMCardEntityDescriptorBuilder;
-            ItemComponent item;
-            NameComponent name;
-            name.name = "EM Card";
-            steveEMCardEntityDescriptorBuilder.AddComponent(item);
-            steveEMCardEntityDescriptorBuilder.AddComponent(name);
-
-            m_steveInventoryDescriptors.push_back(steveEMCardEntityDescriptorBuilder.CreateDescriptor());
-        }
-
-        {
-            EntityDescriptorBuilder lockerEntityDescriptorBuilder;
-            Position2DComponent position2D;
-            position2D.position = {};
-            position2D.orientation = glm::vec2(1.f, 0.f);
-            InventoryComponent inventory;
-            NameComponent name;
-            name.name = "Locker";
-
-            lockerEntityDescriptorBuilder.AddComponent(position2D);
-            lockerEntityDescriptorBuilder.AddComponent(inventory);
-            lockerEntityDescriptorBuilder.AddComponent(name);
-
-            SelectableComponent selectable;
-            selectable.selected = false;
-            selectable.box = {};
-            StaticMeshComponent staticMesh;
-            staticMesh.type = StaticMeshComponent::Locker;
-
-            lockerEntityDescriptorBuilder.AddRenderingComponent(selectable);
-            lockerEntityDescriptorBuilder.AddRenderingComponent(staticMesh);
-
-            m_lockerEntityDescriptor = lockerEntityDescriptorBuilder.CreateDescriptor();
-        }
+        m_lockerEntityDescriptor = CreateEntityDescriptor(
+            {
+                InventoryComponent{},
+                NameComponent{
+                    .name = "Locker",
+                },
+                Position2DComponent{
+                    .position = {},
+                    .orientation = {1.f, 0.f},
+                },
+            },
+            {
+                SelectableComponent{
+                    .box = {},
+                    .selected = false,
+                },
+                StaticMeshComponent{
+                    .type = StaticMeshComponent::Locker,
+                },
+            });
     }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,

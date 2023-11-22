@@ -24,15 +24,18 @@ private:
 
 } // namespace
 
-unique_ptr<IEntityDescriptor> EntityDescriptorBuilder::CreateDescriptor()
+std::string ComponentDescriptorList::Result() const
 {
     ComponentSaver header;
-    ComponentSaver renderingHeader;
-    header << m_componentCount;
+    int componentCount = m_componentCount;
+    header << componentCount;
     header.separator('\n');
-    renderingHeader << m_renderingComponentCount;
-    renderingHeader.separator('\n');
-    return hatcher::make_unique<EntityDescriptor>(header.Result() + m_saver.Result(),
-                                                  renderingHeader.Result() + m_renderingSaver.Result());
+    return header.Result() + m_saver.Result();
+}
+
+unique_ptr<IEntityDescriptor> CreateEntityDescriptor(const ComponentDescriptorList& componentList,
+                                                     const ComponentDescriptorList& renderingComponentList)
+{
+    return hatcher::make_unique<EntityDescriptor>(componentList.Result(), renderingComponentList.Result());
 }
 } // namespace hatcher
