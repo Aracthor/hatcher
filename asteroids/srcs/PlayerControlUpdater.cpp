@@ -103,14 +103,8 @@ public:
                 LifespanComponent{
                     .duration = 50,
                 },
-                PositionComponent{
-                    .position = {0.f, 0.f},
-                    .angle = 0.f,
-                    .speed = {0.f, 0.f},
-                },
-                ProjectileComponent{
-                    .shooter = Entity::Invalid().ID(),
-                },
+                PositionComponent{},
+                ProjectileComponent{},
             },
             {
                 MeshComponent{

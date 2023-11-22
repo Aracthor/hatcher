@@ -26,14 +26,8 @@ public:
     {
         m_wreckageEntityDescriptor = CreateEntityDescriptor(
             {
-                LifespanComponent{
-                    .duration = 0.f,
-                },
-                PositionComponent{
-                    .position = {0.f, 0.f},
-                    .angle = 0.f,
-                    .speed = {0.f, 0.f},
-                },
+                LifespanComponent{},
+                PositionComponent{},
             },
             {
                 MeshComponent{

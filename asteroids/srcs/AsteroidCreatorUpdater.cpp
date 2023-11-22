@@ -32,11 +32,7 @@ public:
                 CollidableComponent{
                     .size = 50.f,
                 },
-                PositionComponent{
-                    .position = {0.f, 0.f},
-                    .angle = 0.f,
-                    .speed = {0.f, 0.f},
-                },
+                PositionComponent{},
             },
             // Gameplay updater shouldn't know anything about Rendering.
             // TODO break this dependency.
