@@ -7,6 +7,7 @@ namespace hatcher
 {
 class ComponentLoader;
 class ComponentSaver;
+class EntityDescriptorID;
 class EntityEgg;
 class IEntityDescriptor;
 
@@ -15,7 +16,7 @@ class IEntityManager
 public:
     virtual ~IEntityManager() = default;
 
-    virtual EntityEgg CreateNewEntity(const IEntityDescriptor* descriptor) = 0;
+    virtual EntityEgg CreateNewEntity(EntityDescriptorID id) = 0;
     virtual EntityEgg CloneEntity(Entity entity) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
 

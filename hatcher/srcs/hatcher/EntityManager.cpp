@@ -5,6 +5,7 @@
 #include "ComponentSaver.hpp"
 #include "Entity.hpp"
 #include "EntityDescriptor.hpp"
+#include "EntityDescriptorCatalog.hpp"
 #include "EntityEgg.hpp"
 #include "EntityIDRegistry.hpp"
 
@@ -24,7 +25,8 @@ void ResizeComponentManagerIfNecessary(int newSize, int& currentSize, ComponentM
     }
 }
 
-EntityManager::EntityManager()
+EntityManager::EntityManager(const EntityDescriptorCatalog* descriptorCatalog)
+    : m_descriptorCatalog(descriptorCatalog)
 {
     m_entityIDRegistry = make_unique<EntityIDRegistry>();
 
@@ -75,10 +77,11 @@ Entity EntityManager::CreateNewEntity()
     return entity;
 }
 
-EntityEgg EntityManager::CreateNewEntity(const IEntityDescriptor* descriptor)
+EntityEgg EntityManager::CreateNewEntity(EntityDescriptorID id)
 {
     const Entity newEntity = CreateNewEntity();
     const Entity::IDType temporaryID = m_entitiesToAdd.size() - 1;
+    const IEntityDescriptor* descriptor = m_descriptorCatalog->GetDescriptor(id);
     HATCHER_ASSERT(descriptor != nullptr);
     ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
     m_temporaryComponentManager->LoadEntityComponents(loader, temporaryID);

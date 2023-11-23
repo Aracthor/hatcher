@@ -10,19 +10,21 @@ namespace hatcher
 {
 class ComponentManager;
 class Entity;
+class EntityDescriptorCatalog;
+class EntityDescriptorID;
 class EntityIDRegistry;
 class IEntityDescriptor;
 
 class EntityManager final : public IEntityManager
 {
 public:
-    EntityManager();
+    EntityManager(const EntityDescriptorCatalog* descriptorCatalog);
     ~EntityManager();
 
     span<const Entity> EntitiesToDelete() const { return span<const Entity>(m_entitiesToDelete); }
     void UpdateNewAndDeletedEntities();
 
-    EntityEgg CreateNewEntity(const IEntityDescriptor* descriptor) override;
+    EntityEgg CreateNewEntity(EntityDescriptorID id) override;
     EntityEgg CloneEntity(Entity entity) override;
     void DeleteEntity(Entity entity) override;
 
@@ -38,6 +40,7 @@ public:
 private:
     Entity CreateNewEntity();
 
+    const EntityDescriptorCatalog* m_descriptorCatalog;
     unique_ptr<EntityIDRegistry> m_entityIDRegistry;
     std::vector<Entity> m_entitiesToAdd;
     std::vector<Entity> m_entitiesToDelete;

@@ -1,13 +1,11 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "AsteroidComponent.hpp"
-#include "CollidableComponent.hpp"
-#include "MeshComponent.hpp"
 #include "PositionComponent.hpp"
 
 using namespace hatcher;
@@ -24,24 +22,6 @@ class AsteroidCreatorUpdater final : public Updater
 public:
     AsteroidCreatorUpdater()
     {
-        m_asteroidDescriptor = CreateEntityDescriptor(
-            {
-                AsteroidComponent{
-                    .subdivision = 2,
-                },
-                CollidableComponent{
-                    .size = 50.f,
-                },
-                PositionComponent{},
-            },
-            // Gameplay updater shouldn't know anything about Rendering.
-            // TODO break this dependency.
-            {
-                MeshComponent{
-                    .ID = MeshComponent::Asteroid,
-                },
-            });
-
         // TODO to have our own pseudorandom number generator.
         srandom(::time(nullptr));
     }
@@ -62,7 +42,7 @@ private:
             const Box<2, float> centerBox = {{300, 200}, {500, 400}};
             for (int i = 0; i < 4; i++)
             {
-                EntityEgg newEntityEgg = entityManager->CreateNewEntity(m_asteroidDescriptor.get());
+                EntityEgg newEntityEgg = entityManager->CreateNewEntity(EntityDescriptorID::Create("Asteroid"));
                 auto& positionComponent = newEntityEgg.GetComponent<PositionComponent>();
                 do
                 {
@@ -77,8 +57,6 @@ private:
             }
         }
     }
-
-    unique_ptr<IEntityDescriptor> m_asteroidDescriptor;
 };
 
 UpdaterRegisterer<AsteroidCreatorUpdater> registerer;

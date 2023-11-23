@@ -3,7 +3,7 @@
 #include <string>
 
 #include "ComponentSaver.hpp"
-#include "unique_ptr.hpp"
+#include "EntityDescriptorID.hpp"
 
 namespace hatcher
 {
@@ -38,7 +38,10 @@ private:
     ComponentSaver m_saver;
 };
 
-unique_ptr<IEntityDescriptor> CreateEntityDescriptor(const ComponentDescriptorList& componentList,
-                                                     const ComponentDescriptorList& renderingComponentList);
+struct EntityDescriptorRegisterer
+{
+    EntityDescriptorRegisterer(EntityDescriptorID id, const ComponentDescriptorList& componentList,
+                               const ComponentDescriptorList& renderingComponentList);
+};
 
 } // namespace hatcher

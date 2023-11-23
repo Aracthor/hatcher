@@ -2,6 +2,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		AsteroidCreatorUpdater.cpp	\
 		CollidableComponent.cpp		\
 		CollisionUpdater.cpp		\
+		EntityDescriptors.cpp		\
 		LifespanComponent.cpp		\
 		LifespanUpdater.cpp		\
 		MeshComponent.cpp		\

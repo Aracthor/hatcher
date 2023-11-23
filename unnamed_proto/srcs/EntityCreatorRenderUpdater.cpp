@@ -1,16 +1,10 @@
 #include "Camera.hpp"
 #include "HexagonalGrid.hpp"
 #include "InventoryComponent.hpp"
-#include "ItemComponent.hpp"
-#include "Movement2DComponent.hpp"
-#include "NameComponent.hpp"
 #include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
-#include "StaticMeshComponent.hpp"
-#include "SteveAnimationComponent.hpp"
 
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -26,8 +20,8 @@ using namespace hatcher;
 class CreateEntityCommand final : public ICommand
 {
 public:
-    CreateEntityCommand(const IEntityDescriptor* entityDescriptor,
-                        const span<const unique_ptr<IEntityDescriptor>> inventoryDescriptors, glm::vec2 spawnPosition)
+    CreateEntityCommand(const EntityDescriptorID& entityDescriptor, span<const EntityDescriptorID> inventoryDescriptors,
+                        glm::vec2 spawnPosition)
         : m_entityDescriptor(entityDescriptor)
         , m_inventoryDescriptors(inventoryDescriptors)
         , m_spawnPosition(spawnPosition)
@@ -41,9 +35,9 @@ public:
         entityEgg.GetComponent<Position2DComponent>()->position = m_spawnPosition;
 
         std::vector<Entity::IDType> inventoryStorage;
-        for (const unique_ptr<IEntityDescriptor>& itemDescriptor : m_inventoryDescriptors)
+        for (const EntityDescriptorID& itemDescriptor : m_inventoryDescriptors)
         {
-            EntityEgg newItem = entityManager->CreateNewEntity(itemDescriptor.get());
+            EntityEgg newItem = entityManager->CreateNewEntity(itemDescriptor);
             inventoryStorage.push_back(newItem.NewEntityID().ID());
         }
         if (!inventoryStorage.empty())
@@ -54,8 +48,8 @@ public:
     }
 
 private:
-    const IEntityDescriptor* m_entityDescriptor;
-    const span<const unique_ptr<IEntityDescriptor>> m_inventoryDescriptors;
+    const EntityDescriptorID m_entityDescriptor;
+    const span<const EntityDescriptorID> m_inventoryDescriptors;
     const glm::vec2 m_spawnPosition;
 };
 
@@ -63,59 +57,10 @@ class EntityCreatorRenderUpdater final : public RenderUpdater
 {
 public:
     EntityCreatorRenderUpdater(const IRendering* rendering)
+        : m_steveEntityDescriptor(EntityDescriptorID::Create("Steve"))
+        , m_lockerEntityDescriptor(EntityDescriptorID::Create("Locker"))
     {
-        m_steveEntityDescriptor = CreateEntityDescriptor(
-            {
-                InventoryComponent{},
-                Movement2DComponent{},
-                NameComponent{
-                    .name = "Steve",
-                },
-                Position2DComponent{
-                    .position = {},
-                    .orientation = {1.f, 0.f},
-                },
-            },
-            {
-                SelectableComponent{
-                    .box = {},
-                    .selected = false,
-                },
-                SteveAnimationComponent{
-                    .rightLegAngle = 0.f,
-                    .rightLegRising = false,
-                },
-            });
-
-        m_steveInventoryDescriptors.push_back(CreateEntityDescriptor(
-            {
-                ItemComponent{},
-                NameComponent{
-                    .name = "EM Card",
-                },
-            },
-            {}));
-
-        m_lockerEntityDescriptor = CreateEntityDescriptor(
-            {
-                InventoryComponent{},
-                NameComponent{
-                    .name = "Locker",
-                },
-                Position2DComponent{
-                    .position = {},
-                    .orientation = {1.f, 0.f},
-                },
-            },
-            {
-                SelectableComponent{
-                    .box = {},
-                    .selected = false,
-                },
-                StaticMeshComponent{
-                    .type = StaticMeshComponent::Locker,
-                },
-            });
+        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("EMCard"));
     }
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
@@ -138,21 +83,21 @@ public:
                 return;
 
             const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
-            const IEntityDescriptor* entityDescriptor = nullptr;
-            span<const unique_ptr<IEntityDescriptor>> inventoryDescriptors = {};
+            EntityDescriptorID* entityDescriptor = nullptr;
+            span<const EntityDescriptorID> inventoryDescriptors = {};
             if (event.button.button == SDL_BUTTON_RIGHT)
             {
-                entityDescriptor = m_steveEntityDescriptor.get();
+                entityDescriptor = &m_steveEntityDescriptor;
                 inventoryDescriptors = {m_steveInventoryDescriptors};
             }
             else if (event.button.button == SDL_BUTTON_MIDDLE)
             {
-                entityDescriptor = m_lockerEntityDescriptor.get();
+                entityDescriptor = &m_lockerEntityDescriptor;
             }
 
             if (entityDescriptor)
                 commandManager->AddCommand(
-                    new CreateEntityCommand(entityDescriptor, inventoryDescriptors, entitySpawnPosition));
+                    new CreateEntityCommand(*entityDescriptor, inventoryDescriptors, entitySpawnPosition));
         }
     }
 
@@ -165,9 +110,9 @@ public:
     }
 
 private:
-    unique_ptr<IEntityDescriptor> m_steveEntityDescriptor;
-    unique_ptr<IEntityDescriptor> m_lockerEntityDescriptor;
-    std::vector<unique_ptr<IEntityDescriptor>> m_steveInventoryDescriptors;
+    EntityDescriptorID m_steveEntityDescriptor;
+    EntityDescriptorID m_lockerEntityDescriptor;
+    std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
 };
 
 RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;

@@ -4,6 +4,7 @@
 
 #include "CommandManager.hpp"
 #include "ComponentRegisterer.hpp"
+#include "EntityDescriptorCatalog.hpp"
 #include "EntityManager.hpp"
 #include "Updater.hpp"
 #include "assert.hpp"
@@ -42,6 +43,12 @@ TComponentCreators& WorldComponentTypeCreators()
     return creators;
 }
 
+EntityDescriptorCatalog* GetEntityDescriptorCatalog()
+{
+    static EntityDescriptorCatalog catalog;
+    return &catalog;
+}
+
 } // namespace
 
 void RegisterUpdater(const IUpdaterCreator* creator)
@@ -64,9 +71,14 @@ void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, ECo
     WorldComponentTypeCreators()[type].push_back(creator);
 }
 
+void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor)
+{
+    GetEntityDescriptorCatalog()->AddEntityDescriptor(id, descriptor);
+}
+
 World::World()
 {
-    m_entityManager = make_unique<EntityManager>();
+    m_entityManager = make_unique<EntityManager>(GetEntityDescriptorCatalog());
     for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());

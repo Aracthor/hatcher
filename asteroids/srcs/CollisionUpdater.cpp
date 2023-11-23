@@ -1,5 +1,5 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
@@ -7,7 +7,6 @@
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
 #include "LifespanComponent.hpp"
-#include "MeshComponent.hpp"
 #include "PositionComponent.hpp"
 
 using namespace hatcher;
@@ -21,22 +20,6 @@ float lerp(float a, float b, float t)
 
 class CollisionUpdater final : public Updater
 {
-public:
-    CollisionUpdater()
-    {
-        m_wreckageEntityDescriptor = CreateEntityDescriptor(
-            {
-                LifespanComponent{},
-                PositionComponent{},
-            },
-            {
-                MeshComponent{
-                    .ID = MeshComponent::Wreckage,
-                },
-            });
-    }
-
-private:
     glm::vec2 RandomSpeed(float speedMin, float speedMax)
     {
         const float directionAngle = glm::radians(float(rand() % 360));
@@ -63,7 +46,7 @@ private:
 
         for (int i = 0; i < 5; i++)
         {
-            EntityEgg wreckage = entityManager->CreateNewEntity(m_wreckageEntityDescriptor.get());
+            EntityEgg wreckage = entityManager->CreateNewEntity(EntityDescriptorID::Create("Wreckage"));
             wreckage.GetComponent<PositionComponent>()->position = position;
             wreckage.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
             wreckage.GetComponent<PositionComponent>()->speed = RandomSpeed(0.5f, 1.f);
@@ -113,8 +96,6 @@ private:
             }
         }
     }
-
-    unique_ptr<IEntityDescriptor> m_wreckageEntityDescriptor;
 };
 
 UpdaterRegisterer<CollisionUpdater> registerer;

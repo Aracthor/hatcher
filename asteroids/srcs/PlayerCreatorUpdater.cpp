@@ -1,14 +1,10 @@
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "CollidableComponent.hpp"
-#include "MeshComponent.hpp"
 #include "PlayerComponent.hpp"
-#include "PositionComponent.hpp"
-#include "ShooterComponent.hpp"
 
 using namespace hatcher;
 
@@ -17,34 +13,6 @@ namespace
 
 class PlayerCreatorUpdater final : public Updater
 {
-public:
-    PlayerCreatorUpdater()
-    {
-        m_playerEntityDescriptor = CreateEntityDescriptor(
-            {
-                CollidableComponent{
-                    .size = 24.f,
-                },
-                PlayerComponent{
-                    .turningLeft = false,
-                    .turningRight = false,
-                    .accelerating = false,
-                },
-                PositionComponent{
-                    .position = {400.f, 300.f},
-                    .angle = M_PI / 2.f,
-                    .speed = {0.f, 0.f},
-                },
-                ShooterComponent{},
-            },
-            {
-                MeshComponent{
-                    .ID = MeshComponent::Player,
-                },
-            });
-    }
-
-private:
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         bool hasPlayer = false;
@@ -64,12 +32,11 @@ private:
             else
             {
                 m_cyclesToWait = 50;
-                entityManager->CreateNewEntity(m_playerEntityDescriptor.get());
+                entityManager->CreateNewEntity(EntityDescriptorID::Create("Player"));
             }
         }
     }
 
-    unique_ptr<IEntityDescriptor> m_playerEntityDescriptor;
     int m_cyclesToWait = 0;
 };
 

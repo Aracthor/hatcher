@@ -114,6 +114,7 @@ SRCS_FILES=	CommandManager.cpp			\
 		ComponentManager.cpp			\
 		ComponentSaver.cpp			\
 		EntityDescriptor.cpp			\
+		EntityDescriptorCatalog.cpp		\
 		EntityManager.cpp			\
 		EntityIDRegistry.cpp	    		\
 		FileSystem.cpp 				\

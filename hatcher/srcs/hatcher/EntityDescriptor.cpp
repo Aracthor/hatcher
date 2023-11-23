@@ -33,9 +33,13 @@ std::string ComponentDescriptorList::Result() const
     return header.Result() + m_saver.Result();
 }
 
-unique_ptr<IEntityDescriptor> CreateEntityDescriptor(const ComponentDescriptorList& componentList,
-                                                     const ComponentDescriptorList& renderingComponentList)
+void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor);
+
+EntityDescriptorRegisterer::EntityDescriptorRegisterer(EntityDescriptorID id,
+                                                       const ComponentDescriptorList& componentList,
+                                                       const ComponentDescriptorList& renderingComponentList)
 {
-    return hatcher::make_unique<EntityDescriptor>(componentList.Result(), renderingComponentList.Result());
+    RegisterEntityDescriptor(id, new EntityDescriptor(componentList.Result(), renderingComponentList.Result()));
 }
+
 } // namespace hatcher

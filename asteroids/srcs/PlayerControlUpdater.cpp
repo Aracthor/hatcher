@@ -1,6 +1,6 @@
 #include "hatcher/CommandManager.hpp"
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/EntityDescriptor.hpp"
+#include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -8,8 +8,6 @@
 #include "hatcher/assert.hpp"
 
 #include "CollidableComponent.hpp"
-#include "LifespanComponent.hpp"
-#include "MeshComponent.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
@@ -48,11 +46,6 @@ private:
 class PlayerShootCommand final : public ICommand
 {
 public:
-    PlayerShootCommand(const IEntityDescriptor* shootDescriptor)
-        : m_shootDescriptor(shootDescriptor)
-    {
-    }
-
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
@@ -75,7 +68,7 @@ public:
                     const glm::vec2 start =
                         positionComponent->position + direction * (collidableComponents[i]->size + 3);
                     const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
-                    EntityEgg newProjectile = entityManager->CreateNewEntity(m_shootDescriptor);
+                    EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
                     newProjectile.GetComponent<ProjectileComponent>()->shooter = i;
                     auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
                     projectilePositionComponent->position = start;
@@ -85,33 +78,12 @@ public:
             }
         }
     }
-
-private:
-    const IEntityDescriptor* m_shootDescriptor;
 };
 
 class PlayerControlUpdater final : public RenderUpdater
 {
 public:
-    PlayerControlUpdater(const IRendering* rendering)
-    {
-        m_shootDescriptor = CreateEntityDescriptor(
-            {
-                CollidableComponent{
-                    .size = 2.f,
-                },
-                LifespanComponent{
-                    .duration = 50,
-                },
-                PositionComponent{},
-                ProjectileComponent{},
-            },
-            {
-                MeshComponent{
-                    .ID = MeshComponent::Shoot,
-                },
-            });
-    }
+    PlayerControlUpdater(const IRendering* rendering) {}
 
     void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                 IFrameRenderer& frameRenderer) override
@@ -140,7 +112,7 @@ public:
         }
         if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
         {
-            commandManager->AddCommand(new PlayerShootCommand(m_shootDescriptor.get()));
+            commandManager->AddCommand(new PlayerShootCommand());
         }
     }
 
@@ -152,8 +124,6 @@ public:
         };
         return span<const SDL_EventType>(events, std::size(events));
     }
-
-    unique_ptr<IEntityDescriptor> m_shootDescriptor;
 };
 
 RenderUpdaterRegisterer<PlayerControlUpdater> registerer;
