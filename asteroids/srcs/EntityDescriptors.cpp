@@ -73,15 +73,27 @@ EntityDescriptorRegisterer Shoot{
     },
 };
 
-EntityDescriptorRegisterer Wreckage{
-    EntityDescriptorID::Create("Wreckage"),
+EntityDescriptorRegisterer WreckageAsteroid{
+    EntityDescriptorID::Create("WreckageAsteroid"),
     {
         LifespanComponent{},
         PositionComponent{},
     },
     {
         MeshComponent{
-            .ID = MeshComponent::Wreckage,
+            .ID = MeshComponent::WreckageAsteroid,
+        },
+    },
+};
+EntityDescriptorRegisterer WreckageShip{
+    EntityDescriptorID::Create("WreckageShip"),
+    {
+        LifespanComponent{},
+        PositionComponent{},
+    },
+    {
+        MeshComponent{
+            .ID = MeshComponent::WreckageShip,
         },
     },
 };

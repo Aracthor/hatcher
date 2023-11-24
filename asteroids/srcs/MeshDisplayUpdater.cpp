@@ -90,7 +90,7 @@ public:
             m_meshes[MeshComponent::Shoot]->SetIndices(indices, std::size(indices));
         }
         {
-            m_meshes[MeshComponent::Wreckage] = make_unique<Mesh>(m_material.get(), Primitive::LineStrip);
+            m_meshes[MeshComponent::WreckageAsteroid] = make_unique<Mesh>(m_material.get(), Primitive::LineStrip);
 
             float positions[] = {
                 0.f,  2.f,
@@ -103,8 +103,15 @@ public:
             };
             ushort indices[] = {0, 1, 2, 3, 0};
 
-            m_meshes[MeshComponent::Wreckage]->Set2DPositions(positions, std::size(positions));
-            m_meshes[MeshComponent::Wreckage]->SetIndices(indices, std::size(indices));
+            m_meshes[MeshComponent::WreckageAsteroid]->Set2DPositions(positions, std::size(positions));
+            m_meshes[MeshComponent::WreckageAsteroid]->SetIndices(indices, std::size(indices));
+        }
+        {
+            m_meshes[MeshComponent::WreckageShip] = make_unique<Mesh>(m_material.get(), Primitive::Lines);
+
+            float positions[] = {-24.f, 0.f, 24.f, 0.f};
+
+            m_meshes[MeshComponent::WreckageShip]->Set2DPositions(positions, std::size(positions));
         }
         {
             m_playerAcceleratingMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);

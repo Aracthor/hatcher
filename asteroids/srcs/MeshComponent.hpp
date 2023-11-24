@@ -12,7 +12,8 @@ struct MeshComponent
         Asteroid,
         Player,
         Shoot,
-        Wreckage,
+        WreckageAsteroid,
+        WreckageShip,
         COUNT,
     };
     unsigned int ID;
