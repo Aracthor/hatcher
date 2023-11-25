@@ -13,7 +13,7 @@ class ProjecitleUpdater final : public Updater
 {
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override {}
 
-    void OnDeletedEntity(Entity entity, ComponentManager* componentManager) override
+    void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto projectileComponents = componentManager->WriteComponents<ProjectileComponent>();
         auto shooterComponents = componentManager->WriteComponents<ShooterComponent>();

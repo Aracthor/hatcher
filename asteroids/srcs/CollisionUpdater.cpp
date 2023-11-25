@@ -6,8 +6,6 @@
 
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
-#include "LifespanComponent.hpp"
-#include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 
 using namespace hatcher;
@@ -28,8 +26,7 @@ class CollisionUpdater final : public Updater
         return glm::vec2(glm::cos(directionAngle), glm::sin(directionAngle)) * speed;
     }
 
-    void SubdivideAsteroid(IEntityManager* entityManager, Entity entity, glm::vec2 position, float size,
-                           int subdivision)
+    void SubdivideAsteroid(IEntityManager* entityManager, Entity entity, int subdivision)
     {
         if (subdivision > 0)
         {
@@ -44,34 +41,11 @@ class CollisionUpdater final : public Updater
             subdivisionB.GetComponent<PositionComponent>()->speed += RandomSpeed(1.f, 2.f);
             subdivisionB.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
         }
-
-        for (int i = 0; i < 5; i++)
-        {
-            EntityEgg wreckage = entityManager->CreateNewEntity(EntityDescriptorID::Create("WreckageAsteroid"));
-            wreckage.GetComponent<PositionComponent>()->position = position;
-            wreckage.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
-            wreckage.GetComponent<PositionComponent>()->speed = RandomSpeed(0.5f, 1.f);
-            wreckage.GetComponent<LifespanComponent>()->duration = rand() % (int)size * 3;
-        }
-    }
-
-    void WreckShip(IEntityManager* entityManager, glm::vec2 position, float size)
-    {
-
-        for (int i = 0; i < 4; i++)
-        {
-            EntityEgg wreckage = entityManager->CreateNewEntity(EntityDescriptorID::Create("WreckageShip"));
-            wreckage.GetComponent<PositionComponent>()->position = position;
-            wreckage.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
-            wreckage.GetComponent<PositionComponent>()->speed = RandomSpeed(0.5f, 1.f);
-            wreckage.GetComponent<LifespanComponent>()->duration = rand() % (int)size * 3;
-        }
     }
 
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
         auto positionComponents = componentManager->ReadComponents<PositionComponent>();
         auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
         // O(n^2) algorithm complexity. But for this project-exemple, it is enough.
@@ -97,16 +71,10 @@ class CollisionUpdater final : public Updater
                             {
                                 collided = true;
                                 if (asteroidComponents[i])
-                                    SubdivideAsteroid(entityManager, Entity(i), positionComponentA->position,
-                                                      collidableComponentA->size, asteroidComponents[i]->subdivision);
-                                if (playerComponents[i])
-                                    WreckShip(entityManager, positionComponentA->position, collidableComponentA->size);
+                                    SubdivideAsteroid(entityManager, Entity(i), asteroidComponents[i]->subdivision);
 
                                 if (asteroidComponents[j])
-                                    SubdivideAsteroid(entityManager, Entity(j), positionComponentB->position,
-                                                      collidableComponentB->size, asteroidComponents[j]->subdivision);
-                                if (playerComponents[j])
-                                    WreckShip(entityManager, positionComponentB->position, collidableComponentB->size);
+                                    SubdivideAsteroid(entityManager, Entity(j), asteroidComponents[j]->subdivision);
 
                                 entityManager->DeleteEntity(Entity(i));
                                 entityManager->DeleteEntity(Entity(j));

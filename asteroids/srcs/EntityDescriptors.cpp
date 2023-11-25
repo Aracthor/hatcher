@@ -8,6 +8,7 @@
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
 #include "ShooterComponent.hpp"
+#include "WreckageGeneratorComponent.hpp"
 
 using namespace hatcher;
 
@@ -21,6 +22,10 @@ EntityDescriptorRegisterer Asteroid{
             .size = 50.f,
         },
         PositionComponent{},
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
+            .count = 5,
+        },
     },
     {
         MeshComponent{
@@ -46,6 +51,10 @@ EntityDescriptorRegisterer Player{
             .speed = {0.f, 0.f},
         },
         ShooterComponent{},
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageShip"),
+            .count = 4,
+        },
     },
     {
         MeshComponent{

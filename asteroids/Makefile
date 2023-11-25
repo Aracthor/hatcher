@@ -19,6 +19,8 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		SaveLoaderRenderUpdater.cpp	\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
+		WreckageGeneratorComponent.cpp	\
+		WreckageUpdater.cpp		\
 		main.cpp
 
 NATIVE_NAME=	asteroids
