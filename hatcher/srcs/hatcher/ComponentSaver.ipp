@@ -7,9 +7,7 @@ void ComponentSaver::SaveComponent(Component& component)
 {
     uint key = ComponentKey<Component>();
     *this << key;
-    separator('\n');
     *this << component;
-    separator('\n');
 }
 
 template <typename T>

@@ -61,16 +61,13 @@ void ComponentManager::Save(ComponentSaver& saver)
             componentCount += componentList.second->HasComponent(entityID);
         }
         saver << componentCount;
-        saver.separator('\n');
         for (auto& componentList : m_componentLists)
         {
             if (componentList.second->HasComponent(entityID))
             {
                 uint componentID = componentList.first;
                 saver << componentID;
-                saver.separator('\n');
                 componentList.second->SaveLoad(entityID, saver);
-                saver.separator('\n');
             }
         }
     }
@@ -94,16 +91,13 @@ void ComponentManager::LoadEntityComponents(ComponentLoader& loader, int entityI
 {
     int componentCount;
     loader << componentCount;
-    loader.separator('\n');
     for (int i = 0; i < componentCount; i++)
     {
         uint componentID;
         loader << componentID;
-        loader.separator('\n');
         HATCHER_ASSERT(m_componentLists.find(componentID) != m_componentLists.end());
         m_componentLists[componentID]->CreateComponent(entityID);
         m_componentLists[componentID]->SaveLoad(entityID, loader);
-        loader.separator('\n');
     }
 }
 

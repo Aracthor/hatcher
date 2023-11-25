@@ -11,7 +11,6 @@ namespace hatcher
 class ComponentSaver final : public ISaveLoader
 {
 public:
-    void separator(char value) override;
     void operator<<(bool& value) override;
     void operator<<(char& value) override;
     void operator<<(ubyte& value) override;

@@ -29,7 +29,6 @@ std::vector<ubyte> ComponentDescriptorList::Result() const
     ComponentSaver header;
     int componentCount = m_componentCount;
     header << componentCount;
-    header.separator('\n');
     std::vector<ubyte> result = header.Result();
     result.insert(result.end(), m_saver.Result().begin(), m_saver.Result().end());
     return result;

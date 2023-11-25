@@ -197,9 +197,6 @@ int testCombined()
     abstractSaver << inputVec;
     abstractSaver << inputCount1;
     abstractSaver << inputCount2;
-    abstractSaver.separator('\n');
-    abstractSaver.separator('\n');
-    abstractSaver.separator('\n');
     abstractSaver << inputBool;
     abstractSaver << inputBox;
     abstractSaver << inputString;
@@ -216,9 +213,6 @@ int testCombined()
     abstractLoader << outputVec;
     abstractLoader << outputCount1;
     abstractLoader << outputCount2;
-    abstractLoader.separator('\n');
-    abstractLoader.separator('\n');
-    abstractLoader.separator('\n');
     abstractLoader << outputBool;
     abstractLoader << outputBox;
     abstractLoader << outputString;

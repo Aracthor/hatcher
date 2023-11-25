@@ -115,7 +115,6 @@ void EntityManager::DeleteEntity(Entity entity)
 void EntityManager::Save(ComponentSaver& saver)
 {
     saver << m_maxEntityCount;
-    saver.separator('\n');
     m_componentManager->Save(saver);
     m_renderingComponentManager->Save(saver);
 }
@@ -123,7 +122,6 @@ void EntityManager::Save(ComponentSaver& saver)
 void EntityManager::Load(ComponentLoader& loader)
 {
     loader << m_maxEntityCount;
-    loader.separator('\n');
     m_entityIDRegistry->ResetEntityCount(m_maxEntityCount);
     m_componentManager->ClearEntities();
     m_componentManager->AddEntities(m_maxEntityCount);

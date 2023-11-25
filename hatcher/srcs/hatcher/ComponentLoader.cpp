@@ -19,15 +19,9 @@ ComponentLoader::ComponentLoader(const std::vector<ubyte>& data)
 {
 }
 
-void ComponentLoader::separator(char c)
-{
-    m_currentIndex++;
-}
-
 void ComponentLoader::operator<<(bool& value)
 {
     value = ReadSimpleData<bool>(m_data, m_currentIndex);
-    separator(' ');
 }
 
 void ComponentLoader::operator<<(char& value)
@@ -38,25 +32,21 @@ void ComponentLoader::operator<<(char& value)
 void ComponentLoader::operator<<(ubyte& value)
 {
     value = ReadSimpleData<ubyte>(m_data, m_currentIndex);
-    separator(' ');
 }
 
 void ComponentLoader::operator<<(int& value)
 {
     value = ReadSimpleData<int>(m_data, m_currentIndex);
-    separator(' ');
 }
 
 void ComponentLoader::operator<<(uint& value)
 {
     value = ReadSimpleData<uint>(m_data, m_currentIndex);
-    separator(' ');
 }
 
 void ComponentLoader::operator<<(float& value)
 {
     value = ReadSimpleData<float>(m_data, m_currentIndex);
-    separator(' ');
 }
 
 } // namespace hatcher

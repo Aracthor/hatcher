@@ -12,7 +12,6 @@ class ComponentLoader final : public ISaveLoader
 public:
     ComponentLoader(const std::vector<ubyte>& data);
 
-    void separator(char c) override;
     void operator<<(bool& value) override;
     void operator<<(char& value) override;
     void operator<<(ubyte& value) override;
