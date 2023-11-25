@@ -8,6 +8,12 @@ namespace hatcher
 class EntityDescriptorID
 {
 public:
+    EntityDescriptorID()
+        : m_id(0)
+        , m_name("##INVALID")
+    {
+    }
+
     template <int N>
     static constexpr EntityDescriptorID Create(const char (&name)[N])
     {

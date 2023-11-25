@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EntityDescriptorID.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/basic_types.hpp"
@@ -22,6 +23,7 @@ public:
     virtual void operator<<(uint& value) = 0;
     virtual void operator<<(float& value) = 0;
 
+    inline void operator<<(EntityDescriptorID& id);
     inline void operator<<(std::string& string);
 
     template <typename T>
@@ -40,6 +42,8 @@ public:
     void operator<<(Box<L, T>& box);
 
 private:
+    inline void SaveLoadData(void* value, int size);
+
     virtual bool IsSaving() const = 0; // To use as less as possible...
 };
 

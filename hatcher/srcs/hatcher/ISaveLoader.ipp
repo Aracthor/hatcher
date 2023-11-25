@@ -1,6 +1,11 @@
 namespace hatcher
 {
 
+void ISaveLoader::operator<<(EntityDescriptorID& id)
+{
+    SaveLoadData(&id, sizeof(id));
+}
+
 void ISaveLoader::operator<<(std::string& string)
 {
     int size = string.size();
@@ -81,6 +86,16 @@ void ISaveLoader::operator<<(Box<L, T>& box)
 {
     *this << box.Min();
     *this << box.Max();
+}
+
+void ISaveLoader::SaveLoadData(void* data, int size)
+{
+    ubyte* bytes = reinterpret_cast<ubyte*>(data);
+    while (size-- > 0)
+    {
+        *this << *bytes;
+        bytes++;
+    }
 }
 
 } // namespace hatcher
