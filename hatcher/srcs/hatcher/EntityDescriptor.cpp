@@ -8,29 +8,31 @@ namespace
 class EntityDescriptor final : public IEntityDescriptor
 {
 public:
-    EntityDescriptor(const std::string& componentData, const std::string& renderingComponentData)
+    EntityDescriptor(const std::vector<ubyte>& componentData, const std::vector<ubyte>& renderingComponentData)
         : m_componentData(componentData)
         , m_renderingComponentData(renderingComponentData)
     {
     }
 
-    const std::string& GetComponentData() const override { return m_componentData; }
-    const std::string& GetRenderingComponentData() const override { return m_renderingComponentData; }
+    const std::vector<ubyte>& GetComponentData() const override { return m_componentData; }
+    const std::vector<ubyte>& GetRenderingComponentData() const override { return m_renderingComponentData; }
 
 private:
-    const std::string m_componentData;
-    const std::string m_renderingComponentData;
+    const std::vector<ubyte> m_componentData;
+    const std::vector<ubyte> m_renderingComponentData;
 };
 
 } // namespace
 
-std::string ComponentDescriptorList::Result() const
+std::vector<ubyte> ComponentDescriptorList::Result() const
 {
     ComponentSaver header;
     int componentCount = m_componentCount;
     header << componentCount;
     header.separator('\n');
-    return header.Result() + m_saver.Result();
+    std::vector<ubyte> result = header.Result();
+    result.insert(result.end(), m_saver.Result().begin(), m_saver.Result().end());
+    return result;
 }
 
 void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor);

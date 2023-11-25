@@ -11,4 +11,13 @@ void ComponentSaver::SaveComponent(Component& component)
     *this << component;
     separator('\n');
 }
+
+template <typename T>
+void ComponentSaver::AddSimpleData(T value)
+{
+    const std::size_t size = m_data.size();
+    m_data.resize(size + sizeof(T));
+    reinterpret_cast<T&>(m_data.data()[size]) = value;
+}
+
 } // namespace hatcher

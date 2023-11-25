@@ -1,54 +1,61 @@
 #include "ComponentLoader.hpp"
 
-#include <iomanip>
-#include <limits>
-
 namespace hatcher
 {
 
-ComponentLoader::ComponentLoader(const std::string& data)
-    : m_stream(data)
+namespace
 {
-    m_stream >> std::setprecision(std::numeric_limits<float>::digits);
+template <typename T>
+inline T ReadSimpleData(const std::vector<ubyte>& stream, int& index)
+{
+    const T result = *reinterpret_cast<const T*>(&stream.data()[index]);
+    index += sizeof(T);
+    return result;
+}
+} // namespace
+
+ComponentLoader::ComponentLoader(const std::vector<ubyte>& data)
+    : m_data(data)
+{
 }
 
 void ComponentLoader::separator(char c)
 {
-    m_stream.ignore();
+    m_currentIndex++;
 }
 
 void ComponentLoader::operator<<(bool& value)
 {
-    m_stream >> value;
+    value = ReadSimpleData<bool>(m_data, m_currentIndex);
     separator(' ');
 }
 
 void ComponentLoader::operator<<(char& value)
 {
-    value = m_stream.get();
+    value = ReadSimpleData<char>(m_data, m_currentIndex);
 }
 
 void ComponentLoader::operator<<(ubyte& value)
 {
-    m_stream >> value;
+    value = ReadSimpleData<ubyte>(m_data, m_currentIndex);
     separator(' ');
 }
 
 void ComponentLoader::operator<<(int& value)
 {
-    m_stream >> value;
+    value = ReadSimpleData<int>(m_data, m_currentIndex);
     separator(' ');
 }
 
 void ComponentLoader::operator<<(uint& value)
 {
-    m_stream >> value;
+    value = ReadSimpleData<uint>(m_data, m_currentIndex);
     separator(' ');
 }
 
 void ComponentLoader::operator<<(float& value)
 {
-    m_stream >> value;
+    value = ReadSimpleData<float>(m_data, m_currentIndex);
     separator(' ');
 }
 

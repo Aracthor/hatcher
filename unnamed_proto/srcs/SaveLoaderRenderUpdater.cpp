@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 #include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentSaver.hpp"
@@ -17,7 +16,7 @@ namespace
 class SaveCommand final : public ICommand
 {
 public:
-    SaveCommand(std::string& save)
+    SaveCommand(std::vector<ubyte>& save)
         : m_save(save)
     {
     }
@@ -32,13 +31,13 @@ public:
     }
 
 private:
-    std::string& m_save;
+    std::vector<ubyte>& m_save;
 };
 
 class LoadCommand final : public ICommand
 {
 public:
-    LoadCommand(std::string& save)
+    LoadCommand(std::vector<ubyte>& save)
         : m_save(save)
     {
     }
@@ -59,7 +58,7 @@ public:
     }
 
 private:
-    std::string& m_save;
+    std::vector<ubyte>& m_save;
 };
 
 // TODO make this updater part of core hatcher instead of specific to each application ?
@@ -96,7 +95,7 @@ public:
     }
 
 private:
-    std::string m_save;
+    std::vector<ubyte> m_save;
 };
 
 RenderUpdaterRegisterer<SaveLoaderRenderUpdater> registerer;

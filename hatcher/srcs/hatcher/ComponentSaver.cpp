@@ -6,54 +6,49 @@
 namespace hatcher
 {
 
-ComponentSaver::ComponentSaver()
-{
-    m_stream << std::setprecision(std::numeric_limits<float>::digits);
-}
-
 void ComponentSaver::separator(char c)
 {
-    m_stream << c;
+    AddSimpleData<>(c);
 }
 
 void ComponentSaver::operator<<(bool& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
     separator(' ');
 }
 
 void ComponentSaver::operator<<(char& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
 }
 
 void ComponentSaver::operator<<(ubyte& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
     separator(' ');
 }
 
 void ComponentSaver::operator<<(int& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
     separator(' ');
 }
 
 void ComponentSaver::operator<<(uint& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
     separator(' ');
 }
 
 void ComponentSaver::operator<<(float& value)
 {
-    m_stream << value;
+    AddSimpleData<>(value);
     separator(' ');
 }
 
-std::string ComponentSaver::Result() const
+const std::vector<ubyte>& ComponentSaver::Result() const
 {
-    return m_stream.str();
+    return m_data;
 }
 
 } // namespace hatcher

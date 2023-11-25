@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
+#include <vector>
 
 #include "ComponentSaver.hpp"
 #include "EntityDescriptorID.hpp"
@@ -13,8 +13,8 @@ class IEntityDescriptor
 public:
     virtual ~IEntityDescriptor() = default;
 
-    virtual const std::string& GetComponentData() const = 0;
-    virtual const std::string& GetRenderingComponentData() const = 0;
+    virtual const std::vector<ubyte>& GetComponentData() const = 0;
+    virtual const std::vector<ubyte>& GetRenderingComponentData() const = 0;
 };
 
 class ComponentDescriptorList
@@ -31,7 +31,7 @@ public:
         m_saver.SaveComponent(copy);
     }
 
-    std::string Result() const;
+    std::vector<ubyte> Result() const;
 
 private:
     int m_componentCount = 0;

@@ -1,7 +1,6 @@
 #pragma once
 
-#include <sstream>
-#include <string>
+#include <vector>
 
 #include "ISaveLoader.hpp"
 
@@ -11,7 +10,7 @@ namespace hatcher
 class ComponentLoader final : public ISaveLoader
 {
 public:
-    ComponentLoader(const std::string& data);
+    ComponentLoader(const std::vector<ubyte>& data);
 
     void separator(char c) override;
     void operator<<(bool& value) override;
@@ -24,7 +23,8 @@ public:
 private:
     bool IsSaving() const override { return false; }
 
-    std::istringstream m_stream;
+    const std::vector<ubyte> m_data;
+    int m_currentIndex = 0;
 };
 
 } // namespace hatcher

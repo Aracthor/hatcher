@@ -1,8 +1,9 @@
 #pragma once
 
-#include <sstream>
-
 #include "ISaveLoader.hpp"
+#include "basic_types.hpp"
+
+#include <vector>
 
 namespace hatcher
 {
@@ -10,8 +11,6 @@ namespace hatcher
 class ComponentSaver final : public ISaveLoader
 {
 public:
-    ComponentSaver();
-
     void separator(char value) override;
     void operator<<(bool& value) override;
     void operator<<(char& value) override;
@@ -20,7 +19,7 @@ public:
     void operator<<(uint& value) override;
     void operator<<(float& value) override;
 
-    std::string Result() const;
+    const std::vector<ubyte>& Result() const;
 
     template <class Component>
     void SaveComponent(Component& component);
@@ -28,7 +27,10 @@ public:
 private:
     bool IsSaving() const override { return true; }
 
-    std::ostringstream m_stream;
+    template <typename T>
+    inline void AddSimpleData(T value);
+
+    std::vector<ubyte> m_data;
 };
 
 } // namespace hatcher
