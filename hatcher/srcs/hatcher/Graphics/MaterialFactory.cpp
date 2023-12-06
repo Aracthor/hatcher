@@ -36,7 +36,7 @@ const Texture* MaterialFactory::TextureFromFile(const std::string& fileName)
     if (m_textureLibrary.find(fileName) == m_textureLibrary.end())
     {
         const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
-        m_textureLibrary[fileName] = make_unique<Texture>(pathToFile.c_str());
+        m_textureLibrary[fileName] = {Texture::CreateFromFile(pathToFile.c_str())};
     }
     HATCHER_ASSERT(m_textureLibrary.find(fileName) != m_textureLibrary.end());
     return m_textureLibrary[fileName].get();

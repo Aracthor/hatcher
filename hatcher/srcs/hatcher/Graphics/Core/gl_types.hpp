@@ -4,3 +4,4 @@
 using GLint = int;
 using GLuint = unsigned int;
 using GLenum = unsigned int;
+using GLubyte = unsigned char;

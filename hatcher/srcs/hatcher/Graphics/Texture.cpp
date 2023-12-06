@@ -8,8 +8,26 @@
 
 namespace hatcher
 {
+Texture::Texture(int width, int height, const GLubyte* bytes)
+{
+    const GLenum format = GL_RGBA;
 
-Texture::Texture(const char* fileName)
+    GL_CHECK(glGenTextures(1, &m_textureID));
+    Bind();
+    GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes));
+
+    // Set the filtering mode.
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    Unbind();
+}
+
+Texture::~Texture()
+{
+    GL_CHECK(glDeleteTextures(1, &m_textureID));
+}
+
+Texture* Texture::CreateFromFile(const char* fileName)
 {
     SDL_Surface* surface = SDL_LoadBMP(fileName);
     if (surface == nullptr)
@@ -32,23 +50,11 @@ Texture::Texture(const char* fileName)
     const GLubyte* bytes = static_cast<const GLubyte*>(convertedSurface->pixels);
     const int width = convertedSurface->w;
     const int height = convertedSurface->h;
-    const GLenum format = GL_RGBA;
 
-    GL_CHECK(glGenTextures(1, &m_textureID));
-    Bind();
-    GL_CHECK(glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, bytes));
-
-    // Set the filtering mode.
-    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-    GL_CHECK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-    Unbind();
+    Texture* result = new Texture(width, height, bytes);
 
     SDL_FreeSurface(convertedSurface);
-}
-
-Texture::~Texture()
-{
-    GL_CHECK(glDeleteTextures(1, &m_textureID));
+    return result;
 }
 
 void Texture::Bind() const

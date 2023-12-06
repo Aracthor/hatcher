@@ -8,8 +8,10 @@ namespace hatcher
 class Texture
 {
 public:
-    Texture(const char* fileName);
+    Texture(int width, int height, const GLubyte* bytes);
     ~Texture();
+
+    static Texture* CreateFromFile(const char* fileName);
 
     void Bind() const;
     void Unbind() const;
