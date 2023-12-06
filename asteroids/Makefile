@@ -1,5 +1,6 @@
 SRCS_FILES=	AsteroidComponent.cpp		\
 		AsteroidCreatorUpdater.cpp	\
+		BasicTextDrawer.cpp		\
 		CollidableComponent.cpp		\
 		CollisionUpdater.cpp		\
 		EntityDescriptors.cpp		\
@@ -17,6 +18,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		SaveLoaderRenderUpdater.cpp	\
+		ScoreRenderUpdater.cpp		\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
 		WreckageGeneratorComponent.cpp	\
