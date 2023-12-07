@@ -53,6 +53,8 @@ void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)
     m_VAO->AttribVBO(*m_textureCoordsVBO, 2, textureCoordsAttribLocation);
 
     m_VAO->Unbind();
+
+    HATCHER_ASSERT(m_elementCount == textureCoords / 2)
 }
 
 void Mesh::SetIndices(const ushort* elements, uint elementCount)
@@ -73,7 +75,7 @@ void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const
     if (m_elementVBO)
         m_VAO->DrawElements(m_elementVBO->ElementCount());
     else
-        m_VAO->DrawArrays();
+        m_VAO->DrawArrays(m_elementCount);
 }
 
 void Mesh::SetPositions(const float* positions, uint positionCount, int componentCount)
@@ -85,6 +87,8 @@ void Mesh::SetPositions(const float* positions, uint positionCount, int componen
     m_VAO->AttribVBO(*m_positionVBO, componentCount, positionAttribLocation);
 
     m_VAO->Unbind();
+
+    m_elementCount = positionCount / componentCount;
 }
 
 } // namespace hatcher

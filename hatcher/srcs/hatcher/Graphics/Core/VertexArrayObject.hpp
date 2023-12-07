@@ -20,7 +20,7 @@ public:
 
     void AttribVBO(const VertexBufferObject& parVBO, GLint componentCount, GLuint layoutLocation);
 
-    void DrawArrays() const;
+    void DrawArrays(int count) const;
     void DrawElements(int count) const;
 
 private:
@@ -28,7 +28,6 @@ private:
 
     GLuint m_id;
     GLenum m_mode;
-    uint m_elementCount = 0;
 };
 
 } // namespace hatcher

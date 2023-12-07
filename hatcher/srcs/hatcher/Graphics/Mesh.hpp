@@ -34,6 +34,7 @@ private:
     unique_ptr<VertexBufferObject> m_positionVBO;
     unique_ptr<VertexBufferObject> m_textureCoordsVBO;
     unique_ptr<VertexBufferObject> m_elementVBO;
+    int m_elementCount;
     const Material* m_material;
     Box3f m_box;
     bool m_dynamic;
