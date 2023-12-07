@@ -17,7 +17,6 @@ public:
     virtual ~IEntityManager() = default;
 
     virtual EntityEgg CreateNewEntity(EntityDescriptorID id) = 0;
-    virtual EntityEgg CloneEntity(Entity entity) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
 
     virtual void Save(ComponentSaver& saver) = 0;

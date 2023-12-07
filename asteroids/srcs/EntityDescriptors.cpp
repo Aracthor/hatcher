@@ -9,22 +9,75 @@
 #include "ProjectileComponent.hpp"
 #include "ScoreGiverComponent.hpp"
 #include "ShooterComponent.hpp"
+#include "SubdivisionComponent.hpp"
 #include "WreckageGeneratorComponent.hpp"
 
 using namespace hatcher;
 
-EntityDescriptorRegisterer Asteroid{
-    EntityDescriptorID::Create("Asteroid"),
+EntityDescriptorRegisterer AsteroidBig{
+    EntityDescriptorID::Create("AsteroidBig"),
     {
-        AsteroidComponent{
-            .subdivision = 2,
-        },
+        AsteroidComponent{},
         CollidableComponent{
             .size = 50.f,
         },
         PositionComponent{},
         ScoreGiverComponent{
             .points = 20,
+        },
+        SubdivisionComponent{
+            .SubdivisionID = EntityDescriptorID::Create("AsteroidMedium"),
+            .count = 2,
+        },
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
+            .count = 5,
+        },
+    },
+    {
+        MeshComponent{
+            .ID = MeshComponent::Asteroid,
+        },
+    },
+};
+
+EntityDescriptorRegisterer AsteroidMedium{
+    EntityDescriptorID::Create("AsteroidMedium"),
+    {
+        AsteroidComponent{},
+        CollidableComponent{
+            .size = 25.f,
+        },
+        PositionComponent{},
+        ScoreGiverComponent{
+            .points = 50,
+        },
+        SubdivisionComponent{
+            .SubdivisionID = EntityDescriptorID::Create("AsteroidSmall"),
+            .count = 2,
+        },
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
+            .count = 5,
+        },
+    },
+    {
+        MeshComponent{
+            .ID = MeshComponent::Asteroid,
+        },
+    },
+};
+
+EntityDescriptorRegisterer AsteroidSmall{
+    EntityDescriptorID::Create("AsteroidSmall"),
+    {
+        AsteroidComponent{},
+        CollidableComponent{
+            .size = 12.f,
+        },
+        PositionComponent{},
+        ScoreGiverComponent{
+            .points = 100,
         },
         WreckageGeneratorComponent{
             .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),

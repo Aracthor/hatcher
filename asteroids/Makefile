@@ -21,6 +21,8 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		Score.cpp			\
 		ScoreGiverComponent.cpp		\
 		ScoreRenderUpdater.cpp		\
+		SubdivisionComponent.cpp	\
+		SubdivisionUpdater.cpp		\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
 		WreckageGeneratorComponent.cpp	\

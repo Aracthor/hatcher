@@ -25,7 +25,6 @@ public:
     void UpdateNewAndDeletedEntities();
 
     EntityEgg CreateNewEntity(EntityDescriptorID id) override;
-    EntityEgg CloneEntity(Entity entity) override;
     void DeleteEntity(Entity entity) override;
 
     void Save(ComponentSaver& saveLoader) override;

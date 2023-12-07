@@ -42,7 +42,7 @@ private:
             const Box<2, float> centerBox = {{300, 200}, {500, 400}};
             for (int i = 0; i < 4; i++)
             {
-                EntityEgg newEntityEgg = entityManager->CreateNewEntity(EntityDescriptorID::Create("Asteroid"));
+                EntityEgg newEntityEgg = entityManager->CreateNewEntity(EntityDescriptorID::Create("AsteroidBig"));
                 auto& positionComponent = newEntityEgg.GetComponent<PositionComponent>();
                 do
                 {

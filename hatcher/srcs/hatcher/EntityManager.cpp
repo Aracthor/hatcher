@@ -95,17 +95,6 @@ EntityEgg EntityManager::CreateNewEntity(EntityDescriptorID id)
                      m_temporaryRenderingComponentManager.get());
 }
 
-EntityEgg EntityManager::CloneEntity(Entity entity)
-{
-    const Entity newEntity = CreateNewEntity();
-    const Entity temporaryEntity = Entity(m_entitiesToAdd.size() - 1);
-    m_temporaryComponentManager->CopyEntity(m_componentManager.get(), temporaryEntity, entity);
-    if (m_temporaryRenderingComponentManager)
-        m_temporaryRenderingComponentManager->CopyEntity(m_renderingComponentManager.get(), temporaryEntity, entity);
-    return EntityEgg(newEntity, temporaryEntity, m_temporaryComponentManager.get(),
-                     m_temporaryRenderingComponentManager.get());
-}
-
 void EntityManager::DeleteEntity(Entity entity)
 {
     if (std::find(m_entitiesToDelete.begin(), m_entitiesToDelete.end(), entity) == m_entitiesToDelete.end())

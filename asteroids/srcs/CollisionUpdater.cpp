@@ -14,37 +14,8 @@ using namespace hatcher;
 
 namespace
 {
-float lerp(float a, float b, float t)
-{
-    return (1 - t) * a + t * b;
-}
-
 class CollisionUpdater final : public Updater
 {
-    glm::vec2 RandomSpeed(float speedMin, float speedMax)
-    {
-        const float directionAngle = glm::radians(float(rand() % 360));
-        const float speed = lerp(speedMin, speedMax, float(rand() % 1000) / 1000.f);
-        return glm::vec2(glm::cos(directionAngle), glm::sin(directionAngle)) * speed;
-    }
-
-    void SubdivideAsteroid(IEntityManager* entityManager, Entity entity, int subdivision)
-    {
-        if (subdivision > 0)
-        {
-            EntityEgg subdivisionA = entityManager->CloneEntity(entity);
-            EntityEgg subdivisionB = entityManager->CloneEntity(entity);
-            subdivisionA.GetComponent<AsteroidComponent>()->subdivision -= 1;
-            subdivisionB.GetComponent<AsteroidComponent>()->subdivision -= 1;
-            subdivisionA.GetComponent<CollidableComponent>()->size /= 2.f;
-            subdivisionB.GetComponent<CollidableComponent>()->size /= 2.f;
-            subdivisionA.GetComponent<PositionComponent>()->speed += RandomSpeed(1.f, 2.f);
-            subdivisionA.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
-            subdivisionB.GetComponent<PositionComponent>()->speed += RandomSpeed(1.f, 2.f);
-            subdivisionB.GetComponent<PositionComponent>()->angle = glm::radians(float(rand() % 360));
-        }
-    }
-
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
@@ -74,11 +45,6 @@ class CollisionUpdater final : public Updater
                             if (!asteroidComponents[i] || !asteroidComponents[j])
                             {
                                 collided = true;
-                                if (asteroidComponents[i])
-                                    SubdivideAsteroid(entityManager, Entity(i), asteroidComponents[i]->subdivision);
-
-                                if (asteroidComponents[j])
-                                    SubdivideAsteroid(entityManager, Entity(j), asteroidComponents[j]->subdivision);
 
                                 if (scoreGiverComponents[i])
                                     score->points += scoreGiverComponents[i]->points;
