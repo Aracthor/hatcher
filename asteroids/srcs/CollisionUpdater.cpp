@@ -7,6 +7,8 @@
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
 #include "PositionComponent.hpp"
+#include "Score.hpp"
+#include "ScoreGiverComponent.hpp"
 
 using namespace hatcher;
 
@@ -48,6 +50,8 @@ class CollisionUpdater final : public Updater
         auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
         auto positionComponents = componentManager->ReadComponents<PositionComponent>();
         auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
+        auto scoreGiverComponents = componentManager->ReadComponents<ScoreGiverComponent>();
+        Score* score = componentManager->WriteWorldComponent<Score>();
         // O(n^2) algorithm complexity. But for this project-exemple, it is enough.
         for (int i = 0; i < componentManager->Count() - 1; i++)
         {
@@ -75,6 +79,11 @@ class CollisionUpdater final : public Updater
 
                                 if (asteroidComponents[j])
                                     SubdivideAsteroid(entityManager, Entity(j), asteroidComponents[j]->subdivision);
+
+                                if (scoreGiverComponents[i])
+                                    score->points += scoreGiverComponents[i]->points;
+                                if (scoreGiverComponents[j])
+                                    score->points += scoreGiverComponents[j]->points;
 
                                 entityManager->DeleteEntity(Entity(i));
                                 entityManager->DeleteEntity(Entity(j));

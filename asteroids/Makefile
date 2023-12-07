@@ -18,6 +18,8 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		SaveLoaderRenderUpdater.cpp	\
+		Score.cpp			\
+		ScoreGiverComponent.cpp		\
 		ScoreRenderUpdater.cpp		\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\

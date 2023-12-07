@@ -7,6 +7,7 @@
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
+#include "ScoreGiverComponent.hpp"
 #include "ShooterComponent.hpp"
 #include "WreckageGeneratorComponent.hpp"
 
@@ -22,6 +23,9 @@ EntityDescriptorRegisterer Asteroid{
             .size = 50.f,
         },
         PositionComponent{},
+        ScoreGiverComponent{
+            .points = 20,
+        },
         WreckageGeneratorComponent{
             .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
             .count = 5,
