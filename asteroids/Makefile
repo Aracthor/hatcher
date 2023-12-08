@@ -17,6 +17,7 @@ SRCS_FILES=	AsteroidComponent.cpp		\
 		ProjectileUpdater.cpp		\
 		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
+		RandomDirector.cpp		\
 		SaveLoaderRenderUpdater.cpp	\
 		Score.cpp			\
 		ScoreGiverComponent.cpp		\

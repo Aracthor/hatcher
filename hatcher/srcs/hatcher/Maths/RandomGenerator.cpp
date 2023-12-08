@@ -12,6 +12,13 @@ RandomGenerator::RandomGenerator(int64_t seed)
     m_s3 = static_cast<int32_t>(seed >> 16);
 }
 
+int RandomGenerator::RandomInt(int min, int max)
+{
+    HATCHER_ASSERT(min <= max);
+    const float rand = RandomBetween0And1();
+    return min + rand * (max - min + 1);
+}
+
 float RandomGenerator::RandomFloat(float min, float max)
 {
     HATCHER_ASSERT(min <= max);

@@ -11,6 +11,7 @@ class RandomGenerator
 public:
     RandomGenerator(int64_t seed);
 
+    int RandomInt(int min, int max);
     float RandomFloat(float min, float max);
 
 private:

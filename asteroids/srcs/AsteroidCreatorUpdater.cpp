@@ -7,25 +7,14 @@
 
 #include "AsteroidComponent.hpp"
 #include "PositionComponent.hpp"
+#include "RandomDirector.hpp"
 
 using namespace hatcher;
 
 namespace
 {
-float lerp(float a, float b, float t)
-{
-    return (1 - t) * a + t * b;
-}
-
 class AsteroidCreatorUpdater final : public Updater
 {
-public:
-    AsteroidCreatorUpdater()
-    {
-        // TODO to have our own pseudorandom number generator.
-        srandom(::time(nullptr));
-    }
-
 private:
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
@@ -39,6 +28,7 @@ private:
 
         if (!hasAnyAsteroid)
         {
+            RandomDirector* randomDirector = componentManager->WriteWorldComponent<RandomDirector>();
             const Box<2, float> centerBox = {{300, 200}, {500, 400}};
             for (int i = 0; i < 4; i++)
             {
@@ -46,14 +36,13 @@ private:
                 auto& positionComponent = newEntityEgg.GetComponent<PositionComponent>();
                 do
                 {
-                    positionComponent->position = glm::vec2(rand() % 800, rand() % 600);
+                    positionComponent->position = {randomDirector->RandomInt(0, 800 - 1),
+                                                   randomDirector->RandomInt(0, 600 - 1)};
                 } while (centerBox.Contains(positionComponent->position));
-                positionComponent->angle = glm::radians(float(rand() % 360));
-                const float directionAngle = glm::radians(float(rand() % 360));
+                positionComponent->angle = randomDirector->RandomAngle();
                 const float speedMin = 1.f;
                 const float speedMax = 2.f;
-                const float speed = lerp(speedMin, speedMax, float(rand() % 1000) / 1000.f);
-                positionComponent->speed = glm::vec2(glm::cos(directionAngle), glm::sin(directionAngle)) * speed;
+                positionComponent->speed = randomDirector->RandomDirection(speedMin, speedMax);
             }
         }
     }
