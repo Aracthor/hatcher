@@ -2,6 +2,7 @@
 
 #include "EntityDescriptorID.hpp"
 #include "hatcher/Maths/Box.hpp"
+#include "hatcher/Maths/RandomGenerator.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/basic_types.hpp"
 
@@ -24,6 +25,7 @@ public:
     virtual void operator<<(float& value) = 0;
 
     inline void operator<<(EntityDescriptorID& id);
+    inline void operator<<(RandomGenerator& randomGenerator);
     inline void operator<<(std::string& string);
 
     template <typename T>

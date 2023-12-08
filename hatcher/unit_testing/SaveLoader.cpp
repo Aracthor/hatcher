@@ -5,6 +5,7 @@
 #include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentSaver.hpp"
 #include "hatcher/Maths/Box.hpp"
+#include "hatcher/Maths/RandomGenerator.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 
 using namespace hatcher;
@@ -156,6 +157,37 @@ int testBox()
     return fails;
 }
 
+int testRandomGenerator()
+{
+    RandomGenerator randomGenerator(4242);
+
+    ComponentSaver saver;
+    ISaveLoader& abstractSaver = saver;
+    abstractSaver << randomGenerator;
+
+    float input[] = {
+        randomGenerator.RandomFloat(0.f, 1.f),
+        randomGenerator.RandomFloat(0.f, 1.f),
+        randomGenerator.RandomFloat(0.f, 1.f),
+    };
+
+    ComponentLoader loader(saver.Result());
+    ISaveLoader& abstractLoader = loader;
+    abstractLoader << randomGenerator;
+
+    float output[] = {
+        randomGenerator.RandomFloat(0.f, 1.f),
+        randomGenerator.RandomFloat(0.f, 1.f),
+        randomGenerator.RandomFloat(0.f, 1.f),
+    };
+
+    int fails = 0;
+    for (int i = 0; i < (int)std::size(input); i++)
+        fails += testEquals(output[i], input[i]);
+
+    return fails;
+}
+
 int testString()
 {
     std::string input[] = {
@@ -238,6 +270,7 @@ int main()
     fails += testFloat();
     fails += testVector();
     fails += testBox();
+    fails += testRandomGenerator();
     fails += testString();
     fails += testCombined();
     fails += testUniquePtr();

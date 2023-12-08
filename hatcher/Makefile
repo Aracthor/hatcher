@@ -137,6 +137,8 @@ SRCS_FILES=	CommandManager.cpp			\
 		Graphics/MeshLoader.cpp			\
 		Graphics/Rendering.cpp 			\
 		Graphics/Texture.cpp 			\
+							\
+		Maths/RandomGenerator.cpp		\
 		
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
