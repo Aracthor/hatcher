@@ -77,7 +77,9 @@ class UFOUpdater final : public Updater
             const float spawnX = spawnLeft ? 0.f : 800.f;
             const float spawnY = randomDirector->RandomFloat(0.f, 600.f);
 
-            EntityEgg ufoEgg = entityManager->CreateNewEntity(EntityDescriptorID::Create("UFOBig"));
+            const EntityDescriptorID descriptor = randomDirector->RandomBool() ? EntityDescriptorID::Create("UFOBig")
+                                                                               : EntityDescriptorID::Create("UFOSmall");
+            EntityEgg ufoEgg = entityManager->CreateNewEntity(descriptor);
             auto& positionComponent = ufoEgg.GetComponent<PositionComponent>();
             positionComponent->position = {spawnX, spawnY};
             positionComponent->angle = 0.f;

@@ -189,6 +189,31 @@ EntityDescriptorRegisterer UFOBig{
     },
 };
 
+EntityDescriptorRegisterer UFOSmall{
+    EntityDescriptorID::Create("UFOSmall"),
+    {
+        CollidableComponent{
+            .size = 12.f,
+        },
+        PositionComponent{},
+        ScoreGiverComponent{
+            .points = 1000,
+        },
+        ShooterComponent{},
+        UFOComponent{},
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
+            .count = 5,
+        },
+    },
+    {
+        MeshComponent{
+            .ID = MeshComponent::UFO,
+            .scale = 0.5f,
+        },
+    },
+};
+
 EntityDescriptorRegisterer WreckageAsteroid{
     EntityDescriptorID::Create("WreckageAsteroid"),
     {
