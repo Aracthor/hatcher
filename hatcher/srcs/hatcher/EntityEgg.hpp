@@ -25,6 +25,9 @@ public:
     template <class Component>
     std::optional<Component>& GetComponent();
 
+    template <class Component>
+    std::optional<Component>& GetRenderingComponent();
+
 private:
     Entity m_newEntity;
     Entity m_temporaryEntityID;
