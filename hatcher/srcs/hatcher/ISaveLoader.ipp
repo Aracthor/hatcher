@@ -1,26 +1,12 @@
+#include "ISaveLoader.hpp"
+
+#include "EntityDescriptorID.hpp"
+#include "hatcher/Maths/RandomGenerator.hpp"
+
+#include <string>
+
 namespace hatcher
 {
-
-void ISaveLoader::operator<<(EntityDescriptorID& id)
-{
-    SaveLoadData(&id, sizeof(id));
-}
-
-void ISaveLoader::operator<<(RandomGenerator& randomGenerator)
-{
-    SaveLoadData(&randomGenerator, sizeof(randomGenerator));
-}
-
-void ISaveLoader::operator<<(std::string& string)
-{
-    int size = string.size();
-    *this << size;
-    string.resize(size);
-    for (char& value : string)
-    {
-        *this << value;
-    }
-}
 
 template <typename T>
 void ISaveLoader::operator<<(std::optional<T>& optional)

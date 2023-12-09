@@ -1,18 +1,22 @@
 #pragma once
 
-#include "EntityDescriptorID.hpp"
 #include "hatcher/Maths/Box.hpp"
-#include "hatcher/Maths/RandomGenerator.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/basic_types.hpp"
 
 #include <optional>
-#include <string>
 #include <unordered_map>
 #include <vector>
 
+namespace std
+{
+typedef basic_string<char> string;
+}
+
 namespace hatcher
 {
+class EntityDescriptorID;
+class RandomGenerator;
 
 class ISaveLoader
 {
@@ -24,9 +28,9 @@ public:
     virtual void operator<<(uint& value) = 0;
     virtual void operator<<(float& value) = 0;
 
-    inline void operator<<(EntityDescriptorID& id);
-    inline void operator<<(RandomGenerator& randomGenerator);
-    inline void operator<<(std::string& string);
+    void operator<<(EntityDescriptorID& id);
+    void operator<<(RandomGenerator& randomGenerator);
+    void operator<<(std::string& string);
 
     template <typename T>
     void operator<<(std::optional<T>& optional);
