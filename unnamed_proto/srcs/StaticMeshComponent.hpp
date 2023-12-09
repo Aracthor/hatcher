@@ -2,22 +2,13 @@
 
 #include "hatcher/basic_types.hpp"
 
-namespace hatcher
-{
-class ISaveLoader;
-} // namespace hatcher
-
-using namespace hatcher;
-
 struct StaticMeshComponent
 {
-    enum Type : uint
+    enum Type : hatcher::uint
     {
         Locker,
         COUNT,
     };
 
-    uint type;
+    hatcher::uint type;
 };
-
-void operator<<(ISaveLoader& saveLoader, StaticMeshComponent& component);
