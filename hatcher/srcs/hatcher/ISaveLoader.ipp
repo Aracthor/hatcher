@@ -1,24 +1,14 @@
 #include "ISaveLoader.hpp"
 
-#include "EntityDescriptorID.hpp"
-#include "hatcher/Maths/RandomGenerator.hpp"
-
 #include <string>
 
 namespace hatcher
 {
-
 template <typename T>
-void ISaveLoader::operator<<(std::optional<T>& optional)
+void ISaveLoader::operator<<(T& value)
 {
-    bool hasValue = optional.has_value();
-    *this << hasValue;
-    if (hasValue)
-    {
-        T value = *optional;
-        *this << value;
-        optional = value;
-    }
+    static_assert(std::is_trivially_copyable_v<T>);
+    SaveLoadData(&value, sizeof(value));
 }
 
 template <typename T>
@@ -61,22 +51,6 @@ void ISaveLoader::operator<<(std::unordered_map<Key, T, Hash>& map)
             map.insert({key, value});
         }
     }
-}
-
-template <glm::length_t L, typename T>
-void ISaveLoader::operator<<(glm::vec<L, T>& vector)
-{
-    for (int i = 0; i < L; i++)
-    {
-        *this << vector[i];
-    }
-}
-
-template <glm::length_t L, typename T>
-void ISaveLoader::operator<<(Box<L, T>& box)
-{
-    *this << box.Min();
-    *this << box.Max();
 }
 
 void ISaveLoader::SaveLoadData(void* data, int size)

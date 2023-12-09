@@ -12,6 +12,8 @@
 #include "SubdivisionComponent.hpp"
 #include "WreckageGeneratorComponent.hpp"
 
+#include "hatcher/Maths/glm_pure.hpp"
+
 using namespace hatcher;
 
 EntityDescriptorRegisterer AsteroidBig{

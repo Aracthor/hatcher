@@ -3,16 +3,6 @@
 namespace hatcher
 {
 
-void ISaveLoader::operator<<(EntityDescriptorID& id)
-{
-    SaveLoadData(&id, sizeof(id));
-}
-
-void ISaveLoader::operator<<(RandomGenerator& randomGenerator)
-{
-    SaveLoadData(&randomGenerator, sizeof(randomGenerator));
-}
-
 void ISaveLoader::operator<<(std::string& string)
 {
     int size = string.size();

@@ -4,6 +4,8 @@
 #include "ProjectileComponent.hpp"
 #include "ShooterComponent.hpp"
 
+#include <algorithm> // std::remove
+
 using namespace hatcher;
 
 namespace

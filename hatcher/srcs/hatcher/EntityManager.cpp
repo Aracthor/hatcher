@@ -9,6 +9,8 @@
 #include "EntityEgg.hpp"
 #include "EntityIDRegistry.hpp"
 
+#include <algorithm> // std::find
+
 namespace hatcher
 {
 
