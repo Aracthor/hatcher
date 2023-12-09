@@ -55,6 +55,7 @@ EntityDescriptorRegisterer AsteroidBig{
     {
         MeshComponent{
             .ID = MeshComponent::Asteroid,
+            .scale = 1.f,
         },
     },
 };
@@ -82,6 +83,7 @@ EntityDescriptorRegisterer AsteroidMedium{
     {
         MeshComponent{
             .ID = MeshComponent::Asteroid,
+            .scale = 0.5f,
         },
     },
 };
@@ -105,6 +107,7 @@ EntityDescriptorRegisterer AsteroidSmall{
     {
         MeshComponent{
             .ID = MeshComponent::Asteroid,
+            .scale = 0.25f,
         },
     },
 };
@@ -134,6 +137,7 @@ EntityDescriptorRegisterer Player{
     {
         MeshComponent{
             .ID = MeshComponent::Player,
+            .scale = 1.f,
         },
     },
 };
@@ -153,6 +157,7 @@ EntityDescriptorRegisterer Shoot{
     {
         MeshComponent{
             .ID = MeshComponent::Shoot,
+            .scale = 1.f,
         },
     },
 };
@@ -166,6 +171,7 @@ EntityDescriptorRegisterer WreckageAsteroid{
     {
         MeshComponent{
             .ID = MeshComponent::WreckageAsteroid,
+            .scale = 1.f,
         },
     },
 };
@@ -178,6 +184,7 @@ EntityDescriptorRegisterer WreckageShip{
     {
         MeshComponent{
             .ID = MeshComponent::WreckageShip,
+            .scale = 1.f,
         },
     },
 };

@@ -12,4 +12,5 @@ struct MeshComponent
         COUNT,
     };
     unsigned int ID;
+    float scale;
 };
