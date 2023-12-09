@@ -18,13 +18,6 @@ public:
     template <typename T>
     inline void operator<<(T& value);
 
-    virtual void operator<<(bool& value) = 0;
-    virtual void operator<<(char& value) = 0;
-    virtual void operator<<(ubyte& value) = 0;
-    virtual void operator<<(int& value) = 0;
-    virtual void operator<<(uint& value) = 0;
-    virtual void operator<<(float& value) = 0;
-
     void operator<<(std::string& string);
 
     template <typename T>
@@ -34,7 +27,7 @@ public:
     void operator<<(std::unordered_map<Key, T, Hash>& map);
 
 private:
-    inline void SaveLoadData(void* value, int size);
+    virtual void SaveLoadData(void* value, int size) = 0;
 
     virtual bool IsSaving() const = 0; // To use as less as possible...
 };

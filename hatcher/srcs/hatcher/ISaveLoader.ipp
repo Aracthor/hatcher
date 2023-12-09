@@ -53,14 +53,4 @@ void ISaveLoader::operator<<(std::unordered_map<Key, T, Hash>& map)
     }
 }
 
-void ISaveLoader::SaveLoadData(void* data, int size)
-{
-    ubyte* bytes = reinterpret_cast<ubyte*>(data);
-    while (size-- > 0)
-    {
-        *this << *bytes;
-        bytes++;
-    }
-}
-
 } // namespace hatcher

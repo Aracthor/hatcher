@@ -1,39 +1,20 @@
 #include "ComponentSaver.hpp"
 
-#include <iomanip>
-#include <limits>
-
 namespace hatcher
 {
 
-void ComponentSaver::operator<<(bool& value)
+void ComponentSaver::SaveLoadData(void* data, int size)
 {
-    AddSimpleData<>(value);
-}
+    std::size_t currentSize = m_data.size();
+    m_data.resize(currentSize + size);
 
-void ComponentSaver::operator<<(char& value)
-{
-    AddSimpleData<>(value);
-}
-
-void ComponentSaver::operator<<(ubyte& value)
-{
-    AddSimpleData<>(value);
-}
-
-void ComponentSaver::operator<<(int& value)
-{
-    AddSimpleData<>(value);
-}
-
-void ComponentSaver::operator<<(uint& value)
-{
-    AddSimpleData<>(value);
-}
-
-void ComponentSaver::operator<<(float& value)
-{
-    AddSimpleData<>(value);
+    ubyte* bytes = reinterpret_cast<ubyte*>(data);
+    while (size-- > 0)
+    {
+        m_data[currentSize] = *bytes;
+        bytes++;
+        currentSize++;
+    }
 }
 
 const std::vector<ubyte>& ComponentSaver::Result() const

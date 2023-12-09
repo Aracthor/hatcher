@@ -11,13 +11,6 @@ namespace hatcher
 class ComponentSaver final : public ISaveLoader
 {
 public:
-    void operator<<(bool& value) override;
-    void operator<<(char& value) override;
-    void operator<<(ubyte& value) override;
-    void operator<<(int& value) override;
-    void operator<<(uint& value) override;
-    void operator<<(float& value) override;
-
     const std::vector<ubyte>& Result() const;
 
     template <class Component>
@@ -26,8 +19,7 @@ public:
 private:
     bool IsSaving() const override { return true; }
 
-    template <typename T>
-    inline void AddSimpleData(T value);
+    void SaveLoadData(void* value, int size) override;
 
     std::vector<ubyte> m_data;
 };
