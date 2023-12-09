@@ -89,6 +89,31 @@ public:
             m_meshes[MeshComponent::Shoot]->SetIndices(indices, std::size(indices));
         }
         {
+            m_meshes[MeshComponent::UFO] = make_unique<Mesh>(m_material.get(), Primitive::Lines);
+
+            float positions[] = {
+                24.f,  0.f,
+
+                -24.f, 0.f,
+
+                12.f,  10.f,
+
+                -12.f, 10.f,
+
+                6.f,   20.f,
+
+                -6.f,  20.f,
+
+                12.f,  -10.f,
+
+                -12.f, -10.f,
+            };
+            ushort indices[] = {0, 1, 0, 2, 1, 3, 2, 3, 2, 4, 3, 5, 4, 5, 0, 6, 1, 7, 6, 7};
+
+            m_meshes[MeshComponent::UFO]->Set2DPositions(positions, std::size(positions));
+            m_meshes[MeshComponent::UFO]->SetIndices(indices, std::size(indices));
+        }
+        {
             m_meshes[MeshComponent::WreckageAsteroid] = make_unique<Mesh>(m_material.get(), Primitive::LineStrip);
 
             float positions[] = {

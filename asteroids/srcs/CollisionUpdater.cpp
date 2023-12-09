@@ -7,7 +7,9 @@
 
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
+#include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
+#include "ProjectileComponent.hpp"
 #include "Score.hpp"
 #include "ScoreGiverComponent.hpp"
 
@@ -15,13 +17,25 @@ using namespace hatcher;
 
 namespace
 {
+bool IsPlayerOwnedEntity(ComponentReader<PlayerComponent> playerComponents,
+                         ComponentReader<ProjectileComponent> projectileComponents, int index)
+{
+    if (playerComponents[index])
+        return true;
+
+    auto projectile = projectileComponents[index];
+    return (projectile && playerComponents[projectile->shooter]);
+}
+
 class CollisionUpdater final : public Updater
 {
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
-        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
         auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
+        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
+        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
+        auto projectileComponents = componentManager->ReadComponents<ProjectileComponent>();
         auto scoreGiverComponents = componentManager->ReadComponents<ScoreGiverComponent>();
         Score* score = componentManager->WriteWorldComponent<Score>();
         // O(n^2) algorithm complexity. But for this project-exemple, it is enough.
@@ -47,9 +61,11 @@ class CollisionUpdater final : public Updater
                             {
                                 collided = true;
 
-                                if (scoreGiverComponents[i])
+                                if (scoreGiverComponents[i] &&
+                                    IsPlayerOwnedEntity(playerComponents, projectileComponents, j))
                                     score->points += scoreGiverComponents[i]->points;
-                                if (scoreGiverComponents[j])
+                                if (scoreGiverComponents[j] &&
+                                    IsPlayerOwnedEntity(playerComponents, projectileComponents, i))
                                     score->points += scoreGiverComponents[j]->points;
 
                                 entityManager->DeleteEntity(Entity(i));

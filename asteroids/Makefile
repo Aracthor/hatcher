@@ -17,6 +17,7 @@ SRCS_FILES=	AsteroidCreatorUpdater.cpp	\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
 		SubdivisionUpdater.cpp		\
+		UFOUpdater.cpp			\
 		WreckageUpdater.cpp		\
 		main.cpp
 

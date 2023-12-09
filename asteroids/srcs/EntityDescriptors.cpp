@@ -11,6 +11,7 @@
 #include "ScoreGiverComponent.hpp"
 #include "ShooterComponent.hpp"
 #include "SubdivisionComponent.hpp"
+#include "UFOComponent.hpp"
 #include "WreckageGeneratorComponent.hpp"
 
 #include "hatcher/Maths/glm_pure.hpp"
@@ -28,6 +29,7 @@ ComponentTypeRegisterer<ProjectileComponent, EComponentList::Gameplay> projectil
 ComponentTypeRegisterer<ScoreGiverComponent, EComponentList::Gameplay> scoreGiverRegisterer;
 ComponentTypeRegisterer<ShooterComponent, EComponentList::Gameplay> shooterRegisterer;
 ComponentTypeRegisterer<SubdivisionComponent, EComponentList::Gameplay> subdivisionRegisterer;
+ComponentTypeRegisterer<UFOComponent, EComponentList::Gameplay> ufoRegisterer;
 ComponentTypeRegisterer<WreckageGeneratorComponent, EComponentList::Gameplay> wreckageRegisterer;
 
 ComponentTypeRegisterer<MeshComponent, EComponentList::Rendering> meshRegisterer;
@@ -157,6 +159,31 @@ EntityDescriptorRegisterer Shoot{
     {
         MeshComponent{
             .ID = MeshComponent::Shoot,
+            .scale = 1.f,
+        },
+    },
+};
+
+EntityDescriptorRegisterer UFOBig{
+    EntityDescriptorID::Create("UFOBig"),
+    {
+        CollidableComponent{
+            .size = 24.f,
+        },
+        PositionComponent{},
+        ScoreGiverComponent{
+            .points = 200,
+        },
+        ShooterComponent{},
+        UFOComponent{},
+        WreckageGeneratorComponent{
+            .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
+            .count = 5,
+        },
+    },
+    {
+        MeshComponent{
+            .ID = MeshComponent::UFO,
             .scale = 1.f,
         },
     },

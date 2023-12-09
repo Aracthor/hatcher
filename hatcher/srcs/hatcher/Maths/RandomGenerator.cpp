@@ -12,6 +12,11 @@ RandomGenerator::RandomGenerator(int64_t seed)
     m_s3 = static_cast<int32_t>(seed >> 16);
 }
 
+bool RandomGenerator::RandomBool()
+{
+    return (RandomBetween0And1() < 0.5f);
+}
+
 int RandomGenerator::RandomInt(int min, int max)
 {
     HATCHER_ASSERT(min <= max);

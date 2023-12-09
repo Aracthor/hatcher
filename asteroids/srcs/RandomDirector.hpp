@@ -9,7 +9,9 @@ class RandomDirector final : public hatcher::IWorldComponent
 public:
     RandomDirector();
 
+    bool RandomBool();
     int RandomInt(int min, int max);
+    float RandomFloat(float min, float max);
     float RandomAngle();
     glm::vec2 RandomDirection(float speedMin, float speedMax);
 

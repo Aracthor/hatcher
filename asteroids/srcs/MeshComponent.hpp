@@ -7,6 +7,7 @@ struct MeshComponent
         Asteroid,
         Player,
         Shoot,
+        UFO,
         WreckageAsteroid,
         WreckageShip,
         COUNT,

@@ -12,9 +12,19 @@ RandomDirector::RandomDirector()
 {
 }
 
+bool RandomDirector::RandomBool()
+{
+    return m_randomGenerator.RandomBool();
+}
+
 int RandomDirector::RandomInt(int min, int max)
 {
     return m_randomGenerator.RandomInt(min, max);
+}
+
+float RandomDirector::RandomFloat(float min, float max)
+{
+    return m_randomGenerator.RandomFloat(min, max);
 }
 
 float RandomDirector::RandomAngle()
