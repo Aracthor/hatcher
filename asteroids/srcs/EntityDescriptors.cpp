@@ -1,3 +1,4 @@
+#include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/EntityDescriptor.hpp"
 
 #include "AsteroidComponent.hpp"
@@ -15,6 +16,21 @@
 #include "hatcher/Maths/glm_pure.hpp"
 
 using namespace hatcher;
+
+namespace
+{
+ComponentTypeRegisterer<AsteroidComponent, EComponentList::Gameplay> asteroidRegisterer;
+ComponentTypeRegisterer<CollidableComponent, EComponentList::Gameplay> collidableRegisterer;
+ComponentTypeRegisterer<LifespanComponent, EComponentList::Gameplay> lifespanRegisterer;
+ComponentTypeRegisterer<PlayerComponent, EComponentList::Gameplay> playerRegisterer;
+ComponentTypeRegisterer<PositionComponent, EComponentList::Gameplay> positionRegisterer;
+ComponentTypeRegisterer<ProjectileComponent, EComponentList::Gameplay> projectileRegisterer;
+ComponentTypeRegisterer<ScoreGiverComponent, EComponentList::Gameplay> scoreGiverRegisterer;
+ComponentTypeRegisterer<ShooterComponent, EComponentList::Gameplay> shooterRegisterer;
+ComponentTypeRegisterer<SubdivisionComponent, EComponentList::Gameplay> subdivisionRegisterer;
+ComponentTypeRegisterer<WreckageGeneratorComponent, EComponentList::Gameplay> wreckageRegisterer;
+
+ComponentTypeRegisterer<MeshComponent, EComponentList::Rendering> meshRegisterer;
 
 EntityDescriptorRegisterer AsteroidBig{
     EntityDescriptorID::Create("AsteroidBig"),
@@ -165,3 +181,5 @@ EntityDescriptorRegisterer WreckageShip{
         },
     },
 };
+
+} // namespace

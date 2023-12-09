@@ -1,32 +1,22 @@
-SRCS_FILES=	AsteroidComponent.cpp		\
-		AsteroidCreatorUpdater.cpp	\
+SRCS_FILES=	AsteroidCreatorUpdater.cpp	\
 		BasicTextDrawer.cpp		\
-		CollidableComponent.cpp		\
 		CollisionUpdater.cpp		\
 		EntityDescriptors.cpp		\
-		LifespanComponent.cpp		\
 		LifespanUpdater.cpp		\
-		MeshComponent.cpp		\
 		MeshDisplayUpdater.cpp		\
 		MovingEntitiesUpdater.cpp	\
-		PlayerComponent.cpp		\
 		PlayerControlUpdater.cpp	\
 		PlayerCreatorUpdater.cpp	\
 		PlayerMovementUpdater.cpp	\
-		ProjectileComponent.cpp		\
 		ProjectileUpdater.cpp		\
-		PositionComponent.cpp		\
 		ProjectionViewUpdater.cpp	\
 		RandomDirector.cpp		\
 		SaveLoaderRenderUpdater.cpp	\
 		Score.cpp			\
-		ScoreGiverComponent.cpp		\
 		ScoreRenderUpdater.cpp		\
-		SubdivisionComponent.cpp	\
-		SubdivisionUpdater.cpp		\
 		ScreenBorderTeleportUpdater.cpp	\
 		ShooterComponent.cpp		\
-		WreckageGeneratorComponent.cpp	\
+		SubdivisionUpdater.cpp		\
 		WreckageUpdater.cpp		\
 		main.cpp
 
