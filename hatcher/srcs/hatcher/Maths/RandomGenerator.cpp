@@ -7,9 +7,14 @@ namespace hatcher
 
 RandomGenerator::RandomGenerator(int64_t seed)
 {
-    m_s1 = static_cast<int32_t>(seed);
-    m_s2 = static_cast<int32_t>(seed >> 8);
-    m_s3 = static_cast<int32_t>(seed >> 16);
+    m_s1 = static_cast<uint32_t>(seed) % 30269;
+    m_s2 = static_cast<uint32_t>(seed >> 16) % 30307;
+    m_s3 = static_cast<uint32_t>(seed >> 32) % 30323;
+
+    // Generate some numbers to be sure whatever the seed is, every internal number shall be randomized.
+    RandomBetween0And1();
+    RandomBetween0And1();
+    RandomBetween0And1();
 }
 
 bool RandomGenerator::RandomBool()
