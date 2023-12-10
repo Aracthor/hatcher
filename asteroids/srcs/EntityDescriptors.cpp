@@ -175,7 +175,9 @@ EntityDescriptorRegisterer UFOBig{
             .points = 200,
         },
         ShooterComponent{},
-        UFOComponent{},
+        UFOComponent{
+            .aimingAngle = M_PI,
+        },
         WreckageGeneratorComponent{
             .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
             .count = 5,
@@ -200,7 +202,9 @@ EntityDescriptorRegisterer UFOSmall{
             .points = 1000,
         },
         ShooterComponent{},
-        UFOComponent{},
+        UFOComponent{
+            .aimingAngle = M_PI / 12.f,
+        },
         WreckageGeneratorComponent{
             .WreckageID = EntityDescriptorID::Create("WreckageAsteroid"),
             .count = 5,

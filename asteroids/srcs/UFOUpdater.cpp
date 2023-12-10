@@ -6,6 +6,7 @@
 #include "hatcher/Updater.hpp"
 
 #include "CollidableComponent.hpp"
+#include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
 #include "RandomDirector.hpp"
@@ -40,6 +41,19 @@ class UFOUpdater final : public Updater
         }
     }
 
+    std::optional<glm::vec2> GetPlayerPosition(ComponentManager* componentManager)
+    {
+        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
+        for (int i = 0; i < componentManager->Count(); i++)
+        {
+            if (playerComponents[i])
+            {
+                return {componentManager->ReadComponents<PositionComponent>()[i]->position};
+            }
+        }
+        return {};
+    }
+
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         RandomDirector* randomDirector = componentManager->WriteWorldComponent<RandomDirector>();
@@ -57,14 +71,26 @@ class UFOUpdater final : public Updater
                 auto& shooterComponent = componentManager->WriteComponents<ShooterComponent>()[i];
                 if (shooterComponent->shoots.size() < 1 && randomDirector->RandomInt(1, 20) == 1)
                 {
-                    const glm::vec2 direction = randomDirector->RandomDirection(1.f, 1.f);
                     EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
-                    newProjectile.GetComponent<ProjectileComponent>()->shooter = i;
-                    auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
-                    projectilePositionComponent->position =
-                        positionComponent->position + direction * (collidableComponent->size + 3);
-                    projectilePositionComponent->speed = direction * 8.f;
-                    shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
+
+                    const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentManager);
+                    if (playerPosition)
+                    {
+                        const float aimingAngle = ufoComponents[i]->aimingAngle;
+                        const float angleToAdd = randomDirector->RandomFloat(-aimingAngle, aimingAngle);
+                        const float angleCos = glm::cos(angleToAdd);
+                        const float angleSin = glm::sin(angleToAdd);
+                        glm::vec2 direction = glm::normalize(*playerPosition - positionComponent->position);
+                        direction = {angleCos * direction.x - angleSin * direction.y,
+                                     angleSin * direction.x + angleCos * direction.y};
+
+                        newProjectile.GetComponent<ProjectileComponent>()->shooter = i;
+                        auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
+                        projectilePositionComponent->position =
+                            positionComponent->position + direction * (collidableComponent->size + 3);
+                        projectilePositionComponent->speed = direction * 8.f;
+                        shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
+                    }
                 }
 
                 hasAnyUFO = true;

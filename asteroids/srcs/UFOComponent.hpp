@@ -2,4 +2,5 @@
 
 struct UFOComponent
 {
+    float aimingAngle;
 };
