@@ -4,6 +4,7 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
+#include "Lives.hpp"
 #include "PlayerComponent.hpp"
 
 using namespace hatcher;
@@ -15,6 +16,10 @@ class PlayerCreatorUpdater final : public Updater
 {
     void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
+        const Lives* lives = componentManager->ReadWorldComponent<Lives>();
+        if (lives->remaining == 0)
+            return;
+
         bool hasPlayer = false;
         auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
         for (int i = 0; i < componentManager->Count(); i++)

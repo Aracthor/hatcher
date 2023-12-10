@@ -3,6 +3,8 @@ SRCS_FILES=	AsteroidCreatorUpdater.cpp	\
 		CollisionUpdater.cpp		\
 		EntityDescriptors.cpp		\
 		LifespanUpdater.cpp		\
+		Lives.cpp			\
+		LivesRenderUpdater.cpp		\
 		MeshDisplayUpdater.cpp		\
 		MovingEntitiesUpdater.cpp	\
 		PlayerControlUpdater.cpp	\

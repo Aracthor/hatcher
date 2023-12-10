@@ -7,6 +7,7 @@
 
 #include "AsteroidComponent.hpp"
 #include "CollidableComponent.hpp"
+#include "Lives.hpp"
 #include "PlayerComponent.hpp"
 #include "PositionComponent.hpp"
 #include "ProjectileComponent.hpp"
@@ -67,6 +68,13 @@ class CollisionUpdater final : public Updater
                                 if (scoreGiverComponents[j] &&
                                     IsPlayerOwnedEntity(playerComponents, projectileComponents, i))
                                     score->points += scoreGiverComponents[j]->points;
+
+                                if (playerComponents[i] || playerComponents[j])
+                                {
+                                    Lives* lives = componentManager->WriteWorldComponent<Lives>();
+                                    HATCHER_ASSERT(lives->remaining > 0);
+                                    lives->remaining--;
+                                }
 
                                 entityManager->DeleteEntity(Entity(i));
                                 entityManager->DeleteEntity(Entity(j));
