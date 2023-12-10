@@ -54,7 +54,7 @@ void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)
 
     m_VAO->Unbind();
 
-    HATCHER_ASSERT(m_elementCount == textureCoords / 2)
+    HATCHER_ASSERT(m_elementCount == (int)textureCoordsCount / 2);
 }
 
 void Mesh::SetIndices(const ushort* elements, uint elementCount)
