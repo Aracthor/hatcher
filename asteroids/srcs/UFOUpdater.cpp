@@ -71,11 +71,10 @@ class UFOUpdater final : public Updater
                 auto& shooterComponent = componentManager->WriteComponents<ShooterComponent>()[i];
                 if (shooterComponent->shoots.size() < 1 && randomDirector->RandomInt(1, 20) == 1)
                 {
-                    EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
-
                     const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentManager);
                     if (playerPosition)
                     {
+                        EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
                         const float aimingAngle = ufoComponents[i]->aimingAngle;
                         const float angleToAdd = randomDirector->RandomFloat(-aimingAngle, aimingAngle);
                         const float angleCos = glm::cos(angleToAdd);
