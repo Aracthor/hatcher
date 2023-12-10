@@ -126,7 +126,7 @@ const onGlobalPageLoad = async () => {
         print: (text) => { logger.log(`[C++] ${text}`); },
         printErr: (text) => { logger.error(`[C++] ${text}`); },
 
-        locateFile: (path, prefix) => { return "js/bin/" + path; },
+        locateFile: (path, prefix) => { return "js/gh-pages-bin/" + path; },
 
         canvas: canvas,
         preinitializedWebGLContext: webglCtx,
@@ -152,7 +152,7 @@ const onGlobalPageLoad = async () => {
             });
         };
 
-        await scriptLoadingUtility(`./js/bin/asteroids_release.js`)
+        await scriptLoadingUtility(`./js/gh-pages-bin/asteroids_release.js`)
 
         logger.log("[JS] wasm script: loading successful");
 
