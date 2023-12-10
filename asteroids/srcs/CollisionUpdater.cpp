@@ -24,7 +24,7 @@ bool IsPlayerOwnedEntity(ComponentReader<PlayerComponent> playerComponents,
         return true;
 
     auto projectile = projectileComponents[index];
-    return (projectile && playerComponents[projectile->shooter]);
+    return (projectile && projectile->shooter != Entity::Invalid().ID() && playerComponents[projectile->shooter]);
 }
 
 class CollisionUpdater final : public Updater
