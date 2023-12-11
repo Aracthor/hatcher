@@ -114,14 +114,12 @@ int testVector()
     glm::vec3 output[testCount];
 
     ComponentSaver saver;
-    ISaveLoader& abstractSaver = saver;
     for (int i = 0; i < testCount; i++)
-        abstractSaver << input[i];
+        saver << input[i];
 
     ComponentLoader loader(saver.Result());
-    ISaveLoader& abstractLoader = loader;
     for (int i = 0; i < testCount; i++)
-        abstractLoader << output[i];
+        loader << output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -141,14 +139,12 @@ int testBox()
     Box3f output[testCount];
 
     ComponentSaver saver;
-    ISaveLoader& abstractSaver = saver;
     for (int i = 0; i < testCount; i++)
-        abstractSaver << input[i];
+        saver << input[i];
 
     ComponentLoader loader(saver.Result());
-    ISaveLoader& abstractLoader = loader;
     for (int i = 0; i < testCount; i++)
-        abstractLoader << output[i];
+        loader << output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -162,8 +158,7 @@ int testRandomGenerator()
     RandomGenerator randomGenerator(4242);
 
     ComponentSaver saver;
-    ISaveLoader& abstractSaver = saver;
-    abstractSaver << randomGenerator;
+    saver << randomGenerator;
 
     float input[] = {
         randomGenerator.RandomFloat(0.f, 1.f),
@@ -172,8 +167,7 @@ int testRandomGenerator()
     };
 
     ComponentLoader loader(saver.Result());
-    ISaveLoader& abstractLoader = loader;
-    abstractLoader << randomGenerator;
+    loader << randomGenerator;
 
     float output[] = {
         randomGenerator.RandomFloat(0.f, 1.f),
@@ -199,14 +193,12 @@ int testString()
     std::string output[testCount];
 
     ComponentSaver saver;
-    ISaveLoader& abstractSaver = saver;
     for (int i = 0; i < testCount; i++)
-        abstractSaver << input[i];
+        saver << input[i];
 
     ComponentLoader loader(saver.Result());
-    ISaveLoader& abstractLoader = loader;
     for (int i = 0; i < testCount; i++)
-        abstractLoader << output[i];
+        loader << output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -225,13 +217,12 @@ int testCombined()
     std::string inputString = "Hello World!";
 
     ComponentSaver saver;
-    ISaveLoader& abstractSaver = saver;
-    abstractSaver << inputVec;
-    abstractSaver << inputCount1;
-    abstractSaver << inputCount2;
-    abstractSaver << inputBool;
-    abstractSaver << inputBox;
-    abstractSaver << inputString;
+    saver << inputVec;
+    saver << inputCount1;
+    saver << inputCount2;
+    saver << inputBool;
+    saver << inputBox;
+    saver << inputString;
 
     glm::vec2 outputVec;
     uint outputCount1;
@@ -241,13 +232,12 @@ int testCombined()
     std::string outputString;
 
     ComponentLoader loader(saver.Result());
-    ISaveLoader& abstractLoader = loader;
-    abstractLoader << outputVec;
-    abstractLoader << outputCount1;
-    abstractLoader << outputCount2;
-    abstractLoader << outputBool;
-    abstractLoader << outputBox;
-    abstractLoader << outputString;
+    loader << outputVec;
+    loader << outputCount1;
+    loader << outputCount2;
+    loader << outputBool;
+    loader << outputBox;
+    loader << outputString;
 
     int fails = 0;
     fails += testEquals(outputVec, {2.5f, -1.5f});
