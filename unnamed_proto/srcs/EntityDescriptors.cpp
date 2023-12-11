@@ -1,3 +1,4 @@
+#include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/EntityDescriptor.hpp"
 
 #include "InventoryComponent.hpp"
@@ -10,6 +11,19 @@
 #include "SteveAnimationComponent.hpp"
 
 using namespace hatcher;
+
+namespace
+{
+
+ComponentTypeRegisterer<InventoryComponent, EComponentList::Gameplay> inventoryRegisterer;
+ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> itemRegisterer;
+ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> movement2DRegisterer;
+ComponentTypeRegisterer<NameComponent, EComponentList::Gameplay> nameRegisterer;
+ComponentTypeRegisterer<Position2DComponent, EComponentList::Gameplay> position2DRegisterer;
+
+ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> selectableRegisterer;
+ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> staticMeshRegisterer;
+ComponentTypeRegisterer<SteveAnimationComponent, EComponentList::Rendering> steveAnimationRegisterer;
 
 EntityDescriptorRegisterer EMCard{
     EntityDescriptorID::Create("EMCard"),
@@ -69,3 +83,5 @@ EntityDescriptorRegisterer Steve{
         },
     },
 };
+
+} // namespace
