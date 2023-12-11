@@ -118,7 +118,6 @@ SRCS_FILES=	CommandManager.cpp			\
 		EntityManager.cpp			\
 		EntityIDRegistry.cpp	    		\
 		FileSystem.cpp 				\
-		ISaveLoader.cpp				\
 		GameApplication.cpp 			\
 		string_view.cpp				\
 		World.cpp				\

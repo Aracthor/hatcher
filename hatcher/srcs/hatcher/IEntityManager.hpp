@@ -19,7 +19,7 @@ public:
     virtual EntityEgg CreateNewEntity(EntityDescriptorID id) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
 
-    virtual void Save(ComponentSaver& saver) = 0;
+    virtual void Save(ComponentSaver& saver) const = 0;
     virtual void Load(ComponentLoader& loader) = 0;
 };
 

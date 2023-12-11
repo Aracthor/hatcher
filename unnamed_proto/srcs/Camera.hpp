@@ -23,5 +23,6 @@ struct Camera final : public IWorldComponent
     glm::vec3 Target() const;
     glm::vec3 Up() const;
 
-    void SaveLoad(ISaveLoader& saveLoader) override;
+    void Save(ComponentSaver& saver) const override;
+    void Load(ComponentLoader& loader) override;
 };

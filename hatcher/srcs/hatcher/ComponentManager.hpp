@@ -60,7 +60,7 @@ public:
     void RemoveEntity(Entity entity);
     void ClearEntities();
 
-    void Save(ComponentSaver& saver);
+    void Save(ComponentSaver& saver) const;
     void Load(ComponentLoader& loader);
     void LoadEntityComponents(ComponentLoader& loader, int entityID);
 

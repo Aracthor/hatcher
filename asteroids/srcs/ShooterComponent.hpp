@@ -6,7 +6,8 @@
 
 namespace hatcher
 {
-class ISaveLoader;
+class ComponentLoader;
+class ComponentSaver;
 } // namespace hatcher
 
 struct ShooterComponent
@@ -14,4 +15,5 @@ struct ShooterComponent
     std::vector<hatcher::Entity::IDType> shoots;
 };
 
-void operator<<(hatcher::ISaveLoader& saveLoader, ShooterComponent& component);
+void operator<<(hatcher::ComponentSaver& saver, const ShooterComponent& component);
+void operator>>(hatcher::ComponentLoader& loader, ShooterComponent& component);

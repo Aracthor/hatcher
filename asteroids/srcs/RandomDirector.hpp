@@ -16,7 +16,8 @@ public:
     glm::vec2 RandomDirection(float speedMin, float speedMax);
 
 private:
-    void SaveLoad(hatcher::ISaveLoader& saveLoader) override;
+    void Save(hatcher::ComponentSaver& saver) const override;
+    void Load(hatcher::ComponentLoader& loader) override;
 
     hatcher::RandomGenerator m_randomGenerator;
 };

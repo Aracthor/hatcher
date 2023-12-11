@@ -1,13 +1,19 @@
 #include "Score.hpp"
 
+#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ISaveLoader.hpp"
+#include "hatcher/ComponentSaver.hpp"
 
 using namespace hatcher;
 
-void Score::SaveLoad(ISaveLoader& saveLoader)
+void Score::Save(ComponentSaver& saver) const
 {
-    saveLoader << points;
+    saver << points;
+}
+
+void Score::Load(ComponentLoader& loader)
+{
+    loader >> points;
 }
 
 namespace

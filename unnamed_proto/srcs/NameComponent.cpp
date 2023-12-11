@@ -1,10 +1,16 @@
 #include "NameComponent.hpp"
 
-#include "hatcher/ISaveLoader.hpp"
+#include "hatcher/ComponentLoader.hpp"
+#include "hatcher/ComponentSaver.hpp"
 
 using namespace hatcher;
 
-void operator<<(ISaveLoader& saveLoader, NameComponent& component)
+void operator<<(ComponentSaver& saver, const NameComponent& component)
 {
-    saveLoader << component.name;
+    saver << component.name;
+}
+
+void operator>>(ComponentLoader& loader, NameComponent& component)
+{
+    loader >> component.name;
 }

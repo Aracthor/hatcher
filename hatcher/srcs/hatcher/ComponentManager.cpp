@@ -46,11 +46,11 @@ void ComponentManager::ClearEntities()
     }
 }
 
-void ComponentManager::Save(ComponentSaver& saver)
+void ComponentManager::Save(ComponentSaver& saver) const
 {
     for (auto& worldComponent : m_worldComponents)
     {
-        worldComponent.second->SaveLoad(saver);
+        worldComponent.second->Save(saver);
     }
 
     for (int entityID = 0; entityID < m_entityCount; entityID++)
@@ -67,7 +67,7 @@ void ComponentManager::Save(ComponentSaver& saver)
             {
                 uint componentID = componentList.first;
                 saver << componentID;
-                componentList.second->SaveLoad(entityID, saver);
+                componentList.second->Save(entityID, saver);
             }
         }
     }
@@ -77,8 +77,7 @@ void ComponentManager::Load(ComponentLoader& loader)
 {
     for (auto& worldComponent : m_worldComponents)
     {
-        worldComponent.second->SaveLoad(loader);
-        worldComponent.second->PostLoad();
+        worldComponent.second->Load(loader);
     }
 
     for (int entityID = 0; entityID < m_entityCount; entityID++)
@@ -90,14 +89,14 @@ void ComponentManager::Load(ComponentLoader& loader)
 void ComponentManager::LoadEntityComponents(ComponentLoader& loader, int entityID)
 {
     int componentCount;
-    loader << componentCount;
+    loader >> componentCount;
     for (int i = 0; i < componentCount; i++)
     {
         uint componentID;
-        loader << componentID;
+        loader >> componentID;
         HATCHER_ASSERT(m_componentLists.find(componentID) != m_componentLists.end());
         m_componentLists[componentID]->CreateComponent(entityID);
-        m_componentLists[componentID]->SaveLoad(entityID, loader);
+        m_componentLists[componentID]->Load(entityID, loader);
     }
 }
 

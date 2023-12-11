@@ -8,7 +8,18 @@ ComponentLoader::ComponentLoader(const std::vector<ubyte>& data)
 {
 }
 
-void ComponentLoader::SaveLoadData(void* value, int size)
+void ComponentLoader::operator>>(std::string& string)
+{
+    int size;
+    *this >> size;
+    string.resize(size);
+    for (char& value : string)
+    {
+        *this >> value;
+    }
+}
+
+void ComponentLoader::LoadData(void* value, int size)
 {
     ubyte* bytes = reinterpret_cast<ubyte*>(value);
     while (size-- > 0)

@@ -6,5 +6,6 @@ struct Score final : public hatcher::IWorldComponent
 {
     int points = 0;
 
-    void SaveLoad(hatcher::ISaveLoader& saveLoader) override;
+    void Save(hatcher::ComponentSaver& saver) const override;
+    void Load(hatcher::ComponentLoader& loader) override;
 };

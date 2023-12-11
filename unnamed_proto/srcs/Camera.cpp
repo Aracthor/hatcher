@@ -1,8 +1,9 @@
 #include "Camera.hpp"
 
+#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
+#include "hatcher/ComponentSaver.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
-#include "hatcher/ISaveLoader.hpp"
 
 glm::vec2 Camera::MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const
 {
@@ -36,11 +37,18 @@ glm::vec3 Camera::Up() const
     return up;
 }
 
-void Camera::SaveLoad(ISaveLoader& saveLoader)
+void Camera::Save(ComponentSaver& saver) const
 {
-    saveLoader << target;
-    saveLoader << angles;
-    saveLoader << pixelSize;
+    saver << target;
+    saver << angles;
+    saver << pixelSize;
+}
+
+void Camera::Load(ComponentLoader& loader)
+{
+    loader >> target;
+    loader >> angles;
+    loader >> pixelSize;
 }
 
 namespace

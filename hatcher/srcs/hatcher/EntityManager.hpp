@@ -27,7 +27,7 @@ public:
     EntityEgg CreateNewEntity(EntityDescriptorID id) override;
     void DeleteEntity(Entity entity) override;
 
-    void Save(ComponentSaver& saveLoader) override;
+    void Save(ComponentSaver& saveLoader) const override;
     void Load(ComponentLoader& saveLoader) override;
 
     ComponentManager* GetComponentManager() { return m_componentManager.get(); }

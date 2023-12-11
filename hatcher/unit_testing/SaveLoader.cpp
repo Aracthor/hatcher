@@ -64,7 +64,7 @@ int testInt()
 
     ComponentLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
-        loader << output[i];
+        loader >> output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -94,7 +94,7 @@ int testFloat()
 
     ComponentLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
-        loader << output[i];
+        loader >> output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -119,7 +119,7 @@ int testVector()
 
     ComponentLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
-        loader << output[i];
+        loader >> output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -144,7 +144,7 @@ int testBox()
 
     ComponentLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
-        loader << output[i];
+        loader >> output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -167,7 +167,7 @@ int testRandomGenerator()
     };
 
     ComponentLoader loader(saver.Result());
-    loader << randomGenerator;
+    loader >> randomGenerator;
 
     float output[] = {
         randomGenerator.RandomFloat(0.f, 1.f),
@@ -198,7 +198,7 @@ int testString()
 
     ComponentLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
-        loader << output[i];
+        loader >> output[i];
 
     int fails = 0;
     for (int i = 0; i < testCount; i++)
@@ -232,12 +232,12 @@ int testCombined()
     std::string outputString;
 
     ComponentLoader loader(saver.Result());
-    loader << outputVec;
-    loader << outputCount1;
-    loader << outputCount2;
-    loader << outputBool;
-    loader << outputBox;
-    loader << outputString;
+    loader >> outputVec;
+    loader >> outputCount1;
+    loader >> outputCount2;
+    loader >> outputBool;
+    loader >> outputBox;
+    loader >> outputString;
 
     int fails = 0;
     fails += testEquals(outputVec, {2.5f, -1.5f});

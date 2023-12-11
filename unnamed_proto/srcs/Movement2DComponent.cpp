@@ -1,8 +1,14 @@
 #include "Movement2DComponent.hpp"
 
-#include "hatcher/ISaveLoader.hpp"
+#include "hatcher/ComponentLoader.hpp"
+#include "hatcher/ComponentSaver.hpp"
 
-void operator<<(ISaveLoader& saveLoader, Movement2DComponent& component)
+void operator<<(ComponentSaver& saver, const Movement2DComponent& component)
 {
-    saveLoader << component.path;
+    saver << component.path;
+}
+
+void operator>>(ComponentLoader& loader, Movement2DComponent& component)
+{
+    loader >> component.path;
 }

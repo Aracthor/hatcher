@@ -2,16 +2,16 @@
 
 namespace hatcher
 {
-
-class ISaveLoader;
+class ComponentLoader;
+class ComponentSaver;
 
 class IWorldComponent
 {
 public:
     virtual ~IWorldComponent() = default;
 
-    virtual void SaveLoad(ISaveLoader& saveLoader) = 0;
-    virtual void PostLoad(){};
+    virtual void Save(ComponentSaver& saver) const = 0;
+    virtual void Load(ComponentLoader& loader) = 0;
 };
 
 } // namespace hatcher
