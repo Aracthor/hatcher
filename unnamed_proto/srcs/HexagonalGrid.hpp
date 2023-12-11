@@ -75,6 +75,3 @@ private:
     glm::mat2 m_hexToPosMatrix;
     glm::mat2 m_posToHexMatrix;
 };
-
-void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileCoord& coord);
-void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileData& data);

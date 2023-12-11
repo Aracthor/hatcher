@@ -222,19 +222,6 @@ void HexagonalGrid::UpdatePathfind()
     }
 }
 
-void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileCoord& coord)
-{
-    saveLoader << coord.q;
-    saveLoader << coord.r;
-}
-
-void operator<<(ISaveLoader& saveLoader, HexagonalGrid::TileData& data)
-{
-    static_assert(sizeof(HexagonalGrid::TileData) == sizeof(ubyte));
-    ubyte& byte = reinterpret_cast<ubyte&>(data);
-    saveLoader << byte;
-}
-
 namespace
 {
 WorldComponentTypeRegisterer<HexagonalGrid, EComponentList::Gameplay> registerer;
