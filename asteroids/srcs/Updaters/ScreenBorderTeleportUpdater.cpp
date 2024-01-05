@@ -2,8 +2,8 @@
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "CollidableComponent.hpp"
-#include "PositionComponent.hpp"
+#include "Components/CollidableComponent.hpp"
+#include "Components/PositionComponent.hpp"
 
 using namespace hatcher;
 

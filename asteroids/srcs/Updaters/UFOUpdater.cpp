@@ -5,13 +5,13 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "CollidableComponent.hpp"
-#include "PlayerComponent.hpp"
-#include "PositionComponent.hpp"
-#include "ProjectileComponent.hpp"
-#include "RandomDirector.hpp"
-#include "ShooterComponent.hpp"
-#include "UFOComponent.hpp"
+#include "Components/CollidableComponent.hpp"
+#include "Components/PlayerComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "Components/ProjectileComponent.hpp"
+#include "Components/ShooterComponent.hpp"
+#include "Components/UFOComponent.hpp"
+#include "WorldComponents/RandomDirector.hpp"
 
 using namespace hatcher;
 

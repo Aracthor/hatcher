@@ -4,8 +4,8 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "Lives.hpp"
-#include "PlayerComponent.hpp"
+#include "Components/PlayerComponent.hpp"
+#include "WorldComponents/Lives.hpp"
 
 using namespace hatcher;
 

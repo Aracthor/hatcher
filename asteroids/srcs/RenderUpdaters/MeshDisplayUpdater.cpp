@@ -7,9 +7,9 @@
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 
-#include "MeshComponent.hpp"
-#include "PlayerComponent.hpp"
-#include "PositionComponent.hpp"
+#include "Components/PlayerComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "RenderComponents/MeshComponent.hpp"
 
 using namespace hatcher;
 

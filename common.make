@@ -144,7 +144,7 @@ RESIDUE_BINS=		$(RESIDUE_WEBASM_RELASE)\
 include $(shell test -d $(OBJS_DIR) && find $(OBJS_DIR) -name "*.dep")
 
 %/:
-	$(MKDIR) $@
+	$(MKDIR) -p $@
 
 
 $(OBJS_NATIVE_DIR):		| $$(dir $$(@D))

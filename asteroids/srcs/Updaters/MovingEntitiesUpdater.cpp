@@ -1,7 +1,7 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "PositionComponent.hpp"
+#include "Components/PositionComponent.hpp"
 
 using namespace hatcher;
 

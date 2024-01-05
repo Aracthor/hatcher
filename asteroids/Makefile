@@ -1,27 +1,32 @@
-SRCS_FILES=	AsteroidCreatorUpdater.cpp	\
-		BasicTextDrawer.cpp		\
-		CollisionUpdater.cpp		\
-		EntityDescriptors.cpp		\
-		LifespanUpdater.cpp		\
-		Lives.cpp			\
-		LivesRenderUpdater.cpp		\
-		MeshDisplayUpdater.cpp		\
-		MovingEntitiesUpdater.cpp	\
-		PlayerControlUpdater.cpp	\
-		PlayerCreatorUpdater.cpp	\
-		PlayerMovementUpdater.cpp	\
-		ProjectileUpdater.cpp		\
-		ProjectionViewUpdater.cpp	\
-		RandomDirector.cpp		\
-		SaveLoaderRenderUpdater.cpp	\
-		Score.cpp			\
-		ScoreRenderUpdater.cpp		\
-		ScreenBorderTeleportUpdater.cpp	\
-		ShooterComponent.cpp		\
-		SubdivisionUpdater.cpp		\
-		UFOUpdater.cpp			\
-		WreckageUpdater.cpp		\
-		main.cpp
+SRCS_FILES=	main.cpp				\
+		BasicTextDrawer.cpp			\
+		EntityDescriptors.cpp			\
+							\
+		Components/ShooterComponent.cpp		\
+							\
+		WorldComponents/Lives.cpp		\
+		WorldComponents/RandomDirector.cpp	\
+		WorldComponents/Score.cpp		\
+							\
+		Updaters/AsteroidCreatorUpdater.cpp	\
+		Updaters/CollisionUpdater.cpp		\
+		Updaters/LifespanUpdater.cpp		\
+		Updaters/MovingEntitiesUpdater.cpp	\
+		Updaters/PlayerCreatorUpdater.cpp	\
+		Updaters/PlayerMovementUpdater.cpp	\
+		Updaters/ProjectileUpdater.cpp		\
+		Updaters/SaveLoaderRenderUpdater.cpp	\
+		Updaters/ScreenBorderTeleportUpdater.cpp\
+		Updaters/SubdivisionUpdater.cpp		\
+		Updaters/UFOUpdater.cpp			\
+		Updaters/WreckageUpdater.cpp		\
+							\
+		RenderUpdaters/LivesRenderUpdater.cpp	\
+		RenderUpdaters/MeshDisplayUpdater.cpp	\
+		RenderUpdaters/ProjectionViewUpdater.cpp\
+		RenderUpdaters/ScoreRenderUpdater.cpp	\
+		RenderUpdaters/PlayerControlUpdater.cpp	\
+
 
 NATIVE_NAME=	asteroids
 

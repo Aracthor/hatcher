@@ -5,9 +5,9 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "AsteroidComponent.hpp"
-#include "PositionComponent.hpp"
-#include "RandomDirector.hpp"
+#include "Components/AsteroidComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "WorldComponents/RandomDirector.hpp"
 
 using namespace hatcher;
 

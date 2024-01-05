@@ -1,8 +1,8 @@
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "ProjectileComponent.hpp"
-#include "ShooterComponent.hpp"
+#include "Components/ProjectileComponent.hpp"
+#include "Components/ShooterComponent.hpp"
 
 #include <algorithm> // std::remove
 

@@ -2,9 +2,9 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "PositionComponent.hpp"
-#include "RandomDirector.hpp"
-#include "SubdivisionComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "Components/SubdivisionComponent.hpp"
+#include "WorldComponents/RandomDirector.hpp"
 
 using namespace hatcher;
 

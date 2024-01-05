@@ -7,11 +7,11 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
-#include "CollidableComponent.hpp"
-#include "PlayerComponent.hpp"
-#include "PositionComponent.hpp"
-#include "ProjectileComponent.hpp"
-#include "ShooterComponent.hpp"
+#include "Components/CollidableComponent.hpp"
+#include "Components/PlayerComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "Components/ProjectileComponent.hpp"
+#include "Components/ShooterComponent.hpp"
 
 using namespace hatcher;
 

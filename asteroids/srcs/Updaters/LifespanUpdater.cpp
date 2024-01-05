@@ -2,7 +2,7 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "LifespanComponent.hpp"
+#include "Components/LifespanComponent.hpp"
 
 using namespace hatcher;
 

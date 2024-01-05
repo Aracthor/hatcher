@@ -2,11 +2,11 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "CollidableComponent.hpp"
-#include "LifespanComponent.hpp"
-#include "PositionComponent.hpp"
-#include "RandomDirector.hpp"
-#include "WreckageGeneratorComponent.hpp"
+#include "Components/CollidableComponent.hpp"
+#include "Components/LifespanComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "Components/WreckageGeneratorComponent.hpp"
+#include "WorldComponents/RandomDirector.hpp"
 
 using namespace hatcher;
 

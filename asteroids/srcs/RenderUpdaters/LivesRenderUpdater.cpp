@@ -8,7 +8,7 @@
 #include "hatcher/unique_ptr.hpp"
 
 #include "BasicTextDrawer.hpp"
-#include "Lives.hpp"
+#include "WorldComponents/Lives.hpp"
 
 using namespace hatcher;
 

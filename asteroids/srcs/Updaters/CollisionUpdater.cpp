@@ -5,14 +5,14 @@
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
 
-#include "AsteroidComponent.hpp"
-#include "CollidableComponent.hpp"
-#include "Lives.hpp"
-#include "PlayerComponent.hpp"
-#include "PositionComponent.hpp"
-#include "ProjectileComponent.hpp"
-#include "Score.hpp"
-#include "ScoreGiverComponent.hpp"
+#include "Components/AsteroidComponent.hpp"
+#include "Components/CollidableComponent.hpp"
+#include "Components/PlayerComponent.hpp"
+#include "Components/PositionComponent.hpp"
+#include "Components/ProjectileComponent.hpp"
+#include "Components/ScoreGiverComponent.hpp"
+#include "WorldComponents/Lives.hpp"
+#include "WorldComponents/Score.hpp"
 
 using namespace hatcher;
 

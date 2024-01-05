@@ -5,7 +5,7 @@
 #include "hatcher/unique_ptr.hpp"
 
 #include "BasicTextDrawer.hpp"
-#include "Score.hpp"
+#include "WorldComponents/Score.hpp"
 
 #include <sstream>
 
