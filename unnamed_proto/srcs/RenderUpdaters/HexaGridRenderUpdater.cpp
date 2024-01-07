@@ -9,7 +9,7 @@
 #include "hatcher/assert.hpp"
 #include "hatcher/unique_ptr.hpp"
 
-#include "HexagonalGrid.hpp"
+#include "WorldComponents/HexagonalGrid.hpp"
 
 using namespace hatcher;
 

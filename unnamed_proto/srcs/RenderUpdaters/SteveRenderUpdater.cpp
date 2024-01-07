@@ -9,10 +9,10 @@
 #include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 
-#include "Movement2DComponent.hpp"
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
-#include "SteveAnimationComponent.hpp"
+#include "Components/Movement2DComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
+#include "RenderComponents/SteveAnimationComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;

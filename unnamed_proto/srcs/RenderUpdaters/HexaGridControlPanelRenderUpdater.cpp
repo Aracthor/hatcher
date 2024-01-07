@@ -6,8 +6,8 @@
 
 #include "imgui.h"
 
-#include "Camera.hpp"
-#include "HexagonalGrid.hpp"
+#include "WorldComponents/Camera.hpp"
+#include "WorldComponents/HexagonalGrid.hpp"
 
 namespace
 {

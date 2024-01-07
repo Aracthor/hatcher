@@ -1,6 +1,6 @@
-#include "Movement2DComponent.hpp"
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
+#include "Components/Movement2DComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
 
 #include "hatcher/ComponentManager.hpp"

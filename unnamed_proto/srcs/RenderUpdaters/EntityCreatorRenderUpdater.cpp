@@ -1,7 +1,7 @@
-#include "Camera.hpp"
-#include "HexagonalGrid.hpp"
-#include "InventoryComponent.hpp"
-#include "Position2DComponent.hpp"
+#include "Components/InventoryComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "WorldComponents/Camera.hpp"
+#include "WorldComponents/HexagonalGrid.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptorID.hpp"

@@ -5,7 +5,7 @@
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/assert.hpp"
 
-#include "SelectableComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
 
 #include "imgui.h"
 

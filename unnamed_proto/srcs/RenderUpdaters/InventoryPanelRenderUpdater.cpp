@@ -4,10 +4,10 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
-#include "InventoryComponent.hpp"
-#include "ItemComponent.hpp"
-#include "NameComponent.hpp"
-#include "SelectableComponent.hpp"
+#include "Components/InventoryComponent.hpp"
+#include "Components/ItemComponent.hpp"
+#include "Components/NameComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
 
 #include "imgui.h"
 

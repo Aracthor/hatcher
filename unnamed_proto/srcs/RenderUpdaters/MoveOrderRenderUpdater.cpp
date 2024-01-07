@@ -1,8 +1,8 @@
-#include "Camera.hpp"
-#include "HexagonalGrid.hpp"
-#include "Movement2DComponent.hpp"
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
+#include "Components/Movement2DComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
+#include "WorldComponents/Camera.hpp"
+#include "WorldComponents/HexagonalGrid.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"

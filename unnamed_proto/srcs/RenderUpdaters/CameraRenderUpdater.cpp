@@ -1,6 +1,6 @@
 #include <SDL2/SDL_events.h>
 
-#include "Camera.hpp"
+#include "WorldComponents/Camera.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/Clock.hpp"

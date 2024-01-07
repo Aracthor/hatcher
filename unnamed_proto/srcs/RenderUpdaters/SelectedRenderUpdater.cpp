@@ -7,8 +7,8 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/unique_ptr.hpp"
 
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;

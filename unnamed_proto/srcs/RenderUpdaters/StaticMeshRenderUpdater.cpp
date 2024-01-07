@@ -11,9 +11,9 @@
 
 #include <utility> // std::pair
 
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
-#include "StaticMeshComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
+#include "RenderComponents/StaticMeshComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;

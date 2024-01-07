@@ -1,14 +1,14 @@
 #include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/EntityDescriptor.hpp"
 
-#include "InventoryComponent.hpp"
-#include "ItemComponent.hpp"
-#include "Movement2DComponent.hpp"
-#include "NameComponent.hpp"
-#include "Position2DComponent.hpp"
-#include "SelectableComponent.hpp"
-#include "StaticMeshComponent.hpp"
-#include "SteveAnimationComponent.hpp"
+#include "Components/InventoryComponent.hpp"
+#include "Components/ItemComponent.hpp"
+#include "Components/Movement2DComponent.hpp"
+#include "Components/NameComponent.hpp"
+#include "Components/Position2DComponent.hpp"
+#include "RenderComponents/SelectableComponent.hpp"
+#include "RenderComponents/StaticMeshComponent.hpp"
+#include "RenderComponents/SteveAnimationComponent.hpp"
 
 using namespace hatcher;
 

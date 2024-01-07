@@ -1,4 +1,4 @@
-#include "InventoryComponent.hpp"
+#include "Components/InventoryComponent.hpp"
 
 #include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentSaver.hpp"
