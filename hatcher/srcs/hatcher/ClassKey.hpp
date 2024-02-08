@@ -7,7 +7,7 @@ namespace hatcher
 {
 
 template <class T>
-constexpr uint ComponentKey()
+constexpr uint ClassKey()
 {
     constexpr string_view className = constexpr_typeid<T>();
     return constexpr_hash<className.size>(className.data);

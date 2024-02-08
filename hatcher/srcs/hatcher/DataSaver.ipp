@@ -1,4 +1,4 @@
-#include "Component.hpp"
+#include "ClassKey.hpp"
 
 namespace hatcher
 {
@@ -33,7 +33,7 @@ void DataSaver::operator<<(const std::unordered_map<Key, T, Hash>& map)
 template <class Component>
 void DataSaver::SaveComponent(Component& component)
 {
-    uint key = ComponentKey<Component>();
+    uint key = ClassKey<Component>();
     *this << key;
     *this << component;
 }

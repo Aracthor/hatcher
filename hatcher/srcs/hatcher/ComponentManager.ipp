@@ -1,4 +1,4 @@
-#include "Component.hpp"
+#include "ClassKey.hpp"
 #include "ComponentList.hpp"
 #include "Entity.hpp"
 #include "assert.hpp"
@@ -14,7 +14,7 @@ namespace hatcher
 template <class Component>
 void ComponentManager::AddComponentType()
 {
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) == m_componentLists.end(),
                            "Trying to register two times te same component type: " << typeid(Component).name());
 
@@ -25,7 +25,7 @@ void ComponentManager::AddComponentType()
 template <class Component>
 void ComponentManager::AddWorldComponent()
 {
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) == m_worldComponents.end(),
                            "Trying to register two times te same world component: " << typeid(Component).name());
 
@@ -37,7 +37,7 @@ ComponentReader<Component> ComponentManager::ReadComponents() const
 {
     using RealComponentList = const IdentifiableComponentList<Component>*;
 
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << constexpr_typeid<Component>());
     // Why doesn't std::unordered_map have an operator[] returning a const value ??
@@ -51,7 +51,7 @@ ComponentWriter<Component> ComponentManager::WriteComponents()
 {
     using RealComponentList = IdentifiableComponentList<Component>*;
 
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << constexpr_typeid<Component>());
     IComponentList* componentList = m_componentLists.at(key).get();
@@ -62,7 +62,7 @@ ComponentWriter<Component> ComponentManager::WriteComponents()
 template <class Component>
 const Component* ComponentManager::ReadWorldComponent() const
 {
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
                            "Requesting a missing world component: " << constexpr_typeid<Component>());
     const IWorldComponent* component = m_worldComponents.at(key).get();
@@ -72,7 +72,7 @@ const Component* ComponentManager::ReadWorldComponent() const
 template <class Component>
 Component* ComponentManager::WriteWorldComponent()
 {
-    constexpr uint key = ComponentKey<Component>();
+    constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
                            "Requesting a missing world component: " << constexpr_typeid<Component>());
     IWorldComponent* component = m_worldComponents.at(key).get();
