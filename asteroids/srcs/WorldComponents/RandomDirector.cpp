@@ -1,8 +1,8 @@
 #include "RandomDirector.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 
 #include <ctime>
 
@@ -39,12 +39,12 @@ glm::vec2 RandomDirector::RandomDirection(float speedMin, float speedMax)
     return glm::vec2(glm::cos(angle), glm::sin(angle)) * m_randomGenerator.RandomFloat(speedMin, speedMax);
 }
 
-void RandomDirector::Save(ComponentSaver& saver) const
+void RandomDirector::Save(DataSaver& saver) const
 {
     saver << m_randomGenerator;
 }
 
-void RandomDirector::Load(ComponentLoader& loader)
+void RandomDirector::Load(DataLoader& loader)
 {
     loader >> m_randomGenerator;
 }

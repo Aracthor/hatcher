@@ -2,8 +2,8 @@
 #include <iostream>
 #include <limits>
 
-#include "hatcher/ComponentLoader.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/RandomGenerator.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
@@ -58,11 +58,11 @@ int testInt()
     constexpr int testCount = std::size(input);
     int output[testCount];
 
-    ComponentSaver saver;
+    DataSaver saver;
     for (int i = 0; i < testCount; i++)
         saver << input[i];
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
@@ -88,11 +88,11 @@ int testFloat()
     constexpr int testCount = std::size(input);
     float output[testCount];
 
-    ComponentSaver saver;
+    DataSaver saver;
     for (int i = 0; i < testCount; i++)
         saver << input[i];
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
@@ -113,11 +113,11 @@ int testVector()
     constexpr int testCount = std::size(input);
     glm::vec3 output[testCount];
 
-    ComponentSaver saver;
+    DataSaver saver;
     for (int i = 0; i < testCount; i++)
         saver << input[i];
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
@@ -138,11 +138,11 @@ int testBox()
     constexpr int testCount = std::size(input);
     Box3f output[testCount];
 
-    ComponentSaver saver;
+    DataSaver saver;
     for (int i = 0; i < testCount; i++)
         saver << input[i];
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
@@ -157,7 +157,7 @@ int testRandomGenerator()
 {
     RandomGenerator randomGenerator(4242);
 
-    ComponentSaver saver;
+    DataSaver saver;
     saver << randomGenerator;
 
     float input[] = {
@@ -166,7 +166,7 @@ int testRandomGenerator()
         randomGenerator.RandomFloat(0.f, 1.f),
     };
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     loader >> randomGenerator;
 
     float output[] = {
@@ -192,11 +192,11 @@ int testString()
     constexpr int testCount = std::size(input);
     std::string output[testCount];
 
-    ComponentSaver saver;
+    DataSaver saver;
     for (int i = 0; i < testCount; i++)
         saver << input[i];
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
@@ -216,7 +216,7 @@ int testCombined()
     Box3f inputBox{{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}};
     std::string inputString = "Hello World!";
 
-    ComponentSaver saver;
+    DataSaver saver;
     saver << inputVec;
     saver << inputCount1;
     saver << inputCount2;
@@ -231,7 +231,7 @@ int testCombined()
     bool outputBool;
     std::string outputString;
 
-    ComponentLoader loader(saver.Result());
+    DataLoader loader(saver.Result());
     loader >> outputVec;
     loader >> outputCount1;
     loader >> outputCount2;

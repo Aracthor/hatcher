@@ -6,8 +6,8 @@
 
 namespace hatcher
 {
-class ComponentLoader;
-class ComponentSaver;
+class DataLoader;
+class DataSaver;
 } // namespace hatcher
 
 using namespace hatcher;
@@ -17,5 +17,5 @@ struct InventoryComponent
     std::vector<Entity::IDType> storage;
 };
 
-void operator<<(ComponentSaver& saver, const InventoryComponent& component);
-void operator>>(ComponentLoader& loader, InventoryComponent& component);
+void operator<<(DataSaver& saver, const InventoryComponent& component);
+void operator>>(DataLoader& loader, InventoryComponent& component);

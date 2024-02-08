@@ -1,17 +1,17 @@
 #include "ShooterComponent.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 
 using namespace hatcher;
 
-void operator<<(ComponentSaver& saver, const ShooterComponent& component)
+void operator<<(DataSaver& saver, const ShooterComponent& component)
 {
     saver << component.shoots;
 }
 
-void operator>>(ComponentLoader& loader, ShooterComponent& component)
+void operator>>(DataLoader& loader, ShooterComponent& component)
 {
     loader >> component.shoots;
 }

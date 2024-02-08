@@ -9,7 +9,7 @@
 namespace hatcher
 {
 
-class ComponentSaver final
+class DataSaver final
 {
 public:
     const std::vector<ubyte>& Result() const;
@@ -36,4 +36,4 @@ private:
 
 } // namespace hatcher
 
-#include "ComponentSaver.ipp"
+#include "DataSaver.ipp"

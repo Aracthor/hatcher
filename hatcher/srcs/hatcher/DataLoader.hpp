@@ -9,10 +9,10 @@
 namespace hatcher
 {
 
-class ComponentLoader final
+class DataLoader final
 {
 public:
-    ComponentLoader(const std::vector<ubyte>& data);
+    DataLoader(const std::vector<ubyte>& data);
 
     template <typename T>
     inline void operator>>(T& value);
@@ -34,4 +34,4 @@ private:
 
 } // namespace hatcher
 
-#include "ComponentLoader.ipp"
+#include "DataLoader.ipp"

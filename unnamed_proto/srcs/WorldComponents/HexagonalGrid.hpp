@@ -57,8 +57,8 @@ public:
 
     void SetTileWalkable(TileCoord coord, bool walkable);
 
-    void Save(ComponentSaver& saver) const override;
-    void Load(ComponentLoader& loader) override;
+    void Save(DataSaver& saver) const override;
+    void Load(DataLoader& loader) override;
 
 private:
     TileData& GetOrCreateData(TileCoord coord);

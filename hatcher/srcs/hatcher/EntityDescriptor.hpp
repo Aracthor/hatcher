@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "ComponentSaver.hpp"
+#include "DataSaver.hpp"
 #include "EntityDescriptorID.hpp"
 
 namespace hatcher
@@ -35,7 +35,7 @@ public:
 
 private:
     int m_componentCount = 0;
-    ComponentSaver m_saver;
+    DataSaver m_saver;
 };
 
 struct EntityDescriptorRegisterer

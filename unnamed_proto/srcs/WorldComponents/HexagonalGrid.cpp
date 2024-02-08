@@ -1,8 +1,8 @@
 #include "HexagonalGrid.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 #include "hatcher/assert.hpp"
 
 namespace
@@ -171,13 +171,13 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
     }
 }
 
-void HexagonalGrid::Save(ComponentSaver& saver) const
+void HexagonalGrid::Save(DataSaver& saver) const
 {
     saver << m_hexaSize;
     saver << m_tilesData;
 }
 
-void HexagonalGrid::Load(ComponentLoader& loader)
+void HexagonalGrid::Load(DataLoader& loader)
 {
     loader >> m_hexaSize;
     loader >> m_tilesData;

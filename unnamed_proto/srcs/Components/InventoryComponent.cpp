@@ -1,14 +1,14 @@
 #include "Components/InventoryComponent.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 
-void operator<<(ComponentSaver& saver, const InventoryComponent& component)
+void operator<<(DataSaver& saver, const InventoryComponent& component)
 {
     saver << component.storage;
 }
 
-void operator>>(ComponentLoader& loader, InventoryComponent& component)
+void operator>>(DataLoader& loader, InventoryComponent& component)
 {
     loader >> component.storage;
 }

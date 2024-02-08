@@ -1,17 +1,17 @@
 #include "Lives.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 
 using namespace hatcher;
 
-void Lives::Save(ComponentSaver& saver) const
+void Lives::Save(DataSaver& saver) const
 {
     saver << remaining;
 }
 
-void Lives::Load(ComponentLoader& loader)
+void Lives::Load(DataLoader& loader)
 {
     loader >> remaining;
 }

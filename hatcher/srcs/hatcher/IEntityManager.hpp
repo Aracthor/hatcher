@@ -5,8 +5,8 @@
 
 namespace hatcher
 {
-class ComponentLoader;
-class ComponentSaver;
+class DataLoader;
+class DataSaver;
 class EntityDescriptorID;
 class EntityEgg;
 class IEntityDescriptor;
@@ -19,8 +19,8 @@ public:
     virtual EntityEgg CreateNewEntity(EntityDescriptorID id) = 0;
     virtual void DeleteEntity(Entity entity) = 0;
 
-    virtual void Save(ComponentSaver& saver) const = 0;
-    virtual void Load(ComponentLoader& loader) = 0;
+    virtual void Save(DataSaver& saver) const = 0;
+    virtual void Load(DataLoader& loader) = 0;
 };
 
 } // namespace hatcher

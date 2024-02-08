@@ -110,9 +110,9 @@ IMGUI_OBJS_WEBASM=	$(IMGUI_SRCS:$(IMGUI_REPO)%.cpp=$(OBJS_WEBASM_IMGUI_DIR)%.o)
 
 
 SRCS_FILES=	CommandManager.cpp			\
-		ComponentLoader.cpp			\
 		ComponentManager.cpp			\
-		ComponentSaver.cpp			\
+		DataLoader.cpp				\
+		DataSaver.cpp				\
 		EntityDescriptor.cpp			\
 		EntityDescriptorCatalog.cpp		\
 		EntityManager.cpp			\

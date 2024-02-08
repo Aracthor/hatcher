@@ -1,7 +1,7 @@
 #include <iostream>
 
-#include "hatcher/ComponentLoader.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -24,7 +24,7 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        ComponentSaver saver;
+        DataSaver saver;
         entityManager->Save(saver);
         m_save = saver.Result();
         std::cout << "State saved." << std::endl;
@@ -47,7 +47,7 @@ public:
     {
         if (!m_save.empty())
         {
-            ComponentLoader loader(m_save);
+            DataLoader loader(m_save);
             entityManager->Load(loader);
             std::cout << "State loaded." << std::endl;
         }

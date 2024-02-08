@@ -4,14 +4,14 @@ namespace hatcher
 {
 
 template <typename T>
-void ComponentSaver::operator<<(const T& value)
+void DataSaver::operator<<(const T& value)
 {
     static_assert(std::is_trivially_copyable_v<T>);
     SaveData(&value, sizeof(value));
 }
 
 template <typename T>
-void ComponentSaver::operator<<(const std::vector<T>& vector)
+void DataSaver::operator<<(const std::vector<T>& vector)
 {
     *this << static_cast<int>(vector.size());
     for (const auto& value : vector)
@@ -19,7 +19,7 @@ void ComponentSaver::operator<<(const std::vector<T>& vector)
 }
 
 template <class Key, class T, class Hash>
-void ComponentSaver::operator<<(const std::unordered_map<Key, T, Hash>& map)
+void DataSaver::operator<<(const std::unordered_map<Key, T, Hash>& map)
 {
     int size = map.size();
     *this << size;
@@ -31,7 +31,7 @@ void ComponentSaver::operator<<(const std::unordered_map<Key, T, Hash>& map)
 }
 
 template <class Component>
-void ComponentSaver::SaveComponent(Component& component)
+void DataSaver::SaveComponent(Component& component)
 {
     uint key = ComponentKey<Component>();
     *this << key;

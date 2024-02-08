@@ -1,17 +1,17 @@
 #include "Score.hpp"
 
-#include "hatcher/ComponentLoader.hpp"
 #include "hatcher/ComponentRegisterer.hpp"
-#include "hatcher/ComponentSaver.hpp"
+#include "hatcher/DataLoader.hpp"
+#include "hatcher/DataSaver.hpp"
 
 using namespace hatcher;
 
-void Score::Save(ComponentSaver& saver) const
+void Score::Save(DataSaver& saver) const
 {
     saver << points;
 }
 
-void Score::Load(ComponentLoader& loader)
+void Score::Load(DataLoader& loader)
 {
     loader >> points;
 }

@@ -1,7 +1,7 @@
 #include "assert.hpp"
 
-#include "ComponentLoader.hpp"
-#include "ComponentSaver.hpp"
+#include "DataLoader.hpp"
+#include "DataSaver.hpp"
 #include "checked_cast.hpp"
 
 namespace hatcher
@@ -48,7 +48,7 @@ void IdentifiableComponentList<Component>::CreateComponent(uint index)
 }
 
 template <class Component>
-void IdentifiableComponentList<Component>::Save(uint index, ComponentSaver& saver)
+void IdentifiableComponentList<Component>::Save(uint index, DataSaver& saver)
 {
     HATCHER_ASSERT(index < m_components.size());
     HATCHER_ASSERT(m_components[index].has_value());
@@ -56,7 +56,7 @@ void IdentifiableComponentList<Component>::Save(uint index, ComponentSaver& save
 }
 
 template <class Component>
-void IdentifiableComponentList<Component>::Load(uint index, ComponentLoader& loader)
+void IdentifiableComponentList<Component>::Load(uint index, DataLoader& loader)
 {
     HATCHER_ASSERT(index < m_components.size());
     HATCHER_ASSERT(m_components[index].has_value());

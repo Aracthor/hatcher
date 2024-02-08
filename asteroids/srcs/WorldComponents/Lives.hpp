@@ -6,6 +6,6 @@ struct Lives final : public hatcher::IWorldComponent
 {
     int remaining = 3;
 
-    void Save(hatcher::ComponentSaver& saver) const override;
-    void Load(hatcher::ComponentLoader& loader) override;
+    void Save(hatcher::DataSaver& saver) const override;
+    void Load(hatcher::DataLoader& loader) override;
 };

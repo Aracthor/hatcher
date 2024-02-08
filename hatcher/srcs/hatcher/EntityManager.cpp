@@ -1,8 +1,8 @@
 #include "EntityManager.hpp"
 
-#include "ComponentLoader.hpp"
 #include "ComponentManager.hpp"
-#include "ComponentSaver.hpp"
+#include "DataLoader.hpp"
+#include "DataSaver.hpp"
 #include "Entity.hpp"
 #include "EntityDescriptor.hpp"
 #include "EntityDescriptorCatalog.hpp"
@@ -85,11 +85,11 @@ EntityEgg EntityManager::CreateNewEntity(EntityDescriptorID id)
     const Entity::IDType temporaryID = m_entitiesToAdd.size() - 1;
     const IEntityDescriptor* descriptor = m_descriptorCatalog->GetDescriptor(id);
     HATCHER_ASSERT(descriptor != nullptr);
-    ComponentLoader loader = ComponentLoader(descriptor->GetComponentData());
+    DataLoader loader = DataLoader(descriptor->GetComponentData());
     m_temporaryComponentManager->LoadEntityComponents(loader, temporaryID);
     if (m_temporaryRenderingComponentManager)
     {
-        ComponentLoader renderingLoader = ComponentLoader(descriptor->GetRenderingComponentData());
+        DataLoader renderingLoader = DataLoader(descriptor->GetRenderingComponentData());
         m_temporaryRenderingComponentManager->LoadEntityComponents(renderingLoader, temporaryID);
     }
 
@@ -103,14 +103,14 @@ void EntityManager::DeleteEntity(Entity entity)
         m_entitiesToDelete.push_back(entity);
 }
 
-void EntityManager::Save(ComponentSaver& saver) const
+void EntityManager::Save(DataSaver& saver) const
 {
     saver << m_maxEntityCount;
     m_componentManager->Save(saver);
     m_renderingComponentManager->Save(saver);
 }
 
-void EntityManager::Load(ComponentLoader& loader)
+void EntityManager::Load(DataLoader& loader)
 {
     loader >> m_maxEntityCount;
     m_entityIDRegistry->ResetEntityCount(m_maxEntityCount);

@@ -1,9 +1,9 @@
-#include "ComponentSaver.hpp"
+#include "DataSaver.hpp"
 
 namespace hatcher
 {
 
-void ComponentSaver::operator<<(const std::string& string)
+void DataSaver::operator<<(const std::string& string)
 {
     int size = string.size();
     *this << size;
@@ -11,7 +11,7 @@ void ComponentSaver::operator<<(const std::string& string)
         *this << value;
 }
 
-void ComponentSaver::SaveData(const void* data, int size)
+void DataSaver::SaveData(const void* data, int size)
 {
     std::size_t currentSize = m_data.size();
     m_data.resize(currentSize + size);
@@ -25,7 +25,7 @@ void ComponentSaver::SaveData(const void* data, int size)
     }
 }
 
-const std::vector<ubyte>& ComponentSaver::Result() const
+const std::vector<ubyte>& DataSaver::Result() const
 {
     return m_data;
 }

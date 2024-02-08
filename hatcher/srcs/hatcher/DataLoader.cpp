@@ -1,14 +1,14 @@
-#include "ComponentLoader.hpp"
+#include "DataLoader.hpp"
 
 namespace hatcher
 {
 
-ComponentLoader::ComponentLoader(const std::vector<ubyte>& data)
+DataLoader::DataLoader(const std::vector<ubyte>& data)
     : m_data(data)
 {
 }
 
-void ComponentLoader::operator>>(std::string& string)
+void DataLoader::operator>>(std::string& string)
 {
     int size;
     *this >> size;
@@ -19,7 +19,7 @@ void ComponentLoader::operator>>(std::string& string)
     }
 }
 
-void ComponentLoader::LoadData(void* value, int size)
+void DataLoader::LoadData(void* value, int size)
 {
     ubyte* bytes = reinterpret_cast<ubyte*>(value);
     while (size-- > 0)

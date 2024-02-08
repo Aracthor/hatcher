@@ -1,8 +1,8 @@
 #include "ComponentManager.hpp"
 
 #include "ComponentList.hpp"
-#include "ComponentLoader.hpp"
-#include "ComponentSaver.hpp"
+#include "DataLoader.hpp"
+#include "DataSaver.hpp"
 #include "IWorldComponent.hpp"
 
 namespace hatcher
@@ -46,7 +46,7 @@ void ComponentManager::ClearEntities()
     }
 }
 
-void ComponentManager::Save(ComponentSaver& saver) const
+void ComponentManager::Save(DataSaver& saver) const
 {
     for (auto& worldComponent : m_worldComponents)
     {
@@ -73,7 +73,7 @@ void ComponentManager::Save(ComponentSaver& saver) const
     }
 }
 
-void ComponentManager::Load(ComponentLoader& loader)
+void ComponentManager::Load(DataLoader& loader)
 {
     for (auto& worldComponent : m_worldComponents)
     {
@@ -86,7 +86,7 @@ void ComponentManager::Load(ComponentLoader& loader)
     }
 }
 
-void ComponentManager::LoadEntityComponents(ComponentLoader& loader, int entityID)
+void ComponentManager::LoadEntityComponents(DataLoader& loader, int entityID)
 {
     int componentCount;
     loader >> componentCount;

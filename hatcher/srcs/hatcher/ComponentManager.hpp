@@ -10,8 +10,8 @@
 
 namespace hatcher
 {
-class ComponentLoader;
-class ComponentSaver;
+class DataLoader;
+class DataSaver;
 class IComponentList;
 class IWorldComponent;
 
@@ -60,9 +60,9 @@ public:
     void RemoveEntity(Entity entity);
     void ClearEntities();
 
-    void Save(ComponentSaver& saver) const;
-    void Load(ComponentLoader& loader);
-    void LoadEntityComponents(ComponentLoader& loader, int entityID);
+    void Save(DataSaver& saver) const;
+    void Load(DataLoader& loader);
+    void LoadEntityComponents(DataLoader& loader, int entityID);
 
     int Count() const { return m_entityCount; }
 

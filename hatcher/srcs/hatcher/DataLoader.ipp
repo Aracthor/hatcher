@@ -2,14 +2,14 @@ namespace hatcher
 {
 
 template <typename T>
-void ComponentLoader::operator>>(T& value)
+void DataLoader::operator>>(T& value)
 {
     static_assert(std::is_trivially_copyable_v<T>);
     LoadData(&value, sizeof(value));
 }
 
 template <typename T>
-void ComponentLoader::operator>>(std::vector<T>& vector)
+void DataLoader::operator>>(std::vector<T>& vector)
 {
     int size;
     *this >> size;
@@ -19,7 +19,7 @@ void ComponentLoader::operator>>(std::vector<T>& vector)
 }
 
 template <class Key, class T, class Hash>
-void ComponentLoader::operator>>(std::unordered_map<Key, T, Hash>& map)
+void DataLoader::operator>>(std::unordered_map<Key, T, Hash>& map)
 {
     map = {};
 

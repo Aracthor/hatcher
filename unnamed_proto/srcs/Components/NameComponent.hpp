@@ -4,8 +4,8 @@
 
 namespace hatcher
 {
-class ComponentLoader;
-class ComponentSaver;
+class DataLoader;
+class DataSaver;
 } // namespace hatcher
 
 struct NameComponent
@@ -13,5 +13,5 @@ struct NameComponent
     std::string name;
 };
 
-void operator<<(hatcher::ComponentSaver& saver, const NameComponent& component);
-void operator>>(hatcher::ComponentLoader& loader, NameComponent& component);
+void operator<<(hatcher::DataSaver& saver, const NameComponent& component);
+void operator>>(hatcher::DataLoader& loader, NameComponent& component);
