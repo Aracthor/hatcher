@@ -18,6 +18,17 @@ using namespace hatcher;
 namespace
 {
 
+Entity GetPlayerEntityID(ComponentManager* componentManager)
+{
+    auto playerComponents = componentManager->WriteComponents<PlayerComponent>();
+    for (int i = 0; i < componentManager->Count(); i++)
+    {
+        if (playerComponents[i])
+            return Entity(i);
+    }
+    return Entity::Invalid();
+}
+
 class PlayerControlCommand final : public ICommand
 {
     using Functor = std::function<void(PlayerComponent& component)>;
@@ -31,11 +42,11 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        auto playerComponents = componentManager->WriteComponents<PlayerComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        if (playerEntity != Entity::Invalid())
         {
-            if (playerComponents[i])
-                m_functor(*playerComponents[i]);
+            PlayerComponent& playerComponent = *componentManager->WriteComponents<PlayerComponent>()[playerEntity];
+            m_functor(playerComponent);
         }
     }
 
@@ -49,33 +60,26 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
-        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
-        auto shooterComponents = componentManager->WriteComponents<ShooterComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        if (playerEntity == Entity::Invalid())
+            return;
+
+        const auto& positionComponent = componentManager->ReadComponents<PositionComponent>()[playerEntity];
+        auto& shooterComponent = componentManager->WriteComponents<ShooterComponent>()[playerEntity];
+        auto& collidableComponent = componentManager->ReadComponents<CollidableComponent>()[playerEntity];
+        HATCHER_ASSERT(positionComponent);
+        HATCHER_ASSERT(shooterComponent);
+        if (shooterComponent->shoots.size() < 4)
         {
-            if (playerComponents[i])
-            {
-                const auto& positionComponent = positionComponents[i];
-                auto& shooterComponent = shooterComponents[i];
-                HATCHER_ASSERT(positionComponent);
-                HATCHER_ASSERT(shooterComponent);
-                if (shooterComponent->shoots.size() < 4)
-                {
-                    const glm::vec2 direction = {glm::cos(positionComponent->angle),
-                                                 glm::sin(positionComponent->angle)};
-                    const glm::vec2 start =
-                        positionComponent->position + direction * (collidableComponents[i]->size + 3);
-                    const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
-                    EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
-                    newProjectile.GetComponent<ProjectileComponent>()->shooter = i;
-                    auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
-                    projectilePositionComponent->position = start;
-                    projectilePositionComponent->speed = startSpeed;
-                    shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
-                }
-            }
+            const glm::vec2 direction = {glm::cos(positionComponent->angle), glm::sin(positionComponent->angle)};
+            const glm::vec2 start = positionComponent->position + direction * (collidableComponent->size + 3);
+            const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
+            EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
+            newProjectile.GetComponent<ProjectileComponent>()->shooter = playerEntity.ID();
+            auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();
+            projectilePositionComponent->position = start;
+            projectilePositionComponent->speed = startSpeed;
+            shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
         }
     }
 };

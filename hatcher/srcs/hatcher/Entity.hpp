@@ -26,6 +26,7 @@ public:
     IDType ID() const { return m_ID; }
 
     bool operator==(Entity other) const { return ID() == other.ID(); }
+    bool operator!=(Entity other) const { return ID() != other.ID(); }
 };
 
 } // namespace hatcher
