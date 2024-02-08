@@ -114,7 +114,7 @@ public:
             auto functor = [action](PlayerComponent& component) { component.accelerating = action; };
             commandManager->AddCommand(new PlayerControlCommand(functor));
         }
-        if (event.key.keysym.scancode == SDL_SCANCODE_SPACE)
+        if (event.key.keysym.scancode == SDL_SCANCODE_SPACE && event.type == SDL_KEYDOWN)
         {
             commandManager->AddCommand(new PlayerShootCommand());
         }
