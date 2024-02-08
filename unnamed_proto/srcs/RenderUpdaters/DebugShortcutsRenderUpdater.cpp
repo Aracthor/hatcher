@@ -28,8 +28,6 @@ public:
         entityManager->DeleteEntity(m_entity);
     }
 
-    span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }
-
 private:
     const Entity m_entity;
 };

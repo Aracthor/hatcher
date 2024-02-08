@@ -30,8 +30,6 @@ public:
         componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
     }
 
-    span<const Entity> AffectedEntities() const override { return {&m_entity, 1}; }
-
 private:
     const Entity m_entity;
     const std::vector<glm::vec2> m_path;
