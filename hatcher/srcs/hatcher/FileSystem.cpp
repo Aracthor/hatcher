@@ -3,20 +3,9 @@
 namespace hatcher
 {
 
-FileSystem::FileSystem(const char* commandLine)
+FileSystem::FileSystem(const std::string& pathToProject)
+    : m_pathToProject(pathToProject)
 {
-#ifndef __EMSCRIPTEN__
-    if (commandLine)
-    {
-        const std::string commandLineStr = commandLine;
-        const std::size_t lastSlash = commandLineStr.rfind('/');
-        if (lastSlash != std::string::npos)
-        {
-            m_pathToProject = commandLineStr.substr(0, lastSlash + 1);
-        }
-    }
-    m_pathToProject += "../";
-#endif
 }
 
 std::string FileSystem::PathToFileName(const std::string& fileName) const

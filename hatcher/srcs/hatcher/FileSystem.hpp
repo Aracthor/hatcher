@@ -8,7 +8,7 @@ namespace hatcher
 class FileSystem
 {
 public:
-    FileSystem(const char* commandName);
+    FileSystem(const std::string& pathToProject);
 
     std::string PathToFileName(const std::string& fileName) const;
 

@@ -9,14 +9,16 @@
 #include "Graphics/Clock.hpp"
 #include "Graphics/Rendering.hpp"
 
+#include "ApplicationConfiguration.hpp"
 #include "FileSystem.hpp"
 #include "World.hpp"
 
 namespace hatcher
 {
 
-GameApplication::GameApplication(const char* commandName)
-    : m_fileSystem(new FileSystem(commandName))
+GameApplication::GameApplication(int argc, char** argv)
+    : m_configuration(new ApplicationConfiguration(argc, argv))
+    , m_fileSystem(new FileSystem(m_configuration->pathToProject))
     , m_world(make_unique<World>())
 {
 }
