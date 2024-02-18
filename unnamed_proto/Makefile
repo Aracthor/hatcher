@@ -19,7 +19,6 @@ SRCS_FILES=	main.cpp						\
 		RenderUpdaters/HexaGridControlPanelRenderUpdater.cpp	\
 		RenderUpdaters/InventoryPanelRenderUpdater.cpp		\
 		RenderUpdaters/MoveOrderRenderUpdater.cpp		\
-		RenderUpdaters/SaveLoaderRenderUpdater.cpp 		\
 		RenderUpdaters/SelectionRectangleRenderUpdater.cpp	\
 		RenderUpdaters/SelectedRenderUpdater.cpp	 	\
 		RenderUpdaters/StaticMeshRenderUpdater.cpp 		\
@@ -27,7 +26,7 @@ SRCS_FILES=	main.cpp						\
 									\
 		WorldComponents/Camera.cpp				\
 		WorldComponents/HexagonalGrid.cpp			\
-		
+
 NATIVE_NAME=	exec
 
 include ../common.make

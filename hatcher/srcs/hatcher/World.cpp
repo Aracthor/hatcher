@@ -139,7 +139,7 @@ void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* applica
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->ProcessEvents(events, application, m_commandManager.get(),
+        m_eventUpdater->ProcessEvents(events, application, m_entityManager.get(), m_commandManager.get(),
                                       m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }

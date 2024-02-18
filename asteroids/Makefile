@@ -23,7 +23,6 @@ SRCS_FILES=	main.cpp				\
 		RenderUpdaters/LivesRenderUpdater.cpp	\
 		RenderUpdaters/MeshDisplayUpdater.cpp	\
 		RenderUpdaters/ProjectionViewUpdater.cpp\
-		RenderUpdaters/SaveLoaderRenderUpdater.cpp\
 		RenderUpdaters/ScoreRenderUpdater.cpp	\
 		RenderUpdaters/PlayerControlUpdater.cpp	\
 
