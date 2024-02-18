@@ -29,13 +29,11 @@ Entity GetPlayerEntityID(ComponentManager* componentManager)
     return Entity::Invalid();
 }
 
-class PlayerControlCommand final : public ICommand
+class PlayerTurnLeftCommand final : public ICommand
 {
-    using Functor = std::function<void(PlayerComponent& component)>;
-
 public:
-    PlayerControlCommand(Functor functor)
-        : m_functor(functor)
+    PlayerTurnLeftCommand(bool action)
+        : m_action(action)
     {
     }
 
@@ -44,14 +42,51 @@ public:
     {
         const Entity playerEntity = GetPlayerEntityID(componentManager);
         if (playerEntity != Entity::Invalid())
-        {
-            PlayerComponent& playerComponent = *componentManager->WriteComponents<PlayerComponent>()[playerEntity];
-            m_functor(playerComponent);
-        }
+            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->turningLeft = m_action;
     }
 
 private:
-    Functor m_functor;
+    const bool m_action;
+};
+
+class PlayerTurnRightCommand final : public ICommand
+{
+public:
+    PlayerTurnRightCommand(bool action)
+        : m_action(action)
+    {
+    }
+
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
+                 ComponentManager* renderingComponentManager) override
+    {
+        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        if (playerEntity != Entity::Invalid())
+            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->turningRight = m_action;
+    }
+
+private:
+    const bool m_action;
+};
+
+class PlayerAccelerateCommand final : public ICommand
+{
+public:
+    PlayerAccelerateCommand(bool action)
+        : m_action(action)
+    {
+    }
+
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
+                 ComponentManager* renderingComponentManager) override
+    {
+        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        if (playerEntity != Entity::Invalid())
+            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->accelerating = m_action;
+    }
+
+private:
+    const bool m_action;
 };
 
 class PlayerShootCommand final : public ICommand
@@ -101,18 +136,15 @@ public:
         const bool action = (event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
         {
-            auto functor = [action](PlayerComponent& component) { component.turningLeft = action; };
-            commandManager->AddCommand(new PlayerControlCommand(functor));
+            commandManager->AddCommand(new PlayerTurnLeftCommand(action));
         }
         if (event.key.keysym.scancode == SDL_SCANCODE_RIGHT)
         {
-            auto functor = [action](PlayerComponent& component) { component.turningRight = action; };
-            commandManager->AddCommand(new PlayerControlCommand(functor));
+            commandManager->AddCommand(new PlayerTurnRightCommand(action));
         }
         if (event.key.keysym.scancode == SDL_SCANCODE_UP)
         {
-            auto functor = [action](PlayerComponent& component) { component.accelerating = action; };
-            commandManager->AddCommand(new PlayerControlCommand(functor));
+            commandManager->AddCommand(new PlayerAccelerateCommand(action));
         }
         if (event.key.keysym.scancode == SDL_SCANCODE_SPACE && event.type == SDL_KEYDOWN)
         {
