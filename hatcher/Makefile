@@ -24,7 +24,8 @@ DEBUG_DIR=		debug/
 
 IMGUI_SUBDIRS=		backends/	\
 
-SRCS_SUBDIRS=		Graphics/	\
+SRCS_SUBDIRS=		Maths/		\
+			Graphics/	\
 
 SRCS_SUBSUBDIRS=	Graphics/Core/	\
 
