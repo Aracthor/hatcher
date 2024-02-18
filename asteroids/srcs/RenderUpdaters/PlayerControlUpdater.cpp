@@ -1,10 +1,11 @@
-#include "hatcher/CommandManager.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/ICommand.hpp"
+#include "hatcher/ICommandManager.hpp"
 #include "hatcher/assert.hpp"
 
 #include "Components/CollidableComponent.hpp"
