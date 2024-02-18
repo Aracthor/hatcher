@@ -15,7 +15,6 @@ SRCS_FILES=	main.cpp				\
 		Updaters/PlayerCreatorUpdater.cpp	\
 		Updaters/PlayerMovementUpdater.cpp	\
 		Updaters/ProjectileUpdater.cpp		\
-		Updaters/SaveLoaderRenderUpdater.cpp	\
 		Updaters/ScreenBorderTeleportUpdater.cpp\
 		Updaters/SubdivisionUpdater.cpp		\
 		Updaters/UFOUpdater.cpp			\
@@ -24,6 +23,7 @@ SRCS_FILES=	main.cpp				\
 		RenderUpdaters/LivesRenderUpdater.cpp	\
 		RenderUpdaters/MeshDisplayUpdater.cpp	\
 		RenderUpdaters/ProjectionViewUpdater.cpp\
+		RenderUpdaters/SaveLoaderRenderUpdater.cpp\
 		RenderUpdaters/ScoreRenderUpdater.cpp	\
 		RenderUpdaters/PlayerControlUpdater.cpp	\
 
