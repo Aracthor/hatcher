@@ -3,6 +3,7 @@
 #include <algorithm> // std::find
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <vector>
 
 #include "Mesh.hpp"
