@@ -6,6 +6,7 @@
 #include "hatcher/Graphics/MaterialFactory.hpp"
 #include "hatcher/Graphics/Mesh.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/assert.hpp"
 #include "hatcher/unique_ptr.hpp"
 
@@ -20,16 +21,17 @@ class HexaGridRenderUpdater final : public RenderUpdater
 public:
     HexaGridRenderUpdater(const IRendering* rendering)
     {
-        m_gridMaterial =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
+
+        m_gridMaterial = materialFactory->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
         m_gridMaterial->AddUniform("uniHeight", 0.01f);
         m_gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
         m_gridTileMesh = make_unique<Mesh>(m_gridMaterial.get(), Primitive::Lines);
 
-        m_tileMaterial =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
-        m_tileMaterial->AddUniform("uniHeight", 0.f);
-        m_tileMaterial->AddUniform("uniColor", glm::vec4(0.3, 0.3, 0.3, 1.0));
+        m_texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");
+
+        m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/hello_texture.frag");
+        m_tileMaterial->AddTexture("uniTexture", m_texture);
         m_walkableTileMesh = make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleFan);
     }
 
@@ -103,6 +105,8 @@ private:
 
     bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
+
+    const Texture* m_texture = nullptr;
 
     unique_ptr<Material> m_gridMaterial;
     unique_ptr<Material> m_tileMaterial;
