@@ -32,7 +32,7 @@ public:
         m_texture = materialFactory->TextureFromFile("assets/textures/locker.bmp");
 
         m_fillMaterial = materialFactory->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
-        m_fillMaterial->AddTexture("diffuseTexture", m_texture);
+        m_fillMaterial->AddTexture("uniTexture", m_texture);
         m_lineMaterial = materialFactory->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_color.frag");
         m_lineMaterial->AddUniform("uniColor", glm::vec4(0.0, 0.0, 0.0, 1.0));
 

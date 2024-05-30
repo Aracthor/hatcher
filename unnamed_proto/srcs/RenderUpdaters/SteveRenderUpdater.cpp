@@ -30,7 +30,7 @@ public:
                                                                      "shaders/hello_texture.frag");
 
         m_texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
-        m_material->AddTexture("diffuseTexture", m_texture);
+        m_material->AddTexture("uniTexture", m_texture);
 
         const Material* material = m_material.get();
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
