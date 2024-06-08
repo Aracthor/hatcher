@@ -7,6 +7,8 @@
 
 namespace
 {
+const float hexaSize = sqrt(4.f / 3.f) / 2.f;
+
 float DegreeToRadian(float angle)
 {
     return angle / 180.f * M_PI;
@@ -71,8 +73,7 @@ std::array<HexagonalGrid::TileCoord, 6> HexagonalGrid::TileCoord::Neighbours() c
 }
 
 HexagonalGrid::HexagonalGrid()
-    : m_hexaSize(sqrt(4.f / 3.f) / 2.f)
-    , m_tileCoordMin(0, 0)
+    : m_tileCoordMin(0, 0)
     , m_tileCoordMax(0, 0)
 {
     const glm::vec2 qVector = glm::vec2(sqrtf(3.f), 0.f);
@@ -81,7 +82,7 @@ HexagonalGrid::HexagonalGrid()
     m_hexToPosMatrix[0][1] = rVector.x;
     m_hexToPosMatrix[1][0] = qVector.y;
     m_hexToPosMatrix[1][1] = rVector.y;
-    m_hexToPosMatrix *= m_hexaSize;
+    m_hexToPosMatrix *= hexaSize;
     m_posToHexMatrix = glm::inverse(m_hexToPosMatrix);
 
     for (int q = -5; q <= 5; q++)
@@ -133,7 +134,7 @@ glm::vec2 HexagonalGrid::GetHexaAngle(TileCoord coord, int angleIndex) const
 {
     const float angle = DegreeToRadian(30.f + float(angleIndex) * 60.f);
     const glm::vec2 hexagonCenter = TileCoordToPosition(coord);
-    return hexagonCenter + glm::vec2(cosf(angle), sinf(angle)) * m_hexaSize;
+    return hexagonCenter + glm::vec2(cosf(angle), sinf(angle)) * hexaSize;
 }
 
 std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(TileCoord start, TileCoord end) const
@@ -173,13 +174,11 @@ void HexagonalGrid::SetTileWalkable(TileCoord coord, bool walkable)
 
 void HexagonalGrid::Save(DataSaver& saver) const
 {
-    saver << m_hexaSize;
     saver << m_tilesData;
 }
 
 void HexagonalGrid::Load(DataLoader& loader)
 {
-    loader >> m_hexaSize;
     loader >> m_tilesData;
     UpdatePathfind();
 }

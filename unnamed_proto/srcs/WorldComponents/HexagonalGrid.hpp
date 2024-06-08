@@ -65,7 +65,6 @@ private:
 
     void UpdatePathfind();
 
-    float m_hexaSize;
     std::unordered_map<TileCoord, TileData, TileCoord::Hash> m_tilesData;
 
     Pathfinding m_pathfinding;
