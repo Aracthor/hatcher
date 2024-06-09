@@ -59,6 +59,7 @@ public:
     EntityCreatorRenderUpdater(const IRendering* rendering)
         : m_steveEntityDescriptor(EntityDescriptorID::Create("Steve"))
         , m_lockerEntityDescriptor(EntityDescriptorID::Create("Locker"))
+        , m_melonEntityDescriptor(EntityDescriptorID::Create("Melon"))
     {
         m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("EMCard"));
     }
@@ -94,6 +95,10 @@ public:
             {
                 entityDescriptor = &m_lockerEntityDescriptor;
             }
+            else if (event.button.button == SDL_BUTTON_LEFT)
+            {
+                entityDescriptor = &m_melonEntityDescriptor;
+            }
 
             if (entityDescriptor)
                 commandManager->AddCommand(
@@ -112,6 +117,7 @@ public:
 private:
     EntityDescriptorID m_steveEntityDescriptor;
     EntityDescriptorID m_lockerEntityDescriptor;
+    EntityDescriptorID m_melonEntityDescriptor;
     std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
 };
 

@@ -11,6 +11,7 @@
 
 #include <utility> // std::pair
 
+#include "Components/GrowableComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
@@ -21,6 +22,15 @@ using namespace hatcher;
 namespace
 {
 
+unique_ptr<Material> CreateTextureMaterial(MaterialFactory* materialFactory, const char* textureFileName)
+{
+    const Texture* texture = materialFactory->TextureFromFile(textureFileName);
+    unique_ptr<Material> material =
+        materialFactory->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
+    material->AddTexture("uniTexture", texture);
+    return material;
+}
+
 class StaticMeshRenderUpdater final : public RenderUpdater
 {
 public:
@@ -29,14 +39,10 @@ public:
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
-        const Texture* lockerTexture = materialFactory->TextureFromFile("assets/textures/locker.bmp");
-
-        m_fillMaterial = materialFactory->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
-        m_fillMaterial->AddTexture("uniTexture", lockerTexture);
-
-        const char* lockerFileName = "assets/meshes/locker.obj";
-        m_meshes[StaticMeshComponent::Locker] =
-            meshLoader->LoadWavefront(m_fillMaterial.get(), lockerFileName, Primitive::Triangles);
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Locker, "assets/meshes/locker.obj",
+                   "assets/textures/locker.bmp");
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
+                   "assets/textures/melon.bmp");
     }
 
     ~StaticMeshRenderUpdater() = default;
@@ -45,6 +51,7 @@ public:
                 IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        const auto growableComponents = componentManager->ReadComponents<GrowableComponent>();
         auto staticMeshComponents = renderComponentManager->WriteComponents<StaticMeshComponent>();
         auto selectableComponents = renderComponentManager->WriteComponents<SelectableComponent>();
 
@@ -60,14 +67,26 @@ public:
                 }
 
                 glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                if (growableComponents[i])
+                {
+                    modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
+                }
+
                 frameRenderer.AddMeshToRender(mesh.get(), modelMatrix);
             }
         }
     }
 
 private:
-    unique_ptr<Material> m_fillMaterial;
-    unique_ptr<Mesh> m_meshes[StaticMeshComponent::COUNT] = {};
+    void CreateMesh(MeshLoader* meshLoader, MaterialFactory* materialFactory, StaticMeshComponent::Type type,
+                    const char* meshFileName, const char* textureFileName)
+    {
+        m_materials[type] = CreateTextureMaterial(materialFactory, textureFileName);
+        m_meshes[type] = meshLoader->LoadWavefront(m_materials[type].get(), meshFileName, Primitive::Triangles);
+    }
+
+    unique_ptr<Material> m_materials[StaticMeshComponent::COUNT];
+    unique_ptr<Mesh> m_meshes[StaticMeshComponent::COUNT];
 };
 
 RenderUpdaterRegisterer<StaticMeshRenderUpdater> registerer;

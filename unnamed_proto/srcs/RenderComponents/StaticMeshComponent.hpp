@@ -7,6 +7,7 @@ struct StaticMeshComponent
     enum Type : hatcher::uint
     {
         Locker,
+        Melon,
         COUNT,
     };
 

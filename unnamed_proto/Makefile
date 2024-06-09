@@ -7,6 +7,7 @@ SRCS_FILES=	main.cpp						\
 		Components/Movement2DComponent.cpp			\
 		Components/NameComponent.cpp				\
 									\
+		Updaters/GrowableUpdater.cpp				\
 		Updaters/MovingEntitiesUpdater.cpp			\
 									\
 		RenderUpdaters/CameraRenderUpdater.cpp 			\

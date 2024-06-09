@@ -1,6 +1,7 @@
 #include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/EntityDescriptor.hpp"
 
+#include "Components/GrowableComponent.hpp"
 #include "Components/InventoryComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
@@ -15,6 +16,7 @@ using namespace hatcher;
 namespace
 {
 
+ComponentTypeRegisterer<GrowableComponent, EComponentList::Gameplay> growableRegisterer;
 ComponentTypeRegisterer<InventoryComponent, EComponentList::Gameplay> inventoryRegisterer;
 ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> itemRegisterer;
 ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> movement2DRegisterer;
@@ -55,6 +57,32 @@ EntityDescriptorRegisterer Locker{
         },
         StaticMeshComponent{
             .type = StaticMeshComponent::Locker,
+        },
+    },
+};
+
+EntityDescriptorRegisterer Melon{
+    EntityDescriptorID::Create("Melon"),
+    {
+        NameComponent{
+            .name = "Melon",
+        },
+        GrowableComponent{
+            .maturity = 0.25,
+            .growthTime = 600,
+        },
+        Position2DComponent{
+            .position = {},
+            .orientation = {1.f, 0.f},
+        },
+    },
+    {
+        SelectableComponent{
+            .box = {},
+            .selected = false,
+        },
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Melon,
         },
     },
 };
