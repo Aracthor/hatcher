@@ -28,10 +28,10 @@ public:
         m_gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
         m_gridTileMesh = make_unique<Mesh>(m_gridMaterial.get(), Primitive::Lines);
 
-        m_texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");
+        const Texture* texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");
 
         m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/textured.frag");
-        m_tileMaterial->AddTexture("uniTexture", m_texture);
+        m_tileMaterial->AddTexture("uniTexture", texture);
         m_walkableTileMesh = make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleFan);
     }
 
@@ -105,8 +105,6 @@ private:
 
     bool m_gridDisplayEnabled = true;
     bool m_meshFilled = false;
-
-    const Texture* m_texture = nullptr;
 
     unique_ptr<Material> m_gridMaterial;
     unique_ptr<Material> m_tileMaterial;

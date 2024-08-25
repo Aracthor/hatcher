@@ -28,8 +28,8 @@ public:
     {
         m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/textured.vert", "shaders/textured.frag");
 
-        m_texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
-        m_material->AddTexture("uniTexture", m_texture);
+        const Texture* texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
+        m_material->AddTexture("uniTexture", texture);
 
         const Material* material = m_material.get();
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
@@ -121,7 +121,6 @@ private:
         glm::mat4 matrix;
     };
 
-    const Texture* m_texture;
     unique_ptr<Material> m_material;
     BodyPart m_torso;
     BodyPart m_head;
