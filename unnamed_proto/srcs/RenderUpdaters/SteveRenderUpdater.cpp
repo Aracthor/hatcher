@@ -26,8 +26,7 @@ public:
     SteveRenderUpdater(const IRendering* rendering)
         : m_bodyParts({&m_torso, &m_head, &m_leftArm, &m_rightArm, &m_leftLeg, &m_rightLeg})
     {
-        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_3D.vert",
-                                                                     "shaders/hello_texture.frag");
+        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/textured.vert", "shaders/textured.frag");
 
         m_texture = rendering->GetMaterialFactory()->TextureFromFile("assets/textures/skins/steve.bmp");
         m_material->AddTexture("uniTexture", m_texture);

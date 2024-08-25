@@ -53,7 +53,7 @@ public:
     SelectionRectangleRenderUpdater(const IRendering* rendering)
     {
         m_material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_world.frag");
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/grounded.vert", "shaders/hello_world.frag");
         m_selectionRectangleMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {

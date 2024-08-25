@@ -25,8 +25,7 @@ namespace
 unique_ptr<Material> CreateTextureMaterial(MaterialFactory* materialFactory, const char* textureFileName)
 {
     const Texture* texture = materialFactory->TextureFromFile(textureFileName);
-    unique_ptr<Material> material =
-        materialFactory->CreateMaterial("shaders/hello_world_3D.vert", "shaders/hello_texture.frag");
+    unique_ptr<Material> material = materialFactory->CreateMaterial("shaders/textured.vert", "shaders/textured.frag");
     material->AddTexture("uniTexture", texture);
     return material;
 }

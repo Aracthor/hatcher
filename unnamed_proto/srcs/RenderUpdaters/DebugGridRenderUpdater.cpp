@@ -19,7 +19,7 @@ public:
     DebugGridRenderUpdater(const IRendering* rendering)
     {
         m_material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+            rendering->GetMaterialFactory()->CreateMaterial("shaders/grounded.vert", "shaders/const_color.frag");
         m_material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 0.2));
         m_gridMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 

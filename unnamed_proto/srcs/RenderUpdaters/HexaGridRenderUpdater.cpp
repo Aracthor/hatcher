@@ -23,14 +23,14 @@ public:
     {
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
-        m_gridMaterial = materialFactory->CreateMaterial("shaders/hello_world_2D.vert", "shaders/hello_color.frag");
+        m_gridMaterial = materialFactory->CreateMaterial("shaders/grounded.vert", "shaders/const_color.frag");
         m_gridMaterial->AddUniform("uniHeight", 0.01f);
         m_gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
         m_gridTileMesh = make_unique<Mesh>(m_gridMaterial.get(), Primitive::Lines);
 
         m_texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");
 
-        m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/hello_texture.frag");
+        m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/textured.frag");
         m_tileMaterial->AddTexture("uniTexture", m_texture);
         m_walkableTileMesh = make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleFan);
     }
