@@ -33,6 +33,8 @@ public:
         m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/textured.frag");
         m_tileMaterial->AddTexture("uniTexture", texture);
         m_walkableTileMesh = make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleFan);
+
+        FillGridMesh();
     }
 
     ~HexaGridRenderUpdater() = default;
@@ -41,10 +43,6 @@ public:
                 IFrameRenderer& frameRenderer) override
     {
         const HexagonalGrid* grid = componentManager->ReadWorldComponent<HexagonalGrid>();
-        if (!m_meshFilled)
-        {
-            FillGridMesh(grid);
-        }
 
         for (int r = grid->GetTileCoordMin().r; r <= grid->GetTileCoordMax().r; r++)
         {
@@ -85,17 +83,13 @@ public:
     }
 
 private:
-    void FillGridMesh(const HexagonalGrid* grid)
+    void FillGridMesh()
     {
-        HATCHER_ASSERT(m_meshFilled == false);
-        m_meshFilled = true;
-
         std::vector<float> tilePositions;
         tilePositions.reserve(12);
-        const HexagonalGrid::TileCoord centerCoord(0, 0);
         for (int i = 0; i < 6; i++)
         {
-            const glm::vec2 anglePosition = grid->GetHexaAngle(centerCoord, i);
+            const glm::vec2 anglePosition = HexagonalGrid::GetHexaAngle(i);
             tilePositions.push_back(anglePosition.x);
             tilePositions.push_back(anglePosition.y);
         }
@@ -104,7 +98,6 @@ private:
     }
 
     bool m_gridDisplayEnabled = true;
-    bool m_meshFilled = false;
 
     unique_ptr<Material> m_gridMaterial;
     unique_ptr<Material> m_tileMaterial;

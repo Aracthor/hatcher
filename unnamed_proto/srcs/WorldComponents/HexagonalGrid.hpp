@@ -38,6 +38,8 @@ public:
 
     static TileData defaultTile;
 
+    static glm::vec2 GetHexaAngle(int angleIndex);
+
     HexagonalGrid();
     ~HexagonalGrid();
 
@@ -49,7 +51,6 @@ public:
     const TileData& GetTileData(glm::vec2 position) const;
 
     glm::vec2 GetTileCenter(glm::vec2 position) const;
-    glm::vec2 GetHexaAngle(TileCoord tile, int angleIndex) const;
     TileCoord GetTileCoordMin() const { return m_tileCoordMin; }
     TileCoord GetTileCoordMax() const { return m_tileCoordMax; }
 

@@ -130,11 +130,10 @@ glm::vec2 HexagonalGrid::GetTileCenter(glm::vec2 position) const
     return TileCoordToPosition(PositionToTileCoords(position));
 }
 
-glm::vec2 HexagonalGrid::GetHexaAngle(TileCoord coord, int angleIndex) const
+glm::vec2 HexagonalGrid::GetHexaAngle(int angleIndex)
 {
     const float angle = DegreeToRadian(30.f + float(angleIndex) * 60.f);
-    const glm::vec2 hexagonCenter = TileCoordToPosition(coord);
-    return hexagonCenter + glm::vec2(cosf(angle), sinf(angle)) * hexaSize;
+    return glm::vec2(cosf(angle), sinf(angle)) * hexaSize;
 }
 
 std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(TileCoord start, TileCoord end) const
