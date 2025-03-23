@@ -14,7 +14,7 @@ void EntityDescriptorCatalog::AddEntityDescriptor(EntityDescriptorID id, IEntity
 {
     if (m_catalog.find(id) != m_catalog.end())
     {
-        std::cerr << "EntityDescriptorID doublon: '" << id.Name() << "'" << std::endl;
+        std::cerr << "EntityDescriptorID doublon" << std::endl;
         std::abort();
     }
     m_catalog.emplace(id, descriptor);
@@ -24,7 +24,7 @@ const IEntityDescriptor* EntityDescriptorCatalog::GetDescriptor(EntityDescriptor
 {
     if (m_catalog.find(id) == m_catalog.end())
     {
-        std::cerr << "EntityDescriptorID not in catalog: '" << id.Name() << "'" << std::endl;
+        std::cerr << "EntityDescriptorID not in catalog" << std::endl;
         std::abort();
     }
     return m_catalog.at(id).get();

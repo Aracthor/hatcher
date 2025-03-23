@@ -8,19 +8,13 @@ namespace hatcher
 class EntityDescriptorID
 {
 public:
-    EntityDescriptorID()
-        : m_id(0)
-        , m_name("##INVALID")
-    {
-    }
+    EntityDescriptorID() = default;
 
     template <int N>
     static constexpr EntityDescriptorID Create(const char (&name)[N])
     {
-        return EntityDescriptorID(constexpr_hash<N>(name), name);
+        return EntityDescriptorID(constexpr_hash<N>(name));
     }
-
-    const char* Name() const { return m_name; }
 
     bool operator==(const EntityDescriptorID& other) const { return m_id == other.m_id; }
 
@@ -30,14 +24,12 @@ public:
     };
 
 private:
-    constexpr EntityDescriptorID(uint id, const char* name)
+    constexpr EntityDescriptorID(uint id)
         : m_id(id)
-        , m_name(name)
     {
     }
 
-    uint m_id;
-    const char* m_name;
+    uint m_id = 0;
 };
 
 } // namespace hatcher
