@@ -27,7 +27,8 @@ GameApplication::~GameApplication() = default;
 
 int GameApplication::Run()
 {
-    auto mainLoop = [](void* data) {
+    auto mainLoop = [](void* data)
+    {
         GameApplication* game = reinterpret_cast<GameApplication*>(data);
         game->Update();
         game->Render();
@@ -71,10 +72,14 @@ void GameApplication::StartRendering(const char* name, int windowWidth, int wind
 
 void GameApplication::Update()
 {
+    if (m_rendering)
+    {
+        m_rendering->HandleWindowEvents(this, m_world.get());
+    }
     m_world->Update();
     if (m_rendering)
     {
-        m_rendering->UpdateWorldRendering(this, m_world.get());
+        m_rendering->UpdateWorldRendering(m_world.get());
     }
 }
 

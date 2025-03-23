@@ -30,14 +30,18 @@ glm::ivec2 Rendering::Resolution() const
     return {m_window->Width(), m_window->Height()};
 }
 
-void Rendering::UpdateWorldRendering(IApplication* application, World* world)
+void Rendering::HandleWindowEvents(IApplication* application, World* world)
+{
+    const std::vector<SDL_Event> events = m_window->PollEvents();
+    world->UpdateFromEvents(span<const SDL_Event>(events), application, *m_frameRenderer);
+}
+
+void Rendering::UpdateWorldRendering(World* world)
 {
     m_frameRenderer->Clear();
     m_window->Clear();
     m_clock->Update();
 
-    const std::vector<SDL_Event> events = m_window->PollEvents();
-    world->UpdateFromEvents(span<const SDL_Event>(events), application, *m_frameRenderer);
     world->UpdateRendering(*m_frameRenderer);
 }
 
