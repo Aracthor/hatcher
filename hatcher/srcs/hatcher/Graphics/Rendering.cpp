@@ -4,6 +4,7 @@
 
 #include "Core/Window.hpp"
 
+#include "hatcher/IApplication.hpp"
 #include "hatcher/World.hpp"
 
 #include "Clock.hpp"
@@ -33,7 +34,10 @@ glm::ivec2 Rendering::Resolution() const
 void Rendering::HandleWindowEvents(IApplication* application, World* world)
 {
     const std::vector<SDL_Event> events = m_window->PollEvents();
-    world->UpdateFromEvents(span<const SDL_Event>(events), application, *m_frameRenderer);
+    const auto IsStopEvent = [](const SDL_Event& event) { return event.type == SDL_QUIT; };
+    if (std::find_if(events.begin(), events.end(), IsStopEvent) != events.end())
+        application->Stop();
+    world->UpdateFromEvents(span<const SDL_Event>(events), *m_frameRenderer);
 }
 
 void Rendering::UpdateWorldRendering(World* world)

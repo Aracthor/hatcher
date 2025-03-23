@@ -11,7 +11,6 @@ namespace hatcher
 class CommandManager;
 class EntityManager;
 class EventUpdater;
-class IApplication;
 class IFrameRenderer;
 class IRendering;
 class RenderUpdater;
@@ -26,7 +25,7 @@ public:
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
-    void UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer);
+    void UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frameRenderer);
     void UpdateRendering(IFrameRenderer& frameRenderer);
 
 private:

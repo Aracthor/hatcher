@@ -4,7 +4,6 @@
 #include "hatcher/DataLoader.hpp"
 #include "hatcher/DataSaver.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
-#include "hatcher/IApplication.hpp"
 #include "hatcher/IEntityManager.hpp"
 
 #include <iostream>
@@ -12,16 +11,14 @@
 namespace hatcher
 {
 
-void EventUpdater::ProcessEvents(span<const SDL_Event> events, IApplication* application, IEntityManager* entityManager,
+void EventUpdater::ProcessEvents(span<const SDL_Event> events, IEntityManager* entityManager,
                                  ICommandManager* commandManager, const ComponentManager* componentManager,
                                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer)
 {
     for (const SDL_Event& event : events)
     {
         SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
-        if (eventType == SDL_QUIT)
-            application->Stop();
-        else if (eventType == SDL_KEYDOWN && (event.key.keysym.scancode == SDL_SCANCODE_F5))
+        if (eventType == SDL_KEYDOWN && (event.key.keysym.scancode == SDL_SCANCODE_F5))
         {
             DataSaver saver;
             entityManager->Save(saver);

@@ -135,11 +135,11 @@ void World::Update()
     m_entityManager->UpdateNewAndDeletedEntities();
 }
 
-void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application, IFrameRenderer& frameRenderer)
+void World::UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->ProcessEvents(events, application, m_entityManager.get(), m_commandManager.get(),
+        m_eventUpdater->ProcessEvents(events, m_entityManager.get(), m_commandManager.get(),
                                       m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
