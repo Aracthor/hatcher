@@ -30,4 +30,9 @@ void DataLoader::LoadData(void* value, int size)
     }
 }
 
+bool DataLoader::Empty() const
+{
+    return m_currentIndex >= static_cast<int>(m_data.size());
+}
+
 } // namespace hatcher

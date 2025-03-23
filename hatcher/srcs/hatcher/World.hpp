@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "span.hpp"
@@ -8,7 +10,9 @@
 union SDL_Event;
 namespace hatcher
 {
+class CommandLoader;
 class CommandManager;
+class CommandSaver;
 class EntityManager;
 class EventUpdater;
 class IFrameRenderer;
@@ -19,7 +23,7 @@ class Updater;
 class World final
 {
 public:
-    World();
+    World(const std::optional<std::string>& commandSaveFile, const std::optional<std::string>& commandLoadFile);
     ~World();
 
     void CreateRenderUpdaters(const IRendering* rendering);
@@ -29,10 +33,13 @@ public:
     void UpdateRendering(IFrameRenderer& frameRenderer);
 
 private:
+    int m_tick = 0;
     unique_ptr<EntityManager> m_entityManager;
 
     std::vector<unique_ptr<Updater>> m_updaters;
     unique_ptr<CommandManager> m_commandManager;
+    std::optional<unique_ptr<CommandSaver>> m_commandSaver;
+    std::optional<unique_ptr<CommandLoader>> m_commandLoader;
 
     unique_ptr<EventUpdater> m_eventUpdater;
     std::vector<unique_ptr<RenderUpdater>> m_renderUpdaters;

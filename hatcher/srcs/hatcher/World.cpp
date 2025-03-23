@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "CommandManager.hpp"
+#include "CommandSaveLoad.hpp"
 #include "ComponentRegisterer.hpp"
 #include "EntityDescriptorCatalog.hpp"
 #include "EntityManager.hpp"
@@ -76,7 +77,7 @@ void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descript
     GetEntityDescriptorCatalog()->AddEntityDescriptor(id, descriptor);
 }
 
-World::World()
+World::World(const std::optional<std::string>& commandSaveFile, const std::optional<std::string>& commandLoadFile)
 {
     m_entityManager = make_unique<EntityManager>(GetEntityDescriptorCatalog());
     for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
@@ -93,6 +94,10 @@ World::World()
         m_updaters.emplace_back(creator->Create());
     }
     m_commandManager = make_unique<CommandManager>();
+    if (commandSaveFile)
+        m_commandSaver.emplace(new CommandSaver(*commandSaveFile));
+    if (commandLoadFile)
+        m_commandLoader.emplace(new CommandLoader(*commandLoadFile));
 }
 
 World::~World() = default;
@@ -123,6 +128,20 @@ void World::Update()
     {
         updater->Update(m_entityManager.get(), m_entityManager->GetComponentManager());
     }
+    if (m_commandSaver)
+    {
+        for (const unique_ptr<ICommand>& command : m_commandManager->CurrentCommands())
+        {
+            (*m_commandSaver)->Save(m_tick, command.get());
+        }
+    }
+    if (m_commandLoader)
+    {
+        for (ICommand* command : (*m_commandLoader)->CommandsForTick(m_tick))
+        {
+            m_commandManager->AddCommand(command);
+        }
+    }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager(),
                                       m_entityManager->GetRenderingComponentManager());
     for (const Entity entity : m_entityManager->EntitiesToDelete())
@@ -133,6 +152,7 @@ void World::Update()
         }
     }
     m_entityManager->UpdateNewAndDeletedEntities();
+    m_tick++;
 }
 
 void World::UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frameRenderer)

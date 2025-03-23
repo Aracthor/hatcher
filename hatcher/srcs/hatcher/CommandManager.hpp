@@ -16,6 +16,8 @@ class CommandManager final : public ICommandManager
 public:
     void AddCommand(ICommand* command) override;
 
+    span<const unique_ptr<ICommand>> CurrentCommands() const { return span<const unique_ptr<ICommand>>(m_commands); }
+
     void ExecuteCommands(IEntityManager* entityManager, ComponentManager* componentManager,
                          ComponentManager* renderingComponentManager);
 

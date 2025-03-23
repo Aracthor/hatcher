@@ -25,6 +25,8 @@ public:
 
     void operator>>(std::string& string);
 
+    bool Empty() const;
+
 private:
     void LoadData(void* value, int size);
 

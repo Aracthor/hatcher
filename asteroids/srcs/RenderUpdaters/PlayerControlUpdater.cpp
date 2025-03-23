@@ -1,3 +1,4 @@
+#include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
@@ -38,6 +39,9 @@ public:
     {
     }
 
+    void Save(DataSaver& saver) const override { saver << m_action; }
+    void Load(DataLoader& loader) override { loader >> m_action; }
+
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
@@ -47,8 +51,11 @@ public:
     }
 
 private:
-    const bool m_action;
+    bool m_action;
+
+    COMMAND_HEADER(PlayerTurnLeftCommand)
 };
+REGISTER_COMMAND(PlayerTurnLeftCommand);
 
 class PlayerTurnRightCommand final : public ICommand
 {
@@ -57,6 +64,9 @@ public:
         : m_action(action)
     {
     }
+
+    void Save(DataSaver& saver) const override { saver << m_action; }
+    void Load(DataLoader& loader) override { loader >> m_action; }
 
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
@@ -67,8 +77,11 @@ public:
     }
 
 private:
-    const bool m_action;
+    bool m_action;
+
+    COMMAND_HEADER(PlayerTurnRightCommand)
 };
+REGISTER_COMMAND(PlayerTurnRightCommand);
 
 class PlayerAccelerateCommand final : public ICommand
 {
@@ -77,6 +90,9 @@ public:
         : m_action(action)
     {
     }
+
+    void Save(DataSaver& saver) const override { saver << m_action; }
+    void Load(DataLoader& loader) override { loader >> m_action; }
 
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
@@ -87,8 +103,11 @@ public:
     }
 
 private:
-    const bool m_action;
+    bool m_action;
+
+    COMMAND_HEADER(PlayerAccelerateCommand)
 };
+REGISTER_COMMAND(PlayerAccelerateCommand);
 
 class PlayerShootCommand final : public ICommand
 {
@@ -118,7 +137,10 @@ public:
             shooterComponent->shoots.push_back(newProjectile.NewEntityID().ID());
         }
     }
+
+    COMMAND_HEADER(PlayerShootCommand)
 };
+REGISTER_COMMAND(PlayerShootCommand);
 
 class PlayerControlUpdater final : public RenderUpdater
 {
