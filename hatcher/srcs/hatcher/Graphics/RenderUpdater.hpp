@@ -19,7 +19,7 @@ public:
 
     virtual void GetEvent(const SDL_Event& event, ICommandManager* commandManager,
                           const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                          const IFrameRenderer& frameRenderer){};
+                          const IFrameRenderer& frameRenderer) {};
     virtual span<const SDL_EventType> EventTypesToListen() const { return {}; }
 };
 
