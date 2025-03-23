@@ -39,7 +39,7 @@ public:
                 ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiCond_Once);
                 std::ostringstream windowNameOss;
                 windowNameOss << "Inventory - " << nameComponents[i]->name << "##" << i;
-                if (ImGui::Begin(windowNameOss.str().c_str()), &m_enabled)
+                if (ImGui::Begin(windowNameOss.str().c_str(), &m_enabled))
                 {
                     ImGui::Text("Storage: %ld", inventory.storage.size());
                     for (Entity::IDType itemID : inventory.storage)
