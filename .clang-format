@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+Language: Cpp
+IndentWidth: 4
+
+AccessModifierOffset: -4
+AllowShortFunctionsOnASingleLine: Inline
+AlwaysBreakTemplateDeclarations: true
+BreakBeforeBraces: Allman
+BreakConstructorInitializersBeforeComma: true
+ColumnLimit: 120
+IndentPPDirectives: None
+PackConstructorInitializers: Never
+PointerAlignment: Left
