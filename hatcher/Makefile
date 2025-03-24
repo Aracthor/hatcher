@@ -8,7 +8,7 @@ RMDIR=	rm -fd
 CLONE=	git clone
 
 IMGUI_REPO=		imgui/
-IMGUI_VERSION=		v1.88
+IMGUI_VERSION=		v1.91.9
 IMGUI_REPO_URL=		https://github.com/ocornut/imgui.git
 
 JS_DIR=			js/
@@ -99,8 +99,8 @@ IMGUI_SRCS_FILES=	imgui.cpp			\
 			imgui_draw.cpp			\
 			imgui_tables.cpp		\
 			imgui_widgets.cpp		\
-			backends/imgui_impl_sdl.cpp	\
 			backends/imgui_impl_opengl3.cpp	\
+			backends/imgui_impl_sdl2.cpp	\
 
 IMGUI_SRCS=	$(addprefix $(IMGUI_REPO),$(IMGUI_SRCS_FILES))
 
