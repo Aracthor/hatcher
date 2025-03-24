@@ -4,6 +4,7 @@
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+#include <iostream>
 #endif
 
 #include "Graphics/Clock.hpp"
@@ -29,9 +30,20 @@ int GameApplication::Run()
 {
     auto mainLoop = [](void* data)
     {
-        GameApplication* game = reinterpret_cast<GameApplication*>(data);
-        game->Update();
-        game->Render();
+        try
+        {
+            GameApplication* game = reinterpret_cast<GameApplication*>(data);
+            game->Update();
+            game->Render();
+        }
+        catch (const std::exception& exception)
+        {
+#ifdef __EMSCRIPTEN__
+            std::cerr << "Fatal error: " << exception.what() << std::endl;
+            std::abort();
+#endif
+            throw;
+        }
     };
 
     m_running = true;

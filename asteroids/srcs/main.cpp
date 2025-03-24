@@ -1,10 +1,18 @@
 #include "hatcher/GameApplication.hpp"
 
-using namespace hatcher;
+#include <iostream>
 
 int main(int argc, char** argv)
 {
-    GameApplication demo(argc, argv);
-    demo.StartRendering("hatcher - asteroids", 800, 600);
-    return demo.Run();
+    try
+    {
+        hatcher::GameApplication demo(argc, argv);
+        demo.StartRendering("hatcher - asteroids", 800, 600);
+        return demo.Run();
+    }
+    catch (const std::exception& exception)
+    {
+        std::cerr << "Fatal error: " << exception.what() << std::endl;
+        return 2;
+    }
 }

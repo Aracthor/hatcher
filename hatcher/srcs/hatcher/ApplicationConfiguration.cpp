@@ -1,8 +1,8 @@
 #include "ApplicationConfiguration.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <optional>
+#include <stdexcept>
 #include <string>
 
 #include "assert.hpp"
@@ -58,10 +58,7 @@ public:
     void Process(CommandLineIterator& iterator) const
     {
         if (iterator.Ended())
-        {
-            std::cerr << "Missing name after '" << m_flag << "'" << std::endl;
-            std::abort();
-        }
+            throw std::invalid_argument("Missing name after '" + m_flag + "'");
 
         m_result = *iterator;
         iterator++;
@@ -98,10 +95,7 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
         auto it = std::find_if(parsersSpan.begin(), parsersSpan.end(),
                                [arg](const ArgumentParser& parser) { return parser.Matches(arg); });
         if (it == parsersSpan.end())
-        {
-            std::cerr << "Unknown argument '" << arg << "'" << std::endl;
-            std::abort();
-        }
+            throw std::invalid_argument("Unknown argument '" + arg + "'");
         it->Process(iterator);
     }
 }

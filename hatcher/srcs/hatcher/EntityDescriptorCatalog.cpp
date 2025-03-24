@@ -1,6 +1,6 @@
 #include "EntityDescriptorCatalog.hpp"
 
-#include <iostream>
+#include <stdexcept>
 
 #include "EntityDescriptor.hpp"
 
@@ -13,20 +13,14 @@ EntityDescriptorCatalog::~EntityDescriptorCatalog() = default;
 void EntityDescriptorCatalog::AddEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor)
 {
     if (m_catalog.find(id) != m_catalog.end())
-    {
-        std::cerr << "EntityDescriptorID doublon" << std::endl;
-        std::abort();
-    }
+        throw std::runtime_error("EntityDescriptorID not in catalog");
     m_catalog.emplace(id, descriptor);
 }
 
 const IEntityDescriptor* EntityDescriptorCatalog::GetDescriptor(EntityDescriptorID id) const
 {
     if (m_catalog.find(id) == m_catalog.end())
-    {
-        std::cerr << "EntityDescriptorID not in catalog" << std::endl;
-        std::abort();
-    }
+        throw std::runtime_error("EntityDescriptorID not in catalog");
     return m_catalog.at(id).get();
 }
 } // namespace hatcher

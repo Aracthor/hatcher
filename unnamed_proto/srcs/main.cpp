@@ -1,8 +1,18 @@
 #include "hatcher/GameApplication.hpp"
 
+#include <iostream>
+
 int main(int argc, char** argv)
 {
-    hatcher::GameApplication demo(argc, argv);
-    demo.StartRendering("hatcher - demo", 800, 600);
-    return demo.Run();
+    try
+    {
+        hatcher::GameApplication demo(argc, argv);
+        demo.StartRendering("hatcher - demo", 800, 600);
+        return demo.Run();
+    }
+    catch (const std::exception& exception)
+    {
+        std::cerr << "Fatal error: " << exception.what() << std::endl;
+        return 2;
+    }
 }

@@ -2,7 +2,6 @@
 
 #include <filesystem>
 #include <fstream>
-#include <iostream>
 #include <unordered_map>
 
 #include "DataLoader.hpp"
@@ -34,12 +33,8 @@ CommandSaver::CommandSaver(const std::string& fileName)
 CommandSaver::~CommandSaver()
 {
     std::ofstream fstream(m_fileName, std::ios::binary);
+    fstream.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     fstream.write(reinterpret_cast<const char*>(m_dataSaver->Result().data()), m_dataSaver->Result().size());
-    if (fstream.bad())
-    {
-        std::cerr << "Error saving command file '" << m_fileName << "'" << std::endl;
-        std::abort();
-    }
 }
 
 void CommandSaver::Save(int tick, const ICommand* command)
@@ -54,12 +49,8 @@ CommandLoader::CommandLoader(const std::string& fileName)
     const std::uintmax_t fileSize = std::filesystem::file_size(fileName);
     std::vector<ubyte> fileData(fileSize);
     std::ifstream fstream(fileName, std::ios::binary);
+    fstream.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     fstream.read(reinterpret_cast<char*>(fileData.data()), fileSize);
-    if (fstream.bad())
-    {
-        std::cerr << "Error loading command file '" << fileName << "'" << std::endl;
-        std::abort();
-    }
 
     DataLoader m_dataLoader(fileData);
     while (!m_dataLoader.Empty())

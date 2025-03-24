@@ -88,6 +88,7 @@ CXX_DEBUG_FLAGS=	$(CXX_COMMON_FLAGS)	\
 CXX_NATIVE_FLAGS=
 
 EMXX_FLAGS=		-s USE_SDL=2 		\
+			-fexceptions
 
 CXX_IMGUI_NATIVE_FLAGS=	`sdl2-config --cflags`	\
 
