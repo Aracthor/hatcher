@@ -21,8 +21,7 @@ public:
     {
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         DataSaver saver;
         entityManager->Save(saver);
@@ -42,8 +41,7 @@ public:
     {
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         if (!m_save.empty())
         {

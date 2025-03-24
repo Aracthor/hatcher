@@ -42,8 +42,7 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         const Entity playerEntity = GetPlayerEntityID(componentManager);
         if (playerEntity != Entity::Invalid())
@@ -68,8 +67,7 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         const Entity playerEntity = GetPlayerEntityID(componentManager);
         if (playerEntity != Entity::Invalid())
@@ -94,8 +92,7 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         const Entity playerEntity = GetPlayerEntityID(componentManager);
         if (playerEntity != Entity::Invalid())
@@ -112,8 +109,7 @@ REGISTER_COMMAND(PlayerAccelerateCommand);
 class PlayerShootCommand final : public ICommand
 {
 public:
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         const Entity playerEntity = GetPlayerEntityID(componentManager);
         if (playerEntity == Entity::Invalid())

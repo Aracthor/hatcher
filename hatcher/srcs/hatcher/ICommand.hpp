@@ -20,8 +20,7 @@ public:
     virtual void Save(DataSaver& saver) const {}
     virtual void Load(DataLoader& loader) {}
 
-    virtual void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                         ComponentManager* renderingComponentManager) = 0;
+    virtual void Execute(IEntityManager* entityManager, ComponentManager* componentManager) = 0;
 };
 
 } // namespace hatcher

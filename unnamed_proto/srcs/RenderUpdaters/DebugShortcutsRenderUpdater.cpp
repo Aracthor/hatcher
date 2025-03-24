@@ -26,8 +26,7 @@ public:
     void Save(DataSaver& saver) const override { saver << m_entity; }
     void Load(DataLoader& loader) override { loader >> m_entity; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         entityManager->DeleteEntity(m_entity);
     }

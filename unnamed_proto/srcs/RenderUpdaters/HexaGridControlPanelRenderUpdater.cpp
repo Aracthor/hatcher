@@ -39,8 +39,7 @@ public:
         loader >> m_walkable;
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
         hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(m_worldCoords2D), m_walkable);

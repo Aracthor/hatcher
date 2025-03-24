@@ -43,8 +43,7 @@ public:
         loader >> m_spawnPosition;
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         EntityEgg entityEgg = entityManager->CreateNewEntity(m_entityDescriptor);
         entityEgg.GetComponent<Position2DComponent>()->position = m_spawnPosition;

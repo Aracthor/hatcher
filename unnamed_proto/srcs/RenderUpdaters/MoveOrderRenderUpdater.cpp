@@ -25,8 +25,7 @@ public:
     {
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
-                 ComponentManager* renderingComponentManager) override
+    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
     }
