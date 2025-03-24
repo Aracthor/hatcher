@@ -20,6 +20,7 @@ ImGuiIntegration::ImGuiIntegration(SDL_Window* window, SDL_GLContext* glContext)
     ImGui_ImplSDL2_InitForOpenGL(window, glContext);
     const char* glsl_version = "#version 300 es";
     ImGui_ImplOpenGL3_Init(glsl_version);
+    glGetError(); // ImGui_ImplOpenGL3_Init seems to raise an error, we don't want to catch it...
 }
 
 ImGuiIntegration::~ImGuiIntegration() = default;
