@@ -18,6 +18,8 @@ private:
 public:
     static Entity Invalid() { return Entity(-1); }
 
+    Entity() { *this = Invalid(); }
+
     explicit Entity(IDType id)
         : m_ID(id)
     {

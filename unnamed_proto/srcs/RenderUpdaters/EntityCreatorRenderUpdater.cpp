@@ -3,6 +3,7 @@
 #include "WorldComponents/Camera.hpp"
 #include "WorldComponents/HexagonalGrid.hpp"
 
+#include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
@@ -23,9 +24,23 @@ public:
     CreateEntityCommand(const EntityDescriptorID& entityDescriptor, span<const EntityDescriptorID> inventoryDescriptors,
                         glm::vec2 spawnPosition)
         : m_entityDescriptor(entityDescriptor)
-        , m_inventoryDescriptors(inventoryDescriptors)
+        , m_inventoryDescriptors(inventoryDescriptors.begin(), inventoryDescriptors.end())
         , m_spawnPosition(spawnPosition)
     {
+    }
+
+    void Save(DataSaver& saver) const override
+    {
+        saver << m_entityDescriptor;
+        saver << m_inventoryDescriptors;
+        saver << m_spawnPosition;
+    }
+
+    void Load(DataLoader& loader) override
+    {
+        loader >> m_entityDescriptor;
+        loader >> m_inventoryDescriptors;
+        loader >> m_spawnPosition;
     }
 
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
@@ -48,10 +63,13 @@ public:
     }
 
 private:
-    const EntityDescriptorID m_entityDescriptor;
-    const span<const EntityDescriptorID> m_inventoryDescriptors;
-    const glm::vec2 m_spawnPosition;
+    EntityDescriptorID m_entityDescriptor;
+    std::vector<EntityDescriptorID> m_inventoryDescriptors;
+    glm::vec2 m_spawnPosition;
+
+    COMMAND_HEADER(CreateEntityCommand)
 };
+REGISTER_COMMAND(CreateEntityCommand);
 
 class EntityCreatorRenderUpdater final : public RenderUpdater
 {

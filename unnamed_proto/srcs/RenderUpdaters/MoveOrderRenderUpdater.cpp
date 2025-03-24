@@ -4,6 +4,7 @@
 #include "WorldComponents/Camera.hpp"
 #include "WorldComponents/HexagonalGrid.hpp"
 
+#include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -33,7 +34,10 @@ public:
 private:
     const Entity m_entity;
     const std::vector<glm::vec2> m_path;
+
+    COMMAND_HEADER(MoveOrderCommand)
 };
+REGISTER_COMMAND(MoveOrderCommand)
 
 class MoveOrderRenderUpdater final : public RenderUpdater
 {

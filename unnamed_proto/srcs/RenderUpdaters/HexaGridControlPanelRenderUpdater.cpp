@@ -1,3 +1,4 @@
+#include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -26,6 +27,18 @@ public:
     {
     }
 
+    void Save(DataSaver& saver) const override
+    {
+        saver << m_worldCoords2D;
+        saver << m_walkable;
+    }
+
+    void Load(DataLoader& loader) override
+    {
+        loader >> m_worldCoords2D;
+        loader >> m_walkable;
+    }
+
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
@@ -34,9 +47,12 @@ public:
     }
 
 private:
-    const glm::vec2 m_worldCoords2D;
-    const bool m_walkable;
+    glm::vec2 m_worldCoords2D;
+    bool m_walkable;
+
+    COMMAND_HEADER(SetTileWaklableCommand)
 };
+REGISTER_COMMAND(SetTileWaklableCommand);
 
 class HexaGridControlPanelRenderUpdater final : public RenderUpdater
 {

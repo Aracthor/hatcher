@@ -1,3 +1,4 @@
+#include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
@@ -22,6 +23,9 @@ public:
     {
     }
 
+    void Save(DataSaver& saver) const override { saver << m_entity; }
+    void Load(DataLoader& loader) override { loader >> m_entity; }
+
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager,
                  ComponentManager* renderingComponentManager) override
     {
@@ -29,8 +33,11 @@ public:
     }
 
 private:
-    const Entity m_entity;
+    Entity m_entity;
+
+    COMMAND_HEADER(DeleteEntityCommand)
 };
+REGISTER_COMMAND(DeleteEntityCommand);
 
 class DebugShortcutsRenderUpdater final : public RenderUpdater
 {
