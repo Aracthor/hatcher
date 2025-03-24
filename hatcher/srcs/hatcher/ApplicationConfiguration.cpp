@@ -1,7 +1,77 @@
 #include "ApplicationConfiguration.hpp"
 
+#include <algorithm>
+#include <iostream>
+#include <optional>
+#include <string>
+
+#include "assert.hpp"
+#include "span.hpp"
+
 namespace hatcher
 {
+
+namespace
+{
+class CommandLineIterator
+{
+public:
+    CommandLineIterator(int argc, char** argv)
+        : m_argc(argc)
+        , m_argv(argv)
+        , m_index(1)
+    {
+        HATCHER_ASSERT(argc > 0);
+    }
+
+    std::string operator*() const
+    {
+        HATCHER_ASSERT(!Ended());
+        return {m_argv[m_index]};
+    }
+
+    CommandLineIterator& operator++(int)
+    {
+        m_index++;
+        return *this;
+    }
+
+    bool Ended() const { return m_index >= m_argc; }
+
+private:
+    const int m_argc;
+    const char* const* const m_argv;
+    int m_index;
+};
+
+class ArgumentParser
+{
+public:
+    ArgumentParser(const std::string& flag, std::optional<std::string>& result)
+        : m_flag(flag)
+        , m_result(result)
+    {
+    }
+
+    bool Matches(const std::string& arg) const { return arg == m_flag; }
+
+    void Process(CommandLineIterator& iterator) const
+    {
+        if (iterator.Ended())
+        {
+            std::cerr << "Missing name after '" << m_flag << "'" << std::endl;
+            std::abort();
+        }
+
+        m_result = *iterator;
+        iterator++;
+    }
+
+private:
+    const std::string m_flag;
+    std::optional<std::string>& m_result;
+};
+} // namespace
 
 ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
 {
@@ -14,6 +84,26 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
     }
     pathToProject += "../";
 #endif
+
+    ArgumentParser parsers[] = {
+        ArgumentParser("--save", this->commandSaveFile),
+        ArgumentParser("--load", this->commandLoadFile),
+    };
+    const span<ArgumentParser> parsersSpan = span<ArgumentParser>(parsers, std::size(parsers));
+    CommandLineIterator iterator(argc, argv);
+    while (!iterator.Ended())
+    {
+        const std::string arg = *iterator;
+        iterator++;
+        auto it = std::find_if(parsersSpan.begin(), parsersSpan.end(),
+                               [arg](const ArgumentParser& parser) { return parser.Matches(arg); });
+        if (it == parsersSpan.end())
+        {
+            std::cerr << "Unknown argument '" << arg << "'" << std::endl;
+            std::abort();
+        }
+        it->Process(iterator);
+    }
 }
 
 } // namespace hatcher
