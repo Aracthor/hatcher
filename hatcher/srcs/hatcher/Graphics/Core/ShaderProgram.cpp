@@ -1,7 +1,6 @@
 #include "ShaderProgram.hpp"
 
 #include <fstream>
-#include <iostream>
 
 #include "gl.hpp"
 #include "hatcher/assert.hpp"
@@ -16,12 +15,8 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
 {
     std::ifstream ifs;
 
+    ifs.exceptions(std::ios::failbit | std::ios::badbit);
     ifs.open(parShaderFileName, std::ifstream::in | std::ifstream::binary);
-    if (ifs.rdstate() & std::ios::failbit)
-    {
-        std::cerr << "Couldn't open file '" << parShaderFileName << "'." << std::endl;
-        std::terminate();
-    }
 
     ifs.seekg(0, ifs.end);
     uint fileSize = ifs.tellg();
@@ -43,16 +38,14 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
         {
             char* infoLog = new char[infoLen];
             glGetShaderInfoLog(shaderID, infoLen, NULL, infoLog);
-            std::cerr << "Error compiling shader '" << parShaderFileName << "':" << std::endl
-                      << infoLog << std::endl
-                      << fileContent << std::endl;
+            throw std::runtime_error(std::string("Unkown error compiling shader '") + parShaderFileName + "':\n" +
+                                     infoLog + "\n" + fileContent);
             delete[] infoLog;
         }
         else
         {
-            std::cerr << "Unkown error compiling shader '" << parShaderFileName << "':" << std::endl;
+            throw std::runtime_error(std::string("Unkown error compiling shader '") + parShaderFileName + "':");
         }
-        std::terminate();
     }
     delete[] fileContent;
 
@@ -81,14 +74,12 @@ ShaderProgram::ShaderProgram(const char* parVertexShaderFileName, const char* pa
         {
             char* infoLog = new char[infoLen];
             glGetProgramInfoLog(m_programID, infoLen, NULL, infoLog);
-            std::cerr << "Error linking program:" << std::endl << infoLog << std::endl;
-            delete[] infoLog;
+            throw std::runtime_error(std::string("Error linking program:\n") + infoLog);
         }
         else
         {
-            std::cerr << "Unkown error linking program." << std::endl;
+            throw std::runtime_error("Unkown error linking program.");
         }
-        std::terminate();
     }
 }
 

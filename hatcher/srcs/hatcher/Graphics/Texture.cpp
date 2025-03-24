@@ -31,10 +31,7 @@ Texture* Texture::CreateFromFile(const char* fileName)
 {
     SDL_Surface* surface = SDL_LoadBMP(fileName);
     if (surface == nullptr)
-    {
-        std::cerr << "Cannot load texture file '" << fileName << "': " << SDL_GetError() << std::endl;
-        std::terminate();
-    }
+        throw std::runtime_error(std::string("Cannot load texture file '") + fileName + ": " + SDL_GetError());
 
     // Must convert to RGBA : WebGL doesn't support BGR or BGRA formats...
     SDL_PixelFormat* pixelFormat = SDL_AllocFormat(SDL_PIXELFORMAT_RGBA32);
@@ -42,10 +39,7 @@ Texture* Texture::CreateFromFile(const char* fileName)
     SDL_FreeSurface(surface);
     SDL_FreeFormat(pixelFormat);
     if (convertedSurface == nullptr)
-    {
-        std::cerr << "Error converting surface: " << SDL_GetError() << std::endl;
-        std::terminate();
-    }
+        throw std::runtime_error(std::string("Error converting surface: ") + SDL_GetError());
 
     const GLubyte* bytes = static_cast<const GLubyte*>(convertedSurface->pixels);
     const int width = convertedSurface->w;

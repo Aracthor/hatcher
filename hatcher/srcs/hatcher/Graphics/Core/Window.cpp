@@ -1,7 +1,7 @@
 #include "Window.hpp"
 
 #include <SDL2/SDL.h>
-#include <iostream>
+#include <stdexcept>
 
 #include "GLContext.hpp"
 #include "ImGuiIntegration.hpp"
@@ -15,10 +15,7 @@ Window::Window(const char* name, int width, int height)
     , m_height(height)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cerr << "could not initialize sdl2: " << SDL_GetError() << std::endl;
-        std::terminate();
-    }
+        throw std::runtime_error(std::string("could not initialize sdl2: ") + SDL_GetError());
     m_window = SDL_CreateWindow(name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height,
                                 SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     m_context = make_unique<GLContext>(m_window);

@@ -2,7 +2,6 @@
 
 #include <algorithm> // std::find
 #include <fstream>
-#include <iostream>
 #include <optional>
 #include <vector>
 
@@ -33,12 +32,7 @@ struct MeshData
 std::string getNextToken(std::string& line, const std::string& fileName)
 {
     if (line.empty())
-    {
-        // TODO at least mention line number ?
-        // It would be so much simpler with exceptions...
-        std::cerr << "Missing token on wavefront file '" << fileName << "'." << std::endl;
-        std::terminate();
-    }
+        throw std::runtime_error("Missing token on wavefront file '" + fileName + "'.");
 
     std::string token;
     const std::size_t tokenEnd = line.find(' ');
@@ -72,13 +66,8 @@ MeshData readFile(const std::string& fileName, Primitive::Type primitive)
     HATCHER_ASSERT(primitive == Primitive::Lines || primitive == Primitive::Triangles);
     MeshData meshData;
     std::ifstream ifs;
-
+    ifs.exceptions(std::ios::failbit | std::ios::badbit);
     ifs.open(fileName, std::ifstream::in);
-    if (ifs.rdstate() & std::ios::failbit)
-    {
-        std::cerr << "Couldn't open mesh file '" << fileName << "'." << std::endl;
-        std::terminate();
-    }
 
     std::vector<glm::vec3> wavefrontPositions;
     std::vector<glm::vec2> wavefrontTexCoords;
@@ -170,8 +159,7 @@ MeshData readFile(const std::string& fileName, Primitive::Type primitive)
                     }
                     break;
                 default:
-                    std::cerr << "Invalid vertex count for face: " << faceIndices.size() << std::endl;
-                    std::terminate();
+                    throw std::runtime_error("Invalid vertex count for face: " + faceIndices.size());
                 }
             }
         }
