@@ -10,18 +10,6 @@
 
 using namespace hatcher;
 
-namespace
-{
-template <typename T>
-int testEquals(const T& a, const T& b)
-{
-    if (a != b)
-        std::cerr << std::setprecision(std::numeric_limits<float>::digits) << "unit test fail: " << a << " != " << b
-                  << std::endl;
-    return a != b;
-}
-} // namespace
-
 template <glm::length_t L, typename T>
 std::ostream& operator<<(std::ostream& stream, const glm::vec<L, T>& vec)
 {
@@ -46,6 +34,18 @@ std::ostream& operator<<(std::ostream& stream, const Box<L, T>& box)
     stream << '}';
     return stream;
 }
+
+namespace
+{
+template <typename T>
+int testEquals(const T& a, const T& b)
+{
+    if (a != b)
+        std::cerr << std::setprecision(std::numeric_limits<float>::digits) << "unit test fail: " << a << " != " << b
+                  << std::endl;
+    return a != b;
+}
+} // namespace
 
 int testInt()
 {
