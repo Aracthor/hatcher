@@ -2,11 +2,13 @@
 
 #include <algorithm>
 #include <optional>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 
 #include "assert.hpp"
 #include "span.hpp"
+#include "unique_ptr.hpp"
 
 namespace hatcher
 {
@@ -44,18 +46,53 @@ private:
     int m_index;
 };
 
-class ArgumentParser
+class IArgumentParser
 {
 public:
-    ArgumentParser(const std::string& flag, std::optional<std::string>& result)
+    virtual ~IArgumentParser() = default;
+
+    virtual bool Matches(const std::string& arg) const = 0;
+    virtual void Process(CommandLineIterator& iterator) const = 0;
+};
+
+class ArgumentParserInteger64 : public IArgumentParser
+{
+public:
+    ArgumentParserInteger64(const char* flag, int64_t& result)
         : m_flag(flag)
         , m_result(result)
     {
     }
 
-    bool Matches(const std::string& arg) const { return arg == m_flag; }
+    bool Matches(const std::string& arg) const override { return arg == m_flag; }
 
-    void Process(CommandLineIterator& iterator) const
+    void Process(CommandLineIterator& iterator) const override
+    {
+        if (iterator.Ended())
+            throw std::invalid_argument("Missing number after '" + m_flag + "'");
+
+        std::istringstream iss(*iterator);
+        iss >> m_result;
+        iterator++;
+    }
+
+private:
+    const std::string m_flag;
+    int64_t& m_result;
+};
+
+class ArgumentParserOptionalString : public IArgumentParser
+{
+public:
+    ArgumentParserOptionalString(const char* flag, std::optional<std::string>& result)
+        : m_flag(flag)
+        , m_result(result)
+    {
+    }
+
+    bool Matches(const std::string& arg) const override { return arg == m_flag; }
+
+    void Process(CommandLineIterator& iterator) const override
     {
         if (iterator.Ended())
             throw std::invalid_argument("Missing name after '" + m_flag + "'");
@@ -82,21 +119,23 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
     pathToProject += "../";
 #endif
 
-    ArgumentParser parsers[] = {
-        ArgumentParser("--save", this->commandSaveFile),
-        ArgumentParser("--load", this->commandLoadFile),
+    unique_ptr<IArgumentParser> parsers[] = {
+        make_unique<ArgumentParserInteger64>("--seed", this->seed),
+        make_unique<ArgumentParserOptionalString>("--save", this->commandSaveFile),
+        make_unique<ArgumentParserOptionalString>("--load", this->commandLoadFile),
     };
-    const span<ArgumentParser> parsersSpan = span<ArgumentParser>(parsers, std::size(parsers));
+    const span<unique_ptr<IArgumentParser>> parsersSpan =
+        span<unique_ptr<IArgumentParser>>(parsers, std::size(parsers));
     CommandLineIterator iterator(argc, argv);
     while (!iterator.Ended())
     {
         const std::string arg = *iterator;
         iterator++;
         auto it = std::find_if(parsersSpan.begin(), parsersSpan.end(),
-                               [arg](const ArgumentParser& parser) { return parser.Matches(arg); });
+                               [arg](const unique_ptr<IArgumentParser>& parser) { return parser->Matches(arg); });
         if (it == parsersSpan.end())
             throw std::invalid_argument("Unknown argument '" + arg + "'");
-        it->Process(iterator);
+        (*it)->Process(iterator);
     }
 }
 
