@@ -11,9 +11,7 @@
 namespace hatcher
 {
 
-void EventUpdater::ProcessEvents(span<const SDL_Event> events, IEntityManager* entityManager,
-                                 ICommandManager* commandManager, const ComponentManager* componentManager,
-                                 ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer)
+void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, IEntityManager* entityManager)
 {
     for (const SDL_Event& event : events)
     {
@@ -38,7 +36,17 @@ void EventUpdater::ProcessEvents(span<const SDL_Event> events, IEntityManager* e
                 std::cout << "No state to load." << std::endl;
             }
         }
-        else if (m_eventListeners.find(eventType) != m_eventListeners.end())
+    }
+}
+
+void EventUpdater::ProcessEventListeners(span<const SDL_Event> events, ICommandManager* commandManager,
+                                         const ComponentManager* componentManager,
+                                         ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer)
+{
+    for (const SDL_Event& event : events)
+    {
+        const SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
+        if (m_eventListeners.find(eventType) != m_eventListeners.end())
         {
             for (auto& listener : m_eventListeners[eventType])
                 listener->GetEvent(event, commandManager, componentManager, renderComponentManager, frameRenderer);

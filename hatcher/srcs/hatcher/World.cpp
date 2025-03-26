@@ -158,9 +158,9 @@ void World::UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frame
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->ProcessEvents(events, m_entityManager.get(), m_commandManager.get(),
-                                      m_entityManager->GetComponentManager(),
-                                      m_entityManager->GetRenderingComponentManager(), frameRenderer);
+        m_eventUpdater->ProcessApplicationEvents(events, m_entityManager.get());
+        m_eventUpdater->ProcessEventListeners(events, m_commandManager.get(), m_entityManager->GetComponentManager(),
+                                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 }
 

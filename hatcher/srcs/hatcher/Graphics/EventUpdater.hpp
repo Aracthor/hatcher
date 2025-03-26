@@ -19,9 +19,10 @@ class IFrameRenderer;
 class EventUpdater final
 {
 public:
-    void ProcessEvents(span<const SDL_Event> events, IEntityManager* entityManager, ICommandManager* commandManager,
-                       const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                       const IFrameRenderer& frameRenderer);
+    void ProcessApplicationEvents(span<const SDL_Event> events, IEntityManager* entityManager);
+    void ProcessEventListeners(span<const SDL_Event> events, ICommandManager* commandManager,
+                               const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                               const IFrameRenderer& frameRenderer);
 
     void RegisterListener(IEventListener* eventListener);
 
