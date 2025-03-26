@@ -3,6 +3,7 @@
 #include <algorithm> // std::find
 #include <fstream>
 #include <optional>
+#include <sstream>
 #include <vector>
 
 #include "Mesh.hpp"
@@ -32,7 +33,7 @@ struct MeshData
 std::string getNextToken(std::string& line, const std::string& fileName)
 {
     if (line.empty())
-        throw std::runtime_error("Missing token on wavefront file '" + fileName + "'.");
+        throw std::runtime_error(std::string("Missing token on wavefront file '") + fileName + "'.");
 
     std::string token;
     const std::size_t tokenEnd = line.find(' ');
@@ -159,7 +160,11 @@ MeshData readFile(const std::string& fileName, Primitive::Type primitive)
                     }
                     break;
                 default:
-                    throw std::runtime_error("Invalid vertex count for face: " + faceIndices.size());
+                {
+                    std::ostringstream oss;
+                    oss << "Invalid vertex count for face: " << faceIndices.size();
+                    throw std::runtime_error(oss.str());
+                }
                 }
             }
         }
