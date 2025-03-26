@@ -7,6 +7,8 @@ namespace hatcher
 
 RandomGenerator::RandomGenerator(int64_t seed)
 {
+    if (seed == 0)
+        seed = 4242; // A 0 would stay a 0 forever
     m_s1 = static_cast<uint32_t>(seed) % 30269;
     m_s2 = static_cast<uint32_t>(seed >> 16) % 30307;
     m_s3 = static_cast<uint32_t>(seed >> 32) % 30323;
@@ -34,6 +36,17 @@ float RandomGenerator::RandomFloat(float min, float max)
     HATCHER_ASSERT(min <= max);
     const float rand = RandomBetween0And1();
     return min + rand * (max - min);
+}
+
+float RandomGenerator::RandomAngle()
+{
+    return RandomFloat(-M_PI, M_PI);
+}
+
+glm::vec2 RandomGenerator::RandomDirection()
+{
+    const float angle = RandomAngle();
+    return {cos(angle), sin(angle)};
 }
 
 float RandomGenerator::RandomBetween0And1()

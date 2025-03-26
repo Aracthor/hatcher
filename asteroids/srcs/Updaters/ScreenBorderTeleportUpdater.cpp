@@ -12,7 +12,7 @@ namespace
 
 class ScreenBorderTeleportUpdater final : public Updater
 {
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         // TODO Store it somewhere else ?
         const glm::vec2 screenMin = {0, 0};

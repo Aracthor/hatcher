@@ -5,14 +5,18 @@ namespace hatcher
 class ComponentManager;
 class Entity;
 class IEntityManager;
+class WorldSettings;
 
 class Updater
 {
 public:
     virtual ~Updater() {}
 
-    virtual void Update(IEntityManager* entityManager, ComponentManager* componentManager) = 0;
-    virtual void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentManager* componentManager) {}
+    virtual void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) = 0;
+    virtual void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
+                                 ComponentManager* componentManager)
+    {
+    }
 };
 
 class IUpdaterCreator

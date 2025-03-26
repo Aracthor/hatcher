@@ -14,7 +14,7 @@ namespace
 
 class PlayerCreatorUpdater final : public Updater
 {
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         const Lives* lives = componentManager->ReadWorldComponent<Lives>();
         if (lives->remaining == 0)

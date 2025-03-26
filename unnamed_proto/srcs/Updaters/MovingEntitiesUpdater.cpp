@@ -13,7 +13,7 @@ namespace
 class MovingEntitiesUpdater final : public Updater
 {
 public:
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         ComponentWriter<Position2DComponent> positions = componentManager->WriteComponents<Position2DComponent>();
         ComponentWriter<Movement2DComponent> movements = componentManager->WriteComponents<Movement2DComponent>();

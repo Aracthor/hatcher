@@ -5,13 +5,15 @@
 #include "hatcher/DataSaver.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/IEntityManager.hpp"
+#include "hatcher/WorldSettings.hpp"
 
 #include <iostream>
 
 namespace hatcher
 {
 
-void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, IEntityManager* entityManager)
+void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, WorldSettings& settings,
+                                            IEntityManager* entityManager)
 {
     for (const SDL_Event& event : events)
     {
@@ -19,6 +21,7 @@ void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, IEntit
         if (eventType == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_F5)
         {
             DataSaver saver;
+            saver << settings;
             entityManager->Save(saver);
             m_saveState = saver.Result();
             std::cout << "State saved." << std::endl;
@@ -28,6 +31,7 @@ void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, IEntit
             if (!m_saveState.empty())
             {
                 DataLoader loader(m_saveState);
+                loader >> settings;
                 entityManager->Load(loader);
                 std::cout << "State loaded." << std::endl;
             }

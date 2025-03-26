@@ -20,7 +20,7 @@ namespace hatcher
 GameApplication::GameApplication(int argc, char** argv)
     : m_configuration(new ApplicationConfiguration(argc, argv))
     , m_fileSystem(new FileSystem(m_configuration->pathToProject))
-    , m_world(new World(m_configuration->commandSaveFile, m_configuration->commandLoadFile))
+    , m_world(new World(m_configuration->seed, m_configuration->commandSaveFile, m_configuration->commandLoadFile))
 {
 }
 

@@ -10,7 +10,7 @@ namespace
 
 class MovingEntitiesUpdater final : public Updater
 {
-    void Update(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         auto positionComponents = componentManager->WriteComponents<PositionComponent>();
         for (int i = 0; i < componentManager->Count(); i++)

@@ -77,7 +77,9 @@ void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descript
     GetEntityDescriptorCatalog()->AddEntityDescriptor(id, descriptor);
 }
 
-World::World(const std::optional<std::string>& commandSaveFile, const std::optional<std::string>& commandLoadFile)
+World::World(int64_t seed, const std::optional<std::string>& commandSaveFile,
+             const std::optional<std::string>& commandLoadFile)
+    : m_settings({seed})
 {
     m_entityManager = make_unique<EntityManager>(GetEntityDescriptorCatalog());
     for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
@@ -126,7 +128,7 @@ void World::Update()
 {
     for (unique_ptr<Updater>& updater : m_updaters)
     {
-        updater->Update(m_entityManager.get(), m_entityManager->GetComponentManager());
+        updater->Update(m_settings, m_entityManager.get(), m_entityManager->GetComponentManager());
     }
     if (m_commandSaver)
     {
@@ -147,7 +149,7 @@ void World::Update()
     {
         for (unique_ptr<Updater>& updater : m_updaters)
         {
-            updater->OnDeletedEntity(entity, m_entityManager.get(), m_entityManager->GetComponentManager());
+            updater->OnDeletedEntity(entity, m_settings, m_entityManager.get(), m_entityManager->GetComponentManager());
         }
     }
     m_entityManager->UpdateNewAndDeletedEntities();
@@ -158,7 +160,7 @@ void World::UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frame
 {
     if (m_eventUpdater)
     {
-        m_eventUpdater->ProcessApplicationEvents(events, m_entityManager.get());
+        m_eventUpdater->ProcessApplicationEvents(events, m_settings, m_entityManager.get());
         m_eventUpdater->ProcessEventListeners(events, m_commandManager.get(), m_entityManager->GetComponentManager(),
                                               m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }

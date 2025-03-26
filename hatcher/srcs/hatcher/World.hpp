@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "WorldSettings.hpp"
 #include "span.hpp"
 #include "unique_ptr.hpp"
 
@@ -23,7 +24,8 @@ class Updater;
 class World final
 {
 public:
-    World(const std::optional<std::string>& commandSaveFile, const std::optional<std::string>& commandLoadFile);
+    World(int64_t seed, const std::optional<std::string>& commandSaveFile,
+          const std::optional<std::string>& commandLoadFile);
     ~World();
 
     void CreateRenderUpdaters(const IRendering* rendering);
@@ -34,6 +36,8 @@ public:
 
 private:
     int m_tick = 0;
+    WorldSettings m_settings;
+
     unique_ptr<EntityManager> m_entityManager;
 
     std::vector<unique_ptr<Updater>> m_updaters;

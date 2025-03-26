@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+#include "hatcher/Maths/glm_pure.hpp"
+
 namespace hatcher
 {
 
@@ -14,6 +16,9 @@ public:
     bool RandomBool();
     int RandomInt(int min, int max);
     float RandomFloat(float min, float max);
+
+    float RandomAngle();
+    glm::vec2 RandomDirection();
 
 private:
     float RandomBetween0And1();
