@@ -67,8 +67,9 @@ MeshData readFile(const std::string& fileName, Primitive::Type primitive)
     HATCHER_ASSERT(primitive == Primitive::Lines || primitive == Primitive::Triangles);
     MeshData meshData;
     std::ifstream ifs;
-    ifs.exceptions(std::ios::failbit | std::ios::badbit);
     ifs.open(fileName, std::ifstream::in);
+    if (ifs.rdstate() & std::ios::failbit)
+        throw std::runtime_error(std::string("Couldn't open mesh file '") + fileName + "'.");
 
     std::vector<glm::vec3> wavefrontPositions;
     std::vector<glm::vec2> wavefrontTexCoords;
