@@ -81,7 +81,7 @@ private:
                     const char* meshFileName, const char* textureFileName)
     {
         m_materials[type] = CreateTextureMaterial(materialFactory, textureFileName);
-        m_meshes[type] = meshLoader->LoadWavefront(m_materials[type].get(), meshFileName, Primitive::Triangles);
+        m_meshes[type] = meshLoader->LoadWavefront(m_materials[type].get(), meshFileName);
     }
 
     unique_ptr<Material> m_materials[StaticMeshComponent::COUNT];

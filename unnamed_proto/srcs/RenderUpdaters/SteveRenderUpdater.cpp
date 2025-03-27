@@ -33,13 +33,12 @@ public:
 
         const Material* material = m_material.get();
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
-        const Primitive::Type primitive = Primitive::Triangles;
-        m_torso.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/torso.obj", primitive);
-        m_head.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/head.obj", primitive);
-        m_leftArm.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/left_arm.obj", primitive);
-        m_rightArm.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/right_arm.obj", primitive);
-        m_leftLeg.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/left_leg.obj", primitive);
-        m_rightLeg.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/right_leg.obj", primitive);
+        m_torso.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/torso.obj");
+        m_head.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/head.obj");
+        m_leftArm.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/left_arm.obj");
+        m_rightArm.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/right_arm.obj");
+        m_leftLeg.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/left_leg.obj");
+        m_rightLeg.mesh = meshLoader->LoadWavefront(material, "assets/meshes/steve/right_leg.obj");
 
         m_torso.matrix = glm::mat4(1.f);
         m_head.matrix = glm::translate(glm::mat4(1.f), glm::vec3(0.f, 0.f, 1.2f));

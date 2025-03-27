@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "Primitive.hpp"
-
 #include "hatcher/unique_ptr.hpp"
 
 namespace hatcher
@@ -17,8 +15,7 @@ class MeshLoader
 public:
     explicit MeshLoader(const FileSystem* fileSystem);
 
-    unique_ptr<Mesh> LoadWavefront(const Material* material, const std::string& fileName,
-                                   Primitive::Type primitive) const;
+    unique_ptr<Mesh> LoadWavefront(const Material* material, const std::string& fileName) const;
 
 private:
     const FileSystem* m_fileSystem;
