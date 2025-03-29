@@ -5,7 +5,7 @@ namespace hatcher
 class ComponentManager;
 class Entity;
 class IEntityManager;
-class WorldSettings;
+struct WorldSettings;
 
 class Updater
 {

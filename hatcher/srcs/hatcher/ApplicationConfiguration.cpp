@@ -120,9 +120,9 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
 #endif
 
     unique_ptr<IArgumentParser> parsers[] = {
-        make_unique<ArgumentParserInteger64>("--seed", this->seed),
-        make_unique<ArgumentParserOptionalString>("--save", this->commandSaveFile),
-        make_unique<ArgumentParserOptionalString>("--load", this->commandLoadFile),
+        hatcher::make_unique<ArgumentParserInteger64>("--seed", this->seed),
+        hatcher::make_unique<ArgumentParserOptionalString>("--save", this->commandSaveFile),
+        hatcher::make_unique<ArgumentParserOptionalString>("--load", this->commandLoadFile),
     };
     const span<unique_ptr<IArgumentParser>> parsersSpan =
         span<unique_ptr<IArgumentParser>>(parsers, std::size(parsers));

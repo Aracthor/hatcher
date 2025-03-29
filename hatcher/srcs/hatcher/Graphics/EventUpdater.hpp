@@ -15,7 +15,7 @@ class ICommandManager;
 class IEntityManager;
 class IEventListener;
 class IFrameRenderer;
-class WorldSettings;
+struct WorldSettings;
 
 class EventUpdater final
 {
