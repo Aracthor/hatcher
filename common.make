@@ -4,7 +4,6 @@ MKDIR=	mkdir
 RM=	rm -f
 RMDIR=	rm -fd
 
-JS_DIR=			js/
 SRCS_DIR=		srcs/
 INC_DIR=		srcs/
 OBJS_DIR=		objs/
@@ -33,7 +32,7 @@ OBJS_WEBASM_RELEASE_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)
 OBJS_WEBASM_DEBUG_DIR=		$(OBJS_WEBASM_DIR)$(DEBUG_DIR)
 OBJS_WEBASM_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
 NATIVE_BIN_DIR=			$(BIN_DIR)
-WEBASM_BIN_DIR=			$(JS_DIR)$(BIN_DIR)
+WEBASM_BIN_DIR=			$(BIN_DIR)
 
 # Order matters here : subfolders must be on top of their root folder, because it is the order used to delete them.
 OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBDIRS)	\

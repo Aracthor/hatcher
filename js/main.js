@@ -126,7 +126,7 @@ const onGlobalPageLoad = async () => {
         print: (text) => { logger.log(`[C++] ${text}`); },
         printErr: (text) => { logger.error(`[C++] ${text}`); },
 
-        locateFile: (path, prefix) => { return "js/bin/" + path; },
+        locateFile: (path, prefix) => { return "bin/" + path; },
 
         canvas: canvas,
         preinitializedWebGLContext: webglCtx,
@@ -152,7 +152,7 @@ const onGlobalPageLoad = async () => {
             });
         };
 
-        await scriptLoadingUtility(`./js/bin/exec_release.js`)
+        await scriptLoadingUtility(application_script)
 
         logger.log("[JS] wasm script: loading successful");
 

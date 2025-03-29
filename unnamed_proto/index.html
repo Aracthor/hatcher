@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="utf-8">
-    <title>Emscripten Experiment</title>
+    <title>Hatcher - Asteroids</title>
     <style>
       #renderArea {
         border: 0px none;
@@ -66,7 +66,8 @@
 
     <textarea id="loggerOutput" rows="10" readonly></textarea>
 
-    <script type="module" src="js/main.js"></script>
+    <script>application_script = './bin/exec_release.js'</script>
+    <script type="module" src="../js/main.js"></script>
 
   </body>
 </html>
