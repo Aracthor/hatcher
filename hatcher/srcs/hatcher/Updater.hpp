@@ -1,9 +1,10 @@
 #pragma once
 
+#include "Entity.hpp"
+
 namespace hatcher
 {
 class ComponentManager;
-class Entity;
 class IEntityManager;
 struct WorldSettings;
 
