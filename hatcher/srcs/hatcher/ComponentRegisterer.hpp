@@ -5,15 +5,12 @@
 namespace hatcher
 {
 
-namespace EComponentList
-{
-enum Type
+enum class EComponentList
 {
     Gameplay,
     Rendering,
     COUNT
 };
-} // namespace EComponentList
 
 class IComponentTypeCreator
 {
@@ -21,10 +18,10 @@ public:
     virtual void CreateComponentType(ComponentManager* componentManager) const = 0;
 };
 
-void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type);
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type);
+void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type);
+void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type);
 
-template <class ComponentType, EComponentList::Type list>
+template <class ComponentType, EComponentList list>
 class ComponentTypeRegisterer final : public IComponentTypeCreator
 {
 public:
@@ -36,7 +33,7 @@ public:
     }
 };
 
-template <class ComponentType, EComponentList::Type list>
+template <class ComponentType, EComponentList list>
 class WorldComponentTypeRegisterer final : public IComponentTypeCreator
 {
 public:

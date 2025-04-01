@@ -7,7 +7,7 @@
 namespace hatcher
 {
 
-Mesh::Mesh(const Material* material, Primitive::Type primitive, bool dynamic /* = false */)
+Mesh::Mesh(const Material* material, Primitive primitive, bool dynamic /* = false */)
     : m_material(material)
     , m_dynamic(dynamic)
 {

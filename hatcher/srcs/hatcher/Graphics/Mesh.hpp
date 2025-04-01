@@ -16,7 +16,7 @@ class VertexBufferObject;
 class Mesh
 {
 public:
-    Mesh(const Material* material, Primitive::Type primitive, bool dynamic = false);
+    Mesh(const Material* material, Primitive primitive, bool dynamic = false);
     ~Mesh();
 
     void Set2DPositions(const float* positions, uint positionCount);

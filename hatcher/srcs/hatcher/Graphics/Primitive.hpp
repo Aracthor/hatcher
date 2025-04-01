@@ -3,9 +3,7 @@
 namespace hatcher
 {
 
-namespace Primitive
-{
-enum Type
+enum Primitive
 {
     Lines,
     LineStrip,
@@ -13,6 +11,5 @@ enum Type
     TriangleFan,
     Count
 };
-} // namespace Primitive
 
 } // namespace hatcher

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IApplication.hpp"
-#include "basic_types.hpp"
 #include "unique_ptr.hpp"
 
 namespace hatcher
@@ -34,7 +33,7 @@ private:
 
     unique_ptr<Rendering> m_rendering;
 
-    uint m_renderFramerateLimit = 60;
+    int m_renderFramerateLimit = 60;
     bool m_running = false;
 };
 

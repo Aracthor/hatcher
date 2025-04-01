@@ -30,7 +30,7 @@ std::vector<const IRenderUpdaterCreator*>& RenderUpdaterCreators()
     return renderUpdaterCreators;
 }
 
-using TComponentCreators = std::vector<const IComponentTypeCreator*>[EComponentList::COUNT];
+using TComponentCreators = std::vector<const IComponentTypeCreator*>[(int)EComponentList::COUNT];
 
 TComponentCreators& ComponentTypeCreators()
 {
@@ -62,14 +62,16 @@ void RegisterRenderUpdater(const IRenderUpdaterCreator* creator)
     RenderUpdaterCreators().push_back(creator);
 }
 
-void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type)
+void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type)
 {
-    ComponentTypeCreators()[type].push_back(creator);
+    const int index = static_cast<int>(type);
+    ComponentTypeCreators()[index].push_back(creator);
 }
 
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList::Type type)
+void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type)
 {
-    WorldComponentTypeCreators()[type].push_back(creator);
+    const int index = static_cast<int>(type);
+    WorldComponentTypeCreators()[index].push_back(creator);
 }
 
 void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor)
@@ -82,12 +84,12 @@ World::World(int64_t seed, const std::optional<std::string>& commandSaveFile,
     : m_settings({seed})
 {
     m_entityManager = make_unique<EntityManager>(GetEntityDescriptorCatalog());
-    for (auto creator : ComponentTypeCreators()[EComponentList::Gameplay])
+    for (auto creator : ComponentTypeCreators()[(int)EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
         creator->CreateComponentType(m_entityManager->GetTemporaryComponentManager());
     }
-    for (auto creator : WorldComponentTypeCreators()[EComponentList::Gameplay])
+    for (auto creator : WorldComponentTypeCreators()[(int)EComponentList::Gameplay])
     {
         creator->CreateComponentType(m_entityManager->GetComponentManager());
     }
@@ -107,12 +109,12 @@ World::~World() = default;
 void World::CreateRenderUpdaters(const IRendering* rendering)
 {
     m_eventUpdater = make_unique<EventUpdater>();
-    for (auto creator : ComponentTypeCreators()[EComponentList::Rendering])
+    for (auto creator : ComponentTypeCreators()[(int)EComponentList::Rendering])
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
         creator->CreateComponentType(m_entityManager->GetTemporaryRenderingComponentManager());
     }
-    for (auto creator : WorldComponentTypeCreators()[EComponentList::Rendering])
+    for (auto creator : WorldComponentTypeCreators()[(int)EComponentList::Rendering])
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
     }

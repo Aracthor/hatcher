@@ -12,7 +12,7 @@ class VertexBufferObject;
 class VertexArrayObject
 {
 public:
-    VertexArrayObject(Primitive::Type primitive);
+    VertexArrayObject(Primitive primitive);
     ~VertexArrayObject();
 
     void Bind();

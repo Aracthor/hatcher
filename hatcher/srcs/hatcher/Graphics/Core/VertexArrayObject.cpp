@@ -10,8 +10,8 @@ namespace hatcher
 namespace
 {
 
-static_assert(Primitive::Count == 4);
-GLenum PrimitiveToGLPrimitive(Primitive::Type type)
+static_assert(static_cast<int>(Primitive::Count) == 4);
+GLenum PrimitiveToGLPrimitive(Primitive type)
 {
     switch (type)
     {
@@ -31,7 +31,7 @@ GLenum PrimitiveToGLPrimitive(Primitive::Type type)
 
 } // namespace
 
-VertexArrayObject::VertexArrayObject(Primitive::Type primitive)
+VertexArrayObject::VertexArrayObject(Primitive primitive)
     : m_mode(PrimitiveToGLPrimitive(primitive))
 {
     GL_CHECK(glGenVertexArrays(1, &m_id));
