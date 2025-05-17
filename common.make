@@ -1,3 +1,5 @@
+uniq=	$(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
+
 CXX=	g++
 EMXX=	em++
 MKDIR=	mkdir
@@ -15,37 +17,25 @@ WEBASM_DIR=		webasm/
 RELEASE_DIR=		release/
 DEBUG_DIR=		debug/
 
-SRCS_SUBDIRS=		Components/		\
-			RenderComonents/	\
-			RenderUpdaters/		\
-			Updaters/		\
-			WorldComponents/	\
-
 OBJS_NATIVE_DIR=		$(OBJS_DIR)$(NATIVE_DIR)
 OBJS_NATIVE_RELEASE_DIR=	$(OBJS_NATIVE_DIR)$(RELEASE_DIR)
-OBJS_NATIVE_RELEASE_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_NATIVE_RELEASE_DIR)%)
 OBJS_NATIVE_DEBUG_DIR=		$(OBJS_NATIVE_DIR)$(DEBUG_DIR)
-OBJS_NATIVE_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_NATIVE_DEBUG_DIR)%)
 OBJS_WEBASM_DIR=		$(OBJS_DIR)$(WEBASM_DIR)
 OBJS_WEBASM_RELEASE_DIR=	$(OBJS_WEBASM_DIR)$(RELEASE_DIR)
-OBJS_WEBASM_RELEASE_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)
 OBJS_WEBASM_DEBUG_DIR=		$(OBJS_WEBASM_DIR)$(DEBUG_DIR)
-OBJS_WEBASM_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
 NATIVE_BIN_DIR=			$(BIN_DIR)
 WEBASM_BIN_DIR=			$(BIN_DIR)
 
+SRCS_DIRS=		$(call uniq,$(dir $(SRCS_FILES)))
+
 # Order matters here : subfolders must be on top of their root folder, because it is the order used to delete them.
-OBJS_DIRS=		$(OBJS_NATIVE_RELEASE_SUBDIRS)	\
-			$(OBJS_NATIVE_RELEASE_DIR)	\
-			$(OBJS_NATIVE_DEBUG_SUBDIRS)	\
-			$(OBJS_NATIVE_DEBUG_DIR)	\
-			$(OBJS_NATIVE_DIR)		\
-			$(OBJS_WEBASM_RELEASE_SUBDIRS)	\
-			$(OBJS_WEBASM_RELEASE_DIR)	\
-			$(OBJS_WEBASM_DEBUG_SUBDIRS)	\
-			$(OBJS_WEBASM_DEBUG_DIR)	\
-			$(OBJS_WEBASM_DIR)		\
-			$(OBJS_DIR)			\
+OBJS_DIRS=		$(SRCS_DIRS:%=$(OBJS_NATIVE_RELEASE_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_NATIVE_DEBUG_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)	\
+			$(OBJS_NATIVE_DIR)				\
+			$(OBJS_WEBASM_DIR)				\
+			$(OBJS_DIR)					\
 
 BIN_DIRS=		$(NATIVE_BIN_DIR)	\
 			$(WEBASM_BIN_DIR)	\
@@ -206,12 +196,12 @@ all:	$(BINS)
 clean:
 	$(MAKE) clean -C $(HATCHER_DIR)
 	$(RM) $(OBJS) $(DEPS)
-	$(RMDIR) $(OBJS_DIRS)
+	$(RMDIR) $(OBJS_DIRS:%./=%)
 
 fclean:
 	$(MAKE) fclean -C $(HATCHER_DIR)
 	$(RM) $(OBJS) $(DEPS)
-	$(RMDIR) $(OBJS_DIRS)
+	$(RMDIR) $(OBJS_DIRS:%./=%)
 	$(RM) $(BINS)
 	$(RM) $(RESIDUE_BINS)
 	$(RMDIR) $(BIN_DIRS)

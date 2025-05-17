@@ -1,8 +1,4 @@
-SRCS_FILES=	main.cpp				\
-		BasicTextDrawer.cpp			\
-		EntityDescriptors.cpp			\
-							\
-		Components/ShooterComponent.cpp		\
+SRCS_FILES=	Components/ShooterComponent.cpp		\
 							\
 		WorldComponents/Lives.cpp		\
 		WorldComponents/Score.cpp		\
@@ -24,7 +20,10 @@ SRCS_FILES=	main.cpp				\
 		RenderUpdaters/ProjectionViewUpdater.cpp\
 		RenderUpdaters/ScoreRenderUpdater.cpp	\
 		RenderUpdaters/PlayerControlUpdater.cpp	\
-
+							\
+		BasicTextDrawer.cpp			\
+		EntityDescriptors.cpp			\
+		main.cpp				\
 
 NATIVE_NAME=	asteroids
 

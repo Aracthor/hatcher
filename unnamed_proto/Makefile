@@ -1,9 +1,4 @@
-SRCS_FILES=	main.cpp						\
-		EntityDescriptors.cpp					\
-		Pathfinding.cpp						\
-		TransformationHelper.cpp				\
-									\
-		Components/InventoryComponent.cpp			\
+SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Components/Movement2DComponent.cpp			\
 		Components/NameComponent.cpp				\
 									\
@@ -27,6 +22,11 @@ SRCS_FILES=	main.cpp						\
 									\
 		WorldComponents/Camera.cpp				\
 		WorldComponents/HexagonalGrid.cpp			\
+									\
+		EntityDescriptors.cpp					\
+		Pathfinding.cpp						\
+		TransformationHelper.cpp				\
+		main.cpp						\
 
 NATIVE_NAME=	exec
 

@@ -1,3 +1,5 @@
+uniq=	$(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
+
 CXX=	g++
 EMXX=	em++
 ARXX=	ar rc
@@ -22,57 +24,18 @@ WEBASM_DIR=		webasm/
 RELEASE_DIR=		release/
 DEBUG_DIR=		debug/
 
-IMGUI_SUBDIRS=		backends/	\
-
-SRCS_SUBDIRS=		Maths/		\
-			Graphics/	\
-
-SRCS_SUBSUBDIRS=	Graphics/Core/	\
-
 OBJS_NATIVE_DIR=		$(OBJS_DIR)$(NATIVE_DIR)
 OBJS_NATIVE_RELEASE_DIR=	$(OBJS_NATIVE_DIR)$(RELEASE_DIR)
-OBJS_NATIVE_RELEASE_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_NATIVE_RELEASE_DIR)%)
-OBJS_NATIVE_RELEASE_SUBSUBDIRS=	$(SRCS_SUBSUBDIRS:%=$(OBJS_NATIVE_RELEASE_DIR)%)
 OBJS_NATIVE_DEBUG_DIR=		$(OBJS_NATIVE_DIR)$(DEBUG_DIR)
-OBJS_NATIVE_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_NATIVE_DEBUG_DIR)%)
-OBJS_NATIVE_DEBUG_SUBSUBDIRS=	$(SRCS_SUBSUBDIRS:%=$(OBJS_NATIVE_DEBUG_DIR)%)
 OBJS_NATIVE_IMGUI_DIR=		$(OBJS_NATIVE_DIR)$(IMGUI_REPO)
-OBJS_NATIVE_IMGUI_SUBDIRS=	$(IMGUI_SUBDIRS:%=$(OBJS_NATIVE_IMGUI_DIR)%)
 OBJS_WEBASM_DIR=		$(OBJS_DIR)$(WEBASM_DIR)
 OBJS_WEBASM_RELEASE_DIR=	$(OBJS_WEBASM_DIR)$(RELEASE_DIR)
-OBJS_WEBASM_RELEASE_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)
-OBJS_WEBASM_RELEASE_SUBSUBDIRS=	$(SRCS_SUBSUBDIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)
 OBJS_WEBASM_DEBUG_DIR=		$(OBJS_WEBASM_DIR)$(DEBUG_DIR)
-OBJS_WEBASM_DEBUG_SUBDIRS=	$(SRCS_SUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
-OBJS_WEBASM_DEBUG_SUBSUBDIRS=	$(SRCS_SUBSUBDIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)
 OBJS_WEBASM_IMGUI_DIR=		$(OBJS_WEBASM_DIR)$(IMGUI_REPO)
-OBJS_WEBASM_IMGUI_SUBDIRS=	$(IMGUI_SUBDIRS:%=$(OBJS_WEBASM_IMGUI_DIR)%)
 OBJS_TEST_DIR=			$(OBJS_DIR)$(TEST_DIR)
 NATIVE_BIN_DIR=			$(BIN_DIR)
 WEBASM_BIN_DIR=			$(BIN_DIR)
 
-
-# Order matters here : subfolders must be on top of their root folder, because it is the order used to delete them.
-OBJS_DIRS=		$(OBJS_TEST_DIR)			\
-			$(OBJS_NATIVE_RELEASE_SUBSUBDIRS)	\
-			$(OBJS_NATIVE_RELEASE_SUBDIRS)		\
-			$(OBJS_NATIVE_RELEASE_DIR)		\
-			$(OBJS_NATIVE_DEBUG_SUBSUBDIRS)		\
-			$(OBJS_NATIVE_DEBUG_SUBDIRS)		\
-			$(OBJS_NATIVE_DEBUG_DIR)		\
-			$(OBJS_NATIVE_IMGUI_SUBDIRS)		\
-			$(OBJS_NATIVE_IMGUI_DIR)		\
-			$(OBJS_NATIVE_DIR)			\
-			$(OBJS_WEBASM_RELEASE_SUBSUBDIRS)	\
-			$(OBJS_WEBASM_RELEASE_SUBDIRS)		\
-			$(OBJS_WEBASM_RELEASE_DIR)		\
-			$(OBJS_WEBASM_DEBUG_SUBSUBDIRS)		\
-			$(OBJS_WEBASM_DEBUG_SUBDIRS)		\
-			$(OBJS_WEBASM_DEBUG_DIR)		\
-			$(OBJS_WEBASM_IMGUI_SUBDIRS)		\
-			$(OBJS_WEBASM_IMGUI_DIR)		\
-			$(OBJS_WEBASM_DIR)			\
-			$(OBJS_DIR)				\
 
 CXX_COMMON_FLAGS=	-Wall -Werror		\
 			-std=c++17		\
@@ -96,13 +59,13 @@ CXX_IMGUI_NATIVE_FLAGS=	`sdl2-config --cflags`	\
 LD_TEST_BIN_FLAGS=	-l$(PROJECT_NAME)_release -L $(BIN_DIR)
 
 
-IMGUI_SRCS_FILES=	imgui.cpp			\
+IMGUI_SRCS_FILES=	backends/imgui_impl_opengl3.cpp	\
+			backends/imgui_impl_sdl2.cpp	\
+			imgui.cpp			\
 			imgui_demo.cpp			\
 			imgui_draw.cpp			\
 			imgui_tables.cpp		\
 			imgui_widgets.cpp		\
-			backends/imgui_impl_opengl3.cpp	\
-			backends/imgui_impl_sdl2.cpp	\
 
 IMGUI_SRCS=	$(addprefix $(IMGUI_REPO),$(IMGUI_SRCS_FILES))
 
@@ -112,22 +75,7 @@ IMGUI_OBJS_NATIVE=	$(IMGUI_SRCS:$(IMGUI_REPO)%.cpp=$(OBJS_NATIVE_IMGUI_DIR)%.o)
 IMGUI_OBJS_WEBASM=	$(IMGUI_SRCS:$(IMGUI_REPO)%.cpp=$(OBJS_WEBASM_IMGUI_DIR)%.o)
 
 
-SRCS_FILES=	ApplicationConfiguration.cpp		\
-		CommandManager.cpp			\
-		CommandSaveLoad.cpp			\
-		ComponentManager.cpp			\
-		DataLoader.cpp				\
-		DataSaver.cpp				\
-		EntityDescriptor.cpp			\
-		EntityDescriptorCatalog.cpp		\
-		EntityManager.cpp			\
-		EntityIDRegistry.cpp	    		\
-		FileSystem.cpp 				\
-		GameApplication.cpp 			\
-		string_view.cpp				\
-		World.cpp				\
-							\
-		Graphics/Core/GLContext.cpp		\
+SRCS_FILES=	Graphics/Core/GLContext.cpp		\
 		Graphics/Core/ImGuiIntegration.cpp	\
 		Graphics/Core/ShaderProgram.cpp		\
 		Graphics/Core/VertexArrayObject.cpp	\
@@ -144,13 +92,45 @@ SRCS_FILES=	ApplicationConfiguration.cpp		\
 		Graphics/Texture.cpp 			\
 							\
 		Maths/RandomGenerator.cpp		\
-		
+							\
+		ApplicationConfiguration.cpp		\
+		CommandManager.cpp			\
+		CommandSaveLoad.cpp			\
+		ComponentManager.cpp			\
+		DataLoader.cpp				\
+		DataSaver.cpp				\
+		EntityDescriptor.cpp			\
+		EntityDescriptorCatalog.cpp		\
+		EntityManager.cpp			\
+		EntityIDRegistry.cpp	    		\
+		FileSystem.cpp 				\
+		GameApplication.cpp 			\
+		string_view.cpp				\
+		World.cpp				\
+
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
 TEST_SRCS_FILES=SaveLoader.cpp				\
 		unique_ptr.cpp 				\
 
 TEST_SRCS=	$(addprefix $(TEST_DIR),$(TEST_SRCS_FILES))
+
+SRCS_DIRS=		$(call uniq,$(dir $(SRCS_FILES)))
+IMGUI_SRCS_DIRS=	$(call uniq,$(dir $(IMGUI_SRCS_FILES)))
+
+# Order matters here : subfolders must be on top of their root folder, because it is the order used to delete them.
+OBJS_DIRS=		$(OBJS_TEST_DIR)				\
+			$(SRCS_DIRS:%=$(OBJS_NATIVE_RELEASE_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_NATIVE_DEBUG_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_WEBASM_RELEASE_DIR)%)	\
+			$(SRCS_DIRS:%=$(OBJS_WEBASM_DEBUG_DIR)%)	\
+			$(IMGUI_SRCS_DIRS:%=$(OBJS_NATIVE_IMGUI_DIR)%)	\
+			$(IMGUI_SRCS_DIRS:%=$(OBJS_WEBASM_IMGUI_DIR)%)	\
+			$(OBJS_NATIVE_DIR)				\
+			$(OBJS_WEBASM_DIR)				\
+			$(OBJS_DIR)					\
+
+
 
 PROJECT_NAME=	hatcher
 LIB_NAME=	lib$(PROJECT_NAME)
@@ -256,7 +236,7 @@ all:	$(BINS)
 
 clean:
 	$(RM) $(OBJS) $(DEPS)
-	$(RMDIR) $(OBJS_DIRS)
+	$(RMDIR) $(OBJS_DIRS:%./=%)
 
 fclean: clean
 	$(RM) $(BINS)
