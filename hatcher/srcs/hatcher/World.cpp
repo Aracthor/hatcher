@@ -158,7 +158,7 @@ void World::Update()
     m_tick++;
 }
 
-void World::UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frameRenderer)
+void World::UpdateFromEvents(span<const SDL_Event> events, const IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {

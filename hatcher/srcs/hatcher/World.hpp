@@ -31,7 +31,7 @@ public:
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
-    void UpdateFromEvents(span<const SDL_Event> events, IFrameRenderer& frameRenderer);
+    void UpdateFromEvents(span<const SDL_Event> events, const IFrameRenderer& frameRenderer);
     void UpdateRendering(IFrameRenderer& frameRenderer);
 
 private:
