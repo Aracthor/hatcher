@@ -84,9 +84,8 @@ public:
                 m_panel.enabled = !m_panel.enabled;
             }
         }
-        else if (m_panel.enabled)
+        else if (event.type && m_panel.enabled)
         {
-            HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
             if (event.button.button == SDL_BUTTON_RIGHT)
             {
                 const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
@@ -95,15 +94,6 @@ public:
                 commandManager->AddCommand(new SetTileWaklableCommand(worldCoords2D, m_panel.walkable));
             }
         }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_KEYDOWN,
-            SDL_MOUSEBUTTONDOWN,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
     }
 
     ControlPanel m_panel;

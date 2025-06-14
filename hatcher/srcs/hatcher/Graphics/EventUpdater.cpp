@@ -49,26 +49,14 @@ void EventUpdater::ProcessEventListeners(span<const SDL_Event> events, ICommandM
 {
     for (const SDL_Event& event : events)
     {
-        const SDL_EventType eventType = static_cast<SDL_EventType>(event.type);
-        if (m_eventListeners.find(eventType) != m_eventListeners.end())
-        {
-            for (auto& listener : m_eventListeners[eventType])
-                listener->GetEvent(event, commandManager, componentManager, renderComponentManager, frameRenderer);
-        }
+        for (auto& listener : m_eventListeners)
+            listener->GetEvent(event, commandManager, componentManager, renderComponentManager, frameRenderer);
     }
 }
 
 void EventUpdater::RegisterListener(IEventListener* eventListener)
 {
-    const span<const SDL_EventType> eventTypesToListen = eventListener->EventTypesToListen();
-
-    for (const SDL_EventType eventType : eventTypesToListen)
-    {
-        if (m_eventListeners.find(eventType) == m_eventListeners.end())
-            m_eventListeners[eventType] = {};
-
-        m_eventListeners[eventType].push_back(eventListener);
-    }
+    m_eventListeners.push_back(eventListener);
 }
 
 } // namespace hatcher

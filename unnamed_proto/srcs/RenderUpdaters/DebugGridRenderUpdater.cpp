@@ -60,19 +60,10 @@ public:
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
-        HATCHER_ASSERT(event.type == SDL_KEYDOWN);
-        if (event.key.keysym.scancode == SDL_SCANCODE_U)
+        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_U)
         {
             m_gridDisplayEnabled = !m_gridDisplayEnabled;
         }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_KEYDOWN,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
     }
 
 private:

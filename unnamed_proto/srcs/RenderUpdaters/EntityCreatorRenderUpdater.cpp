@@ -90,8 +90,7 @@ public:
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
-        HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
-        if (keystate[SDL_SCANCODE_LCTRL])
+        if (event.type == SDL_MOUSEBUTTONDOWN && keystate[SDL_SCANCODE_LCTRL])
         {
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
@@ -121,14 +120,6 @@ public:
                 commandManager->AddCommand(
                     new CreateEntityCommand(*entityDescriptor, inventoryDescriptors, entitySpawnPosition));
         }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_MOUSEBUTTONDOWN,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
     }
 
 private:

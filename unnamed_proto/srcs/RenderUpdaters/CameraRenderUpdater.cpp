@@ -55,15 +55,6 @@ public:
         }
     }
 
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_MOUSEWHEEL,
-            SDL_MOUSEMOTION,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
-    }
-
 private:
     void HandleCameraMotion(Camera* camera, const Clock* clock) const
     {

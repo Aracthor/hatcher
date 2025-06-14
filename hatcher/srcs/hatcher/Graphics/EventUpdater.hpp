@@ -1,6 +1,5 @@
 #pragma once
 
-#include <map>
 #include <vector>
 
 #include <SDL2/SDL_events.h>
@@ -28,7 +27,7 @@ public:
     void RegisterListener(IEventListener* eventListener);
 
 private:
-    std::map<SDL_EventType, std::vector<IEventListener*>> m_eventListeners;
+    std::vector<IEventListener*> m_eventListeners;
 
     std::vector<ubyte> m_saveState;
 };

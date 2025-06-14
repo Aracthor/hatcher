@@ -137,16 +137,6 @@ public:
         }
     }
 
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_MOUSEBUTTONDOWN,
-            SDL_MOUSEBUTTONUP,
-            SDL_MOUSEMOTION,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
-    }
-
 private:
     SelectionRectangle m_selectionRectangle;
     unique_ptr<Material> m_material;

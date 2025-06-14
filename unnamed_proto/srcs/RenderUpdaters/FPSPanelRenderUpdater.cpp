@@ -4,6 +4,8 @@
 
 #include "imgui.h"
 
+#include <vector>
+
 using namespace hatcher;
 
 namespace

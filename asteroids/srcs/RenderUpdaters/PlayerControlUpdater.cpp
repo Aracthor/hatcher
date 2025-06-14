@@ -151,7 +151,9 @@ public:
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
-        HATCHER_ASSERT(event.type == SDL_KEYDOWN || event.type == SDL_KEYUP);
+        if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP)
+            return;
+
         const bool action = (event.type == SDL_KEYDOWN);
         if (event.key.keysym.scancode == SDL_SCANCODE_LEFT)
         {
@@ -169,15 +171,6 @@ public:
         {
             commandManager->AddCommand(new PlayerShootCommand());
         }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_KEYDOWN,
-            SDL_KEYUP,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
     }
 };
 

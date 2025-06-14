@@ -52,8 +52,7 @@ public:
     void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
                   ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
     {
-        HATCHER_ASSERT(event.type == SDL_MOUSEBUTTONDOWN);
-        if (event.button.button == SDL_BUTTON_RIGHT)
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT)
         {
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
@@ -87,14 +86,6 @@ public:
                 }
             }
         }
-    }
-
-    span<const SDL_EventType> EventTypesToListen() const override
-    {
-        static const SDL_EventType events[] = {
-            SDL_MOUSEBUTTONDOWN,
-        };
-        return span<const SDL_EventType>(events, std::size(events));
     }
 };
 
