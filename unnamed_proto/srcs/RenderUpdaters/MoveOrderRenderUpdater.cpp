@@ -43,14 +43,15 @@ class MoveOrderRenderUpdater final : public RenderUpdater
 public:
     MoveOrderRenderUpdater(const IRendering* rendering) {}
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         // TODO show current path ?
     }
 
-    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT)
         {

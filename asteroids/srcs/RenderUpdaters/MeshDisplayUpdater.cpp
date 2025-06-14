@@ -154,8 +154,8 @@ public:
         }
     }
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         auto meshComponents = renderComponentManager->ReadComponents<MeshComponent>();
         auto positionComponents = componentManager->ReadComponents<PositionComponent>();

@@ -22,7 +22,7 @@ public:
     ~Rendering();
 
     void HandleWindowEvents(IApplication* application, World* parWorld);
-    void UpdateWorldRendering(World* parWorld);
+    void UpdateWorldRendering(IApplication* application, World* parWorld);
     void RenderWorld();
 
     const unique_ptr<MaterialFactory>& GetMaterialFactory() const override { return m_materialFactory; }

@@ -46,8 +46,8 @@ public:
 
     ~StaticMeshRenderUpdater() = default;
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto growableComponents = componentManager->ReadComponents<GrowableComponent>();

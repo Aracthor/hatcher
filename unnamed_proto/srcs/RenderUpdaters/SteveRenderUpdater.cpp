@@ -50,8 +50,8 @@ public:
 
     ~SteveRenderUpdater() = default;
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();

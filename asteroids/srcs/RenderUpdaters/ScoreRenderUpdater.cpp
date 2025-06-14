@@ -22,8 +22,8 @@ public:
     {
     }
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const glm::vec2 textSize = {16, 16};
         const glm::vec2 textPosition = {20.f, frameRenderer.Resolution().y - textSize.y - 20.f};

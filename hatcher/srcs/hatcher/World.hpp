@@ -16,6 +16,7 @@ class CommandManager;
 class CommandSaver;
 class EntityManager;
 class EventUpdater;
+class IApplication;
 class IFrameRenderer;
 class IRendering;
 class RenderUpdater;
@@ -31,8 +32,8 @@ public:
     void CreateRenderUpdaters(const IRendering* rendering);
 
     void Update();
-    void UpdateFromEvents(span<const SDL_Event> events, const IFrameRenderer& frameRenderer);
-    void UpdateRendering(IFrameRenderer& frameRenderer);
+    void UpdateFromEvents(span<const SDL_Event> events, IApplication* application, const IFrameRenderer& frameRenderer);
+    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer);
 
 private:
     int m_tick = 0;

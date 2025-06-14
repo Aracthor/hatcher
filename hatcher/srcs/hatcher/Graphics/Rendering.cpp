@@ -37,16 +37,16 @@ void Rendering::HandleWindowEvents(IApplication* application, World* world)
     const auto IsStopEvent = [](const SDL_Event& event) { return event.type == SDL_QUIT; };
     if (std::find_if(events.begin(), events.end(), IsStopEvent) != events.end())
         application->Stop();
-    world->UpdateFromEvents(span<const SDL_Event>(events), *m_frameRenderer);
+    world->UpdateFromEvents(span<const SDL_Event>(events), application, *m_frameRenderer);
 }
 
-void Rendering::UpdateWorldRendering(World* world)
+void Rendering::UpdateWorldRendering(IApplication* application, World* world)
 {
     m_frameRenderer->Clear();
     m_window->Clear();
     m_clock->Update();
 
-    world->UpdateRendering(*m_frameRenderer);
+    world->UpdateRendering(application, *m_frameRenderer);
 }
 
 void Rendering::RenderWorld()

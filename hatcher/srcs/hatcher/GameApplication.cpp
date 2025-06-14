@@ -76,6 +76,11 @@ void GameApplication::Stop()
 #endif
 }
 
+void GameApplication::SetUpdateTickrate(float tickrate)
+{
+    m_updateTicker.emplace(tickrate);
+}
+
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
     m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight, m_fileSystem.get());
@@ -88,10 +93,19 @@ void GameApplication::Update()
     {
         m_rendering->HandleWindowEvents(this, m_world.get());
     }
-    m_world->Update();
+    if (!m_updateTicker)
+    {
+        m_world->Update();
+    }
+    else
+    {
+        int ticks = m_updateTicker->TickCount();
+        while (ticks-- > 0)
+            m_world->Update();
+    }
     if (m_rendering)
     {
-        m_rendering->UpdateWorldRendering(m_world.get());
+        m_rendering->UpdateWorldRendering(this, m_world.get());
     }
 }
 

@@ -1,7 +1,10 @@
 #pragma once
 
 #include "IApplication.hpp"
+#include "UpdateTicker.hpp"
 #include "unique_ptr.hpp"
+
+#include <optional>
 
 namespace hatcher
 {
@@ -20,6 +23,7 @@ public:
     int Run();
 
     void Stop() override;
+    void SetUpdateTickrate(float tickrate) override;
 
     void StartRendering(const char* name, int windowWidth, int windowHeight);
 
@@ -35,6 +39,8 @@ private:
 
     int m_renderFramerateLimit = 60;
     bool m_running = false;
+
+    std::optional<UpdateTicker> m_updateTicker;
 };
 
 } // namespace hatcher

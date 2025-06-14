@@ -43,14 +43,15 @@ void EventUpdater::ProcessApplicationEvents(span<const SDL_Event> events, WorldS
     }
 }
 
-void EventUpdater::ProcessEventListeners(span<const SDL_Event> events, ICommandManager* commandManager,
-                                         const ComponentManager* componentManager,
+void EventUpdater::ProcessEventListeners(span<const SDL_Event> events, IApplication* application,
+                                         ICommandManager* commandManager, const ComponentManager* componentManager,
                                          ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer)
 {
     for (const SDL_Event& event : events)
     {
         for (auto& listener : m_eventListeners)
-            listener->GetEvent(event, commandManager, componentManager, renderComponentManager, frameRenderer);
+            listener->GetEvent(event, application, commandManager, componentManager, renderComponentManager,
+                               frameRenderer);
     }
 }
 

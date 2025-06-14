@@ -42,8 +42,8 @@ public:
 
     ~SelectedRenderUpdater() = default;
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
         auto positionComponents = componentManager->ReadComponents<Position2DComponent>();

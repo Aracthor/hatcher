@@ -158,22 +158,24 @@ void World::Update()
     m_tick++;
 }
 
-void World::UpdateFromEvents(span<const SDL_Event> events, const IFrameRenderer& frameRenderer)
+void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* application,
+                             const IFrameRenderer& frameRenderer)
 {
     if (m_eventUpdater)
     {
         m_eventUpdater->ProcessApplicationEvents(events, m_settings, m_entityManager.get());
-        m_eventUpdater->ProcessEventListeners(events, m_commandManager.get(), m_entityManager->GetComponentManager(),
+        m_eventUpdater->ProcessEventListeners(events, application, m_commandManager.get(),
+                                              m_entityManager->GetComponentManager(),
                                               m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 }
 
-void World::UpdateRendering(IFrameRenderer& frameRenderer)
+void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer)
 {
     for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(m_entityManager->GetComponentManager(), m_entityManager->GetRenderingComponentManager(),
-                              frameRenderer);
+        renderUpdater->Update(application, m_entityManager->GetComponentManager(),
+                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
     }
 }
 

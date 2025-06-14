@@ -14,10 +14,10 @@ class RenderUpdater : public IEventListener
 public:
     virtual ~RenderUpdater() = default;
 
-    virtual void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                        IFrameRenderer& frameRenderer) = 0;
+    virtual void Update(IApplication* application, const ComponentManager* componentManager,
+                        ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) = 0;
 
-    virtual void GetEvent(const SDL_Event& event, ICommandManager* commandManager,
+    virtual void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                           const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                           const IFrameRenderer& frameRenderer) {};
 };

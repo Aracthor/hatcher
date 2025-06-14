@@ -19,6 +19,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		RenderUpdaters/SelectedRenderUpdater.cpp	 	\
 		RenderUpdaters/StaticMeshRenderUpdater.cpp 		\
 		RenderUpdaters/SteveRenderUpdater.cpp			\
+		RenderUpdaters/WorldTickerRenderUpdater.cpp		\
 									\
 		WorldComponents/Camera.cpp				\
 		WorldComponents/HexagonalGrid.cpp			\

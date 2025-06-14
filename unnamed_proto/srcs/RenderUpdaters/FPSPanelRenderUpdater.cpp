@@ -16,8 +16,8 @@ class FPSPanelRenderUpdater final : public RenderUpdater
 public:
     FPSPanelRenderUpdater(const IRendering* rendering) {}
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const float elapsedTime = frameRenderer.GetClock()->GetElapsedTime();
         m_totalElapsedTime += elapsedTime;

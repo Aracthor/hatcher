@@ -143,13 +143,14 @@ class PlayerControlUpdater final : public RenderUpdater
 public:
     PlayerControlUpdater(const IRendering* rendering) {}
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
     }
 
-    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
     {
         if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP)
             return;

@@ -5,6 +5,7 @@
 namespace hatcher
 {
 class ComponentManager;
+class IApplication;
 class ICommandManager;
 class IFrameRenderer;
 
@@ -13,7 +14,7 @@ class IEventListener
 public:
     virtual ~IEventListener() = default;
 
-    virtual void GetEvent(const SDL_Event& event, ICommandManager* commandManager,
+    virtual void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                           const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                           const IFrameRenderer& frameRenderer) = 0;
 };

@@ -43,8 +43,8 @@ public:
         m_lifeMesh->SetIndices(indices, std::size(indices));
     }
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const Lives* lives = componentManager->ReadWorldComponent<Lives>();
         glm::vec2 meshPosition = {30.f, frameRenderer.Resolution().y - 60.f};

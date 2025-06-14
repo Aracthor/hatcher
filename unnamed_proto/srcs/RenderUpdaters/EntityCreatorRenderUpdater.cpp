@@ -81,13 +81,14 @@ public:
         m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("EMCard"));
     }
 
-    void Update(const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
     }
 
-    void GetEvent(const SDL_Event& event, ICommandManager* commandManager, const ComponentManager* componentManager,
-                  ComponentManager* renderComponentManager, const IFrameRenderer& frameRenderer) override
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
         if (event.type == SDL_MOUSEBUTTONDOWN && keystate[SDL_SCANCODE_LCTRL])
