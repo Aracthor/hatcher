@@ -7,10 +7,10 @@
 #include <iostream>
 #endif
 
-#include "Graphics/Clock.hpp"
 #include "Graphics/Rendering.hpp"
 
 #include "ApplicationConfiguration.hpp"
+#include "Clock.hpp"
 #include "FileSystem.hpp"
 #include "World.hpp"
 

@@ -4,10 +4,10 @@
 
 #include "Core/Window.hpp"
 
+#include "hatcher/Clock.hpp"
 #include "hatcher/IApplication.hpp"
 #include "hatcher/World.hpp"
 
-#include "Clock.hpp"
 #include "FrameRenderer.hpp"
 #include "MaterialFactory.hpp"
 #include "MeshLoader.hpp"

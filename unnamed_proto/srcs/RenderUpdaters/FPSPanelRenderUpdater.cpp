@@ -1,4 +1,4 @@
-#include "hatcher/Graphics/Clock.hpp"
+#include "hatcher/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 

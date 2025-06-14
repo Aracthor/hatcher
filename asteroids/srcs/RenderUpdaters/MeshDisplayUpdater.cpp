@@ -1,5 +1,5 @@
+#include "hatcher/Clock.hpp"
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"

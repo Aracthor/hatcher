@@ -81,7 +81,6 @@ SRCS_FILES=	Graphics/Core/GLContext.cpp		\
 		Graphics/Core/VertexArrayObject.cpp	\
 		Graphics/Core/VertexBufferObject.cpp	\
 		Graphics/Core/Window.cpp 		\
-		Graphics/Clock.cpp			\
 		Graphics/EventUpdater.cpp		\
 		Graphics/FrameRenderer.cpp		\
 		Graphics/Material.cpp 			\
@@ -94,6 +93,7 @@ SRCS_FILES=	Graphics/Core/GLContext.cpp		\
 		Maths/RandomGenerator.cpp		\
 							\
 		ApplicationConfiguration.cpp		\
+		Clock.cpp				\
 		CommandManager.cpp			\
 		CommandSaveLoad.cpp			\
 		ComponentManager.cpp			\
