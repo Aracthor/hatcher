@@ -13,14 +13,17 @@ FrameRenderer::FrameRenderer(const Clock* clock, const glm::vec2& resolution)
 
 FrameRenderer::~FrameRenderer() = default;
 
-void FrameRenderer::AddMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix)
+void FrameRenderer::DrawSceneMesh(const Mesh* mesh, const glm::mat4& modelMatrix)
 {
-    m_meshesToRender.push_back({mesh, modelMatrix});
+    mesh->Draw(modelMatrix, m_viewMatrix, m_projectionMatrix);
 }
 
-void FrameRenderer::AddUIMeshToRender(const Mesh* mesh, const glm::mat4& modelMatrix)
+void FrameRenderer::DrawUIMesh(const Mesh* mesh, const glm::mat4& modelMatrix)
 {
-    m_UImeshesToRender.push_back({mesh, modelMatrix});
+    const float width = static_cast<float>(m_resolution.x);
+    const float height = static_cast<float>(m_resolution.y);
+    const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);
+    mesh->Draw(modelMatrix, glm::mat4(1.f), UIProjectionMatrix);
 }
 
 void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
@@ -59,31 +62,6 @@ glm::vec3 FrameRenderer::WindowCoordsToWorldCoords(const glm::vec2 windowCoords)
     const glm::mat4 modelViewMatrix = m_viewMatrix;
     const glm::vec4 viewport = {0.f, 0.f, resolution.x, resolution.y};
     return glm::unProject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
-}
-
-void FrameRenderer::RenderScene() const
-{
-    for (const MeshToRender& meshToRender : m_meshesToRender)
-    {
-        meshToRender.mesh->Draw(meshToRender.modelMatrix, m_viewMatrix, m_projectionMatrix);
-    }
-}
-
-void FrameRenderer::RenderUI() const
-{
-    const float width = static_cast<float>(m_resolution.x);
-    const float height = static_cast<float>(m_resolution.y);
-    const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);
-    for (const MeshToRender& meshToRender : m_UImeshesToRender)
-    {
-        meshToRender.mesh->Draw(meshToRender.modelMatrix, glm::mat4(1.f), UIProjectionMatrix);
-    }
-}
-
-void FrameRenderer::Clear()
-{
-    m_meshesToRender.clear();
-    m_UImeshesToRender.clear();
 }
 
 } // namespace hatcher

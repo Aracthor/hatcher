@@ -71,7 +71,7 @@ public:
             int gridPositionY = -m_gridSize / 2 + 1;
             glm::mat4 modelMatrix = glm::translate(glm::vec3(gridPositionX, gridPositionY, 0.f));
 
-            frameRenderer.AddMeshToRender(m_gridMesh.get(), modelMatrix);
+            frameRenderer.DrawSceneMesh(m_gridMesh.get(), modelMatrix);
         }
     }
 

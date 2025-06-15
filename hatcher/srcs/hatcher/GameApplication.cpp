@@ -34,7 +34,6 @@ int GameApplication::Run()
         {
             GameApplication* game = reinterpret_cast<GameApplication*>(data);
             game->Update();
-            game->Render();
         }
         catch (const std::exception& exception)
         {
@@ -106,14 +105,6 @@ void GameApplication::Update()
     if (m_rendering)
     {
         m_rendering->UpdateWorldRendering(this, m_world.get());
-    }
-}
-
-void GameApplication::Render()
-{
-    if (m_rendering)
-    {
-        m_rendering->RenderWorld();
     }
 }
 

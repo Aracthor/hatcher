@@ -50,8 +50,8 @@ public:
         glm::vec2 meshPosition = {30.f, frameRenderer.Resolution().y - 60.f};
         for (int i = 0; i < lives->remaining; i++)
         {
-            frameRenderer.AddMeshToRender(m_lifeMesh.get(),
-                                          glm::translate(glm::vec3(meshPosition.x, meshPosition.y, 0.f)));
+            frameRenderer.DrawSceneMesh(m_lifeMesh.get(),
+                                        glm::translate(glm::vec3(meshPosition.x, meshPosition.y, 0.f)));
             meshPosition.x += 30.f;
         }
 

@@ -73,7 +73,7 @@ public:
                     modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
                 }
 
-                frameRenderer.AddMeshToRender(mesh.get(), modelMatrix);
+                frameRenderer.DrawSceneMesh(mesh.get(), modelMatrix);
             }
         }
     }

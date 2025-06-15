@@ -172,7 +172,7 @@ public:
                 modelMatrix = glm::translate(modelMatrix, glm::vec3(positionComponent->position, 0.f));
                 modelMatrix = glm::rotate(modelMatrix, positionComponent->angle, glm::vec3(0.f, 0.f, 1.f));
                 modelMatrix = glm::scale(modelMatrix, glm::vec3(meshComponent->scale));
-                frameRenderer.AddMeshToRender(m_meshes[meshComponent->ID].get(), modelMatrix);
+                frameRenderer.DrawSceneMesh(m_meshes[meshComponent->ID].get(), modelMatrix);
                 if (playerComponent && playerComponent->accelerating)
                 {
                     m_acceleratingDisplayTime += frameRenderer.GetClock()->GetElapsedTime();
@@ -182,7 +182,7 @@ public:
                         m_displayAcceleratingMesh = !m_displayAcceleratingMesh;
                     }
                     if (m_displayAcceleratingMesh)
-                        frameRenderer.AddMeshToRender(m_playerAcceleratingMesh.get(), modelMatrix);
+                        frameRenderer.DrawSceneMesh(m_playerAcceleratingMesh.get(), modelMatrix);
                 }
             }
         }

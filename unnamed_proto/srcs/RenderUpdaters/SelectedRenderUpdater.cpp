@@ -70,7 +70,7 @@ public:
                 selectedModelMatrix = glm::translate(selectedModelMatrix, position);
                 selectedModelMatrix = glm::scale(selectedModelMatrix, scale);
 
-                frameRenderer.AddUIMeshToRender(m_mesh.get(), selectedModelMatrix);
+                frameRenderer.DrawUIMesh(m_mesh.get(), selectedModelMatrix);
             }
         }
     }

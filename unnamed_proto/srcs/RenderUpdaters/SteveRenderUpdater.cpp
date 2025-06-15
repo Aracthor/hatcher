@@ -81,12 +81,12 @@ public:
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
-                frameRenderer.AddMeshToRender(m_torso.mesh.get(), modelMatrix * m_torso.matrix);
-                frameRenderer.AddMeshToRender(m_head.mesh.get(), modelMatrix * m_head.matrix);
-                frameRenderer.AddMeshToRender(m_rightArm.mesh.get(), modelMatrix * m_rightArm.matrix);
-                frameRenderer.AddMeshToRender(m_leftArm.mesh.get(), modelMatrix * m_leftArm.matrix);
-                frameRenderer.AddMeshToRender(m_rightLeg.mesh.get(), modelMatrix * rightLegMatrix);
-                frameRenderer.AddMeshToRender(m_leftLeg.mesh.get(), modelMatrix * leftLegMatrix);
+                frameRenderer.DrawSceneMesh(m_torso.mesh.get(), modelMatrix * m_torso.matrix);
+                frameRenderer.DrawSceneMesh(m_head.mesh.get(), modelMatrix * m_head.matrix);
+                frameRenderer.DrawSceneMesh(m_rightArm.mesh.get(), modelMatrix * m_rightArm.matrix);
+                frameRenderer.DrawSceneMesh(m_leftArm.mesh.get(), modelMatrix * m_leftArm.matrix);
+                frameRenderer.DrawSceneMesh(m_rightLeg.mesh.get(), modelMatrix * rightLegMatrix);
+                frameRenderer.DrawSceneMesh(m_leftLeg.mesh.get(), modelMatrix * leftLegMatrix);
             }
         }
     }

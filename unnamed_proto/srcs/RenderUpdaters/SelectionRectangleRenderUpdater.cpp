@@ -140,7 +140,7 @@ public:
             modelMatrix = glm::translate(modelMatrix, position);
             modelMatrix = glm::scale(modelMatrix, scale);
 
-            frameRenderer.AddUIMeshToRender(m_selectionRectangleMesh.get(), modelMatrix);
+            frameRenderer.DrawUIMesh(m_selectionRectangleMesh.get(), modelMatrix);
         }
     }
 

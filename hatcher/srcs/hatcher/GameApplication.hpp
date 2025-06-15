@@ -29,7 +29,6 @@ public:
 
 private:
     void Update();
-    void Render();
 
     unique_ptr<ApplicationConfiguration> m_configuration;
     unique_ptr<FileSystem> m_fileSystem;

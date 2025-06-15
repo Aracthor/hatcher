@@ -42,19 +42,10 @@ void Rendering::HandleWindowEvents(IApplication* application, World* world)
 
 void Rendering::UpdateWorldRendering(IApplication* application, World* world)
 {
-    m_frameRenderer->Clear();
     m_window->Clear();
     m_clock->Update();
 
     world->UpdateRendering(application, *m_frameRenderer);
-}
-
-void Rendering::RenderWorld()
-{
-    m_frameRenderer->RenderScene();
-    m_window->DisableDepthTest();
-    m_frameRenderer->RenderUI();
-    m_window->EnableDepthTest();
     m_window->Refresh();
 }
 
