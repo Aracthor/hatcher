@@ -6,17 +6,20 @@
 
 namespace hatcher
 {
+class GLContext;
 
 class FrameRenderer : public IFrameRenderer
 {
 public:
-    FrameRenderer(const Clock* clock, const glm::vec2& resolution);
+    FrameRenderer(GLContext* context, const Clock* clock, const glm::vec2& resolution);
     ~FrameRenderer();
 
     void DrawSceneMesh(const Mesh* mesh, const glm::mat4& modelMatrix) override;
     void DrawUIMesh(const Mesh* mesh, const glm::mat4& modelMatrix) override;
     void SetProjectionMatrix(const glm::mat4& matrix) override;
     void SetViewMatrix(const glm::mat4& matrix) override;
+    void EnableDepthTest() override;
+    void DisableDepthTest() override;
 
     const Clock* GetClock() const override { return m_clock; }
     glm::ivec2 Resolution() const override { return m_resolution; }
@@ -31,6 +34,7 @@ private:
         glm::mat4 modelMatrix;
     };
 
+    GLContext* m_context;
     const Clock* m_clock;
     const glm::vec2 m_resolution;
 

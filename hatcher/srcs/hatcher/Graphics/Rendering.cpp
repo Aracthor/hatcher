@@ -21,7 +21,7 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight, const 
     m_materialFactory = make_unique<MaterialFactory>(fileSystem);
     m_meshLoader = make_unique<MeshLoader>(fileSystem);
     m_window = make_unique<Window>(name, windowWidth, windowHeight);
-    m_frameRenderer = make_unique<FrameRenderer>(m_clock.get(), Resolution());
+    m_frameRenderer = make_unique<FrameRenderer>(m_window->Context(), m_clock.get(), Resolution());
 }
 
 Rendering::~Rendering() = default;

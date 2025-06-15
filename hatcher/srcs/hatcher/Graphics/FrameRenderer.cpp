@@ -1,12 +1,15 @@
 #include "FrameRenderer.hpp"
 
+#include "Core/GLContext.hpp"
+
 #include "Mesh.hpp"
 
 namespace hatcher
 {
 
-FrameRenderer::FrameRenderer(const Clock* clock, const glm::vec2& resolution)
-    : m_clock(clock)
+FrameRenderer::FrameRenderer(GLContext* context, const Clock* clock, const glm::vec2& resolution)
+    : m_context(context)
+    , m_clock(clock)
     , m_resolution(resolution)
 {
 }
@@ -34,6 +37,16 @@ void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
 void FrameRenderer::SetViewMatrix(const glm::mat4& matrix)
 {
     m_viewMatrix = matrix;
+}
+
+void FrameRenderer::EnableDepthTest()
+{
+    m_context->EnableDepthTest();
+}
+
+void FrameRenderer::DisableDepthTest()
+{
+    m_context->DisableDepthTest();
 }
 
 glm::vec2 FrameRenderer::WorldCoordsToWindowCoords(const glm::vec3& worldCoords, const glm::mat4& modelMatrix) const

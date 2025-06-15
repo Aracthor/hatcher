@@ -127,6 +127,7 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
+        frameRenderer.DisableDepthTest();
         if (selectionRectangle.IsSelecting())
         {
             const Box2f selectionBox = selectionRectangle.GetCurrentSelection();
@@ -142,6 +143,7 @@ public:
 
             frameRenderer.DrawUIMesh(m_selectionRectangleMesh.get(), modelMatrix);
         }
+        frameRenderer.EnableDepthTest();
     }
 
 private:

@@ -23,8 +23,7 @@ public:
 
     std::vector<SDL_Event> PollEvents();
 
-    void EnableDepthTest();
-    void DisableDepthTest();
+    GLContext* Context() const { return m_context.get(); }
 
     int Width() const { return m_width; }
     int Height() const { return m_height; }

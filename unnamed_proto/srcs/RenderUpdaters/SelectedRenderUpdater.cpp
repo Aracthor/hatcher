@@ -47,6 +47,7 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
+        frameRenderer.DisableDepthTest();
         auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
         auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         for (int i = 0; i < componentManager->Count(); i++)
@@ -73,6 +74,7 @@ public:
                 frameRenderer.DrawUIMesh(m_mesh.get(), selectedModelMatrix);
             }
         }
+        frameRenderer.EnableDepthTest();
     }
 
 private:

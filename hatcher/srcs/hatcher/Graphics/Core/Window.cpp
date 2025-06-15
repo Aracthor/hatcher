@@ -28,16 +28,6 @@ Window::~Window()
     SDL_Quit();
 }
 
-void Window::EnableDepthTest()
-{
-    m_context->EnableDepthTest();
-}
-
-void Window::DisableDepthTest()
-{
-    m_context->DisableDepthTest();
-}
-
 std::vector<SDL_Event> Window::PollEvents()
 {
     std::vector<SDL_Event> events;
