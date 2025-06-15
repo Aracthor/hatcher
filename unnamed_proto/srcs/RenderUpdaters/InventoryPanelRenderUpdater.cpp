@@ -3,6 +3,7 @@
 #include "RenderUpdaterOrder.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
@@ -15,8 +16,22 @@
 
 namespace
 {
+bool enabled = false;
 
-class InventoryPanelRenderUpdater final : public RenderUpdater
+class InventoryPanelEventListener : public IEventListener
+{
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
+    {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_I)
+        {
+            enabled = !enabled;
+        }
+    }
+};
+
+class InventoryPanelRenderUpdater : public RenderUpdater
 {
 public:
     InventoryPanelRenderUpdater(const IRendering* rendering) {}
@@ -24,7 +39,7 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
-        if (!m_enabled)
+        if (!enabled)
             return;
 
         const auto inventoryComponents = componentManager->ReadComponents<InventoryComponent>();
@@ -41,7 +56,7 @@ public:
                 ImGui::SetNextWindowSize(ImVec2(200, 300), ImGuiCond_Once);
                 std::ostringstream windowNameOss;
                 windowNameOss << "Inventory - " << nameComponents[i]->name << "##" << i;
-                if (ImGui::Begin(windowNameOss.str().c_str(), &m_enabled))
+                if (ImGui::Begin(windowNameOss.str().c_str(), &enabled))
                 {
                     ImGui::Text("Storage: %ld", inventory.storage.size());
                     for (Entity::IDType itemID : inventory.storage)
@@ -55,20 +70,9 @@ public:
             }
         }
     }
-
-    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
-    {
-        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_I)
-        {
-            m_enabled = !m_enabled;
-        }
-    }
-
-    bool m_enabled = false;
 };
 
-RenderUpdaterRegisterer<InventoryPanelRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
+EventListenerRegisterer<InventoryPanelEventListener> eventRegisterer;
+RenderUpdaterRegisterer<InventoryPanelRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

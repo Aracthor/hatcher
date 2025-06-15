@@ -2,7 +2,7 @@
 
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
 #include "hatcher/IEntityManager.hpp"
@@ -40,16 +40,9 @@ private:
 };
 REGISTER_COMMAND(DeleteEntityCommand);
 
-class DebugShortcutsRenderUpdater final : public RenderUpdater
+class DebugShortcutsEventListener final : public IEventListener
 {
 public:
-    DebugShortcutsRenderUpdater(const IRendering* rendering) {}
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
-    }
-
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
@@ -71,6 +64,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<DebugShortcutsRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<DebugShortcutsEventListener> registerer;
 
 } // namespace

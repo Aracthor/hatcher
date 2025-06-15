@@ -1,25 +1,20 @@
 #pragma once
 
-#include "IEventListener.hpp"
-
 namespace hatcher
 {
 class ComponentManager;
+class IApplication;
 class IEventUpdater;
 class IFrameRenderer;
 class IRendering;
 
-class RenderUpdater : public IEventListener
+class RenderUpdater
 {
 public:
     virtual ~RenderUpdater() = default;
 
     virtual void Update(IApplication* application, const ComponentManager* componentManager,
                         ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) = 0;
-
-    virtual void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                          const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                          const IFrameRenderer& frameRenderer) {};
 };
 
 class IRenderUpdaterCreator

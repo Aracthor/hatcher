@@ -6,6 +6,7 @@
 
 #include "hatcher/Clock.hpp"
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
@@ -15,22 +16,8 @@ using namespace hatcher;
 namespace
 {
 
-class CameraRenderUpdater final : public RenderUpdater
+class CameraEventListener : public IEventListener
 {
-public:
-    CameraRenderUpdater(const IRendering* rendering) {}
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
-        Camera* camera = renderComponentManager->WriteWorldComponent<Camera>();
-
-        HandleCameraMotion(camera, frameRenderer.GetClock());
-
-        frameRenderer.SetProjectionMatrix(CalculateProjectionMatrix(camera, frameRenderer));
-        frameRenderer.SetViewMatrix(glm::lookAt(camera->Position(), camera->Target(), camera->Up()));
-    }
-
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
@@ -56,6 +43,23 @@ public:
             camera->angles.y -= cameraRotationSpeed * event.motion.yrel;
             camera->angles.y = std::clamp(camera->angles.y, 0.f, float(M_PI) / 2.f);
         }
+    }
+};
+
+class CameraRenderUpdater final : public RenderUpdater
+{
+public:
+    CameraRenderUpdater(const IRendering* rendering) {}
+
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    {
+        Camera* camera = renderComponentManager->WriteWorldComponent<Camera>();
+
+        HandleCameraMotion(camera, frameRenderer.GetClock());
+
+        frameRenderer.SetProjectionMatrix(CalculateProjectionMatrix(camera, frameRenderer));
+        frameRenderer.SetViewMatrix(glm::lookAt(camera->Position(), camera->Target(), camera->Up()));
     }
 
 private:
@@ -101,6 +105,7 @@ private:
     }
 };
 
-RenderUpdaterRegisterer<CameraRenderUpdater> registerer((int)ERenderUpdaterOrder::Camera);
+EventListenerRegisterer<CameraEventListener> eventRegisterer;
+RenderUpdaterRegisterer<CameraRenderUpdater> updateRegisterer((int)ERenderUpdaterOrder::Camera);
 
 } // namespace

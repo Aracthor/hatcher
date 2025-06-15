@@ -3,8 +3,8 @@
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
-#include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
 #include "hatcher/assert.hpp"
@@ -138,15 +138,10 @@ public:
 };
 REGISTER_COMMAND(PlayerShootCommand);
 
-class PlayerControlUpdater final : public RenderUpdater
+class PlayerControlUpdater final : public IEventListener
 {
 public:
-    PlayerControlUpdater(const IRendering* rendering) {}
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
-    }
+    PlayerControlUpdater() {}
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
@@ -175,6 +170,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<PlayerControlUpdater> registerer;
+EventListenerRegisterer<PlayerControlUpdater> registerer;
 
 } // namespace

@@ -2,6 +2,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -18,7 +19,22 @@ using namespace hatcher;
 
 namespace
 {
-class HexaGridRenderUpdater final : public RenderUpdater
+bool gridDisplayEnabled = true;
+
+class HexaGridEventListener : public IEventListener
+{
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
+    {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_J)
+        {
+            gridDisplayEnabled = !gridDisplayEnabled;
+        }
+    }
+};
+
+class HexaGridRenderUpdater : public RenderUpdater
 {
 public:
     HexaGridRenderUpdater(const IRendering* rendering)
@@ -39,8 +55,6 @@ public:
         FillGridMesh();
     }
 
-    ~HexaGridRenderUpdater() = default;
-
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
@@ -59,20 +73,10 @@ public:
                     const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
                     const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
                     frameRenderer.AddMeshToRender(m_walkableTileMesh.get(), tileMatrix);
-                    if (m_gridDisplayEnabled)
+                    if (gridDisplayEnabled)
                         frameRenderer.AddMeshToRender(m_gridTileMesh.get(), tileMatrix);
                 }
             }
-        }
-    }
-
-    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
-    {
-        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_J)
-        {
-            m_gridDisplayEnabled = !m_gridDisplayEnabled;
         }
     }
 
@@ -91,14 +95,13 @@ private:
         m_gridTileMesh->Set2DPositions(tilePositions.data(), std::size(tilePositions));
     }
 
-    bool m_gridDisplayEnabled = true;
-
     unique_ptr<Material> m_gridMaterial;
     unique_ptr<Material> m_tileMaterial;
     unique_ptr<Mesh> m_gridTileMesh;
     unique_ptr<Mesh> m_walkableTileMesh;
 };
 
-RenderUpdaterRegisterer<HexaGridRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<HexaGridEventListener> eventRegisterer;
+RenderUpdaterRegisterer<HexaGridRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

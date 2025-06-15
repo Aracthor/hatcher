@@ -1,5 +1,3 @@
-#include "RenderUpdaterOrder.hpp"
-
 #include "Components/InventoryComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "WorldComponents/Camera.hpp"
@@ -10,7 +8,7 @@
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
-#include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
 #include "hatcher/unique_ptr.hpp"
@@ -72,20 +70,15 @@ private:
 };
 REGISTER_COMMAND(CreateEntityCommand);
 
-class EntityCreatorRenderUpdater final : public RenderUpdater
+class EntityCreatorEventListener : public IEventListener
 {
 public:
-    EntityCreatorRenderUpdater(const IRendering* rendering)
+    EntityCreatorEventListener()
         : m_steveEntityDescriptor(EntityDescriptorID::Create("Steve"))
         , m_lockerEntityDescriptor(EntityDescriptorID::Create("Locker"))
         , m_melonEntityDescriptor(EntityDescriptorID::Create("Melon"))
     {
         m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("EMCard"));
-    }
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
     }
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
@@ -132,6 +125,6 @@ private:
     std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
 };
 
-RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<EntityCreatorEventListener> registerer;
 
 } // namespace

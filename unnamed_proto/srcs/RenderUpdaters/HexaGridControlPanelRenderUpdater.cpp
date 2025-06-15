@@ -2,6 +2,7 @@
 
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -14,11 +15,11 @@
 
 namespace
 {
-struct ControlPanel
+struct
 {
     bool enabled = false;
     bool walkable = false;
-};
+} controlPanel;
 
 class SetTileWaklableCommand final : public ICommand
 {
@@ -55,27 +56,8 @@ private:
 };
 REGISTER_COMMAND(SetTileWaklableCommand);
 
-class HexaGridControlPanelRenderUpdater final : public RenderUpdater
+class HexaGridControlPanelEventListener : public IEventListener
 {
-public:
-    HexaGridControlPanelRenderUpdater(const IRendering* rendering) {}
-
-    ~HexaGridControlPanelRenderUpdater() = default;
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
-        if (!m_panel.enabled)
-            return;
-
-        ImGui::SetNextWindowSize({200, 100}, ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("HexaGrid Control Panel", &m_panel.enabled))
-        {
-            ImGui::Checkbox("Walkable", &m_panel.walkable);
-        }
-        ImGui::End();
-    }
-
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
@@ -84,24 +66,43 @@ public:
         {
             if (event.key.keysym.scancode == SDL_SCANCODE_F2)
             {
-                m_panel.enabled = !m_panel.enabled;
+                controlPanel.enabled = !controlPanel.enabled;
             }
         }
-        else if (event.type && m_panel.enabled)
+        else if (event.type && controlPanel.enabled)
         {
             if (event.button.button == SDL_BUTTON_RIGHT)
             {
                 const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
                 const glm::vec2 worldCoords2D =
                     camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-                commandManager->AddCommand(new SetTileWaklableCommand(worldCoords2D, m_panel.walkable));
+                commandManager->AddCommand(new SetTileWaklableCommand(worldCoords2D, controlPanel.walkable));
             }
         }
     }
-
-    ControlPanel m_panel;
 };
 
-RenderUpdaterRegisterer<HexaGridControlPanelRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+class HexaGridControlPanelRenderUpdater : public RenderUpdater
+{
+public:
+    HexaGridControlPanelRenderUpdater(const IRendering* rendering) {}
+
+    void Update(IApplication* application, const ComponentManager* componentManager,
+                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    {
+        if (!controlPanel.enabled)
+            return;
+
+        ImGui::SetNextWindowSize({200, 100}, ImGuiCond_FirstUseEver);
+        if (ImGui::Begin("HexaGrid Control Panel", &controlPanel.enabled))
+        {
+            ImGui::Checkbox("Walkable", &controlPanel.walkable);
+        }
+        ImGui::End();
+    }
+};
+
+EventListenerRegisterer<HexaGridControlPanelEventListener> eventRegisterer;
+RenderUpdaterRegisterer<HexaGridControlPanelRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

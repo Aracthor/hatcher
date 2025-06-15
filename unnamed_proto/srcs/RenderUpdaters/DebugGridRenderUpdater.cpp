@@ -2,6 +2,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -15,6 +16,21 @@ using namespace hatcher;
 
 namespace
 {
+bool gridDisplayEnabled = false;
+
+class DebugGridEventListener final : public IEventListener
+{
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
+    {
+        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_U)
+        {
+            gridDisplayEnabled = !gridDisplayEnabled;
+        }
+    }
+};
+
 class DebugGridRenderUpdater final : public RenderUpdater
 {
 public:
@@ -49,7 +65,7 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
-        if (m_gridDisplayEnabled)
+        if (gridDisplayEnabled)
         {
             int gridPositionX = -m_gridSize / 2 + 1;
             int gridPositionY = -m_gridSize / 2 + 1;
@@ -59,23 +75,13 @@ public:
         }
     }
 
-    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
-    {
-        if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_U)
-        {
-            m_gridDisplayEnabled = !m_gridDisplayEnabled;
-        }
-    }
-
 private:
-    bool m_gridDisplayEnabled = false;
     int m_gridSize = 150;
     unique_ptr<Material> m_material;
     unique_ptr<Mesh> m_gridMesh;
 };
 
-RenderUpdaterRegisterer<DebugGridRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<DebugGridEventListener> eventRegisterer;
+RenderUpdaterRegisterer<DebugGridRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

@@ -1,5 +1,3 @@
-#include "RenderUpdaterOrder.hpp"
-
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
@@ -8,7 +6,7 @@
 
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
-#include "hatcher/Graphics/RenderUpdater.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
 #include "hatcher/IEntityManager.hpp"
@@ -40,17 +38,9 @@ private:
 };
 REGISTER_COMMAND(MoveOrderCommand)
 
-class MoveOrderRenderUpdater final : public RenderUpdater
+class MoveOrderRenderUpdater final : public IEventListener
 {
 public:
-    MoveOrderRenderUpdater(const IRendering* rendering) {}
-
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
-    {
-        // TODO show current path ?
-    }
-
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
                   const IFrameRenderer& frameRenderer) override
@@ -92,6 +82,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<MoveOrderRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<MoveOrderRenderUpdater> registerer;
 
 } // namespace

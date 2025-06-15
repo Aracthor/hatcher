@@ -7,6 +7,7 @@
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
+#include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -21,7 +22,7 @@ using namespace hatcher;
 namespace
 {
 
-class SelectionRectangle
+class
 {
 public:
     void StartSelection(const glm::vec2& position)
@@ -47,9 +48,56 @@ private:
     bool m_isSelecting = false;
     glm::vec2 m_selectionStart;
     Box2f m_currentRectangle;
+} selectionRectangle;
+
+class SelectionRectangleEventListener : public IEventListener
+{
+    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
+                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const IFrameRenderer& frameRenderer) override
+    {
+        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
+        {
+            const glm::vec2 winCoords = {event.motion.x, event.motion.y};
+            selectionRectangle.StartSelection(winCoords);
+        }
+        else if (event.type == SDL_MOUSEMOTION)
+        {
+            if (selectionRectangle.IsSelecting())
+            {
+                const glm::vec2 winCoords = {event.motion.x, event.motion.y};
+                selectionRectangle.MoveSelection(winCoords);
+            }
+        }
+        else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
+        {
+            ComponentWriter<SelectableComponent> selectableComponents =
+                renderComponentManager->WriteComponents<SelectableComponent>();
+            ComponentReader<Position2DComponent> positionComponents =
+                componentManager->ReadComponents<Position2DComponent>();
+            const Box2f selectionBox = selectionRectangle.GetCurrentSelection();
+
+            HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
+            for (int i = 0; i < componentManager->Count(); i++)
+            {
+                std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
+                if (selectableComponent)
+                {
+                    HATCHER_ASSERT(positionComponents[i]);
+                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+
+                    const Box2f entitySelectionBox =
+                        frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
+                    selectableComponent->selected = selectionBox.Touches(entitySelectionBox);
+                }
+            }
+
+            selectionRectangle.EndSelection();
+        }
+    }
 };
 
-class SelectionRectangleRenderUpdater final : public RenderUpdater
+class SelectionRectangleRenderUpdater : public RenderUpdater
 {
 public:
     SelectionRectangleRenderUpdater(const IRendering* rendering)
@@ -79,9 +127,9 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
-        if (m_selectionRectangle.IsSelecting())
+        if (selectionRectangle.IsSelecting())
         {
-            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
+            const Box2f selectionBox = selectionRectangle.GetCurrentSelection();
             const glm::vec2 rectangleCenter = selectionBox.Center();
             const glm::vec2 rectangleSize = selectionBox.Extents();
 
@@ -96,56 +144,12 @@ public:
         }
     }
 
-    void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
-                  const IFrameRenderer& frameRenderer) override
-    {
-        if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
-        {
-            const glm::vec2 winCoords = {event.motion.x, event.motion.y};
-            m_selectionRectangle.StartSelection(winCoords);
-        }
-        else if (event.type == SDL_MOUSEMOTION)
-        {
-            if (m_selectionRectangle.IsSelecting())
-            {
-                const glm::vec2 winCoords = {event.motion.x, event.motion.y};
-                m_selectionRectangle.MoveSelection(winCoords);
-            }
-        }
-        else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
-        {
-            ComponentWriter<SelectableComponent> selectableComponents =
-                renderComponentManager->WriteComponents<SelectableComponent>();
-            ComponentReader<Position2DComponent> positionComponents =
-                componentManager->ReadComponents<Position2DComponent>();
-            const Box2f selectionBox = m_selectionRectangle.GetCurrentSelection();
-
-            HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
-            for (int i = 0; i < componentManager->Count(); i++)
-            {
-                std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
-                if (selectableComponent)
-                {
-                    HATCHER_ASSERT(positionComponents[i]);
-                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
-
-                    const Box2f entitySelectionBox =
-                        frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
-                    selectableComponent->selected = selectionBox.Touches(entitySelectionBox);
-                }
-            }
-
-            m_selectionRectangle.EndSelection();
-        }
-    }
-
 private:
-    SelectionRectangle m_selectionRectangle;
     unique_ptr<Material> m_material;
     unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
-RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
+EventListenerRegisterer<SelectionRectangleEventListener> eventRegisterer;
+RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

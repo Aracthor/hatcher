@@ -12,6 +12,7 @@
 #include "assert.hpp"
 
 #include "Graphics/EventUpdater.hpp"
+#include "Graphics/IEventListener.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
 namespace hatcher
@@ -31,6 +32,12 @@ TSortedRenderUpdaterCreators& RenderUpdaterCreators()
 {
     static TSortedRenderUpdaterCreators renderUpdaterCreators;
     return renderUpdaterCreators;
+}
+
+std::vector<const IEventListenerCreator*>& EventListenerCreators()
+{
+    static std::vector<const IEventListenerCreator*> eventListenerCreators;
+    return eventListenerCreators;
 }
 
 using TComponentCreators = std::vector<const IComponentTypeCreator*>[(int)EComponentList::COUNT];
@@ -63,6 +70,11 @@ void RegisterUpdater(const IUpdaterCreator* creator)
 void RegisterRenderUpdater(const IRenderUpdaterCreator* creator, int order)
 {
     RenderUpdaterCreators()[order].push_back(creator);
+}
+
+void RegisterEventListener(const IEventListenerCreator* creator)
+{
+    EventListenerCreators().push_back(creator);
 }
 
 void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type)
@@ -127,8 +139,11 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
         {
             RenderUpdater* renderUpdater = creator->Create(rendering);
             m_renderUpdaters.emplace_back(renderUpdater);
-            m_eventUpdater->RegisterListener(renderUpdater);
         }
+    }
+    for (auto creator : EventListenerCreators())
+    {
+        m_eventUpdater->RegisterListener(creator->Create());
     }
 }
 
