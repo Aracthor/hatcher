@@ -1,5 +1,7 @@
 #include <sstream>
 
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
@@ -67,6 +69,6 @@ public:
     bool m_enabled = false;
 };
 
-RenderUpdaterRegisterer<InventoryPanelRenderUpdater> registerer;
+RenderUpdaterRegisterer<InventoryPanelRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

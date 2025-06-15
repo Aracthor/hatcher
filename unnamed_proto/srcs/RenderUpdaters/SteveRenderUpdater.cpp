@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
@@ -130,6 +132,6 @@ private:
     std::array<BodyPart*, 6> m_bodyParts;
 };
 
-RenderUpdaterRegisterer<SteveRenderUpdater> registerer;
+RenderUpdaterRegisterer<SteveRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

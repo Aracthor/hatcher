@@ -1,5 +1,7 @@
 #include <SDL2/SDL_events.h>
 
+#include "RenderUpdaterOrder.hpp"
+
 #include "WorldComponents/Camera.hpp"
 
 #include "hatcher/Clock.hpp"
@@ -99,6 +101,6 @@ private:
     }
 };
 
-RenderUpdaterRegisterer<CameraRenderUpdater> registerer;
+RenderUpdaterRegisterer<CameraRenderUpdater> registerer((int)ERenderUpdaterOrder::Camera);
 
 } // namespace

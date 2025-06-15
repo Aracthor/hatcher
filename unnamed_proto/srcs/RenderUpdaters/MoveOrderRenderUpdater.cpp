@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
@@ -90,6 +92,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<MoveOrderRenderUpdater> registerer;
+RenderUpdaterRegisterer<MoveOrderRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

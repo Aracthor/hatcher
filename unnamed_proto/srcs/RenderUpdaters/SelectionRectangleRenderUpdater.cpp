@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
@@ -144,6 +146,6 @@ private:
     unique_ptr<Mesh> m_selectionRectangleMesh;
 };
 
-RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> registerer;
+RenderUpdaterRegisterer<SelectionRectangleRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

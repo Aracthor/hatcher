@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
 
@@ -35,6 +37,6 @@ private:
     bool m_showDemo = false;
 };
 
-RenderUpdaterRegisterer<DemoImguiRenderUpdater> registerer;
+RenderUpdaterRegisterer<DemoImguiRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

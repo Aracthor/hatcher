@@ -19,6 +19,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<ProjectionViewUpdater> registerer;
+RenderUpdaterRegisterer<ProjectionViewUpdater> registerer(-1);
 
 } // namespace

@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/IApplication.hpp"
 
@@ -38,6 +40,6 @@ private:
     float m_tickrate = 60.f;
 };
 
-RenderUpdaterRegisterer<WorldTickerRenderUpdater> registerer;
+RenderUpdaterRegisterer<WorldTickerRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

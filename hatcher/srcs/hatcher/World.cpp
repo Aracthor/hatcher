@@ -1,5 +1,6 @@
 #include "World.hpp"
 
+#include <map>
 #include <vector>
 
 #include "CommandManager.hpp"
@@ -24,9 +25,11 @@ std::vector<const IUpdaterCreator*>& UpdaterCreators()
     return updaterCreators;
 }
 
-std::vector<const IRenderUpdaterCreator*>& RenderUpdaterCreators()
+using TSortedRenderUpdaterCreators = std::map<int, std::vector<const IRenderUpdaterCreator*>>;
+
+TSortedRenderUpdaterCreators& RenderUpdaterCreators()
 {
-    static std::vector<const IRenderUpdaterCreator*> renderUpdaterCreators;
+    static TSortedRenderUpdaterCreators renderUpdaterCreators;
     return renderUpdaterCreators;
 }
 
@@ -57,9 +60,9 @@ void RegisterUpdater(const IUpdaterCreator* creator)
     UpdaterCreators().push_back(creator);
 }
 
-void RegisterRenderUpdater(const IRenderUpdaterCreator* creator)
+void RegisterRenderUpdater(const IRenderUpdaterCreator* creator, int order)
 {
-    RenderUpdaterCreators().push_back(creator);
+    RenderUpdaterCreators()[order].push_back(creator);
 }
 
 void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type)
@@ -118,11 +121,14 @@ void World::CreateRenderUpdaters(const IRendering* rendering)
     {
         creator->CreateComponentType(m_entityManager->GetRenderingComponentManager());
     }
-    for (auto creator : RenderUpdaterCreators())
+    for (auto it : RenderUpdaterCreators())
     {
-        RenderUpdater* renderUpdater = creator->Create(rendering);
-        m_renderUpdaters.emplace_back(renderUpdater);
-        m_eventUpdater->RegisterListener(renderUpdater);
+        for (auto creator : it.second)
+        {
+            RenderUpdater* renderUpdater = creator->Create(rendering);
+            m_renderUpdaters.emplace_back(renderUpdater);
+            m_eventUpdater->RegisterListener(renderUpdater);
+        }
     }
 }
 

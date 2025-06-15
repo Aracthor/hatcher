@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/Clock.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -63,6 +65,6 @@ private:
     float m_fps = 0.f;
 };
 
-RenderUpdaterRegisterer<FPSPanelRenderUpdater> registerer;
+RenderUpdaterRegisterer<FPSPanelRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
 
 } // namespace

@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -97,6 +99,6 @@ private:
     unique_ptr<Mesh> m_walkableTileMesh;
 };
 
-RenderUpdaterRegisterer<HexaGridRenderUpdater> registerer;
+RenderUpdaterRegisterer<HexaGridRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
@@ -88,6 +90,6 @@ private:
     unique_ptr<Mesh> m_meshes[StaticMeshComponent::COUNT];
 };
 
-RenderUpdaterRegisterer<StaticMeshRenderUpdater> registerer;
+RenderUpdaterRegisterer<StaticMeshRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

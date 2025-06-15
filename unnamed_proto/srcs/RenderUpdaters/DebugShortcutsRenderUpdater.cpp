@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -69,6 +71,6 @@ public:
     }
 };
 
-RenderUpdaterRegisterer<DebugShortcutsRenderUpdater> registerer;
+RenderUpdaterRegisterer<DebugShortcutsRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -100,6 +102,6 @@ public:
     ControlPanel m_panel;
 };
 
-RenderUpdaterRegisterer<HexaGridControlPanelRenderUpdater> registerer;
+RenderUpdaterRegisterer<HexaGridControlPanelRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

@@ -1,3 +1,5 @@
+#include "RenderUpdaterOrder.hpp"
+
 #include "Components/InventoryComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "WorldComponents/Camera.hpp"
@@ -130,6 +132,6 @@ private:
     std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
 };
 
-RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer;
+RenderUpdaterRegisterer<EntityCreatorRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace
