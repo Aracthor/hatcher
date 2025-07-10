@@ -53,7 +53,7 @@ GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
         }
         else
         {
-            throw std::runtime_error(std::string("Unkown error compiling shader '") + parShaderFileName + "':");
+            throw std::runtime_error(std::string("Unkown error compiling shader '") + parShaderFileName + "'");
         }
     }
     delete[] fileContent;
