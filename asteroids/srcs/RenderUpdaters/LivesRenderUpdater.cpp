@@ -21,8 +21,7 @@ public:
     LivesRenderUpdater(const IRendering* rendering)
         : m_textDrawer(rendering->GetMaterialFactory().get())
     {
-        m_material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world.vert", "shaders/hello_world.frag");
+        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/position_2D.vert", "shaders/white.frag");
 
         m_lifeMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 

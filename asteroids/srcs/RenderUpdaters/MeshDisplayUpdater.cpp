@@ -21,8 +21,7 @@ class MeshDisplayUpdater final : public RenderUpdater
 public:
     MeshDisplayUpdater(const IRendering* rendering)
     {
-        m_material =
-            rendering->GetMaterialFactory()->CreateMaterial("shaders/hello_world.vert", "shaders/hello_world.frag");
+        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/position_2D.vert", "shaders/white.frag");
         {
             m_meshes[MeshComponent::Player] = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
