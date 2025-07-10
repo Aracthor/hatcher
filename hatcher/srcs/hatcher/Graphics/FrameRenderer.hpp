@@ -28,12 +28,6 @@ public:
     glm::vec3 WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const override;
 
 private:
-    struct MeshToRender
-    {
-        const Mesh* mesh;
-        glm::mat4 modelMatrix;
-    };
-
     GLContext* m_context;
     const Clock* m_clock;
     const glm::vec2 m_resolution;
