@@ -13,17 +13,26 @@ namespace
 
 GLuint CompileShader(const char* parShaderFileName, GLenum parShaderType)
 {
-    std::ifstream ifs;
+    char* fileContent;
+    try
+    {
+        std::ifstream ifs;
+        ifs.exceptions(std::ios::failbit | std::ios::badbit);
 
-    ifs.exceptions(std::ios::failbit | std::ios::badbit);
-    ifs.open(parShaderFileName, std::ifstream::in | std::ifstream::binary);
+        ifs.open(parShaderFileName, std::ifstream::in | std::ifstream::binary);
 
-    ifs.seekg(0, ifs.end);
-    uint fileSize = ifs.tellg();
-    ifs.seekg(0, ifs.beg);
-    char* fileContent = new char[fileSize + 1];
-    ifs.read(fileContent, fileSize);
-    fileContent[fileSize] = '\0';
+        ifs.seekg(0, ifs.end);
+        uint fileSize = ifs.tellg();
+        ifs.seekg(0, ifs.beg);
+        fileContent = new char[fileSize + 1];
+        ifs.read(fileContent, fileSize);
+        fileContent[fileSize] = '\0';
+    }
+    catch (const std::exception& exception)
+    {
+        throw std::runtime_error(std::string("Error reading shader file '") + parShaderFileName + "':\n" +
+                                 exception.what());
+    }
 
     GLint compiled;
     GLuint shaderID = glCreateShader(parShaderType);
