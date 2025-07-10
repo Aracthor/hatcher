@@ -240,7 +240,8 @@ void BasicTextDrawer::Draw(IFrameRenderer& frameRenderer)
 {
     m_mesh->Set2DPositions(m_positionBuffer.data(), m_positionBuffer.size());
     m_mesh->SetTextureCoords(m_textureCoordsBuffer.data(), m_positionBuffer.size());
-    frameRenderer.DrawSceneMesh(m_mesh.get(), glm::mat4(1.f));
+    frameRenderer.PrepareSceneDraw(m_material.get());
+    m_mesh->Draw(glm::mat4(1.f));
     m_positionBuffer.clear();
     m_textureCoordsBuffer.clear();
 }

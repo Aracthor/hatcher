@@ -7,15 +7,15 @@ namespace hatcher
 {
 
 class Clock;
-class Mesh;
+class Material;
 
 class IFrameRenderer
 {
 public:
     virtual ~IFrameRenderer() = default;
 
-    virtual void DrawSceneMesh(const Mesh* mesh, const glm::mat4& modelMatrix) = 0;
-    virtual void DrawUIMesh(const Mesh* mesh, const glm::mat4& modelMatrix) = 0;
+    virtual void PrepareSceneDraw(const Material* material) const = 0;
+    virtual void PrepareUIDraw(const Material* material) const = 0;
     virtual void SetProjectionMatrix(const glm::mat4& matrix) = 0;
     virtual void SetViewMatrix(const glm::mat4& matrix) = 0;
     virtual void EnableDepthTest() = 0;

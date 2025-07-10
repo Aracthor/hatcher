@@ -67,10 +67,11 @@ void Mesh::SetIndices(const ushort* elements, uint elementCount)
     m_VAO->Unbind();
 }
 
-void Mesh::Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const
+void Mesh::Draw(const glm::mat4& modelMatrix) const
 {
-    m_material->Use();
-    m_material->SetTransformationMatrices(modelMatrix, viewMatrix, projectionMatrix);
+    HATCHER_ASSERT(m_material->IsUsed());
+
+    m_material->SetTransformationMatrix("uniModelMatrix", modelMatrix);
 
     if (m_elementVBO)
         m_VAO->DrawElements(m_elementVBO->ElementCount());

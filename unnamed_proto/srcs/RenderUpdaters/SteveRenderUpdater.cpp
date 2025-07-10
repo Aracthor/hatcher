@@ -55,6 +55,8 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
+        frameRenderer.PrepareSceneDraw(m_material.get());
+
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
         auto animationComponents = renderComponentManager->WriteComponents<SteveAnimationComponent>();
@@ -81,12 +83,12 @@ public:
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
-                frameRenderer.DrawSceneMesh(m_torso.mesh.get(), modelMatrix * m_torso.matrix);
-                frameRenderer.DrawSceneMesh(m_head.mesh.get(), modelMatrix * m_head.matrix);
-                frameRenderer.DrawSceneMesh(m_rightArm.mesh.get(), modelMatrix * m_rightArm.matrix);
-                frameRenderer.DrawSceneMesh(m_leftArm.mesh.get(), modelMatrix * m_leftArm.matrix);
-                frameRenderer.DrawSceneMesh(m_rightLeg.mesh.get(), modelMatrix * rightLegMatrix);
-                frameRenderer.DrawSceneMesh(m_leftLeg.mesh.get(), modelMatrix * leftLegMatrix);
+                m_torso.mesh->Draw(modelMatrix * m_torso.matrix);
+                m_head.mesh->Draw(modelMatrix * m_head.matrix);
+                m_rightArm.mesh->Draw(modelMatrix * m_rightArm.matrix);
+                m_leftArm.mesh->Draw(modelMatrix * m_leftArm.matrix);
+                m_rightLeg.mesh->Draw(modelMatrix * rightLegMatrix);
+                m_leftLeg.mesh->Draw(modelMatrix * leftLegMatrix);
             }
         }
     }

@@ -2,7 +2,7 @@
 
 #include "Core/GLContext.hpp"
 
-#include "Mesh.hpp"
+#include "Material.hpp"
 
 namespace hatcher
 {
@@ -16,17 +16,21 @@ FrameRenderer::FrameRenderer(GLContext* context, const Clock* clock, const glm::
 
 FrameRenderer::~FrameRenderer() = default;
 
-void FrameRenderer::DrawSceneMesh(const Mesh* mesh, const glm::mat4& modelMatrix)
+void FrameRenderer::PrepareSceneDraw(const Material* material) const
 {
-    mesh->Draw(modelMatrix, m_viewMatrix, m_projectionMatrix);
+    material->Use();
+    material->SetTransformationMatrix("uniViewMatrix", m_viewMatrix);
+    material->SetTransformationMatrix("uniProjectionMatrix", m_projectionMatrix);
 }
 
-void FrameRenderer::DrawUIMesh(const Mesh* mesh, const glm::mat4& modelMatrix)
+void FrameRenderer::PrepareUIDraw(const Material* material) const
 {
+    material->Use();
     const float width = static_cast<float>(m_resolution.x);
     const float height = static_cast<float>(m_resolution.y);
     const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);
-    mesh->Draw(modelMatrix, glm::mat4(1.f), UIProjectionMatrix);
+    material->SetTransformationMatrix("uniViewMatrix", glm::mat4(1.f));
+    material->SetTransformationMatrix("uniProjectionMatrix", UIProjectionMatrix);
 }
 
 void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)

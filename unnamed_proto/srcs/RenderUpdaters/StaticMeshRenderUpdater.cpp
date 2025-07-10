@@ -62,6 +62,7 @@ public:
             {
                 HATCHER_ASSERT(staticMeshComponents[i]->type < StaticMeshComponent::COUNT);
                 const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponents[i]->type];
+                const unique_ptr<Material>& material = m_materials[staticMeshComponents[i]->type];
                 if (selectableComponents[i] && selectableComponents[i]->box.IsEmpty())
                 {
                     selectableComponents[i]->box.Add(mesh->Box().Scaled(1.1f));
@@ -73,7 +74,8 @@ public:
                     modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
                 }
 
-                frameRenderer.DrawSceneMesh(mesh.get(), modelMatrix);
+                frameRenderer.PrepareSceneDraw(material.get());
+                mesh->Draw(modelMatrix);
             }
         }
     }

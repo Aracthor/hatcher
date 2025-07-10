@@ -25,7 +25,7 @@ public:
     void SetIndices(const ushort* elements, uint elementCount);
 
     const Box3f& Box() const { return m_box; }
-    void Draw(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix) const;
+    void Draw(const glm::mat4& modelMatrix) const;
 
 private:
     void SetPositions(const float* positions, uint positionCount, int componentCount);

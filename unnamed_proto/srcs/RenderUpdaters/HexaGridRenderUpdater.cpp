@@ -72,9 +72,13 @@ public:
                 {
                     const glm::vec2 tileCenter = grid->TileCoordToPosition(coord);
                     const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
-                    frameRenderer.DrawSceneMesh(m_walkableTileMesh.get(), tileMatrix);
+                    frameRenderer.PrepareSceneDraw(m_tileMaterial.get());
+                    m_walkableTileMesh->Draw(tileMatrix);
                     if (gridDisplayEnabled)
-                        frameRenderer.DrawSceneMesh(m_gridTileMesh.get(), tileMatrix);
+                    {
+                        frameRenderer.PrepareSceneDraw(m_gridMaterial.get());
+                        m_gridTileMesh->Draw(tileMatrix);
+                    }
                 }
             }
         }

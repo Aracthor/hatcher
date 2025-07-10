@@ -14,6 +14,11 @@ Material::Material(const ShaderProgram* shaderProgram)
 
 Material::~Material() = default;
 
+bool Material::IsUsed() const
+{
+    return m_shaderProgram->IsCurrentlyUsed();
+}
+
 void Material::Use() const
 {
     m_shaderProgram->Use();
@@ -31,12 +36,9 @@ void Material::Use() const
     }
 }
 
-void Material::SetTransformationMatrices(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
-                                         const glm::mat4& projectionMatrix) const
+void Material::SetTransformationMatrix(const char* name, const glm::mat4& matrix) const
 {
-    m_shaderProgram->SetMatrix4Uniform("uniProjectionMatrix", glm::value_ptr(projectionMatrix));
-    m_shaderProgram->SetMatrix4Uniform("uniViewMatrix", glm::value_ptr(viewMatrix));
-    m_shaderProgram->SetMatrix4Uniform("uniModelMatrix", glm::value_ptr(modelMatrix));
+    m_shaderProgram->SetMatrix4Uniform(name, glm::value_ptr(matrix));
 }
 
 GLint Material::PositionAttribLocation() const

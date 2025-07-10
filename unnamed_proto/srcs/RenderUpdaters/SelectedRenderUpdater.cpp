@@ -48,6 +48,8 @@ public:
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.DisableDepthTest();
+        frameRenderer.PrepareUIDraw(m_material.get());
+
         auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
         auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         for (int i = 0; i < componentManager->Count(); i++)
@@ -71,7 +73,7 @@ public:
                 selectedModelMatrix = glm::translate(selectedModelMatrix, position);
                 selectedModelMatrix = glm::scale(selectedModelMatrix, scale);
 
-                frameRenderer.DrawUIMesh(m_mesh.get(), selectedModelMatrix);
+                m_mesh->Draw(selectedModelMatrix);
             }
         }
         frameRenderer.EnableDepthTest();

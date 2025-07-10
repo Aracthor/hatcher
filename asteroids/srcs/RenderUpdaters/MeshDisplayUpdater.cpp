@@ -156,6 +156,8 @@ public:
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
+        frameRenderer.PrepareSceneDraw(m_material.get());
+
         auto meshComponents = renderComponentManager->ReadComponents<MeshComponent>();
         auto positionComponents = componentManager->ReadComponents<PositionComponent>();
         auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
@@ -171,7 +173,7 @@ public:
                 modelMatrix = glm::translate(modelMatrix, glm::vec3(positionComponent->position, 0.f));
                 modelMatrix = glm::rotate(modelMatrix, positionComponent->angle, glm::vec3(0.f, 0.f, 1.f));
                 modelMatrix = glm::scale(modelMatrix, glm::vec3(meshComponent->scale));
-                frameRenderer.DrawSceneMesh(m_meshes[meshComponent->ID].get(), modelMatrix);
+                m_meshes[meshComponent->ID]->Draw(modelMatrix);
                 if (playerComponent && playerComponent->accelerating)
                 {
                     m_acceleratingDisplayTime += frameRenderer.GetClock()->GetElapsedTime();
@@ -181,7 +183,7 @@ public:
                         m_displayAcceleratingMesh = !m_displayAcceleratingMesh;
                     }
                     if (m_displayAcceleratingMesh)
-                        frameRenderer.DrawSceneMesh(m_playerAcceleratingMesh.get(), modelMatrix);
+                        m_playerAcceleratingMesh->Draw(modelMatrix);
                 }
             }
         }

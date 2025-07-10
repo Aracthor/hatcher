@@ -14,8 +14,8 @@ public:
     FrameRenderer(GLContext* context, const Clock* clock, const glm::vec2& resolution);
     ~FrameRenderer();
 
-    void DrawSceneMesh(const Mesh* mesh, const glm::mat4& modelMatrix) override;
-    void DrawUIMesh(const Mesh* mesh, const glm::mat4& modelMatrix) override;
+    void PrepareSceneDraw(const Material* material) const override;
+    void PrepareUIDraw(const Material* material) const override;
     void SetProjectionMatrix(const glm::mat4& matrix) override;
     void SetViewMatrix(const glm::mat4& matrix) override;
     void EnableDepthTest() override;

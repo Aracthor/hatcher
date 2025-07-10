@@ -16,9 +16,9 @@ public:
     explicit Material(const ShaderProgram* shaderProgrma);
     ~Material();
 
+    bool IsUsed() const;
     void Use() const;
-    void SetTransformationMatrices(const glm::mat4& modelMatrix, const glm::mat4& viewMatrix,
-                                   const glm::mat4& projectionMatrix) const;
+    void SetTransformationMatrix(const char* name, const glm::mat4& matrix) const;
 
     GLint PositionAttribLocation() const;
     GLint TextureCoordsAttribLocation() const;
