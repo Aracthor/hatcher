@@ -10,7 +10,7 @@ namespace hatcher
 class VertexBufferObject
 {
 public:
-    VertexBufferObject();
+    VertexBufferObject(bool isElement);
     ~VertexBufferObject();
 
     void SetData(const float* data, uint length, bool dynamic);
