@@ -21,7 +21,7 @@ public:
 
     void Set2DPositions(const float* positions, uint positionCount);
     void Set3DPositions(const float* positions, uint positionCount);
-    void SetTextureCoords(const float* positions, uint positionCount);
+    void SetTextureCoords(const float* textureCoords, uint textureCoordCount);
     void SetIndices(const ushort* elements, uint elementCount);
 
     const Box3f& Box() const { return m_box; }
