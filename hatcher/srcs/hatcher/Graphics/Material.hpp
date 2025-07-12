@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include "Core/gl_types.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
@@ -30,9 +30,9 @@ public:
 private:
     const ShaderProgram* m_shaderProgram;
     // TODO find a better way to handle different types of uniforms
-    std::map<const char*, float> m_floatUniforms;
-    std::map<const char*, glm::vec4> m_vec4Uniforms;
-    std::map<const char*, const Texture*> m_textures;
+    std::unordered_map<const char*, float> m_floatUniforms;
+    std::unordered_map<const char*, glm::vec4> m_vec4Uniforms;
+    std::unordered_map<const char*, const Texture*> m_textures;
 };
 
 } // namespace hatcher
