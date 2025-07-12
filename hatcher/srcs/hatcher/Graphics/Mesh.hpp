@@ -19,15 +19,15 @@ public:
     Mesh(const Material* material, Primitive primitive, bool dynamic = false);
     ~Mesh();
 
-    void Set2DPositions(const float* positions, uint positionCount);
-    void Set3DPositions(const float* positions, uint positionCount);
-    void SetTextureCoords(const float* textureCoords, uint textureCoordCount);
-    void SetIndices(const ushort* elements, uint elementCount);
+    void Set2DPositions(const float* positions, int positionCount);
+    void Set3DPositions(const float* positions, int positionCount);
+    void SetTextureCoords(const float* textureCoords, int textureCoordCount);
+    void SetIndices(const ushort* elements, int elementCount);
 
-    void Fill2DPositions(const float* positions, uint positionCount);
-    void Fill3DPositions(const float* positions, uint positionCount);
-    void FillTextureCoords(const float* textureCoords, uint textureCoordCount);
-    void FillIndices(const ushort* elements, uint elementCount);
+    void Fill2DPositions(const float* positions, int positionCount);
+    void Fill3DPositions(const float* positions, int positionCount);
+    void FillTextureCoords(const float* textureCoords, int textureCoordCount);
+    void FillIndices(const ushort* elements, int elementCount);
 
     const Box3f& Box() const { return m_box; }
     void Draw(const glm::mat4& modelMatrix) const;

@@ -18,7 +18,7 @@ VertexBufferObject::~VertexBufferObject()
     GL_CHECK(glDeleteBuffers(1, &m_id));
 }
 
-void VertexBufferObject::SetData(const float* data, uint length, bool dynamic)
+void VertexBufferObject::SetData(const float* data, int length, bool dynamic)
 {
     const GLenum usage = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
     GL_CHECK(glBindBuffer(m_target, m_id));
@@ -26,7 +26,7 @@ void VertexBufferObject::SetData(const float* data, uint length, bool dynamic)
     m_elementCount = length;
 }
 
-void VertexBufferObject::SetData(const ushort* data, uint length, bool dynamic)
+void VertexBufferObject::SetData(const ushort* data, int length, bool dynamic)
 {
     const GLenum usage = dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW;
     GL_CHECK(glBindBuffer(m_target, m_id));
