@@ -24,11 +24,16 @@ public:
     void SetTextureCoords(const float* textureCoords, uint textureCoordCount);
     void SetIndices(const ushort* elements, uint elementCount);
 
+    void Fill2DPositions(const float* positions, uint positionCount);
+    void Fill3DPositions(const float* positions, uint positionCount);
+    void FillTextureCoords(const float* textureCoords, uint textureCoordCount);
+    void FillIndices(const ushort* elements, uint elementCount);
+
     const Box3f& Box() const { return m_box; }
     void Draw(const glm::mat4& modelMatrix) const;
 
 private:
-    void SetPositions(const float* positions, uint positionCount, int componentCount);
+    void SetPositions(int componentCount);
 
     unique_ptr<VertexArrayObject> m_VAO;
     unique_ptr<VertexBufferObject> m_positionVBO;

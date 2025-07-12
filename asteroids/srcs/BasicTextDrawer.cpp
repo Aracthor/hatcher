@@ -188,6 +188,8 @@ BasicTextDrawer::BasicTextDrawer(MaterialFactory* materialFactory)
     m_material = materialFactory->CreateMaterial("shaders/basic_text_drawer.vert", "shaders/basic_text_drawer.frag");
     m_material->AddTexture("uniTexture", m_texture.get());
     m_mesh = make_unique<Mesh>(m_material.get(), Primitive::Triangles, true);
+    m_mesh->Set2DPositions(nullptr, 0);
+    m_mesh->SetTextureCoords(nullptr, 0);
 }
 
 BasicTextDrawer::~BasicTextDrawer() = default;
@@ -238,8 +240,8 @@ void BasicTextDrawer::AddTextToDraw(const char* text, glm::vec2 position, glm::v
 
 void BasicTextDrawer::Draw(IFrameRenderer& frameRenderer)
 {
-    m_mesh->Set2DPositions(m_positionBuffer.data(), m_positionBuffer.size());
-    m_mesh->SetTextureCoords(m_textureCoordsBuffer.data(), m_positionBuffer.size());
+    m_mesh->Fill2DPositions(m_positionBuffer.data(), m_positionBuffer.size());
+    m_mesh->FillTextureCoords(m_textureCoordsBuffer.data(), m_positionBuffer.size());
     frameRenderer.PrepareSceneDraw(m_material.get());
     m_mesh->Draw(glm::mat4(1.f));
     m_positionBuffer.clear();

@@ -12,18 +12,14 @@ Mesh::Mesh(const Material* material, Primitive primitive, bool dynamic /* = fals
     , m_dynamic(dynamic)
 {
     m_VAO = make_unique<VertexArrayObject>(primitive);
-    m_VAO->Bind();
-
-    m_positionVBO = make_unique<VertexBufferObject>(false);
-
-    m_VAO->Unbind();
 }
 
 Mesh::~Mesh() = default;
 
 void Mesh::Set2DPositions(const float* positions, uint positionCount)
 {
-    SetPositions(positions, positionCount, 2);
+    SetPositions(2);
+    Fill2DPositions(positions, positionCount);
     m_box = {};
     for (uint i = 0; i < positionCount / 2; i++)
     {
@@ -34,7 +30,8 @@ void Mesh::Set2DPositions(const float* positions, uint positionCount)
 
 void Mesh::Set3DPositions(const float* positions, uint positionCount)
 {
-    SetPositions(positions, positionCount, 3);
+    SetPositions(3);
+    Fill3DPositions(positions, positionCount);
     m_box = {};
     for (uint i = 0; i < positionCount / 3; i++)
     {
@@ -49,12 +46,12 @@ void Mesh::SetTextureCoords(const float* textureCoords, uint textureCoordsCount)
 
     GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
     m_textureCoordsVBO = make_unique<VertexBufferObject>(false);
-    m_textureCoordsVBO->SetData(textureCoords, textureCoordsCount, m_dynamic);
+    m_textureCoordsVBO->Bind();
     m_VAO->AttribVBO(*m_textureCoordsVBO, 2, textureCoordsAttribLocation);
 
     m_VAO->Unbind();
 
-    HATCHER_ASSERT(m_elementCount == (int)textureCoordsCount / 2);
+    FillTextureCoords(textureCoords, textureCoordsCount);
 }
 
 void Mesh::SetIndices(const ushort* elements, uint elementCount)
@@ -62,9 +59,38 @@ void Mesh::SetIndices(const ushort* elements, uint elementCount)
     m_VAO->Bind();
 
     m_elementVBO = make_unique<VertexBufferObject>(true);
-    m_elementVBO->SetData(elements, elementCount, m_dynamic);
+    m_elementVBO->Bind();
 
     m_VAO->Unbind();
+
+    FillIndices(elements, elementCount);
+}
+
+void Mesh::Fill2DPositions(const float* positions, uint positionCount)
+{
+    HATCHER_ASSERT(m_positionVBO);
+    m_elementCount = positionCount / 2;
+    m_positionVBO->SetData(positions, positionCount, m_dynamic);
+}
+
+void Mesh::Fill3DPositions(const float* positions, uint positionCount)
+{
+    HATCHER_ASSERT(m_positionVBO);
+    m_elementCount = positionCount / 3;
+    m_positionVBO->SetData(positions, positionCount, m_dynamic);
+}
+
+void Mesh::FillTextureCoords(const float* textureCoords, uint textureCoordsCount)
+{
+    HATCHER_ASSERT(m_textureCoordsVBO);
+    HATCHER_ASSERT(m_elementCount == (int)textureCoordsCount / 2);
+    m_textureCoordsVBO->SetData(textureCoords, textureCoordsCount, m_dynamic);
+}
+
+void Mesh::FillIndices(const ushort* elements, uint elementCount)
+{
+    HATCHER_ASSERT(m_elementVBO);
+    m_elementVBO->SetData(elements, elementCount, m_dynamic);
 }
 
 void Mesh::Draw(const glm::mat4& modelMatrix) const
@@ -79,17 +105,16 @@ void Mesh::Draw(const glm::mat4& modelMatrix) const
         m_VAO->DrawArrays(m_elementCount);
 }
 
-void Mesh::SetPositions(const float* positions, uint positionCount, int componentCount)
+void Mesh::SetPositions(int componentCount)
 {
     m_VAO->Bind();
 
     GLint positionAttribLocation = m_material->PositionAttribLocation();
-    m_positionVBO->SetData(positions, positionCount, m_dynamic);
+    m_positionVBO = make_unique<VertexBufferObject>(false);
+    m_positionVBO->Bind();
     m_VAO->AttribVBO(*m_positionVBO, componentCount, positionAttribLocation);
 
     m_VAO->Unbind();
-
-    m_elementCount = positionCount / componentCount;
 }
 
 } // namespace hatcher
