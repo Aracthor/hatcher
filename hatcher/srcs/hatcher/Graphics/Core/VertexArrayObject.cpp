@@ -59,8 +59,6 @@ void VertexArrayObject::AttribVBO(const VertexBufferObject& parVBO, GLint compon
     GL_CHECK(glEnableVertexAttribArray(layoutLocation));
     parVBO.Bind();
     GL_CHECK(glVertexAttribPointer(layoutLocation, componentCount, GL_FLOAT, GL_FALSE, 0, NULL));
-
-    HATCHER_ASSERT(parVBO.ElementCount() % componentCount == 0);
 }
 
 void VertexArrayObject::DrawArrays(int count) const
