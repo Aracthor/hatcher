@@ -19,9 +19,12 @@ public:
     void Unbind();
 
     void AttribVBO(const VertexBufferObject& parVBO, GLint componentCount, GLuint layoutLocation);
+    void AttribInstancedVBO(const VertexBufferObject& parVBO, GLint componentCount, GLuint layoutLocation);
 
     void DrawArrays(int count) const;
     void DrawElements(int count) const;
+    void DrawArraysInstanced(int count, int instanceCount) const;
+    void DrawElementsInstanced(int count, int instanceCount) const;
 
 private:
     bool IsBinded() const;

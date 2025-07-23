@@ -47,6 +47,7 @@ void Mesh::SetTextureCoords(const float* textureCoords, int textureCoordsCount)
     GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
     m_textureCoordsVBO = make_unique<VertexBufferObject>(false);
     m_textureCoordsVBO->Bind();
+
     m_VAO->AttribVBO(*m_textureCoordsVBO, 2, textureCoordsAttribLocation);
 
     m_VAO->Unbind();
@@ -64,6 +65,21 @@ void Mesh::SetIndices(const ushort* elements, int elementCount)
     m_VAO->Unbind();
 
     FillIndices(elements, elementCount);
+}
+
+void Mesh::AddInstancedBuffer(const std::string& name, int componentSize)
+{
+    m_VAO->Bind();
+
+    const GLint attribLocation = m_material->InstancedAttribLocation(name.c_str());
+    unique_ptr<VertexBufferObject> vbo = make_unique<VertexBufferObject>(false);
+    vbo->Bind();
+    m_VAO->AttribInstancedVBO(*vbo, componentSize, attribLocation);
+
+    m_VAO->Unbind();
+
+    HATCHER_ASSERT(m_instancedVBO.find(name) == m_instancedVBO.end());
+    m_instancedVBO[name] = std::move(vbo);
 }
 
 void Mesh::Fill2DPositions(const float* positions, int positionCount)
@@ -93,6 +109,12 @@ void Mesh::FillIndices(const ushort* elements, int elementCount)
     m_elementVBO->SetData(elements, elementCount, m_dynamic);
 }
 
+void Mesh::FillInstancedBuffer(const std::string& name, const float* data, int length)
+{
+    HATCHER_ASSERT(m_instancedVBO.find(name) != m_instancedVBO.end());
+    m_instancedVBO[name]->SetData(data, length, true);
+}
+
 void Mesh::Draw(const glm::mat4& modelMatrix) const
 {
     HATCHER_ASSERT(m_material->IsUsed());
@@ -103,6 +125,16 @@ void Mesh::Draw(const glm::mat4& modelMatrix) const
         m_VAO->DrawElements(m_elementVBO->ElementCount());
     else
         m_VAO->DrawArrays(m_elementCount);
+}
+
+void Mesh::DrawInstanced(int instanceCount) const
+{
+    HATCHER_ASSERT(m_material->IsUsed());
+
+    if (m_elementVBO)
+        m_VAO->DrawElementsInstanced(m_elementVBO->ElementCount(), instanceCount);
+    else
+        m_VAO->DrawArraysInstanced(m_elementCount, instanceCount);
 }
 
 void Mesh::SetPositions(int componentCount)

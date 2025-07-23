@@ -22,6 +22,7 @@ public:
 
     GLint PositionAttribLocation() const;
     GLint TextureCoordsAttribLocation() const;
+    GLint InstancedAttribLocation(const char* name) const;
 
     void AddUniform(const char* name, float value);
     void AddUniform(const char* name, const glm::vec4& value);

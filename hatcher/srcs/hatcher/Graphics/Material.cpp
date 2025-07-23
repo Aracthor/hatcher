@@ -51,6 +51,11 @@ GLint Material::TextureCoordsAttribLocation() const
     return m_shaderProgram->GetAttribLocation("vertTextureCoord");
 }
 
+GLint Material::InstancedAttribLocation(const char* name) const
+{
+    return m_shaderProgram->GetAttribLocation(name);
+}
+
 void Material::AddUniform(const char* name, float value)
 {
     HATCHER_ASSERT(m_floatUniforms.find(name) == m_floatUniforms.end());
