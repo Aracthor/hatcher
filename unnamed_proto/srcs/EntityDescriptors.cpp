@@ -27,17 +27,6 @@ ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> selectab
 ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> staticMeshRegisterer;
 ComponentTypeRegisterer<SteveAnimationComponent, EComponentList::Rendering> steveAnimationRegisterer;
 
-EntityDescriptorRegisterer EMCard{
-    EntityDescriptorID::Create("EMCard"),
-    {
-        ItemComponent{},
-        NameComponent{
-            .name = "EM Card",
-        },
-    },
-    {},
-};
-
 EntityDescriptorRegisterer Locker{
     EntityDescriptorID::Create("Locker"),
     {
@@ -98,7 +87,6 @@ EntityDescriptorRegisterer Wood{
         NameComponent{
             .name = "Wood",
         },
-        Position2DComponent{},
     },
     {
         SelectableComponent{},

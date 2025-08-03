@@ -47,6 +47,7 @@ public:
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
         EntityEgg entityEgg = entityManager->CreateNewEntity(m_entityDescriptor);
+        entityEgg.GetComponent<Position2DComponent>() = Position2DComponent();
         entityEgg.GetComponent<Position2DComponent>()->position = m_spawnPosition;
 
         std::vector<Entity::IDType> inventoryStorage;
@@ -80,7 +81,7 @@ public:
         , m_lockerEntityDescriptor(EntityDescriptorID::Create("Locker"))
         , m_woodEntityDescriptor(EntityDescriptorID::Create("Wood"))
     {
-        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("EMCard"));
+        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("Wood"));
     }
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,

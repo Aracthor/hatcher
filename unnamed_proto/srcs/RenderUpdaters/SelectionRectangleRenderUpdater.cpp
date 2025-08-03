@@ -81,10 +81,10 @@ class SelectionRectangleEventListener : public IEventListener
             for (int i = 0; i < componentManager->Count(); i++)
             {
                 std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
-                if (selectableComponent)
+                const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
+                if (selectableComponent && positionComponent)
                 {
-                    HATCHER_ASSERT(positionComponents[i]);
-                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                    const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
 
                     const Box2f entitySelectionBox =
                         frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
