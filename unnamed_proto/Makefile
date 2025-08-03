@@ -3,6 +3,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Components/NameComponent.cpp				\
 									\
 		Updaters/GrowableUpdater.cpp				\
+		Updaters/InventoryUpdater.cpp				\
 		Updaters/MovingEntitiesUpdater.cpp			\
 									\
 		RenderUpdaters/CameraRenderUpdater.cpp 			\
