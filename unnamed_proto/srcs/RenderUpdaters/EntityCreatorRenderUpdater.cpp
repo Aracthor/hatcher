@@ -1,4 +1,5 @@
 #include "Components/InventoryComponent.hpp"
+#include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "WorldComponents/Camera.hpp"
 #include "WorldComponents/HexagonalGrid.hpp"
@@ -52,6 +53,7 @@ public:
         for (const EntityDescriptorID& itemDescriptor : m_inventoryDescriptors)
         {
             EntityEgg newItem = entityManager->CreateNewEntity(itemDescriptor);
+            newItem.GetComponent<ItemComponent>()->inventory = entityEgg.NewEntityID().ID();
             inventoryStorage.push_back(newItem.NewEntityID().ID());
         }
         if (!inventoryStorage.empty())
