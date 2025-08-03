@@ -8,6 +8,7 @@ struct StaticMeshComponent
     {
         Locker,
         Melon,
+        Wood,
         COUNT,
     };
 

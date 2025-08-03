@@ -91,4 +91,21 @@ EntityDescriptorRegisterer Steve{
     },
 };
 
+EntityDescriptorRegisterer Wood{
+    EntityDescriptorID::Create("Wood"),
+    {
+        ItemComponent{},
+        NameComponent{
+            .name = "Wood",
+        },
+        Position2DComponent{},
+    },
+    {
+        SelectableComponent{},
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Wood,
+        },
+    },
+};
+
 } // namespace

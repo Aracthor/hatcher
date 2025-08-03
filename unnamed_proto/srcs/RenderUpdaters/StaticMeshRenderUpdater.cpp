@@ -40,10 +40,11 @@ public:
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
-        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Locker, "assets/meshes/locker.obj",
-                   "assets/textures/locker.bmp");
-        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
-                   "assets/textures/melon.bmp");
+        CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Locker, "assets/meshes/locker.obj",
+                           "assets/textures/locker.bmp");
+        CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
+                           "assets/textures/melon.bmp");
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Wood, "assets/meshes/wood.obj");
     }
 
     ~StaticMeshRenderUpdater() = default;
@@ -81,10 +82,17 @@ public:
     }
 
 private:
-    void CreateMesh(MeshLoader* meshLoader, MaterialFactory* materialFactory, StaticMeshComponent::Type type,
-                    const char* meshFileName, const char* textureFileName)
+    void CreateTexturedMesh(MeshLoader* meshLoader, MaterialFactory* materialFactory, StaticMeshComponent::Type type,
+                            const char* meshFileName, const char* textureFileName)
     {
         m_materials[type] = CreateTextureMaterial(materialFactory, textureFileName);
+        m_meshes[type] = meshLoader->LoadWavefront(m_materials[type].get(), meshFileName);
+    }
+
+    void CreateMesh(MeshLoader* meshLoader, MaterialFactory* materialFactory, StaticMeshComponent::Type type,
+                    const char* meshFileName)
+    {
+        m_materials[type] = materialFactory->CreateMaterial("shaders/colored.vert", "shaders/colored.frag");
         m_meshes[type] = meshLoader->LoadWavefront(m_materials[type].get(), meshFileName);
     }
 
