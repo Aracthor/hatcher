@@ -40,11 +40,26 @@ void Mesh::Set3DPositions(const float* positions, int positionCount)
     }
 }
 
+void Mesh::SetColors(const float* textureCoords, int textureCoordsCount)
+{
+    m_VAO->Bind();
+
+    const GLint colorAttribLocation = m_material->ColorAttribLocation();
+    m_colorVBO = make_unique<VertexBufferObject>(false);
+    m_colorVBO->Bind();
+
+    m_VAO->AttribVBO(*m_colorVBO, 3, colorAttribLocation);
+
+    m_VAO->Unbind();
+
+    FillColors(textureCoords, textureCoordsCount);
+}
+
 void Mesh::SetTextureCoords(const float* textureCoords, int textureCoordsCount)
 {
     m_VAO->Bind();
 
-    GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
+    const GLint textureCoordsAttribLocation = m_material->TextureCoordsAttribLocation();
     m_textureCoordsVBO = make_unique<VertexBufferObject>(false);
     m_textureCoordsVBO->Bind();
 
@@ -94,6 +109,13 @@ void Mesh::Fill3DPositions(const float* positions, int positionCount)
     HATCHER_ASSERT(m_positionVBO);
     m_elementCount = positionCount / 3;
     m_positionVBO->SetData(positions, positionCount, m_dynamic);
+}
+
+void Mesh::FillColors(const float* colors, int colorCount)
+{
+    HATCHER_ASSERT(m_colorVBO);
+    HATCHER_ASSERT(m_elementCount == (int)colorCount / 3);
+    m_colorVBO->SetData(colors, colorCount, m_dynamic);
 }
 
 void Mesh::FillTextureCoords(const float* textureCoords, int textureCoordsCount)

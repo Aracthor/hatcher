@@ -19,11 +19,12 @@ struct MeshData
     struct Vertex
     {
         glm::vec3 position;
+        std::optional<glm::vec3> color;
         std::optional<glm::vec2> textureCoord;
 
         bool operator==(const Vertex& other) const
         {
-            return position == other.position && textureCoord == other.textureCoord;
+            return position == other.position && color == other.color && textureCoord == other.textureCoord;
         }
     };
     std::vector<Vertex> vertices;
@@ -50,9 +51,10 @@ std::string getNextToken(std::string& line, const std::string& fileName)
     return token;
 }
 
-int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, std::optional<glm::vec2> texCoord)
+int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, std::optional<glm::vec3> color,
+                      std::optional<glm::vec2> texCoord)
 {
-    MeshData::Vertex vertex({position, texCoord});
+    MeshData::Vertex vertex({position, color, texCoord});
     auto it = std::find(vertices.begin(), vertices.end(), vertex);
     if (it != vertices.end())
     {
@@ -71,6 +73,7 @@ MeshData readFile(const std::string& fileName)
         throw std::runtime_error(std::string("Couldn't open mesh file '") + fileName + "'.");
 
     std::vector<glm::vec3> wavefrontPositions;
+    std::vector<glm::vec3> wavefrontColors;
     std::vector<glm::vec2> wavefrontTexCoords;
 
     std::string line;
@@ -89,6 +92,13 @@ MeshData readFile(const std::string& fileName)
                 const std::string y = getNextToken(line, fileName);
                 const std::string z = getNextToken(line, fileName);
                 wavefrontPositions.emplace_back(::atof(x.c_str()), ::atof(y.c_str()), ::atof(z.c_str()));
+                if (!line.empty())
+                {
+                    const std::string r = getNextToken(line, fileName);
+                    const std::string g = getNextToken(line, fileName);
+                    const std::string b = getNextToken(line, fileName);
+                    wavefrontColors.emplace_back(::atof(r.c_str()), ::atof(g.c_str()), ::atof(b.c_str()));
+                }
             }
             else if (command == "vt")
             {
@@ -108,13 +118,15 @@ MeshData readFile(const std::string& fileName)
                     const int texCoordIndex = ::atoi(vertexToken.substr(separatorIndex + 1, afterSeparator).c_str());
                     // - 1 because for some reason, in wavefront, indices start at 1 instead of 0...
                     const glm::vec3 position = wavefrontPositions[positionIndex - 1];
+                    std::optional<glm::vec3> color =
+                        wavefrontColors.empty() ? std::optional<glm::vec3>() : wavefrontColors[positionIndex - 1];
                     std::optional<glm::vec2> texCoord;
                     if (!wavefrontTexCoords.empty())
                     {
                         texCoord = wavefrontTexCoords[texCoordIndex - 1];
                         texCoord->y = 1 - texCoord->y; // Because wavefront. I guess.
                     }
-                    const int vertexIndex = getOrCreateVertex(meshData.vertices, position, texCoord);
+                    const int vertexIndex = getOrCreateVertex(meshData.vertices, position, color, texCoord);
                     faceIndices.push_back(vertexIndex);
                 }
                 switch (faceIndices.size())
@@ -161,15 +173,23 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
         const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
         MeshData meshData = readFile(pathToFile);
         std::vector<float> positionsData;
+        std::vector<float> colorData;
         std::vector<float> textureCoordsData;
 
         positionsData.reserve(meshData.vertices.size() * 3);
+        colorData.reserve(meshData.vertices.size() * 3);
         textureCoordsData.reserve(meshData.vertices.size() * 2);
         for (const MeshData::Vertex& vertex : meshData.vertices)
         {
             positionsData.push_back(vertex.position.x);
             positionsData.push_back(vertex.position.y);
             positionsData.push_back(vertex.position.z);
+            if (vertex.color)
+            {
+                colorData.push_back(vertex.color->x);
+                colorData.push_back(vertex.color->y);
+                colorData.push_back(vertex.color->z);
+            }
             if (vertex.textureCoord)
             {
                 textureCoordsData.push_back(vertex.textureCoord->x);
@@ -177,9 +197,12 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
             }
         }
 
+        HATCHER_ASSERT(colorData.empty() || colorData.size() == positionsData.size());
         HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
         Mesh* mesh = new Mesh(material, Primitive::Triangles);
         mesh->Set3DPositions(positionsData.data(), positionsData.size());
+        if (!colorData.empty())
+            mesh->SetColors(colorData.data(), colorData.size());
         if (!textureCoordsData.empty())
             mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
         mesh->SetIndices(meshData.indices.data(), meshData.indices.size());

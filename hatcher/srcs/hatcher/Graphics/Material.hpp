@@ -21,6 +21,7 @@ public:
     void SetTransformationMatrix(const char* name, const glm::mat4& matrix) const;
 
     GLint PositionAttribLocation() const;
+    GLint ColorAttribLocation() const;
     GLint TextureCoordsAttribLocation() const;
     GLint InstancedAttribLocation(const char* name) const;
 

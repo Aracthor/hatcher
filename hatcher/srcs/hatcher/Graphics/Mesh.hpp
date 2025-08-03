@@ -24,12 +24,14 @@ public:
 
     void Set2DPositions(const float* positions, int positionCount);
     void Set3DPositions(const float* positions, int positionCount);
+    void SetColors(const float* colors, int colorCount);
     void SetTextureCoords(const float* textureCoords, int textureCoordCount);
     void SetIndices(const ushort* elements, int elementCount);
     void AddInstancedBuffer(const std::string& name, int componentSize);
 
     void Fill2DPositions(const float* positions, int positionCount);
     void Fill3DPositions(const float* positions, int positionCount);
+    void FillColors(const float* colors, int colorCount);
     void FillTextureCoords(const float* textureCoords, int textureCoordCount);
     void FillIndices(const ushort* elements, int elementCount);
     void FillInstancedBuffer(const std::string& name, const float* data, int length);
@@ -43,6 +45,7 @@ private:
 
     unique_ptr<VertexArrayObject> m_VAO;
     unique_ptr<VertexBufferObject> m_positionVBO;
+    unique_ptr<VertexBufferObject> m_colorVBO;
     unique_ptr<VertexBufferObject> m_textureCoordsVBO;
     unique_ptr<VertexBufferObject> m_elementVBO;
     std::unordered_map<std::string, unique_ptr<VertexBufferObject>> m_instancedVBO;

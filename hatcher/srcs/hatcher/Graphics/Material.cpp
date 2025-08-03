@@ -46,6 +46,11 @@ GLint Material::PositionAttribLocation() const
     return m_shaderProgram->GetAttribLocation("vertPosition");
 }
 
+GLint Material::ColorAttribLocation() const
+{
+    return m_shaderProgram->GetAttribLocation("vertColor");
+}
+
 GLint Material::TextureCoordsAttribLocation() const
 {
     return m_shaderProgram->GetAttribLocation("vertTextureCoord");
