@@ -1,6 +1,7 @@
 #include "hatcher/ComponentRegisterer.hpp"
 #include "hatcher/EntityDescriptor.hpp"
 
+#include "Components/ActionPlanningComponent.hpp"
 #include "Components/GrowableComponent.hpp"
 #include "Components/InventoryComponent.hpp"
 #include "Components/ItemComponent.hpp"
@@ -16,6 +17,7 @@ using namespace hatcher;
 namespace
 {
 
+ComponentTypeRegisterer<ActionPlanningComponent, EComponentList::Gameplay> actionPlanningRegisterer;
 ComponentTypeRegisterer<GrowableComponent, EComponentList::Gameplay> growableRegisterer;
 ComponentTypeRegisterer<InventoryComponent, EComponentList::Gameplay> inventoryRegisterer;
 ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> itemRegisterer;
@@ -67,6 +69,7 @@ EntityDescriptorRegisterer Melon{
 EntityDescriptorRegisterer Steve{
     EntityDescriptorID::Create("Steve"),
     {
+        ActionPlanningComponent{},
         InventoryComponent{},
         Movement2DComponent{},
         NameComponent{

@@ -2,6 +2,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Components/Movement2DComponent.cpp			\
 		Components/NameComponent.cpp				\
 									\
+		Updaters/ActionPlanningUpdater.cpp			\
 		Updaters/GrowableUpdater.cpp				\
 		Updaters/InventoryUpdater.cpp				\
 		Updaters/MovingEntitiesUpdater.cpp			\
