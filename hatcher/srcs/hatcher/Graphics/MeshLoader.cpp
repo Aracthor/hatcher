@@ -156,32 +156,41 @@ MeshLoader::MeshLoader(const FileSystem* fileSystem)
 
 unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
 {
-    const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
-    MeshData meshData = readFile(pathToFile);
-    std::vector<float> positionsData;
-    std::vector<float> textureCoordsData;
-
-    positionsData.reserve(meshData.vertices.size() * 3);
-    textureCoordsData.reserve(meshData.vertices.size() * 2);
-    for (const MeshData::Vertex& vertex : meshData.vertices)
+    try
     {
-        positionsData.push_back(vertex.position.x);
-        positionsData.push_back(vertex.position.y);
-        positionsData.push_back(vertex.position.z);
-        if (vertex.textureCoord)
-        {
-            textureCoordsData.push_back(vertex.textureCoord->x);
-            textureCoordsData.push_back(vertex.textureCoord->y);
-        }
-    }
+        const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
+        MeshData meshData = readFile(pathToFile);
+        std::vector<float> positionsData;
+        std::vector<float> textureCoordsData;
 
-    HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
-    Mesh* mesh = new Mesh(material, Primitive::Triangles);
-    mesh->Set3DPositions(positionsData.data(), positionsData.size());
-    if (!textureCoordsData.empty())
-        mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
-    mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
-    return unique_ptr<Mesh>(mesh);
+        positionsData.reserve(meshData.vertices.size() * 3);
+        textureCoordsData.reserve(meshData.vertices.size() * 2);
+        for (const MeshData::Vertex& vertex : meshData.vertices)
+        {
+            positionsData.push_back(vertex.position.x);
+            positionsData.push_back(vertex.position.y);
+            positionsData.push_back(vertex.position.z);
+            if (vertex.textureCoord)
+            {
+                textureCoordsData.push_back(vertex.textureCoord->x);
+                textureCoordsData.push_back(vertex.textureCoord->y);
+            }
+        }
+
+        HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
+        Mesh* mesh = new Mesh(material, Primitive::Triangles);
+        mesh->Set3DPositions(positionsData.data(), positionsData.size());
+        if (!textureCoordsData.empty())
+            mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
+        mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
+        return unique_ptr<Mesh>(mesh);
+    }
+    catch (const std::exception& exception)
+    {
+        std::ostringstream oss;
+        oss << "Error reading file '" << fileName << "': " << exception.what();
+        throw std::runtime_error(oss.str());
+    }
 }
 
 } // namespace hatcher
