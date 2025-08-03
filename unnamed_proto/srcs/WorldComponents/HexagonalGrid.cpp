@@ -89,10 +89,10 @@ HexagonalGrid::HexagonalGrid()
     {
         for (int r = -5; r <= 5; r++)
         {
-            SetTileWalkable(HexagonalGrid::TileCoord(q, r), true);
+            if (std::abs(q + r) <= 5)
+                SetTileWalkable(HexagonalGrid::TileCoord(q, r), true);
         }
     }
-    SetTileWalkable(HexagonalGrid::TileCoord(0, 0), false);
 }
 
 HexagonalGrid::~HexagonalGrid() = default;
