@@ -39,7 +39,7 @@ private:
     int m_renderFramerateLimit = 60;
     bool m_running = false;
 
-    std::optional<UpdateTicker> m_updateTicker;
+    UpdateTicker m_updateTicker = UpdateTicker(60.f);
 };
 
 } // namespace hatcher

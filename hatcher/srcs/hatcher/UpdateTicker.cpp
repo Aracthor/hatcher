@@ -8,10 +8,12 @@ namespace hatcher
 {
 
 UpdateTicker::UpdateTicker(float tickrate)
-    : m_tickTimeMs(1000.f / tickrate)
-    , m_clock(new Clock())
+    : m_clock(new Clock())
 {
+    SetTickrate(tickrate);
 }
+
+UpdateTicker::~UpdateTicker() = default;
 
 int UpdateTicker::TickCount()
 {
@@ -20,6 +22,11 @@ int UpdateTicker::TickCount()
     const int tickCount = static_cast<int>(m_accumulatedTimeMs / m_tickTimeMs);
     m_accumulatedTimeMs = std::fmod(m_accumulatedTimeMs, m_tickTimeMs);
     return tickCount;
+}
+
+void UpdateTicker::SetTickrate(float tickrate)
+{
+    m_tickTimeMs = 1000.f / tickrate;
 }
 
 } // namespace hatcher

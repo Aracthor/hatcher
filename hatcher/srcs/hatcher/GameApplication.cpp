@@ -77,7 +77,7 @@ void GameApplication::Stop()
 
 void GameApplication::SetUpdateTickrate(float tickrate)
 {
-    m_updateTicker.emplace(tickrate);
+    m_updateTicker.SetTickrate(tickrate);
 }
 
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
@@ -92,13 +92,8 @@ void GameApplication::Update()
     {
         m_rendering->HandleWindowEvents(this, m_world.get());
     }
-    if (!m_updateTicker)
     {
-        m_world->Update();
-    }
-    else
-    {
-        int ticks = m_updateTicker->TickCount();
+        int ticks = m_updateTicker.TickCount();
         while (ticks-- > 0)
             m_world->Update();
     }

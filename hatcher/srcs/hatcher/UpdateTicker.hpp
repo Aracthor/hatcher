@@ -10,11 +10,14 @@ class UpdateTicker
 {
 public:
     UpdateTicker(float tickrate);
+    ~UpdateTicker();
 
     int TickCount();
 
+    void SetTickrate(float tickrate);
+
 private:
-    const float m_tickTimeMs;
+    float m_tickTimeMs;
     float m_accumulatedTimeMs = 0.f;
     unique_ptr<Clock> m_clock;
 };
