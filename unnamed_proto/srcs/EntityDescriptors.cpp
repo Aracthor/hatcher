@@ -45,16 +45,10 @@ EntityDescriptorRegisterer Locker{
         NameComponent{
             .name = "Locker",
         },
-        Position2DComponent{
-            .position = {},
-            .orientation = {1.f, 0.f},
-        },
+        Position2DComponent{},
     },
     {
-        SelectableComponent{
-            .box = {},
-            .selected = false,
-        },
+        SelectableComponent{},
         StaticMeshComponent{
             .type = StaticMeshComponent::Locker,
         },
@@ -71,16 +65,10 @@ EntityDescriptorRegisterer Melon{
             .maturity = 0.25,
             .growthTime = 600,
         },
-        Position2DComponent{
-            .position = {},
-            .orientation = {1.f, 0.f},
-        },
+        Position2DComponent{},
     },
     {
-        SelectableComponent{
-            .box = {},
-            .selected = false,
-        },
+        SelectableComponent{},
         StaticMeshComponent{
             .type = StaticMeshComponent::Melon,
         },
@@ -95,20 +83,11 @@ EntityDescriptorRegisterer Steve{
         NameComponent{
             .name = "Steve",
         },
-        Position2DComponent{
-            .position = {},
-            .orientation = {1.f, 0.f},
-        },
+        Position2DComponent{},
     },
     {
-        SelectableComponent{
-            .box = {},
-            .selected = false,
-        },
-        SteveAnimationComponent{
-            .rightLegAngle = 0.f,
-            .rightLegRising = false,
-        },
+        SelectableComponent{},
+        SteveAnimationComponent{},
     },
 };
 

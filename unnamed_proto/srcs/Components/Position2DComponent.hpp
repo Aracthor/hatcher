@@ -4,6 +4,6 @@
 
 struct Position2DComponent
 {
-    glm::vec2 position;
-    glm::vec2 orientation;
+    glm::vec2 position = {0.f, 0.f};
+    glm::vec2 orientation = {1.f, 0.f};
 };
