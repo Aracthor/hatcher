@@ -11,6 +11,8 @@
 
 #include <algorithm>
 
+#include "EntityFinder.hpp"
+
 using namespace hatcher;
 
 namespace
@@ -29,6 +31,13 @@ public:
 bool IsEntityWood(const ComponentManager* componentManager, Entity::IDType entity)
 {
     return componentManager->ReadComponents<NameComponent>()[entity]->name == "Wood";
+}
+
+bool IsGatherableWood(const ComponentManager* componentManager, Entity entity)
+{
+    const auto& positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
+    return IsEntityWood(componentManager, entity.ID()) && positionComponent &&
+           positionComponent->position != woodTarget;
 }
 
 class DropOffWood : public IPlan
@@ -81,14 +90,66 @@ class BringBackWood : public IPlan
 
     bool IsOngoing(const ComponentManager* componentManager, int entityIndex) const override
     {
-        const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entityIndex]->position;
-        return position != woodTarget;
+        const std::vector<glm::vec2>& path = componentManager->ReadComponents<Movement2DComponent>()[entityIndex]->path;
+        return !path.empty();
+    }
+};
+
+class TakeWood : public IPlan
+{
+    bool CanBeAchieved(const ComponentManager* componentManager, int entityIndex) const override
+    {
+        const auto& positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        const Entity woodEntity = FindNearestEntity(componentManager, Entity(entityIndex), IsGatherableWood);
+        return woodEntity != Entity::Invalid() &&
+               positionComponents[woodEntity]->position == positionComponents[entityIndex]->position;
+    }
+
+    void Start(ComponentManager* componentManager, int entityIndex) const override
+    {
+        const Entity woodEntity = FindNearestEntity(componentManager, Entity(entityIndex), IsGatherableWood);
+        InventoryComponent& inventory = *componentManager->WriteComponents<InventoryComponent>()[entityIndex];
+        inventory.storage.push_back(woodEntity.ID());
+        componentManager->WriteComponents<Position2DComponent>()[woodEntity] = {};
+    }
+
+    bool IsOngoing(const ComponentManager* componentManager, int entityIndex) const override { return false; }
+};
+
+class MoveToWood : public IPlan
+{
+    bool CanBeAchieved(const ComponentManager* componentManager, int entityIndex) const override
+    {
+        const Entity woodEntity = FindNearestEntity(componentManager, Entity(entityIndex), IsGatherableWood);
+        return woodEntity != Entity::Invalid();
+    }
+
+    void Start(ComponentManager* componentManager, int entityIndex) const override
+    {
+        const auto& positions = componentManager->ReadComponents<Position2DComponent>();
+        const Entity woodEntity = FindNearestEntity(componentManager, Entity(entityIndex), IsGatherableWood);
+        const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
+
+        const glm::vec2 position = positions[entityIndex]->position;
+        const glm::vec2 woodPosition = positions[woodEntity]->position;
+        const HexagonalGrid::TileCoord tileStart = hexaGrid->PositionToTileCoords(position);
+        const HexagonalGrid::TileCoord tileDestination = hexaGrid->PositionToTileCoords(woodPosition);
+        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(tileStart, tileDestination);
+        componentManager->WriteComponents<Movement2DComponent>()[entityIndex]->path = path;
+    }
+
+    bool IsOngoing(const ComponentManager* componentManager, int entityIndex) const override
+    {
+        const std::vector<glm::vec2>& path = componentManager->ReadComponents<Movement2DComponent>()[entityIndex]->path;
+        return !path.empty();
     }
 };
 
 const IPlan* plans[] = {
     new DropOffWood(),
     new BringBackWood(),
+    new TakeWood(),
+    new MoveToWood(),
 };
 
 void UpdatePlanning(ActionPlanningComponent& planning, ComponentManager* componentManager, int entityIndex)

@@ -27,6 +27,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		WorldComponents/HexagonalGrid.cpp			\
 									\
 		EntityDescriptors.cpp					\
+		EntityFinder.cpp					\
 		Pathfinding.cpp						\
 		TransformationHelper.cpp				\
 		main.cpp						\
