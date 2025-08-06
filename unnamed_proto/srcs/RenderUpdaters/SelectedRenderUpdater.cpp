@@ -56,7 +56,7 @@ public:
         {
             const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
-            if (selectableComponent && selectableComponent->selected)
+            if (positionComponent && selectableComponent && selectableComponent->selected)
             {
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
 
