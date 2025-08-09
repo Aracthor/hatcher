@@ -55,7 +55,6 @@ public:
             if (!hexaGrid->GetTileData(coords).walkable)
                 return;
 
-            const HexagonalGrid::TileCoord tileDestination = hexaGrid->PositionToTileCoords(worldCoords2D);
             auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
             auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
             auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
@@ -69,9 +68,8 @@ public:
                 if (selectableComponent && selectableComponent->selected && movementComponent)
                 {
                     HATCHER_ASSERT(positionComponent);
-                    const HexagonalGrid::TileCoord tileStart =
-                        hexaGrid->PositionToTileCoords(positionComponent->position);
-                    std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(tileStart, tileDestination);
+                    std::vector<glm::vec2> path =
+                        hexaGrid->GetPathIfPossible(positionComponent->position, worldCoords2D);
                     if (!path.empty())
                     {
                         commandManager->AddCommand(new MoveOrderCommand(Entity(i), path));

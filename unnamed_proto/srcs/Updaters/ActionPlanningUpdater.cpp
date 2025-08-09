@@ -82,9 +82,7 @@ class BringBackWood : public IPlan
         const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entityIndex]->position;
         const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
 
-        const HexagonalGrid::TileCoord tileStart = hexaGrid->PositionToTileCoords(position);
-        const HexagonalGrid::TileCoord tileDestination = hexaGrid->PositionToTileCoords(woodTarget);
-        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(tileStart, tileDestination);
+        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(position, woodTarget);
         componentManager->WriteComponents<Movement2DComponent>()[entityIndex]->path = path;
     }
 
@@ -132,9 +130,7 @@ class MoveToWood : public IPlan
 
         const glm::vec2 position = positions[entityIndex]->position;
         const glm::vec2 woodPosition = positions[woodEntity]->position;
-        const HexagonalGrid::TileCoord tileStart = hexaGrid->PositionToTileCoords(position);
-        const HexagonalGrid::TileCoord tileDestination = hexaGrid->PositionToTileCoords(woodPosition);
-        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(tileStart, tileDestination);
+        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(position, woodPosition);
         componentManager->WriteComponents<Movement2DComponent>()[entityIndex]->path = path;
     }
 

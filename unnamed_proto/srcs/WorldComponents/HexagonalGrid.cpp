@@ -136,10 +136,10 @@ glm::vec2 HexagonalGrid::GetHexaAngle(int angleIndex)
     return glm::vec2(cosf(angle), sinf(angle)) * hexaSize;
 }
 
-std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(TileCoord start, TileCoord end) const
+std::vector<glm::vec2> HexagonalGrid::GetPathIfPossible(glm::vec2 start, glm::vec2 end) const
 {
-    const glm::vec2 startPos = TileCoordToPosition(start);
-    const glm::vec2 endPos = TileCoordToPosition(end);
+    const glm::vec2 startPos = TileCoordToPosition(PositionToTileCoords(start));
+    const glm::vec2 endPos = TileCoordToPosition(PositionToTileCoords(end));
     return m_pathfinding.GetPath(startPos, endPos);
 }
 

@@ -54,7 +54,7 @@ public:
     TileCoord GetTileCoordMin() const { return m_tileCoordMin; }
     TileCoord GetTileCoordMax() const { return m_tileCoordMax; }
 
-    std::vector<glm::vec2> GetPathIfPossible(TileCoord start, TileCoord end) const;
+    std::vector<glm::vec2> GetPathIfPossible(glm::vec2 start, glm::vec2 end) const;
 
     void SetTileWalkable(TileCoord coord, bool walkable);
 
