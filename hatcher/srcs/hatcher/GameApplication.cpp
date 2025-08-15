@@ -93,9 +93,16 @@ void GameApplication::Update()
         m_rendering->HandleWindowEvents(this, m_world.get());
     }
     {
+        const float maxUpdateTime = 0.1f;
+        float updateTime = 0.f;
+        Clock clock;
         int ticks = m_updateTicker.TickCount();
-        while (ticks-- > 0)
+        while (ticks-- > 0 && updateTime < maxUpdateTime)
+        {
             m_world->Update();
+            clock.Update();
+            updateTime += clock.GetElapsedTime();
+        }
     }
     if (m_rendering)
     {
