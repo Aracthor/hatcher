@@ -48,7 +48,7 @@ public:
 
         const Texture* texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");
 
-        m_tileMaterial = materialFactory->CreateMaterial("shaders/hexatile.vert", "shaders/textured.frag");
+        m_tileMaterial = materialFactory->CreateMaterial("shaders/gridtile.vert", "shaders/textured.frag");
         m_tileMaterial->AddTexture("uniTexture", texture);
         m_walkableTileMesh = make_unique<Mesh>(m_tileMaterial.get(), Primitive::TriangleStrip);
 
