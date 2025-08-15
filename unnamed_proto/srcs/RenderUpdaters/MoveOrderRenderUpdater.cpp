@@ -2,7 +2,7 @@
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "WorldComponents/Camera.hpp"
-#include "WorldComponents/HexagonalGrid.hpp"
+#include "WorldComponents/SquareGrid.hpp"
 
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
@@ -50,9 +50,8 @@ public:
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-            const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
-            const HexagonalGrid::TileCoord coords = hexaGrid->PositionToTileCoords(worldCoords2D);
-            if (!hexaGrid->GetTileData(coords).walkable)
+            const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+            if (!grid->GetTileData(worldCoords2D).walkable)
                 return;
 
             auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
@@ -68,8 +67,7 @@ public:
                 if (selectableComponent && selectableComponent->selected && movementComponent)
                 {
                     HATCHER_ASSERT(positionComponent);
-                    std::vector<glm::vec2> path =
-                        hexaGrid->GetPathIfPossible(positionComponent->position, worldCoords2D);
+                    std::vector<glm::vec2> path = grid->GetPathIfPossible(positionComponent->position, worldCoords2D);
                     if (!path.empty())
                     {
                         commandManager->AddCommand(new MoveOrderCommand(Entity(i), path));

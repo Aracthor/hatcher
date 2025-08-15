@@ -2,7 +2,7 @@
 #include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "WorldComponents/Camera.hpp"
-#include "WorldComponents/HexagonalGrid.hpp"
+#include "WorldComponents/SquareGrid.hpp"
 
 #include "hatcher/CommandRegisterer.hpp"
 #include "hatcher/ComponentManager.hpp"
@@ -94,11 +94,11 @@ public:
             const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-            const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
-            if (!hexaGrid->GetTileData(worldCoords2D).walkable)
+            const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+            if (!grid->GetTileData(worldCoords2D).walkable)
                 return;
 
-            const glm::vec2 entitySpawnPosition = hexaGrid->GetTileCenter(worldCoords2D);
+            const glm::vec2 entitySpawnPosition = grid->GetTileCenter(worldCoords2D);
             EntityDescriptorID* entityDescriptor = nullptr;
             span<const EntityDescriptorID> inventoryDescriptors = {};
             if (event.button.button == SDL_BUTTON_RIGHT)

@@ -11,7 +11,7 @@
 #include "imgui.h"
 
 #include "WorldComponents/Camera.hpp"
-#include "WorldComponents/HexagonalGrid.hpp"
+#include "WorldComponents/SquareGrid.hpp"
 
 namespace
 {
@@ -44,8 +44,9 @@ public:
 
     void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
     {
-        HexagonalGrid* hexaGrid = componentManager->WriteWorldComponent<HexagonalGrid>();
-        hexaGrid->SetTileWalkable(hexaGrid->PositionToTileCoords(m_worldCoords2D), m_walkable);
+        SquareGrid* grid = componentManager->WriteWorldComponent<SquareGrid>();
+        if (grid->HasTileData(m_worldCoords2D))
+            grid->SetTileWalkable(m_worldCoords2D, m_walkable);
     }
 
 private:
@@ -56,7 +57,7 @@ private:
 };
 REGISTER_COMMAND(SetTileWaklableCommand);
 
-class HexaGridControlPanelEventListener : public IEventListener
+class GridControlPanelEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
                   const ComponentManager* componentManager, ComponentManager* renderComponentManager,
@@ -82,10 +83,10 @@ class HexaGridControlPanelEventListener : public IEventListener
     }
 };
 
-class HexaGridControlPanelRenderUpdater : public RenderUpdater
+class GridControlPanelRenderUpdater : public RenderUpdater
 {
 public:
-    HexaGridControlPanelRenderUpdater(const IRendering* rendering) {}
+    GridControlPanelRenderUpdater(const IRendering* rendering) {}
 
     void Update(IApplication* application, const ComponentManager* componentManager,
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
@@ -94,7 +95,7 @@ public:
             return;
 
         ImGui::SetNextWindowSize({200, 100}, ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("HexaGrid Control Panel", &controlPanel.enabled))
+        if (ImGui::Begin("Grid Control Panel", &controlPanel.enabled))
         {
             ImGui::Checkbox("Walkable", &controlPanel.walkable);
         }
@@ -102,7 +103,7 @@ public:
     }
 };
 
-EventListenerRegisterer<HexaGridControlPanelEventListener> eventRegisterer;
-RenderUpdaterRegisterer<HexaGridControlPanelRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Scene);
+EventListenerRegisterer<GridControlPanelEventListener> eventRegisterer;
+RenderUpdaterRegisterer<GridControlPanelRenderUpdater> updaterRegisterer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace

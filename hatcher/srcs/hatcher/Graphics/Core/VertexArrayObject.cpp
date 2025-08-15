@@ -10,7 +10,7 @@ namespace hatcher
 namespace
 {
 
-static_assert(static_cast<int>(Primitive::Count) == 4);
+static_assert(static_cast<int>(Primitive::Count) == 5);
 GLenum PrimitiveToGLPrimitive(Primitive type)
 {
     switch (type)
@@ -21,6 +21,8 @@ GLenum PrimitiveToGLPrimitive(Primitive type)
         return GL_LINE_STRIP;
     case Primitive::Triangles:
         return GL_TRIANGLES;
+    case Primitive::TriangleStrip:
+        return GL_TRIANGLE_STRIP;
     case Primitive::TriangleFan:
         return GL_TRIANGLE_FAN;
     default:

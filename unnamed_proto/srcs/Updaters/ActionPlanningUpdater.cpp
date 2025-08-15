@@ -4,7 +4,7 @@
 #include "Components/NameComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 
-#include "WorldComponents/HexagonalGrid.hpp"
+#include "WorldComponents/SquareGrid.hpp"
 
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Updater.hpp"
@@ -18,7 +18,7 @@ using namespace hatcher;
 namespace
 {
 
-const glm::vec2 woodTarget = glm::vec2(0.f, 0.f);
+const glm::vec2 woodTarget = glm::vec2(0.5f, 0.5f);
 
 class IPlan
 {
@@ -80,9 +80,9 @@ class BringBackWood : public IPlan
     void Start(ComponentManager* componentManager, int entityIndex) const override
     {
         const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entityIndex]->position;
-        const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
+        const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
 
-        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(position, woodTarget);
+        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, woodTarget);
         componentManager->WriteComponents<Movement2DComponent>()[entityIndex]->path = path;
     }
 
@@ -126,11 +126,11 @@ class MoveToWood : public IPlan
     {
         const auto& positions = componentManager->ReadComponents<Position2DComponent>();
         const Entity woodEntity = FindNearestEntity(componentManager, Entity(entityIndex), IsGatherableWood);
-        const HexagonalGrid* hexaGrid = componentManager->ReadWorldComponent<HexagonalGrid>();
+        const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
 
         const glm::vec2 position = positions[entityIndex]->position;
         const glm::vec2 woodPosition = positions[woodEntity]->position;
-        std::vector<glm::vec2> path = hexaGrid->GetPathIfPossible(position, woodPosition);
+        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, woodPosition);
         componentManager->WriteComponents<Movement2DComponent>()[entityIndex]->path = path;
     }
 

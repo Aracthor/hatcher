@@ -17,11 +17,11 @@ private:
     using Vec = glm::vec<L, T>;
 
 public:
-    Box();
-    Box(const Vec& point);
-    Box(const Vec& min, const Vec& max);
+    constexpr Box();
+    constexpr Box(const Vec& point);
+    constexpr Box(const Vec& min, const Vec& max);
     template <class Iterator>
-    Box(Iterator first, Iterator last);
+    constexpr Box(Iterator first, Iterator last);
 
     void AddPoint(const Vec& point);
     void Add(const Box<L, T>& box);

@@ -13,8 +13,8 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		RenderUpdaters/DebugShortcutsRenderUpdater.cpp		\
 		RenderUpdaters/EntityCreatorRenderUpdater.cpp		\
 		RenderUpdaters/FPSPanelRenderUpdater.cpp		\
-		RenderUpdaters/HexaGridRenderUpdater.cpp		\
-		RenderUpdaters/HexaGridControlPanelRenderUpdater.cpp	\
+		RenderUpdaters/GridRenderUpdater.cpp		\
+		RenderUpdaters/GridControlPanelRenderUpdater.cpp	\
 		RenderUpdaters/InventoryPanelRenderUpdater.cpp		\
 		RenderUpdaters/MoveOrderRenderUpdater.cpp		\
 		RenderUpdaters/SelectionRectangleRenderUpdater.cpp	\
@@ -24,7 +24,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		RenderUpdaters/WorldTickerRenderUpdater.cpp		\
 									\
 		WorldComponents/Camera.cpp				\
-		WorldComponents/HexagonalGrid.cpp			\
+		WorldComponents/SquareGrid.cpp				\
 									\
 		EntityDescriptors.cpp					\
 		EntityFinder.cpp					\

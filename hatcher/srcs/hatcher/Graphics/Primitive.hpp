@@ -8,6 +8,7 @@ enum Primitive
     Lines,
     LineStrip,
     Triangles,
+    TriangleStrip,
     TriangleFan,
     Count
 };

@@ -15,21 +15,21 @@ constexpr int Box<L, T>::_pow2(glm::length_t n)
 }
 
 template <glm::length_t L, typename T>
-Box<L, T>::Box()
+constexpr Box<L, T>::Box()
     : m_min(std::numeric_limits<float>::max())
     , m_max(std::numeric_limits<float>::lowest())
 {
 }
 
 template <glm::length_t L, typename T>
-Box<L, T>::Box(const Vec& point)
+constexpr Box<L, T>::Box(const Vec& point)
     : m_min(point)
     , m_max(point)
 {
 }
 
 template <glm::length_t L, typename T>
-Box<L, T>::Box(const Vec& min, const Vec& max)
+constexpr Box<L, T>::Box(const Vec& min, const Vec& max)
     : m_min(min)
     , m_max(max)
 {
@@ -37,7 +37,7 @@ Box<L, T>::Box(const Vec& min, const Vec& max)
 
 template <glm::length_t L, typename T>
 template <class Iterator>
-Box<L, T>::Box(Iterator first, Iterator last)
+constexpr Box<L, T>::Box(Iterator first, Iterator last)
 {
     m_min = Vec(std::numeric_limits<T>::max());
     m_max = Vec(std::numeric_limits<T>::lowest());
