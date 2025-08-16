@@ -53,15 +53,29 @@ class DropOffWood : public IPlan
     void Start(ComponentManager* componentManager, Entity entity) const override
     {
         auto positions = componentManager->WriteComponents<Position2DComponent>();
+        auto items = componentManager->WriteComponents<ItemComponent>();
+
         InventoryComponent& inventory = *componentManager->WriteComponents<InventoryComponent>()[entity];
         auto IsWood = [componentManager](Entity entity) { return IsEntityWood(componentManager, entity); };
         auto it = std::find_if(inventory.storage.begin(), inventory.storage.end(), IsWood);
         HATCHER_ASSERT(it != inventory.storage.end());
         const glm::vec2 position = positions[entity]->position;
-        positions[*it] = Position2DComponent{
-            .position = position,
-            .orientation = {1.f, 0.f},
-        };
+
+        const Entity gatherableWood = FindNearestEntity(componentManager, entity, IsEntityWood);
+        if (gatherableWood == Entity::Invalid() || positions[gatherableWood]->position != woodTarget)
+        {
+            items[*it]->inventory = Entity::Invalid();
+            positions[*it] = Position2DComponent{
+                .position = position,
+                .orientation = {1.f, 0.f},
+            };
+        }
+        else
+        {
+            items[gatherableWood]->count += 1;
+            componentManager->RemoveEntity(Entity(*it));
+        }
+
         inventory.storage.erase(it);
     }
 

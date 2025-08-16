@@ -9,4 +9,5 @@ using namespace hatcher;
 struct ItemComponent
 {
     std::optional<Entity> inventory;
+    int count = 1;
 };
