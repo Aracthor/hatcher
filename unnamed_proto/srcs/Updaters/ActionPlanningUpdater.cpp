@@ -1,5 +1,6 @@
 #include "Components/ActionPlanningComponent.hpp"
 #include "Components/InventoryComponent.hpp"
+#include "Components/ItemComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/NameComponent.hpp"
 #include "Components/Position2DComponent.hpp"
@@ -109,6 +110,7 @@ class TakeWood : public IPlan
         InventoryComponent& inventory = *componentManager->WriteComponents<InventoryComponent>()[entityIndex];
         inventory.storage.push_back(woodEntity.ID());
         componentManager->WriteComponents<Position2DComponent>()[woodEntity] = {};
+        componentManager->WriteComponents<ItemComponent>()[woodEntity]->inventory = entityIndex;
     }
 
     bool IsOngoing(const ComponentManager* componentManager, int entityIndex) const override { return false; }
