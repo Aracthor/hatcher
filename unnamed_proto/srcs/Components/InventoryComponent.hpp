@@ -14,7 +14,7 @@ using namespace hatcher;
 
 struct InventoryComponent
 {
-    std::vector<Entity::IDType> storage;
+    std::vector<Entity> storage;
 };
 
 void operator<<(DataSaver& saver, const InventoryComponent& component);

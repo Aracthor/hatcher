@@ -22,7 +22,7 @@ class InventoryUpdater final : public Updater
         {
             HATCHER_ASSERT(positionComponents[entity]);
             const glm::vec2 position = positionComponents[entity]->position;
-            for (Entity::IDType itemID : inventoryComponent->storage)
+            for (Entity itemID : inventoryComponent->storage)
             {
                 positionComponents[itemID] = Position2DComponent{
                     .position = position,

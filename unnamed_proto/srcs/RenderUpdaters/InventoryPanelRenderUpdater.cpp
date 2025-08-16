@@ -59,10 +59,10 @@ public:
                 if (ImGui::Begin(windowNameOss.str().c_str(), &enabled))
                 {
                     ImGui::Text("Storage: %ld", inventory.storage.size());
-                    for (Entity::IDType itemID : inventory.storage)
+                    for (Entity item : inventory.storage)
                     {
-                        HATCHER_ASSERT(nameComponents[itemID]);
-                        ImGui::Selectable(nameComponents[itemID]->name.c_str());
+                        HATCHER_ASSERT(nameComponents[item]);
+                        ImGui::Selectable(nameComponents[item]->name.c_str());
                     }
                 }
                 ImGui::End();

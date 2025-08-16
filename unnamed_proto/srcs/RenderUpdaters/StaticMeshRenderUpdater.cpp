@@ -80,7 +80,7 @@ public:
                 }
                 else if (itemComponents[i] && itemComponents[i]->inventory)
                 {
-                    const Entity::IDType inventory = *itemComponents[i]->inventory;
+                    const Entity inventory = *itemComponents[i]->inventory;
                     const auto storagePosition = positionComponents[inventory];
                     if (storagePosition && steveAnimationComponents[inventory])
                     {

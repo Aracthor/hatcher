@@ -50,12 +50,12 @@ public:
         entityEgg.GetComponent<Position2DComponent>() = Position2DComponent();
         entityEgg.GetComponent<Position2DComponent>()->position = m_spawnPosition;
 
-        std::vector<Entity::IDType> inventoryStorage;
+        std::vector<Entity> inventoryStorage;
         for (const EntityDescriptorID& itemDescriptor : m_inventoryDescriptors)
         {
             EntityEgg newItem = entityManager->CreateNewEntity(itemDescriptor);
-            newItem.GetComponent<ItemComponent>()->inventory = entityEgg.NewEntityID().ID();
-            inventoryStorage.push_back(newItem.NewEntityID().ID());
+            newItem.GetComponent<ItemComponent>()->inventory = entityEgg.NewEntityID();
+            inventoryStorage.push_back(newItem.NewEntityID());
         }
         if (!inventoryStorage.empty())
         {

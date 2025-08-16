@@ -8,5 +8,5 @@ using namespace hatcher;
 
 struct ItemComponent
 {
-    std::optional<Entity::IDType> inventory;
+    std::optional<Entity> inventory;
 };
