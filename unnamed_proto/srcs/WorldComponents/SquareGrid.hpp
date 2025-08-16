@@ -30,7 +30,7 @@ public:
     glm::vec2 GetTileCoordMin() const { return {MIN_WIDTH, MIN_HEIGHT}; }
     glm::vec2 GetTileCoordMax() const { return {MAX_WIDTH, MAX_HEIGHT}; }
 
-    std::vector<glm::vec2> GetPathIfPossible(glm::vec2 start, glm::vec2 end) const;
+    std::vector<glm::vec2> GetPathIfPossible(glm::vec2 start, glm::vec2 end, float distance = 0.f) const;
 
     void SetTileWalkable(glm::vec2 position, bool walkable);
 

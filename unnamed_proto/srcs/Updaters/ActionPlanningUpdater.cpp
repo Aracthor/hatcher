@@ -47,7 +47,8 @@ class DropOffWood : public IPlan
         const InventoryComponent& inventory = *componentManager->ReadComponents<InventoryComponent>()[entity];
         const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entity]->position;
         auto IsWood = [componentManager](Entity entity) { return IsEntityWood(componentManager, entity); };
-        return position == woodTarget && std::any_of(inventory.storage.begin(), inventory.storage.end(), IsWood);
+        return glm::length(position - woodTarget) <= 1.f &&
+               std::any_of(inventory.storage.begin(), inventory.storage.end(), IsWood);
     }
 
     void Start(ComponentManager* componentManager, Entity entity) const override
@@ -59,14 +60,13 @@ class DropOffWood : public IPlan
         auto IsWood = [componentManager](Entity entity) { return IsEntityWood(componentManager, entity); };
         auto it = std::find_if(inventory.storage.begin(), inventory.storage.end(), IsWood);
         HATCHER_ASSERT(it != inventory.storage.end());
-        const glm::vec2 position = positions[entity]->position;
 
         const Entity gatherableWood = FindNearestEntity(componentManager, entity, IsEntityWood);
         if (gatherableWood == Entity::Invalid() || positions[gatherableWood]->position != woodTarget)
         {
             items[*it]->inventory = Entity::Invalid();
             positions[*it] = Position2DComponent{
-                .position = position,
+                .position = woodTarget,
                 .orientation = {1.f, 0.f},
             };
         }
@@ -96,7 +96,7 @@ class BringBackWood : public IPlan
         const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entity]->position;
         const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
 
-        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, woodTarget);
+        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, woodTarget, 1.f);
         componentManager->WriteComponents<Movement2DComponent>()[entity]->path = path;
     }
 
