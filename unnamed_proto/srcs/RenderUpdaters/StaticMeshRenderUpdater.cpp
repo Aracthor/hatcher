@@ -55,7 +55,6 @@ public:
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto growableComponents = componentManager->ReadComponents<GrowableComponent>();
         auto staticMeshComponents = renderComponentManager->WriteComponents<StaticMeshComponent>();
-        auto selectableComponents = renderComponentManager->WriteComponents<SelectableComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
@@ -64,10 +63,6 @@ public:
                 HATCHER_ASSERT(staticMeshComponents[i]->type < StaticMeshComponent::COUNT);
                 const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponents[i]->type];
                 const unique_ptr<Material>& material = m_materials[staticMeshComponents[i]->type];
-                if (selectableComponents[i] && selectableComponents[i]->box.IsEmpty())
-                {
-                    selectableComponents[i]->box.Add(mesh->Box().Scaled(1.1f));
-                }
 
                 glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 if (growableComponents[i])
@@ -78,6 +73,18 @@ public:
                 frameRenderer.PrepareSceneDraw(material.get());
                 mesh->Draw(modelMatrix);
             }
+        }
+    }
+
+    void OnCreateEntity(Entity entity, const ComponentManager* componentManager,
+                        ComponentManager* renderComponentManager) override
+    {
+        const auto& staticMeshComponent = renderComponentManager->WriteComponents<StaticMeshComponent>()[entity];
+        auto& selectableComponent = renderComponentManager->WriteComponents<SelectableComponent>()[entity];
+        if (staticMeshComponent && selectableComponent)
+        {
+            const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponent->type];
+            selectableComponent->box.Add(mesh->Box().Scaled(1.1f));
         }
     }
 

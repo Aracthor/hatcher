@@ -21,6 +21,7 @@ public:
     EntityManager(const EntityDescriptorCatalog* descriptorCatalog);
     ~EntityManager();
 
+    span<const Entity> EntitiesToAdd() const { return span<const Entity>(m_entitiesToAdd); }
     span<const Entity> EntitiesToDelete() const { return span<const Entity>(m_entitiesToDelete); }
     void UpdateNewAndDeletedEntities();
 

@@ -60,21 +60,11 @@ public:
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
         auto animationComponents = renderComponentManager->WriteComponents<SteveAnimationComponent>();
-        auto selectableComponents = renderComponentManager->WriteComponents<SelectableComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
             if (positionComponents[i] && movementComponents[i] && animationComponents[i])
             {
-                if (selectableComponents[i] && selectableComponents[i]->box.IsEmpty())
-                {
-                    for (const BodyPart* bodyPart : m_bodyParts)
-                    {
-                        const Box3f box = bodyPart->mesh->Box().Translated(glm::vec3(bodyPart->matrix[3]));
-                        selectableComponents[i]->box.Add(box.Scaled(1.1f));
-                    }
-                }
-
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
                 const bool moving = !movementComponents[i]->path.empty();
@@ -93,6 +83,23 @@ public:
         }
     }
 
+    void OnCreateEntity(Entity entity, const ComponentManager* componentManager,
+                        ComponentManager* renderComponentManager) override
+    {
+        const auto& animationComponent = renderComponentManager->ReadComponents<SteveAnimationComponent>()[entity];
+        auto& selectableComponent = renderComponentManager->WriteComponents<SelectableComponent>()[entity];
+
+        if (animationComponent && selectableComponent)
+        {
+            for (const BodyPart* bodyPart : m_bodyParts)
+            {
+                const Box3f box = bodyPart->mesh->Box().Translated(glm::vec3(bodyPart->matrix[3]));
+                selectableComponent->box.Add(box.Scaled(1.1f));
+            }
+        }
+    }
+
+private:
     void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving)
     {
         const float legMoveSpeed = 0.1f;
@@ -117,7 +124,6 @@ public:
         }
     }
 
-private:
     struct BodyPart
     {
         unique_ptr<Mesh> mesh;

@@ -168,6 +168,9 @@ void World::Update()
         }
     }
     m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager());
+
+    std::vector<Entity> entitiesAdded = {m_entityManager->EntitiesToAdd().begin(),
+                                         m_entityManager->EntitiesToAdd().end()};
     for (const Entity entity : m_entityManager->EntitiesToDelete())
     {
         for (unique_ptr<Updater>& updater : m_updaters)
@@ -176,6 +179,14 @@ void World::Update()
         }
     }
     m_entityManager->UpdateNewAndDeletedEntities();
+    for (const Entity entity : entitiesAdded)
+    {
+        for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
+        {
+            renderUpdater->OnCreateEntity(entity, m_entityManager->GetComponentManager(),
+                                          m_entityManager->GetRenderingComponentManager());
+        }
+    }
     m_tick++;
 }
 

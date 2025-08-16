@@ -1,5 +1,7 @@
 #pragma once
 
+#include "hatcher/Entity.hpp"
+
 namespace hatcher
 {
 class ComponentManager;
@@ -15,6 +17,10 @@ public:
 
     virtual void Update(IApplication* application, const ComponentManager* componentManager,
                         ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) = 0;
+    virtual void OnCreateEntity(Entity entity, const ComponentManager* componentManager,
+                                ComponentManager* renderComponentManager)
+    {
+    }
 };
 
 class IRenderUpdaterCreator
