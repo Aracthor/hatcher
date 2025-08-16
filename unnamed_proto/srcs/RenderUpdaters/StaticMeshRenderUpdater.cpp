@@ -68,15 +68,14 @@ public:
                 const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponents[i]->type];
                 const unique_ptr<Material>& material = m_materials[staticMeshComponents[i]->type];
 
+                std::optional<glm::mat4> modelMatrix;
                 if (positionComponents[i])
                 {
-                    glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                    modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                     if (growableComponents[i])
                     {
-                        modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
+                        modelMatrix = glm::scale(*modelMatrix, glm::vec3(growableComponents[i]->maturity));
                     }
-                    frameRenderer.PrepareSceneDraw(material.get());
-                    mesh->Draw(modelMatrix);
                 }
                 else if (itemComponents[i] && itemComponents[i]->inventory)
                 {
@@ -84,10 +83,37 @@ public:
                     const auto storagePosition = positionComponents[inventory];
                     if (storagePosition && steveAnimationComponents[inventory])
                     {
-                        glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
-                        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
-                        frameRenderer.PrepareSceneDraw(material.get());
-                        mesh->Draw(modelMatrix);
+                        modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
+                        modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
+                    }
+                }
+                if (modelMatrix)
+                {
+                    frameRenderer.PrepareSceneDraw(material.get());
+                    const int count = itemComponents[i] ? itemComponents[i]->count : 1;
+                    HATCHER_ASSERT(count >= 1);
+                    switch (count)
+                    {
+                    case 1:
+                        mesh->Draw(*modelMatrix);
+                        break;
+                    case 2:
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.25f, 0.f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(-0.25f, 0.f, 0.f)));
+                        break;
+                    case 3:
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.25f, 0.25f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(-0.25f, 0.25f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.f, -0.25f, 0.f)));
+                        break;
+                    default:
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.f, 0.f, 0.5f)));
+                    case 4:
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.25f, 0.25f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(0.25f, -0.25f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(-0.25f, 0.25f, 0.f)));
+                        mesh->Draw(glm::translate(*modelMatrix, glm::vec3(-0.25f, -0.25f, 0.f)));
+                        break;
                     }
                 }
             }
