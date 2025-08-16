@@ -11,6 +11,7 @@
 #include "hatcher/Graphics/Texture.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 
+#include "Components/InventoryComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
@@ -59,6 +60,7 @@ public:
 
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
+        const auto inventoryComponents = componentManager->ReadComponents<InventoryComponent>();
         auto animationComponents = renderComponentManager->WriteComponents<SteveAnimationComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
@@ -73,10 +75,13 @@ public:
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
+                const float armsAngle = inventoryComponents[i] && !inventoryComponents[i]->storage.empty() ? M_PI : 0.f;
+                const glm::mat4 rightArmMatrix = glm::rotate(m_rightArm.matrix, armsAngle, glm::vec3(1.f, 0.f, 0.f));
+                const glm::mat4 leftArmMatrix = glm::rotate(m_leftArm.matrix, armsAngle, glm::vec3(1.f, 0.f, 0.f));
                 m_torso.mesh->Draw(modelMatrix * m_torso.matrix);
                 m_head.mesh->Draw(modelMatrix * m_head.matrix);
-                m_rightArm.mesh->Draw(modelMatrix * m_rightArm.matrix);
-                m_leftArm.mesh->Draw(modelMatrix * m_leftArm.matrix);
+                m_rightArm.mesh->Draw(modelMatrix * rightArmMatrix);
+                m_leftArm.mesh->Draw(modelMatrix * leftArmMatrix);
                 m_rightLeg.mesh->Draw(modelMatrix * rightLegMatrix);
                 m_leftLeg.mesh->Draw(modelMatrix * leftLegMatrix);
             }

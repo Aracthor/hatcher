@@ -14,9 +14,11 @@
 #include <utility> // std::pair
 
 #include "Components/GrowableComponent.hpp"
+#include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
+#include "RenderComponents/SteveAnimationComponent.hpp"
 #include "TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -53,25 +55,41 @@ public:
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        const auto itemComponents = componentManager->ReadComponents<ItemComponent>();
         const auto growableComponents = componentManager->ReadComponents<GrowableComponent>();
+        const auto steveAnimationComponents = renderComponentManager->ReadComponents<SteveAnimationComponent>();
         auto staticMeshComponents = renderComponentManager->WriteComponents<StaticMeshComponent>();
 
         for (int i = 0; i < componentManager->Count(); i++)
         {
-            if (positionComponents[i] && staticMeshComponents[i])
+            if (staticMeshComponents[i])
             {
                 HATCHER_ASSERT(staticMeshComponents[i]->type < StaticMeshComponent::COUNT);
                 const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponents[i]->type];
                 const unique_ptr<Material>& material = m_materials[staticMeshComponents[i]->type];
 
-                glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
-                if (growableComponents[i])
+                if (positionComponents[i])
                 {
-                    modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
+                    glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                    if (growableComponents[i])
+                    {
+                        modelMatrix = glm::scale(modelMatrix, glm::vec3(growableComponents[i]->maturity));
+                    }
+                    frameRenderer.PrepareSceneDraw(material.get());
+                    mesh->Draw(modelMatrix);
                 }
-
-                frameRenderer.PrepareSceneDraw(material.get());
-                mesh->Draw(modelMatrix);
+                else if (itemComponents[i] && itemComponents[i]->inventory)
+                {
+                    const Entity::IDType inventory = *itemComponents[i]->inventory;
+                    const auto storagePosition = positionComponents[inventory];
+                    if (storagePosition && steveAnimationComponents[inventory])
+                    {
+                        glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
+                        modelMatrix = glm::translate(modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
+                        frameRenderer.PrepareSceneDraw(material.get());
+                        mesh->Draw(modelMatrix);
+                    }
+                }
             }
         }
     }
