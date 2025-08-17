@@ -15,5 +15,11 @@ void main()
 {
     gl_Position = uniProjectionMatrix * uniViewMatrix * uniModelMatrix * vec4(vertPosition, 1.0);
     textureCoord = vertTextureCoord;
-    normal = vertNormal;
+
+    mat4 rotationMatrix = uniModelMatrix;
+    rotationMatrix[0] = normalize(rotationMatrix[0]);
+    rotationMatrix[1] = normalize(rotationMatrix[1]);
+    rotationMatrix[2] = normalize(rotationMatrix[2]);
+    rotationMatrix[3] = vec4(0.0, 0.0, 0.0, 1.0);
+    normal = (rotationMatrix * vec4(vertNormal, 1.0)).xyz;
 }
