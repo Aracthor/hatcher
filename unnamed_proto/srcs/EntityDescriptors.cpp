@@ -10,6 +10,7 @@
 #include "Components/Movement2DComponent.hpp"
 #include "Components/NameComponent.hpp"
 #include "Components/Position2DComponent.hpp"
+#include "Components/WorkerComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
@@ -29,6 +30,7 @@ ComponentTypeRegisterer<LockableComponent, EComponentList::Gameplay> lockableReg
 ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> movement2DRegisterer;
 ComponentTypeRegisterer<NameComponent, EComponentList::Gameplay> nameRegisterer;
 ComponentTypeRegisterer<Position2DComponent, EComponentList::Gameplay> position2DRegisterer;
+ComponentTypeRegisterer<WorkerComponent, EComponentList::Gameplay> workerRegisterer;
 
 ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> selectableRegisterer;
 ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> staticMeshRegisterer;
@@ -81,6 +83,7 @@ EntityDescriptorRegisterer Steve{
             .name = "Steve",
         },
         Position2DComponent{},
+        WorkerComponent{},
     },
     {
         SelectableComponent{},

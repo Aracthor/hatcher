@@ -7,6 +7,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Updaters/HarvestableUpdater.cpp				\
 		Updaters/InventoryUpdater.cpp				\
 		Updaters/MovingEntitiesUpdater.cpp			\
+		Updaters/WorkerUpdater.cpp				\
 									\
 		RenderUpdaters/CameraRenderUpdater.cpp 			\
 		RenderUpdaters/DebugGridRenderUpdater.cpp		\

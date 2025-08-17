@@ -5,10 +5,12 @@
 #include "Components/Movement2DComponent.hpp"
 #include "Components/NameComponent.hpp"
 #include "Components/Position2DComponent.hpp"
+#include "Components/WorkerComponent.hpp"
 
 #include "WorldComponents/SquareGrid.hpp"
 
 #include "utils/EntityFinder.hpp"
+#include "utils/TimeOfDay.hpp"
 
 #include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/IEntityManager.hpp"
@@ -189,10 +191,21 @@ class ChopTree : public IPlan
     void Start(IEntityManager* entityManager, ComponentAccessor* componentAccessor, Entity entity) const override
     {
         const Entity treeEntity = FindNearestEntity(componentAccessor, entity, IsChoppableTree);
-        entityManager->DeleteEntity(treeEntity);
+        WorkerComponent& worker = *componentAccessor->WriteComponents<WorkerComponent>()[entity];
+        worker.workIndex = EWork::ChopTree;
+        worker.target = treeEntity;
+        worker.workedTicks = 0;
+        worker.workLength = MinutesToTicks(1);
+
+        componentAccessor->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = treeEntity;
+        componentAccessor->WriteComponents<LockableComponent>()[treeEntity]->locker = entity;
     }
 
-    bool IsOngoing(const ComponentAccessor* componentAccessor, Entity entity) const override { return false; }
+    bool IsOngoing(const ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        const WorkerComponent& worker = *componentAccessor->ReadComponents<WorkerComponent>()[entity];
+        return worker.workIndex.has_value();
+    }
 };
 
 class MoveToTree : public IPlan
