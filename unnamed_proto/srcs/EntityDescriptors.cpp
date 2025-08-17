@@ -3,6 +3,7 @@
 
 #include "Components/ActionPlanningComponent.hpp"
 #include "Components/GrowableComponent.hpp"
+#include "Components/HarvestableComponent.hpp"
 #include "Components/InventoryComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/LockableComponent.hpp"
@@ -22,6 +23,7 @@ namespace
 ComponentTypeRegisterer<ActionPlanningComponent, EComponentList::Gameplay> actionPlanningRegisterer;
 ComponentTypeRegisterer<GrowableComponent, EComponentList::Gameplay> growableRegisterer;
 ComponentTypeRegisterer<InventoryComponent, EComponentList::Gameplay> inventoryRegisterer;
+ComponentTypeRegisterer<HarvestableComponent, EComponentList::Gameplay> harvestableRegisterer;
 ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> itemRegisterer;
 ComponentTypeRegisterer<LockableComponent, EComponentList::Gameplay> lockableRegisterer;
 ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> movement2DRegisterer;
@@ -95,6 +97,10 @@ EntityDescriptorRegisterer Tree{
         GrowableComponent{
             .maturity = 0.25,
             .growthTime = HoursToTicks(1.f),
+        },
+        HarvestableComponent{
+            .harvest = EntityDescriptorID::Create("Wood"),
+            .amount = 5,
         },
         Position2DComponent{},
     },

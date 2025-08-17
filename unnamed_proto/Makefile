@@ -4,6 +4,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 									\
 		Updaters/ActionPlanningUpdater.cpp			\
 		Updaters/GrowableUpdater.cpp				\
+		Updaters/HarvestableUpdater.cpp				\
 		Updaters/InventoryUpdater.cpp				\
 		Updaters/MovingEntitiesUpdater.cpp			\
 									\
