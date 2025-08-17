@@ -1,3 +1,4 @@
+#include "Components/GrowableComponent.hpp"
 #include "Components/HarvestableComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
@@ -19,16 +20,24 @@ class HarvestableUpdater final : public Updater
                          ComponentManager* componentManager) override
     {
         const auto harvestableComponent = componentManager->ReadComponents<HarvestableComponent>()[entity];
-        const auto positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
         if (harvestableComponent)
         {
-            HATCHER_ASSERT(positionComponent);
-            EntityEgg item = entityManager->CreateNewEntity(harvestableComponent->harvest);
-            item.GetComponent<Position2DComponent>() = *positionComponent;
-            if (harvestableComponent->amount > 1)
+            const auto positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
+            const auto growableComponent = componentManager->ReadComponents<GrowableComponent>()[entity];
+            int amount = harvestableComponent->amount;
+            if (growableComponent)
+                amount *= growableComponent->maturity;
+
+            if (amount > 0)
             {
-                HATCHER_ASSERT(item.GetComponent<ItemComponent>());
-                item.GetComponent<ItemComponent>()->count = harvestableComponent->amount;
+                HATCHER_ASSERT(positionComponent);
+                EntityEgg item = entityManager->CreateNewEntity(harvestableComponent->harvest);
+                item.GetComponent<Position2DComponent>() = *positionComponent;
+                if (amount > 1)
+                {
+                    HATCHER_ASSERT(item.GetComponent<ItemComponent>());
+                    item.GetComponent<ItemComponent>()->count = amount;
+                }
             }
         }
     }
