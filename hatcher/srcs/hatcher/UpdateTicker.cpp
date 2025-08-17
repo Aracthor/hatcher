@@ -3,6 +3,7 @@
 #include "Clock.hpp"
 
 #include <cmath>
+#include <cstdio>
 
 namespace hatcher
 {
@@ -17,6 +18,12 @@ UpdateTicker::~UpdateTicker() = default;
 
 int UpdateTicker::TickCount()
 {
+    if (m_tickTimeMs == 0.f)
+    {
+        m_clock->Update();
+        return 0;
+    }
+
     m_accumulatedTimeMs += m_clock->GetElapsedTime();
     m_clock->Update();
     const int tickCount = static_cast<int>(m_accumulatedTimeMs / m_tickTimeMs);
@@ -26,12 +33,12 @@ int UpdateTicker::TickCount()
 
 void UpdateTicker::SetTickrate(float tickrate)
 {
-    m_tickTimeMs = 1000.f / tickrate;
+    m_tickTimeMs = tickrate > 0.f ? 1000.f / tickrate : 0.f;
 }
 
 float UpdateTicker::GetTickrate() const
 {
-    return 1000.f / m_tickTimeMs;
+    return m_tickTimeMs > 0.f ? 1000.f / m_tickTimeMs : 0.f;
 }
 
 } // namespace hatcher
