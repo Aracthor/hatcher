@@ -78,7 +78,7 @@ class EntityCreatorEventListener : public IEventListener
 public:
     EntityCreatorEventListener()
         : m_steveEntityDescriptor(EntityDescriptorID::Create("Steve"))
-        , m_lockerEntityDescriptor(EntityDescriptorID::Create("Locker"))
+        , m_treeEntityDescriptor(EntityDescriptorID::Create("Tree"))
         , m_woodEntityDescriptor(EntityDescriptorID::Create("Wood"))
     {
         m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("Wood"));
@@ -108,7 +108,7 @@ public:
             }
             else if (event.button.button == SDL_BUTTON_MIDDLE)
             {
-                entityDescriptor = &m_lockerEntityDescriptor;
+                entityDescriptor = &m_treeEntityDescriptor;
             }
             else if (event.button.button == SDL_BUTTON_LEFT)
             {
@@ -123,7 +123,7 @@ public:
 
 private:
     EntityDescriptorID m_steveEntityDescriptor;
-    EntityDescriptorID m_lockerEntityDescriptor;
+    EntityDescriptorID m_treeEntityDescriptor;
     EntityDescriptorID m_woodEntityDescriptor;
     std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
 };

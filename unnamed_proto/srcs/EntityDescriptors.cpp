@@ -85,6 +85,26 @@ EntityDescriptorRegisterer Steve{
     },
 };
 
+EntityDescriptorRegisterer Tree{
+    EntityDescriptorID::Create("Tree"),
+    {
+        NameComponent{
+            .name = "Tree",
+        },
+        GrowableComponent{
+            .maturity = 0.25,
+            .growthTime = 600,
+        },
+        Position2DComponent{},
+    },
+    {
+        SelectableComponent{},
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Tree,
+        },
+    },
+};
+
 EntityDescriptorRegisterer Wood{
     EntityDescriptorID::Create("Wood"),
     {
