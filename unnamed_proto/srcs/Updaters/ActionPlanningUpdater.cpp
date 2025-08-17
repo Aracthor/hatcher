@@ -34,6 +34,12 @@ bool IsEntityWood(const ComponentManager* componentManager, Entity entity)
     return componentManager->ReadComponents<NameComponent>()[entity]->name == "Wood";
 }
 
+bool IsWoodStack(const ComponentManager* componentManager, Entity entity)
+{
+    const auto& positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
+    return IsEntityWood(componentManager, entity) && positionComponent && positionComponent->position == woodTarget;
+}
+
 bool IsGatherableWood(const ComponentManager* componentManager, Entity entity)
 {
     const auto& positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
@@ -61,8 +67,8 @@ class DropOffWood : public IPlan
         auto it = std::find_if(inventory.storage.begin(), inventory.storage.end(), IsWood);
         HATCHER_ASSERT(it != inventory.storage.end());
 
-        const Entity gatherableWood = FindNearestEntity(componentManager, entity, IsEntityWood);
-        if (gatherableWood == Entity::Invalid() || positions[gatherableWood]->position != woodTarget)
+        const Entity gatherableWood = FindNearestEntity(componentManager, entity, IsWoodStack);
+        if (gatherableWood == Entity::Invalid())
         {
             items[*it]->inventory = Entity::Invalid();
             positions[*it] = Position2DComponent{
