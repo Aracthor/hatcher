@@ -1,6 +1,7 @@
 #include "Components/ActionPlanningComponent.hpp"
 #include "Components/InventoryComponent.hpp"
 #include "Components/ItemComponent.hpp"
+#include "Components/LockableComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/NameComponent.hpp"
 #include "Components/Position2DComponent.hpp"
@@ -43,7 +44,9 @@ bool IsWoodStack(const ComponentManager* componentManager, Entity entity)
 bool IsGatherableWood(const ComponentManager* componentManager, Entity entity)
 {
     const auto& positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
-    return IsEntityWood(componentManager, entity) && positionComponent && positionComponent->position != woodTarget;
+    const auto& lockableComponent = componentManager->ReadComponents<LockableComponent>()[entity];
+    return IsEntityWood(componentManager, entity) && positionComponent && positionComponent->position != woodTarget &&
+           !lockableComponent->locker;
 }
 
 class DropOffWood : public IPlan
@@ -153,6 +156,9 @@ class MoveToWood : public IPlan
         const glm::vec2 woodPosition = positions[woodEntity]->position;
         std::vector<glm::vec2> path = grid->GetPathIfPossible(position, woodPosition);
         componentManager->WriteComponents<Movement2DComponent>()[entity]->path = path;
+
+        componentManager->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = woodEntity;
+        componentManager->WriteComponents<LockableComponent>()[woodEntity]->locker = entity;
     }
 
     bool IsOngoing(const ComponentManager* componentManager, Entity entity) const override
@@ -173,6 +179,13 @@ void UpdatePlanning(ActionPlanningComponent& planning, ComponentManager* compone
 {
     if (!planning.currentActionIndex || !plans[*planning.currentActionIndex]->IsOngoing(componentManager, entity))
     {
+        if (planning.lockedEntity)
+        {
+            auto& lockable = componentManager->WriteComponents<LockableComponent>()[*planning.lockedEntity];
+            HATCHER_ASSERT(lockable);
+            lockable->locker = {};
+            planning.lockedEntity = {};
+        }
         planning.currentActionIndex = {};
         for (int planIndex = 0; planIndex < (int)std::size(plans); planIndex++)
         {
@@ -199,6 +212,29 @@ class ActionPlanningUpdater final : public Updater
             {
                 ActionPlanningComponent& planning = *plannings[i];
                 UpdatePlanning(planning, componentManager, Entity(i));
+            }
+        }
+    }
+
+    void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
+                         ComponentManager* componentManager) override
+    {
+        {
+            const auto& planning = componentManager->ReadComponents<ActionPlanningComponent>()[entity];
+            if (planning && planning->lockedEntity)
+            {
+                auto& lockable = componentManager->WriteComponents<LockableComponent>()[*planning->lockedEntity];
+                HATCHER_ASSERT(lockable);
+                lockable->locker = {};
+            }
+        }
+        {
+            const auto& lockable = componentManager->ReadComponents<LockableComponent>()[entity];
+            if (lockable && lockable->locker)
+            {
+                auto& planning = componentManager->WriteComponents<ActionPlanningComponent>()[*lockable->locker];
+                planning->currentActionIndex = {};
+                planning->lockedEntity = {};
             }
         }
     }
