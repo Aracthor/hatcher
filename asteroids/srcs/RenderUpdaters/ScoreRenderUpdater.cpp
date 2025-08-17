@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -22,13 +22,13 @@ public:
     {
     }
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         const glm::vec2 textSize = {16, 16};
         const glm::vec2 textPosition = {20.f, frameRenderer.Resolution().y - textSize.y - 20.f};
         std::ostringstream oss;
-        const Score* score = componentManager->ReadWorldComponent<Score>();
+        const Score* score = componentAccessor->ReadWorldComponent<Score>();
         oss << "Score: " << score->points;
         m_textDrawer.AddTextToDraw(oss.str().c_str(), textPosition, textSize);
         m_textDrawer.Draw(frameRenderer);

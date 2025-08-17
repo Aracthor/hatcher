@@ -9,7 +9,7 @@
 
 namespace hatcher
 {
-class ComponentManager;
+class ComponentAccessor;
 class IApplication;
 class ICommandManager;
 class IEntityManager;
@@ -22,7 +22,7 @@ class EventUpdater final
 public:
     void ProcessApplicationEvents(span<const SDL_Event> events, WorldSettings& settings, IEntityManager* entityManager);
     void ProcessEventListeners(span<const SDL_Event> events, IApplication* application, ICommandManager* commandManager,
-                               const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                               const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                                const IFrameRenderer& frameRenderer);
 
     void RegisterListener(IEventListener* eventListener);

@@ -6,10 +6,10 @@
 
 namespace hatcher
 {
-class ComponentManager;
+class ComponentAccessor;
 } // namespace hatcher
 
 using namespace hatcher;
 
-Entity FindNearestEntity(const ComponentManager* componentManager, Entity sourceEntity,
-                         std::function<bool(const ComponentManager*, Entity entity)> pred);
+Entity FindNearestEntity(const ComponentAccessor* componentAccessor, Entity sourceEntity,
+                         std::function<bool(const ComponentAccessor*, Entity entity)> pred);

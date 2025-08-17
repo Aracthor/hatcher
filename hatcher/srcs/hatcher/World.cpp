@@ -151,7 +151,7 @@ void World::Update()
 {
     for (unique_ptr<Updater>& updater : m_updaters)
     {
-        updater->Update(m_settings, m_entityManager.get(), m_entityManager->GetComponentManager());
+        updater->Update(m_settings, m_entityManager.get(), m_entityManager->GetComponentAccessor());
     }
     if (m_commandSaver)
     {
@@ -167,7 +167,7 @@ void World::Update()
             m_commandManager->AddCommand(command);
         }
     }
-    m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentManager());
+    m_commandManager->ExecuteCommands(m_entityManager.get(), m_entityManager->GetComponentAccessor());
 
     std::vector<Entity> entitiesAdded = {m_entityManager->EntitiesToAdd().begin(),
                                          m_entityManager->EntitiesToAdd().end()};
@@ -175,7 +175,8 @@ void World::Update()
     {
         for (unique_ptr<Updater>& updater : m_updaters)
         {
-            updater->OnDeletedEntity(entity, m_settings, m_entityManager.get(), m_entityManager->GetComponentManager());
+            updater->OnDeletedEntity(entity, m_settings, m_entityManager.get(),
+                                     m_entityManager->GetComponentAccessor());
         }
     }
     m_entityManager->UpdateNewAndDeletedEntities();
@@ -183,8 +184,8 @@ void World::Update()
     {
         for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
         {
-            renderUpdater->OnCreateEntity(entity, m_entityManager->GetComponentManager(),
-                                          m_entityManager->GetRenderingComponentManager());
+            renderUpdater->OnCreateEntity(entity, m_entityManager->GetComponentAccessor(),
+                                          m_entityManager->GetRenderingComponentAccessor());
         }
     }
     m_tick++;
@@ -197,8 +198,8 @@ void World::UpdateFromEvents(span<const SDL_Event> events, IApplication* applica
     {
         m_eventUpdater->ProcessApplicationEvents(events, m_settings, m_entityManager.get());
         m_eventUpdater->ProcessEventListeners(events, application, m_commandManager.get(),
-                                              m_entityManager->GetComponentManager(),
-                                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
+                                              m_entityManager->GetComponentAccessor(),
+                                              m_entityManager->GetRenderingComponentAccessor(), frameRenderer);
     }
 }
 
@@ -206,8 +207,8 @@ void World::UpdateRendering(IApplication* application, IFrameRenderer& frameRend
 {
     for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(application, m_entityManager->GetComponentManager(),
-                              m_entityManager->GetRenderingComponentManager(), frameRenderer);
+        renderUpdater->Update(application, m_entityManager->GetComponentAccessor(),
+                              m_entityManager->GetRenderingComponentAccessor(), frameRenderer);
     }
 }
 

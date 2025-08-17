@@ -8,6 +8,7 @@
 
 namespace hatcher
 {
+class ComponentAccessor;
 class ComponentManager;
 class Entity;
 class EntityDescriptorCatalog;
@@ -32,7 +33,9 @@ public:
     void Load(DataLoader& saveLoader) override;
 
     ComponentManager* GetComponentManager() { return m_componentManager.get(); }
+    ComponentAccessor* GetComponentAccessor() { return m_componentAccessor.get(); }
     ComponentManager* GetRenderingComponentManager() { return m_renderingComponentManager.get(); }
+    ComponentAccessor* GetRenderingComponentAccessor() { return m_renderingComponentAccessor.get(); }
 
     ComponentManager* GetTemporaryComponentManager() { return m_temporaryComponentManager.get(); }
     ComponentManager* GetTemporaryRenderingComponentManager() { return m_temporaryRenderingComponentManager.get(); }
@@ -48,10 +51,14 @@ private:
     int m_maxEntityCount = 0;
     unique_ptr<ComponentManager> m_componentManager;
     unique_ptr<ComponentManager> m_renderingComponentManager;
+    unique_ptr<ComponentAccessor> m_componentAccessor;
+    unique_ptr<ComponentAccessor> m_renderingComponentAccessor;
 
     int m_maxTemporaryEntityCount = 0;
     unique_ptr<ComponentManager> m_temporaryComponentManager;
+    unique_ptr<ComponentAccessor> m_temporaryComponentAccessor;
     unique_ptr<ComponentManager> m_temporaryRenderingComponentManager;
+    unique_ptr<ComponentAccessor> m_temporaryRenderingComponentAccessor;
 };
 
 } // namespace hatcher

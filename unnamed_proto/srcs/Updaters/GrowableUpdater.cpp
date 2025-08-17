@@ -1,6 +1,6 @@
 #include "Components/GrowableComponent.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Updater.hpp"
 
 using namespace hatcher;
@@ -10,11 +10,11 @@ namespace
 
 class GrowableUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        ComponentWriter<GrowableComponent> growables = componentManager->WriteComponents<GrowableComponent>();
+        ComponentWriter<GrowableComponent> growables = componentAccessor->WriteComponents<GrowableComponent>();
 
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (growables[i])
             {

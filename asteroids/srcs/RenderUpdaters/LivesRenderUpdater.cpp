@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -42,12 +42,12 @@ public:
         m_lifeMesh->SetIndices(indices, std::size(indices));
     }
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.PrepareSceneDraw(m_material.get());
 
-        const Lives* lives = componentManager->ReadWorldComponent<Lives>();
+        const Lives* lives = componentAccessor->ReadWorldComponent<Lives>();
         glm::vec2 meshPosition = {30.f, frameRenderer.Resolution().y - 60.f};
         for (int i = 0; i < lives->remaining; i++)
         {

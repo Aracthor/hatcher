@@ -1,7 +1,7 @@
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -13,12 +13,12 @@ namespace
 class MovingEntitiesUpdater final : public Updater
 {
 public:
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        ComponentWriter<Position2DComponent> positions = componentManager->WriteComponents<Position2DComponent>();
-        ComponentWriter<Movement2DComponent> movements = componentManager->WriteComponents<Movement2DComponent>();
+        ComponentWriter<Position2DComponent> positions = componentAccessor->WriteComponents<Position2DComponent>();
+        ComponentWriter<Movement2DComponent> movements = componentAccessor->WriteComponents<Movement2DComponent>();
 
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (movements[i])
             {

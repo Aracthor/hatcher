@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -12,16 +12,16 @@ namespace
 
 class ScreenBorderTeleportUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         // TODO Store it somewhere else ?
         const glm::vec2 screenMin = {0, 0};
         const glm::vec2 screenMax = {800, 600};
         const glm::vec2 screenSize = screenMax - screenMin;
 
-        auto positionComponents = componentManager->WriteComponents<PositionComponent>();
-        auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto positionComponents = componentAccessor->WriteComponents<PositionComponent>();
+        auto collidableComponents = componentAccessor->ReadComponents<CollidableComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             const auto& collidableComponent = collidableComponents[i];
             auto& positionComponent = positionComponents[i];

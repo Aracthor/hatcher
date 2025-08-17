@@ -1,6 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -52,16 +52,16 @@ public:
 
     ~StaticMeshRenderUpdater() = default;
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
-        const auto itemComponents = componentManager->ReadComponents<ItemComponent>();
-        const auto growableComponents = componentManager->ReadComponents<GrowableComponent>();
-        const auto steveAnimationComponents = renderComponentManager->ReadComponents<SteveAnimationComponent>();
-        auto staticMeshComponents = renderComponentManager->WriteComponents<StaticMeshComponent>();
+        const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
+        const auto growableComponents = componentAccessor->ReadComponents<GrowableComponent>();
+        const auto steveAnimationComponents = renderComponentAccessor->ReadComponents<SteveAnimationComponent>();
+        auto staticMeshComponents = renderComponentAccessor->WriteComponents<StaticMeshComponent>();
 
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (staticMeshComponents[i])
             {
@@ -121,11 +121,11 @@ public:
         }
     }
 
-    void OnCreateEntity(Entity entity, const ComponentManager* componentManager,
-                        ComponentManager* renderComponentManager) override
+    void OnCreateEntity(Entity entity, const ComponentAccessor* componentAccessor,
+                        ComponentAccessor* renderComponentAccessor) override
     {
-        const auto& staticMeshComponent = renderComponentManager->WriteComponents<StaticMeshComponent>()[entity];
-        auto& selectableComponent = renderComponentManager->WriteComponents<SelectableComponent>()[entity];
+        const auto& staticMeshComponent = renderComponentAccessor->WriteComponents<StaticMeshComponent>()[entity];
+        auto& selectableComponent = renderComponentAccessor->WriteComponents<SelectableComponent>()[entity];
         if (staticMeshComponent && selectableComponent)
         {
             const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponent->type];

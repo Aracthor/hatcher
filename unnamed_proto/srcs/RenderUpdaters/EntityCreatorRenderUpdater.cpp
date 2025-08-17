@@ -5,7 +5,7 @@
 #include "WorldComponents/SquareGrid.hpp"
 
 #include "hatcher/CommandRegisterer.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -44,7 +44,7 @@ public:
         loader >> m_spawnPosition;
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         EntityEgg entityEgg = entityManager->CreateNewEntity(m_entityDescriptor);
         entityEgg.GetComponent<Position2DComponent>() = Position2DComponent();
@@ -85,16 +85,16 @@ public:
     }
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         const Uint8* keystate = SDL_GetKeyboardState(NULL);
         if (event.type == SDL_MOUSEBUTTONDOWN && keystate[SDL_SCANCODE_LCTRL])
         {
-            const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
+            const Camera* camera = renderComponentAccessor->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-            const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+            const SquareGrid* grid = componentAccessor->ReadWorldComponent<SquareGrid>();
             if (!grid->GetTileData(worldCoords2D).walkable)
                 return;
 

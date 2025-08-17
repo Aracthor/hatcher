@@ -1,5 +1,5 @@
 #include "hatcher/CommandRegisterer.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -20,10 +20,10 @@ using namespace hatcher;
 namespace
 {
 
-Entity GetPlayerEntityID(ComponentManager* componentManager)
+Entity GetPlayerEntityID(ComponentAccessor* componentAccessor)
 {
-    auto playerComponents = componentManager->WriteComponents<PlayerComponent>();
-    for (int i = 0; i < componentManager->Count(); i++)
+    auto playerComponents = componentAccessor->WriteComponents<PlayerComponent>();
+    for (int i = 0; i < componentAccessor->Count(); i++)
     {
         if (playerComponents[i])
             return Entity(i);
@@ -42,11 +42,11 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        const Entity playerEntity = GetPlayerEntityID(componentAccessor);
         if (playerEntity != Entity::Invalid())
-            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->turningLeft = m_action;
+            componentAccessor->WriteComponents<PlayerComponent>()[playerEntity]->turningLeft = m_action;
     }
 
 private:
@@ -67,11 +67,11 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        const Entity playerEntity = GetPlayerEntityID(componentAccessor);
         if (playerEntity != Entity::Invalid())
-            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->turningRight = m_action;
+            componentAccessor->WriteComponents<PlayerComponent>()[playerEntity]->turningRight = m_action;
     }
 
 private:
@@ -92,11 +92,11 @@ public:
     void Save(DataSaver& saver) const override { saver << m_action; }
     void Load(DataLoader& loader) override { loader >> m_action; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        const Entity playerEntity = GetPlayerEntityID(componentAccessor);
         if (playerEntity != Entity::Invalid())
-            componentManager->WriteComponents<PlayerComponent>()[playerEntity]->accelerating = m_action;
+            componentAccessor->WriteComponents<PlayerComponent>()[playerEntity]->accelerating = m_action;
     }
 
 private:
@@ -109,15 +109,15 @@ REGISTER_COMMAND(PlayerAccelerateCommand);
 class PlayerShootCommand final : public ICommand
 {
 public:
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Entity playerEntity = GetPlayerEntityID(componentManager);
+        const Entity playerEntity = GetPlayerEntityID(componentAccessor);
         if (playerEntity == Entity::Invalid())
             return;
 
-        const auto& positionComponent = componentManager->ReadComponents<PositionComponent>()[playerEntity];
-        auto& shooterComponent = componentManager->WriteComponents<ShooterComponent>()[playerEntity];
-        auto& collidableComponent = componentManager->ReadComponents<CollidableComponent>()[playerEntity];
+        const auto& positionComponent = componentAccessor->ReadComponents<PositionComponent>()[playerEntity];
+        auto& shooterComponent = componentAccessor->WriteComponents<ShooterComponent>()[playerEntity];
+        auto& collidableComponent = componentAccessor->ReadComponents<CollidableComponent>()[playerEntity];
         HATCHER_ASSERT(positionComponent);
         HATCHER_ASSERT(shooterComponent);
         if (shooterComponent->shoots.size() < 4)
@@ -144,7 +144,7 @@ public:
     PlayerControlUpdater() {}
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type != SDL_KEYDOWN && event.type != SDL_KEYUP)

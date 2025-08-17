@@ -1,6 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -24,7 +24,7 @@ bool gridDisplayEnabled = true;
 class GridEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_J)
@@ -55,10 +55,10 @@ public:
         FillGridMesh();
     }
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+        const SquareGrid* grid = componentAccessor->ReadWorldComponent<SquareGrid>();
 
         for (int y = grid->GetTileCoordMin().y; y < grid->GetTileCoordMax().y; y++)
         {

@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -16,11 +16,11 @@ namespace
 class AsteroidCreatorUpdater final : public Updater
 {
 private:
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
+        auto asteroidComponents = componentAccessor->ReadComponents<AsteroidComponent>();
         bool hasAnyAsteroid = false;
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (asteroidComponents[i])
                 hasAnyAsteroid = true;

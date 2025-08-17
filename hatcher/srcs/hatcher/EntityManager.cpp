@@ -1,5 +1,6 @@
 #include "EntityManager.hpp"
 
+#include "ComponentAccessor.hpp"
 #include "ComponentManager.hpp"
 #include "DataLoader.hpp"
 #include "DataSaver.hpp"
@@ -33,10 +34,14 @@ EntityManager::EntityManager(const EntityDescriptorCatalog* descriptorCatalog)
     m_entityIDRegistry = make_unique<EntityIDRegistry>();
 
     m_componentManager = make_unique<ComponentManager>();
+    m_componentAccessor = make_unique<ComponentAccessor>(m_componentManager.get());
     m_renderingComponentManager = make_unique<ComponentManager>();
+    m_renderingComponentAccessor = make_unique<ComponentAccessor>(m_renderingComponentManager.get());
 
     m_temporaryComponentManager = make_unique<ComponentManager>();
+    m_temporaryComponentAccessor = make_unique<ComponentAccessor>(m_temporaryComponentManager.get());
     m_temporaryRenderingComponentManager = make_unique<ComponentManager>();
+    m_temporaryRenderingComponentAccessor = make_unique<ComponentAccessor>(m_temporaryRenderingComponentManager.get());
 }
 
 EntityManager::~EntityManager() = default;
@@ -93,8 +98,8 @@ EntityEgg EntityManager::CreateNewEntity(EntityDescriptorID id)
         m_temporaryRenderingComponentManager->LoadEntityComponents(renderingLoader, temporaryID);
     }
 
-    return EntityEgg(newEntity, Entity(temporaryID), m_temporaryComponentManager.get(),
-                     m_temporaryRenderingComponentManager.get());
+    return EntityEgg(newEntity, Entity(temporaryID), m_temporaryComponentAccessor.get(),
+                     m_temporaryRenderingComponentAccessor.get());
 }
 
 void EntityManager::DeleteEntity(Entity entity)

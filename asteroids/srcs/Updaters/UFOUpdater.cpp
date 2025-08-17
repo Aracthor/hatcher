@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/EntityManager.hpp"
@@ -41,37 +41,37 @@ class UFOUpdater final : public Updater
         }
     }
 
-    std::optional<glm::vec2> GetPlayerPosition(ComponentManager* componentManager)
+    std::optional<glm::vec2> GetPlayerPosition(ComponentAccessor* componentAccessor)
     {
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (playerComponents[i])
             {
-                return {componentManager->ReadComponents<PositionComponent>()[i]->position};
+                return {componentAccessor->ReadComponents<PositionComponent>()[i]->position};
             }
         }
         return {};
     }
 
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         RandomGenerator& random = settings.randomGenerator;
-        auto ufoComponents = componentManager->ReadComponents<UFOComponent>();
+        auto ufoComponents = componentAccessor->ReadComponents<UFOComponent>();
         bool hasAnyUFO = false;
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (ufoComponents[i])
             {
-                auto& positionComponent = componentManager->WriteComponents<PositionComponent>()[i];
+                auto& positionComponent = componentAccessor->WriteComponents<PositionComponent>()[i];
                 HATCHER_ASSERT(positionComponent);
                 UpdateUFODirection(random, *positionComponent);
 
-                auto collidableComponent = componentManager->ReadComponents<CollidableComponent>()[i];
-                auto& shooterComponent = componentManager->WriteComponents<ShooterComponent>()[i];
+                auto collidableComponent = componentAccessor->ReadComponents<CollidableComponent>()[i];
+                auto& shooterComponent = componentAccessor->WriteComponents<ShooterComponent>()[i];
                 if (shooterComponent->shoots.size() < 1 && random.RandomInt(1, 20) == 1)
                 {
-                    const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentManager);
+                    const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentAccessor);
                     if (playerPosition)
                     {
                         EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));

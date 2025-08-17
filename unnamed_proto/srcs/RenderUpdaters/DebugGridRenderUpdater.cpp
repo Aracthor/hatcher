@@ -1,6 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -21,7 +21,7 @@ bool gridDisplayEnabled = false;
 class DebugGridEventListener final : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_U)
@@ -62,8 +62,8 @@ public:
 
     ~DebugGridRenderUpdater() = default;
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         if (gridDisplayEnabled)
         {

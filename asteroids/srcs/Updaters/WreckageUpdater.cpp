@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 #include "hatcher/WorldSettings.hpp"
@@ -14,19 +14,21 @@ namespace
 {
 class WreckageUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override {}
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    {
+    }
 
     void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentManager* componentManager) override
+                         ComponentAccessor* componentAccessor) override
     {
-        auto wreckageGeneratorComponent = componentManager->ReadComponents<WreckageGeneratorComponent>()[entity];
+        auto wreckageGeneratorComponent = componentAccessor->ReadComponents<WreckageGeneratorComponent>()[entity];
         if (wreckageGeneratorComponent)
         {
             RandomGenerator& random = settings.randomGenerator;
             for (int i = 0; i < wreckageGeneratorComponent->count; i++)
             {
-                const glm::vec2 position = componentManager->ReadComponents<PositionComponent>()[entity]->position;
-                const float size = componentManager->ReadComponents<CollidableComponent>()[entity]->size;
+                const glm::vec2 position = componentAccessor->ReadComponents<PositionComponent>()[entity]->position;
+                const float size = componentAccessor->ReadComponents<CollidableComponent>()[entity]->size;
                 EntityEgg wreckage = entityManager->CreateNewEntity(wreckageGeneratorComponent->WreckageID);
                 wreckage.GetComponent<PositionComponent>()->position = position;
                 wreckage.GetComponent<PositionComponent>()->angle = random.RandomAngle();

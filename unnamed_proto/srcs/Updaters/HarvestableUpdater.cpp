@@ -3,7 +3,7 @@
 #include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -14,16 +14,18 @@ namespace
 
 class HarvestableUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override {}
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    {
+    }
 
     void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentManager* componentManager) override
+                         ComponentAccessor* componentAccessor) override
     {
-        const auto harvestableComponent = componentManager->ReadComponents<HarvestableComponent>()[entity];
+        const auto harvestableComponent = componentAccessor->ReadComponents<HarvestableComponent>()[entity];
         if (harvestableComponent)
         {
-            const auto positionComponent = componentManager->ReadComponents<Position2DComponent>()[entity];
-            const auto growableComponent = componentManager->ReadComponents<GrowableComponent>()[entity];
+            const auto positionComponent = componentAccessor->ReadComponents<Position2DComponent>()[entity];
+            const auto growableComponent = componentAccessor->ReadComponents<GrowableComponent>()[entity];
             int amount = harvestableComponent->amount;
             if (growableComponent)
                 amount *= growableComponent->maturity;

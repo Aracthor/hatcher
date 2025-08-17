@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
@@ -14,15 +14,15 @@ namespace
 
 class PlayerCreatorUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Lives* lives = componentManager->ReadWorldComponent<Lives>();
+        const Lives* lives = componentAccessor->ReadWorldComponent<Lives>();
         if (lives->remaining == 0)
             return;
 
         bool hasPlayer = false;
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (playerComponents[i])
                 hasPlayer = true;

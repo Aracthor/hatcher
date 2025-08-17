@@ -5,7 +5,7 @@
 #include "WorldComponents/Camera.hpp"
 
 #include "hatcher/Clock.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
@@ -19,10 +19,10 @@ namespace
 class CameraEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
-        Camera* camera = renderComponentManager->WriteWorldComponent<Camera>();
+        Camera* camera = renderComponentAccessor->WriteWorldComponent<Camera>();
         if (event.type == SDL_MOUSEWHEEL)
         {
             const int verticalScroll = event.wheel.y;
@@ -51,10 +51,10 @@ class CameraRenderUpdater final : public RenderUpdater
 public:
     CameraRenderUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        Camera* camera = renderComponentManager->WriteWorldComponent<Camera>();
+        Camera* camera = renderComponentAccessor->WriteWorldComponent<Camera>();
 
         HandleCameraMotion(camera, frameRenderer.GetClock());
 

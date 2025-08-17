@@ -5,7 +5,7 @@
 
 namespace hatcher
 {
-class ComponentManager;
+class ComponentAccessor;
 class DataLoader;
 class DataSaver;
 class Entity;
@@ -20,7 +20,7 @@ public:
     virtual void Save(DataSaver& saver) const {}
     virtual void Load(DataLoader& loader) {}
 
-    virtual void Execute(IEntityManager* entityManager, ComponentManager* componentManager) = 0;
+    virtual void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) = 0;
 };
 
 } // namespace hatcher

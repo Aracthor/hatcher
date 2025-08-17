@@ -5,7 +5,7 @@
 #include "RenderComponents/SelectableComponent.hpp"
 #include "utils/TransformationHelper.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/FrameRenderer.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
@@ -53,7 +53,7 @@ private:
 class SelectionRectangleEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT)
@@ -72,13 +72,13 @@ class SelectionRectangleEventListener : public IEventListener
         else if (event.type == SDL_MOUSEBUTTONUP && event.button.button == SDL_BUTTON_LEFT)
         {
             ComponentWriter<SelectableComponent> selectableComponents =
-                renderComponentManager->WriteComponents<SelectableComponent>();
+                renderComponentAccessor->WriteComponents<SelectableComponent>();
             ComponentReader<Position2DComponent> positionComponents =
-                componentManager->ReadComponents<Position2DComponent>();
+                componentAccessor->ReadComponents<Position2DComponent>();
             const Box2f selectionBox = selectionRectangle.GetCurrentSelection();
 
-            HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
-            for (int i = 0; i < componentManager->Count(); i++)
+            HATCHER_ASSERT(componentAccessor->Count() == renderComponentAccessor->Count());
+            for (int i = 0; i < componentAccessor->Count(); i++)
             {
                 std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
                 const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
@@ -124,8 +124,8 @@ public:
 
     ~SelectionRectangleRenderUpdater() = default;
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.DisableDepthTest();
         if (selectionRectangle.IsSelecting())

@@ -1,6 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -53,17 +53,17 @@ public:
 
     ~SteveRenderUpdater() = default;
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.PrepareSceneDraw(m_material.get());
 
-        const auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
-        const auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
-        const auto inventoryComponents = componentManager->ReadComponents<InventoryComponent>();
-        auto animationComponents = renderComponentManager->WriteComponents<SteveAnimationComponent>();
+        const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        const auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
+        const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
 
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (positionComponents[i] && movementComponents[i] && animationComponents[i])
             {
@@ -88,11 +88,11 @@ public:
         }
     }
 
-    void OnCreateEntity(Entity entity, const ComponentManager* componentManager,
-                        ComponentManager* renderComponentManager) override
+    void OnCreateEntity(Entity entity, const ComponentAccessor* componentAccessor,
+                        ComponentAccessor* renderComponentAccessor) override
     {
-        const auto& animationComponent = renderComponentManager->ReadComponents<SteveAnimationComponent>()[entity];
-        auto& selectableComponent = renderComponentManager->WriteComponents<SelectableComponent>()[entity];
+        const auto& animationComponent = renderComponentAccessor->ReadComponents<SteveAnimationComponent>()[entity];
+        auto& selectableComponent = renderComponentAccessor->WriteComponents<SelectableComponent>()[entity];
 
         if (animationComponent && selectableComponent)
         {

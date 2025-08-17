@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
@@ -30,17 +30,17 @@ bool IsPlayerOwnedEntity(ComponentReader<PlayerComponent> playerComponents,
 
 class CollisionUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        auto asteroidComponents = componentManager->ReadComponents<AsteroidComponent>();
-        auto collidableComponents = componentManager->ReadComponents<CollidableComponent>();
-        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        auto projectileComponents = componentManager->ReadComponents<ProjectileComponent>();
-        auto scoreGiverComponents = componentManager->ReadComponents<ScoreGiverComponent>();
-        Score* score = componentManager->WriteWorldComponent<Score>();
+        auto asteroidComponents = componentAccessor->ReadComponents<AsteroidComponent>();
+        auto collidableComponents = componentAccessor->ReadComponents<CollidableComponent>();
+        auto positionComponents = componentAccessor->ReadComponents<PositionComponent>();
+        auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
+        auto projectileComponents = componentAccessor->ReadComponents<ProjectileComponent>();
+        auto scoreGiverComponents = componentAccessor->ReadComponents<ScoreGiverComponent>();
+        Score* score = componentAccessor->WriteWorldComponent<Score>();
         // O(n^2) algorithm complexity. But for this project-exemple, it is enough.
-        for (int i = 0; i < componentManager->Count() - 1; i++)
+        for (int i = 0; i < componentAccessor->Count() - 1; i++)
         {
             bool collided = false;
             const auto& positionComponentA = positionComponents[i];
@@ -48,7 +48,7 @@ class CollisionUpdater final : public Updater
             if (collidableComponentA)
             {
                 HATCHER_ASSERT(positionComponentA);
-                for (int j = i + 1; j < componentManager->Count() && !collided; j++)
+                for (int j = i + 1; j < componentAccessor->Count() && !collided; j++)
                 {
                     const auto& positionComponentB = positionComponents[j];
                     const auto& collidableComponentB = collidableComponents[j];
@@ -71,7 +71,7 @@ class CollisionUpdater final : public Updater
 
                                 if (playerComponents[i] || playerComponents[j])
                                 {
-                                    Lives* lives = componentManager->WriteWorldComponent<Lives>();
+                                    Lives* lives = componentAccessor->WriteWorldComponent<Lives>();
                                     HATCHER_ASSERT(lives->remaining > 0);
                                     lives->remaining--;
                                 }

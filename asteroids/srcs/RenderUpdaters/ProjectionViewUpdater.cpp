@@ -11,8 +11,8 @@ class ProjectionViewUpdater final : public RenderUpdater
 public:
     ProjectionViewUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         const glm::ivec2 resolution = frameRenderer.Resolution();
         frameRenderer.SetProjectionMatrix(glm::ortho(0.f, float(resolution.x), 0.f, float(resolution.y)));

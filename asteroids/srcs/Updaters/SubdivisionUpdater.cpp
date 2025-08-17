@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 #include "hatcher/WorldSettings.hpp"
@@ -12,13 +12,15 @@ namespace
 {
 class SubdivisionUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override {}
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    {
+    }
 
     void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentManager* componentManager) override
+                         ComponentAccessor* componentAccessor) override
     {
-        auto subdivisionComponent = componentManager->ReadComponents<SubdivisionComponent>()[entity];
-        auto positionComponent = componentManager->ReadComponents<PositionComponent>()[entity];
+        auto subdivisionComponent = componentAccessor->ReadComponents<SubdivisionComponent>()[entity];
+        auto positionComponent = componentAccessor->ReadComponents<PositionComponent>()[entity];
         if (subdivisionComponent)
         {
             RandomGenerator& random = settings.randomGenerator;

@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -11,10 +11,10 @@ namespace
 
 class LifespanUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        auto lifespanComponents = componentManager->WriteComponents<LifespanComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto lifespanComponents = componentAccessor->WriteComponents<LifespanComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             auto& lifespanComponent = lifespanComponents[i];
             if (lifespanComponent)

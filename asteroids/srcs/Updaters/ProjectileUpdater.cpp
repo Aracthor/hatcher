@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "Components/ProjectileComponent.hpp"
@@ -13,13 +13,15 @@ namespace
 
 class ProjecitleUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override {}
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    {
+    }
 
     void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentManager* componentManager) override
+                         ComponentAccessor* componentAccessor) override
     {
-        auto projectileComponents = componentManager->WriteComponents<ProjectileComponent>();
-        auto shooterComponents = componentManager->WriteComponents<ShooterComponent>();
+        auto projectileComponents = componentAccessor->WriteComponents<ProjectileComponent>();
+        auto shooterComponents = componentAccessor->WriteComponents<ShooterComponent>();
         if (projectileComponents[entity])
         {
             const Entity::IDType shooterID = projectileComponents[entity]->shooter;

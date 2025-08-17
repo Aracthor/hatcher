@@ -10,11 +10,11 @@ void CommandManager::AddCommand(ICommand* command)
     m_commands.emplace_back(command);
 }
 
-void CommandManager::ExecuteCommands(IEntityManager* entityManager, ComponentManager* componentManager)
+void CommandManager::ExecuteCommands(IEntityManager* entityManager, ComponentAccessor* componentAccessor)
 {
     for (auto& command : m_commands)
     {
-        command->Execute(entityManager, componentManager);
+        command->Execute(entityManager, componentAccessor);
     }
     m_commands.clear();
 }

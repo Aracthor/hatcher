@@ -5,7 +5,7 @@
 #include "WorldComponents/SquareGrid.hpp"
 
 #include "hatcher/CommandRegisterer.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -25,9 +25,9 @@ public:
     {
     }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        componentManager->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
+        componentAccessor->WriteComponents<Movement2DComponent>()[m_entity]->path = m_path;
     }
 
 private:
@@ -42,24 +42,24 @@ class MoveOrderRenderUpdater final : public IEventListener
 {
 public:
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_RIGHT)
         {
-            const Camera* camera = renderComponentManager->ReadWorldComponent<Camera>();
+            const Camera* camera = renderComponentAccessor->ReadWorldComponent<Camera>();
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.button.x, event.button.y, frameRenderer);
-            const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+            const SquareGrid* grid = componentAccessor->ReadWorldComponent<SquareGrid>();
             if (!grid->GetTileData(worldCoords2D).walkable)
                 return;
 
-            auto movementComponents = componentManager->ReadComponents<Movement2DComponent>();
-            auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
-            auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
+            auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
+            auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
+            auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
 
-            HATCHER_ASSERT(componentManager->Count() == renderComponentManager->Count());
-            for (int i = 0; i < componentManager->Count(); i++)
+            HATCHER_ASSERT(componentAccessor->Count() == renderComponentAccessor->Count());
+            for (int i = 0; i < componentAccessor->Count(); i++)
             {
                 const std::optional<Movement2DComponent>& movementComponent = movementComponents[i];
                 const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];

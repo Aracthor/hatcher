@@ -8,7 +8,7 @@
 
 namespace hatcher
 {
-class ComponentManager;
+class ComponentAccessor;
 class IEntityManager;
 
 class CommandManager final : public ICommandManager
@@ -18,7 +18,7 @@ public:
 
     span<const unique_ptr<ICommand>> CurrentCommands() const { return span<const unique_ptr<ICommand>>(m_commands); }
 
-    void ExecuteCommands(IEntityManager* entityManager, ComponentManager* componentManager);
+    void ExecuteCommands(IEntityManager* entityManager, ComponentAccessor* componentAccessor);
 
 private:
     std::vector<unique_ptr<ICommand>> m_commands;

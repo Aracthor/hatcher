@@ -1,6 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -44,15 +44,15 @@ public:
 
     ~SelectedRenderUpdater() = default;
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.DisableDepthTest();
         frameRenderer.PrepareUIDraw(m_material.get());
 
-        auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
-        auto positionComponents = componentManager->ReadComponents<Position2DComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
+        auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];

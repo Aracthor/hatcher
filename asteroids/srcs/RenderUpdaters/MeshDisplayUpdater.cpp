@@ -1,5 +1,5 @@
 #include "hatcher/Clock.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
 #include "hatcher/Graphics/Material.hpp"
@@ -162,17 +162,17 @@ public:
         }
     }
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         frameRenderer.PrepareSceneDraw(m_basicMaterial.get());
 
         std::array<std::vector<glm::mat4>, MeshComponent::COUNT> reperesByMesh;
 
-        auto meshComponents = renderComponentManager->ReadComponents<MeshComponent>();
-        auto positionComponents = componentManager->ReadComponents<PositionComponent>();
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto meshComponents = renderComponentAccessor->ReadComponents<MeshComponent>();
+        auto positionComponents = componentAccessor->ReadComponents<PositionComponent>();
+        auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             const auto& meshComponent = meshComponents[i];
             const auto& positionComponent = positionComponents[i];

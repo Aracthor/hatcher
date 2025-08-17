@@ -21,7 +21,7 @@ bool almostEquals(float a, float b, float epsilon)
 class WorldTickerEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN)
@@ -62,8 +62,8 @@ class WorldTickerRenderUpdater : public RenderUpdater
 public:
     WorldTickerRenderUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         const float windowWidth = frameRenderer.Resolution().x;
         const ImVec2 windowSize(200, 70);

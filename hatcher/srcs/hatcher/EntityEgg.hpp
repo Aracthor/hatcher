@@ -6,17 +6,17 @@
 
 namespace hatcher
 {
-class ComponentManager;
+class ComponentAccessor;
 
 class EntityEgg
 {
 public:
-    EntityEgg(Entity newEntity, Entity temporaryEntityID, ComponentManager* componentManager,
-              ComponentManager* renderingComponentManager)
+    EntityEgg(Entity newEntity, Entity temporaryEntityID, ComponentAccessor* componentAccessor,
+              ComponentAccessor* renderingComponentAccessor)
         : m_newEntity(newEntity)
         , m_temporaryEntityID(temporaryEntityID)
-        , m_componentManager(componentManager)
-        , m_renderingComponentManager(renderingComponentManager)
+        , m_componentAccessor(componentAccessor)
+        , m_renderingComponentAccessor(renderingComponentAccessor)
     {
     }
 
@@ -31,8 +31,8 @@ public:
 private:
     Entity m_newEntity;
     Entity m_temporaryEntityID;
-    ComponentManager* m_componentManager;
-    ComponentManager* m_renderingComponentManager;
+    ComponentAccessor* m_componentAccessor;
+    ComponentAccessor* m_renderingComponentAccessor;
 };
 
 } // namespace hatcher

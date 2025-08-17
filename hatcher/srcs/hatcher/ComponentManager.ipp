@@ -33,50 +33,39 @@ void ComponentManager::AddWorldComponent()
 }
 
 template <class Component>
-ComponentReader<Component> ComponentManager::ReadComponents() const
+const IComponentList* ComponentManager::GetComponentList() const
 {
-    using RealComponentList = const IdentifiableComponentList<Component>*;
-
     constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << constexpr_typeid<Component>());
-    // Why doesn't std::unordered_map have an operator[] returning a const value ??
-    const IComponentList* componentList = m_componentLists.at(key).get();
-    RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
-    return realComponentList->GetComponentList();
+    return m_componentLists.at(key).get();
 }
 
 template <class Component>
-ComponentWriter<Component> ComponentManager::WriteComponents()
+IComponentList* ComponentManager::GetComponentList()
 {
-    using RealComponentList = IdentifiableComponentList<Component>*;
-
     constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_componentLists.find(key) != m_componentLists.end(),
                            "Requesting a missing component type: " << constexpr_typeid<Component>());
-    IComponentList* componentList = m_componentLists.at(key).get();
-    RealComponentList realComponentList = reinterpret_cast<RealComponentList>(componentList);
-    return realComponentList->GetComponentList();
+    return m_componentLists.at(key).get();
 }
 
 template <class Component>
-const Component* ComponentManager::ReadWorldComponent() const
+const IWorldComponent* ComponentManager::GetWorldComponent() const
 {
     constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
                            "Requesting a missing world component: " << constexpr_typeid<Component>());
-    const IWorldComponent* component = m_worldComponents.at(key).get();
-    return checked_cast<const Component*>(component);
+    return m_worldComponents.at(key).get();
 }
 
 template <class Component>
-Component* ComponentManager::WriteWorldComponent()
+IWorldComponent* ComponentManager::GetWorldComponent()
 {
     constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) != m_worldComponents.end(),
                            "Requesting a missing world component: " << constexpr_typeid<Component>());
-    IWorldComponent* component = m_worldComponents.at(key).get();
-    return checked_cast<Component*>(component);
+    return m_worldComponents.at(key).get();
 }
 
 } // namespace hatcher

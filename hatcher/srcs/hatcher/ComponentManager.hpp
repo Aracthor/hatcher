@@ -5,7 +5,6 @@
 
 #include "Entity.hpp"
 #include "basic_types.hpp"
-#include "span.hpp"
 #include "unique_ptr.hpp"
 
 namespace hatcher
@@ -14,40 +13,6 @@ class DataLoader;
 class DataSaver;
 class IComponentList;
 class IWorldComponent;
-
-template <class Component>
-class ComponentReader
-{
-public:
-    inline ComponentReader(span<const std::optional<Component>>&& data)
-        : m_data(data)
-    {
-    }
-
-    inline const std::optional<Component>& operator[](int index) const { return m_data[index]; }
-    inline const std::optional<Component>& operator[](Entity entity) const { return m_data[entity.ID()]; }
-
-private:
-    span<const std::optional<Component>> m_data;
-};
-
-template <class Component>
-class ComponentWriter
-{
-public:
-    inline ComponentWriter(span<std::optional<Component>>&& data)
-        : m_data(data)
-    {
-    }
-
-    inline const std::optional<Component>& operator[](int index) const { return m_data[index]; }
-    inline std::optional<Component>& operator[](int index) { return m_data[index]; }
-    inline const std::optional<Component>& operator[](Entity entity) const { return m_data[entity.ID()]; }
-    inline std::optional<Component>& operator[](Entity entity) { return m_data[entity.ID()]; }
-
-private:
-    span<std::optional<Component>> m_data;
-};
 
 class ComponentManager
 {
@@ -73,14 +38,14 @@ public:
     void AddWorldComponent();
 
     template <class Component>
-    ComponentReader<Component> ReadComponents() const;
+    const IComponentList* GetComponentList() const;
     template <class Component>
-    ComponentWriter<Component> WriteComponents();
+    IComponentList* GetComponentList();
 
     template <class Component>
-    const Component* ReadWorldComponent() const;
+    const IWorldComponent* GetWorldComponent() const;
     template <class Component>
-    Component* WriteWorldComponent();
+    IWorldComponent* GetWorldComponent();
 
 private:
     int m_entityCount = 0;

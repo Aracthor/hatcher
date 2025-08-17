@@ -1,4 +1,4 @@
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -12,11 +12,11 @@ namespace
 
 class PlayerMovementUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        auto positionComponents = componentManager->WriteComponents<PositionComponent>();
-        auto playerComponents = componentManager->ReadComponents<PlayerComponent>();
-        for (int i = 0; i < componentManager->Count(); i++)
+        auto positionComponents = componentAccessor->WriteComponents<PositionComponent>();
+        auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             const auto& playerComponent = playerComponents[i];
             auto& positionComponent = positionComponents[i];

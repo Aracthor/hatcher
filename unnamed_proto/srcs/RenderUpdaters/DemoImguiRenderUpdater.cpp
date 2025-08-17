@@ -15,7 +15,7 @@ bool showDemo = false;
 class DemoImguiEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_D &&
@@ -31,8 +31,8 @@ class DemoImguiRenderUpdater : public RenderUpdater
 public:
     DemoImguiRenderUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         if (showDemo)
             ImGui::ShowDemoWindow(&showDemo);

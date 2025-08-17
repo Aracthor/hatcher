@@ -2,7 +2,7 @@
 
 #include "RenderUpdaterOrder.hpp"
 
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/assert.hpp"
@@ -21,7 +21,7 @@ bool enabled = false;
 class InventoryPanelEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_I)
@@ -36,17 +36,17 @@ class InventoryPanelRenderUpdater : public RenderUpdater
 public:
     InventoryPanelRenderUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentManager* componentManager,
-                ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         if (!enabled)
             return;
 
-        const auto inventoryComponents = componentManager->ReadComponents<InventoryComponent>();
-        const auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
-        const auto nameComponents = componentManager->ReadComponents<NameComponent>();
+        const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        const auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
+        const auto nameComponents = componentAccessor->ReadComponents<NameComponent>();
 
-        for (int i = 0; i < componentManager->Count(); i++)
+        for (int i = 0; i < componentAccessor->Count(); i++)
         {
             if (selectableComponents[i] && selectableComponents[i]->selected && inventoryComponents[i])
             {

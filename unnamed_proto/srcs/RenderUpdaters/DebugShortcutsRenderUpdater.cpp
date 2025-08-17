@@ -1,7 +1,7 @@
 #include "RenderUpdaterOrder.hpp"
 
 #include "hatcher/CommandRegisterer.hpp"
-#include "hatcher/ComponentManager.hpp"
+#include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IEventListener.hpp"
 #include "hatcher/ICommand.hpp"
 #include "hatcher/ICommandManager.hpp"
@@ -28,7 +28,7 @@ public:
     void Save(DataSaver& saver) const override { saver << m_entity; }
     void Load(DataLoader& loader) override { loader >> m_entity; }
 
-    void Execute(IEntityManager* entityManager, ComponentManager* componentManager) override
+    void Execute(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         entityManager->DeleteEntity(m_entity);
     }
@@ -44,15 +44,15 @@ class DebugShortcutsEventListener final : public IEventListener
 {
 public:
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
-                  const ComponentManager* componentManager, ComponentManager* renderComponentManager,
+                  const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                   const IFrameRenderer& frameRenderer) override
     {
         if (event.type == SDL_KEYDOWN && event.key.keysym.scancode == SDL_SCANCODE_DELETE &&
             event.key.keysym.mod & KMOD_ALT)
         {
-            const auto selectableComponents = renderComponentManager->ReadComponents<SelectableComponent>();
+            const auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
 
-            for (int i = 0; i < renderComponentManager->Count(); i++)
+            for (int i = 0; i < renderComponentAccessor->Count(); i++)
             {
                 if (selectableComponents[i] && selectableComponents[i]->selected)
                 {
