@@ -117,7 +117,8 @@ void ShaderProgram::SetFloatUniform(const char* name, float value) const
     // TODO cache uniform locations ?
     GLint uniformLocation;
     GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
-    HATCHER_ASSERT_MESSAGE(uniformLocation >= 0, "uniform name: " << name);
+    if (uniformLocation < 0)
+        throw std::runtime_error(std::string("Error getting uniform name: ") + name);
     GL_CHECK(glUniform1f(uniformLocation, value));
 }
 
@@ -127,7 +128,8 @@ void ShaderProgram::SetVector4Uniform(const char* name, const float* vectorPtr) 
     // TODO cache uniform locations ?
     GLint uniformLocation;
     GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
-    HATCHER_ASSERT_MESSAGE(uniformLocation >= 0, "uniform name: " << name);
+    if (uniformLocation < 0)
+        throw std::runtime_error(std::string("Error getting uniform name: ") + name);
     GL_CHECK(glUniform4fv(uniformLocation, 1, vectorPtr));
 }
 
@@ -137,7 +139,8 @@ void ShaderProgram::SetMatrix4Uniform(const char* name, const float* matrixPtr) 
     // TODO cache uniform locations ?
     GLint uniformLocation;
     GL_CHECK(uniformLocation = glGetUniformLocation(m_programID, name));
-    HATCHER_ASSERT_MESSAGE(uniformLocation >= 0, "uniform name: " << name);
+    if (uniformLocation < 0)
+        throw std::runtime_error(std::string("Error getting uniform name: ") + name);
     GL_CHECK(glUniformMatrix4fv(uniformLocation, 1, false, matrixPtr));
 }
 
@@ -145,7 +148,8 @@ GLint ShaderProgram::GetAttribLocation(const char* name) const
 {
     GLint attribLocation;
     GL_CHECK(attribLocation = glGetAttribLocation(m_programID, name));
-    HATCHER_ASSERT_MESSAGE(attribLocation >= 0, "attrib name: " << name);
+    if (attribLocation < 0)
+        throw std::runtime_error(std::string("Error getting attrib name: ") + name);
     return attribLocation;
 }
 
