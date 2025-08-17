@@ -21,6 +21,7 @@ public:
     virtual void EnableDepthTest() = 0;
     virtual void DisableDepthTest() = 0;
 
+    virtual int CurrentTick() const = 0;
     virtual const Clock* GetClock() const = 0;
     virtual glm::ivec2 Resolution() const = 0;
     virtual glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords, const glm::mat4& modelMatrix) const = 0;

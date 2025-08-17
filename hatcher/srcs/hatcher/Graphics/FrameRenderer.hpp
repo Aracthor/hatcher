@@ -14,6 +14,7 @@ public:
     FrameRenderer(GLContext* context, const Clock* clock, const glm::vec2& resolution);
     ~FrameRenderer();
 
+    void SetCurrentTick(int currentTick) { m_currentTick = currentTick; }
     void PrepareSceneDraw(const Material* material) const override;
     void PrepareUIDraw(const Material* material) const override;
     void SetProjectionMatrix(const glm::mat4& matrix) override;
@@ -21,6 +22,7 @@ public:
     void EnableDepthTest() override;
     void DisableDepthTest() override;
 
+    int CurrentTick() const override { return m_currentTick; }
     const Clock* GetClock() const override { return m_clock; }
     glm::ivec2 Resolution() const override { return m_resolution; }
     glm::vec2 WorldCoordsToWindowCoords(const glm::vec3& worldCoords, const glm::mat4& modelMatrix) const override;
@@ -29,6 +31,7 @@ public:
 
 private:
     GLContext* m_context;
+    int m_currentTick = 0;
     const Clock* m_clock;
     const glm::vec2 m_resolution;
 

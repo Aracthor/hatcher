@@ -35,6 +35,8 @@ public:
     void UpdateFromEvents(span<const SDL_Event> events, IApplication* application, const IFrameRenderer& frameRenderer);
     void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer);
 
+    int CurrentTick() const { return m_tick; }
+
 private:
     int m_tick = 0;
     WorldSettings m_settings;

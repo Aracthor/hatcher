@@ -80,6 +80,11 @@ void GameApplication::SetUpdateTickrate(float tickrate)
     m_updateTicker.SetTickrate(tickrate);
 }
 
+float GameApplication::GetUpdateTickrate() const
+{
+    return m_updateTicker.GetTickrate();
+}
+
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
     m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight, m_fileSystem.get());

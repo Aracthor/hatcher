@@ -29,4 +29,9 @@ void UpdateTicker::SetTickrate(float tickrate)
     m_tickTimeMs = 1000.f / tickrate;
 }
 
+float UpdateTicker::GetTickrate() const
+{
+    return 1000.f / m_tickTimeMs;
+}
+
 } // namespace hatcher

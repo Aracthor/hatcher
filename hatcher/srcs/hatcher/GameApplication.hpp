@@ -24,6 +24,7 @@ public:
 
     void Stop() override;
     void SetUpdateTickrate(float tickrate) override;
+    float GetUpdateTickrate() const override;
 
     void StartRendering(const char* name, int windowWidth, int windowHeight);
 

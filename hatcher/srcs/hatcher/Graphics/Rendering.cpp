@@ -45,6 +45,7 @@ void Rendering::UpdateWorldRendering(IApplication* application, World* world)
     m_window->Clear();
     m_clock->Update();
 
+    m_frameRenderer->SetCurrentTick(world->CurrentTick());
     world->UpdateRendering(application, *m_frameRenderer);
     m_window->Refresh();
 }

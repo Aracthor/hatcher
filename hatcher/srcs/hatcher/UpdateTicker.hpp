@@ -15,6 +15,7 @@ public:
     int TickCount();
 
     void SetTickrate(float tickrate);
+    float GetTickrate() const;
 
 private:
     float m_tickTimeMs;
