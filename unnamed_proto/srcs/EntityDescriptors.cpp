@@ -12,6 +12,7 @@
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
+#include "utils/TimeOfDay.hpp"
 
 using namespace hatcher;
 
@@ -56,7 +57,7 @@ EntityDescriptorRegisterer Melon{
         },
         GrowableComponent{
             .maturity = 0.25,
-            .growthTime = 600,
+            .growthTime = HoursToTicks(1.f),
         },
         Position2DComponent{},
     },
@@ -93,7 +94,7 @@ EntityDescriptorRegisterer Tree{
         },
         GrowableComponent{
             .maturity = 0.25,
-            .growthTime = 600,
+            .growthTime = HoursToTicks(1.f),
         },
         Position2DComponent{},
     },

@@ -3,6 +3,8 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/IApplication.hpp"
 
+#include "utils/TimeOfDay.hpp"
+
 #include "imgui.h"
 
 using namespace hatcher;
@@ -64,12 +66,15 @@ public:
                 ComponentManager* renderComponentManager, IFrameRenderer& frameRenderer) override
     {
         const float windowWidth = frameRenderer.Resolution().x;
-        const ImVec2 windowSize(200, 50);
+        const ImVec2 windowSize(200, 70);
         ImGui::SetNextWindowSize(windowSize, ImGuiCond_Always);
         ImGui::SetNextWindowPos({windowWidth - windowSize.x, 0}, ImGuiCond_Always);
         if (ImGui::Begin("Time", nullptr, ImGuiWindowFlags_NoDecoration))
         {
-            ImGui::Text("Tick: %d\n", frameRenderer.CurrentTick());
+            const int tick = frameRenderer.CurrentTick();
+            const TimeOfDay timeOfDay = GetTimeOfDay(tick);
+            ImGui::Text("Tick: %d\n", tick);
+            ImGui::Text("Day: %d, Hour: %02d:%02d\n", timeOfDay.day, timeOfDay.hour, timeOfDay.minute);
             DisplaySpeedButton(application, "x0", baseTickSpeed * 0.f);
             DisplaySpeedButton(application, "x0.5", baseTickSpeed * 0.5f);
             DisplaySpeedButton(application, "x1", baseTickSpeed * 1.f);
