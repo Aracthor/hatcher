@@ -15,5 +15,6 @@ void main()
 {
     float cosAngle = dot(normal, -normalize(lightDir));
     float lightPower = cosAngle > 0.0 ? cosAngle : 0.0;
-    fragColor = texture(uniTexture, textureCoord) * mix(1.0, 2.0, lightPower);
+    fragColor = texture(uniTexture, textureCoord);
+    fragColor.rgb *= mix(0.5, 1.0, lightPower);
 }

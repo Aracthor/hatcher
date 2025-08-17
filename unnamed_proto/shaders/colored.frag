@@ -13,5 +13,5 @@ void main()
 {
     float cosAngle = dot(normal, -normalize(lightDir));
     float lightPower = cosAngle > 0.0 ? cosAngle : 0.0;
-    fragColor = vec4(color * mix(1.0, 2.0, lightPower), 1.0);
+    fragColor = vec4(color * mix(0.5, 1.0, lightPower), 1.0);
 }
