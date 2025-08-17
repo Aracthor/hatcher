@@ -11,6 +11,7 @@
 #include "utils/EntityFinder.hpp"
 
 #include "hatcher/ComponentManager.hpp"
+#include "hatcher/IEntityManager.hpp"
 #include "hatcher/Updater.hpp"
 
 #include <algorithm>
@@ -26,7 +27,7 @@ class IPlan
 {
 public:
     virtual bool CanBeAchieved(const ComponentManager* componentManager, Entity entity) const = 0;
-    virtual void Start(ComponentManager* componentManager, Entity entity) const = 0;
+    virtual void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const = 0;
     virtual bool IsOngoing(const ComponentManager* componentManager, Entity entity) const = 0;
 };
 
@@ -49,6 +50,13 @@ bool IsGatherableWood(const ComponentManager* componentManager, Entity entity)
            !lockableComponent->locker;
 }
 
+bool IsChoppableTree(const ComponentManager* componentManager, Entity entity)
+{
+    const auto& nameComponent = componentManager->ReadComponents<NameComponent>()[entity];
+    const auto& lockableComponent = componentManager->ReadComponents<LockableComponent>()[entity];
+    return nameComponent && nameComponent->name == "Tree" && !lockableComponent->locker;
+}
+
 class DropOffWood : public IPlan
 {
     bool CanBeAchieved(const ComponentManager* componentManager, Entity entity) const override
@@ -60,7 +68,7 @@ class DropOffWood : public IPlan
                std::any_of(inventory.storage.begin(), inventory.storage.end(), IsWood);
     }
 
-    void Start(ComponentManager* componentManager, Entity entity) const override
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
     {
         auto positions = componentManager->WriteComponents<Position2DComponent>();
         auto items = componentManager->WriteComponents<ItemComponent>();
@@ -82,7 +90,7 @@ class DropOffWood : public IPlan
         else
         {
             items[gatherableWood]->count += 1;
-            componentManager->RemoveEntity(Entity(*it));
+            entityManager->DeleteEntity(Entity(*it));
         }
 
         inventory.storage.erase(it);
@@ -100,7 +108,7 @@ class BringBackWood : public IPlan
         return std::any_of(inventory.storage.begin(), inventory.storage.end(), IsWood);
     }
 
-    void Start(ComponentManager* componentManager, Entity entity) const override
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
     {
         const glm::vec2 position = componentManager->ReadComponents<Position2DComponent>()[entity]->position;
         const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
@@ -126,7 +134,7 @@ class TakeWood : public IPlan
                positionComponents[woodEntity]->position == positionComponents[entity]->position;
     }
 
-    void Start(ComponentManager* componentManager, Entity entity) const override
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
     {
         const Entity woodEntity = FindNearestEntity(componentManager, entity, IsGatherableWood);
         InventoryComponent& inventory = *componentManager->WriteComponents<InventoryComponent>()[entity];
@@ -146,7 +154,7 @@ class MoveToWood : public IPlan
         return woodEntity != Entity::Invalid();
     }
 
-    void Start(ComponentManager* componentManager, Entity entity) const override
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
     {
         const auto& positions = componentManager->ReadComponents<Position2DComponent>();
         const Entity woodEntity = FindNearestEntity(componentManager, entity, IsGatherableWood);
@@ -168,14 +176,67 @@ class MoveToWood : public IPlan
     }
 };
 
+class ChopTree : public IPlan
+{
+    bool CanBeAchieved(const ComponentManager* componentManager, Entity entity) const override
+    {
+        const auto& positionComponents = componentManager->ReadComponents<Position2DComponent>();
+        const Entity treeEntity = FindNearestEntity(componentManager, entity, IsChoppableTree);
+        return treeEntity != Entity::Invalid() &&
+               glm::distance(positionComponents[treeEntity]->position, positionComponents[entity]->position) <= 1.f;
+    }
+
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
+    {
+        const Entity treeEntity = FindNearestEntity(componentManager, entity, IsChoppableTree);
+        entityManager->DeleteEntity(treeEntity);
+    }
+
+    bool IsOngoing(const ComponentManager* componentManager, Entity entity) const override { return false; }
+};
+
+class MoveToTree : public IPlan
+{
+    bool CanBeAchieved(const ComponentManager* componentManager, Entity entity) const override
+    {
+        const Entity treeEntity = FindNearestEntity(componentManager, entity, IsChoppableTree);
+        return treeEntity != Entity::Invalid();
+    }
+
+    void Start(IEntityManager* entityManager, ComponentManager* componentManager, Entity entity) const override
+    {
+        const auto& positions = componentManager->ReadComponents<Position2DComponent>();
+        const Entity treeEntity = FindNearestEntity(componentManager, entity, IsChoppableTree);
+        const SquareGrid* grid = componentManager->ReadWorldComponent<SquareGrid>();
+
+        const glm::vec2 position = positions[entity]->position;
+        const glm::vec2 treePosition = positions[treeEntity]->position;
+        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, treePosition, 1.f);
+        componentManager->WriteComponents<Movement2DComponent>()[entity]->path = path;
+
+        componentManager->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = treeEntity;
+        componentManager->WriteComponents<LockableComponent>()[treeEntity]->locker = entity;
+    }
+
+    bool IsOngoing(const ComponentManager* componentManager, Entity entity) const override
+    {
+        const std::vector<glm::vec2>& path = componentManager->ReadComponents<Movement2DComponent>()[entity]->path;
+        return !path.empty();
+    }
+};
+
 const IPlan* plans[] = {
     new DropOffWood(),
     new BringBackWood(),
     new TakeWood(),
     new MoveToWood(),
+    //
+    new ChopTree(),
+    new MoveToTree(),
 };
 
-void UpdatePlanning(ActionPlanningComponent& planning, ComponentManager* componentManager, Entity entity)
+void UpdatePlanning(ActionPlanningComponent& planning, IEntityManager* entityManager,
+                    ComponentManager* componentManager, Entity entity)
 {
     if (!planning.currentActionIndex || !plans[*planning.currentActionIndex]->IsOngoing(componentManager, entity))
     {
@@ -193,7 +254,7 @@ void UpdatePlanning(ActionPlanningComponent& planning, ComponentManager* compone
             if (plan->CanBeAchieved(componentManager, entity))
             {
                 planning.currentActionIndex = planIndex;
-                plan->Start(componentManager, entity);
+                plan->Start(entityManager, componentManager, entity);
                 break;
             }
         }
@@ -211,7 +272,7 @@ class ActionPlanningUpdater final : public Updater
             if (plannings[i])
             {
                 ActionPlanningComponent& planning = *plannings[i];
-                UpdatePlanning(planning, componentManager, Entity(i));
+                UpdatePlanning(planning, entityManager, componentManager, Entity(i));
             }
         }
     }

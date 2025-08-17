@@ -102,6 +102,7 @@ EntityDescriptorRegisterer Tree{
             .harvest = EntityDescriptorID::Create("Wood"),
             .amount = 5,
         },
+        LockableComponent{},
         Position2DComponent{},
     },
     {
