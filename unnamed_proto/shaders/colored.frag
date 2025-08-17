@@ -12,6 +12,6 @@ const vec3 lightDir = vec3(-0.3, 0.2, -0.6);
 void main()
 {
     float cosAngle = dot(normal, -normalize(lightDir));
-    float lightPower = cosAngle > 0.f ? cosAngle : 0.f;
-    fragColor = vec4(color + color * lightPower, 1.0);
+    float lightPower = cosAngle > 0.0 ? cosAngle : 0.0;
+    fragColor = vec4(color * mix(1.0, 2.0, lightPower), 1.0);
 }
