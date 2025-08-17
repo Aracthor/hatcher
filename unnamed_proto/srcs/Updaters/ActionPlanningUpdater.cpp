@@ -7,12 +7,12 @@
 
 #include "WorldComponents/SquareGrid.hpp"
 
+#include "utils/EntityFinder.hpp"
+
 #include "hatcher/ComponentManager.hpp"
 #include "hatcher/Updater.hpp"
 
 #include <algorithm>
-
-#include "EntityFinder.hpp"
 
 using namespace hatcher;
 

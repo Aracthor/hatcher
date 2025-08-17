@@ -16,7 +16,7 @@
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
-#include "TransformationHelper.hpp"
+#include "utils/TransformationHelper.hpp"
 
 using namespace hatcher;
 

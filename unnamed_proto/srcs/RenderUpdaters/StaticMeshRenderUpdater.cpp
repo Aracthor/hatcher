@@ -19,7 +19,7 @@
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
-#include "TransformationHelper.hpp"
+#include "utils/TransformationHelper.hpp"
 
 using namespace hatcher;
 

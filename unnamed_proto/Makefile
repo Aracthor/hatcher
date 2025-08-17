@@ -26,10 +26,11 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		WorldComponents/Camera.cpp				\
 		WorldComponents/SquareGrid.cpp				\
 									\
+		utils/EntityFinder.cpp					\
+		utils/Pathfinding.cpp					\
+		utils/TransformationHelper.cpp				\
+									\
 		EntityDescriptors.cpp					\
-		EntityFinder.cpp					\
-		Pathfinding.cpp						\
-		TransformationHelper.cpp				\
 		main.cpp						\
 
 NATIVE_NAME=	exec

@@ -6,7 +6,7 @@
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/glm_pure.hpp"
 
-#include "Pathfinding.hpp"
+#include "utils/Pathfinding.hpp"
 
 using namespace hatcher;
 
