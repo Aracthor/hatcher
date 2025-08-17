@@ -23,6 +23,7 @@ public:
     GLint PositionAttribLocation() const;
     GLint ColorAttribLocation() const;
     GLint TextureCoordsAttribLocation() const;
+    GLint NormalsAttribLocation() const;
     GLint InstancedAttribLocation(const char* name) const;
 
     void AddUniform(const char* name, float value);

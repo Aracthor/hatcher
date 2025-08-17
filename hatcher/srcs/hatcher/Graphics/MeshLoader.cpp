@@ -21,10 +21,12 @@ struct MeshData
         glm::vec3 position;
         std::optional<glm::vec3> color;
         std::optional<glm::vec2> textureCoord;
+        std::optional<glm::vec3> normal;
 
         bool operator==(const Vertex& other) const
         {
-            return position == other.position && color == other.color && textureCoord == other.textureCoord;
+            return position == other.position && color == other.color && textureCoord == other.textureCoord &&
+                   normal == other.normal;
         }
     };
     std::vector<Vertex> vertices;
@@ -52,9 +54,9 @@ std::string getNextToken(std::string& line, const std::string& fileName)
 }
 
 int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, std::optional<glm::vec3> color,
-                      std::optional<glm::vec2> texCoord)
+                      std::optional<glm::vec2> texCoord, std::optional<glm::vec3> normal)
 {
-    MeshData::Vertex vertex({position, color, texCoord});
+    MeshData::Vertex vertex({position, color, texCoord, normal});
     auto it = std::find(vertices.begin(), vertices.end(), vertex);
     if (it != vertices.end())
     {
@@ -75,6 +77,7 @@ MeshData readFile(const std::string& fileName)
     std::vector<glm::vec3> wavefrontPositions;
     std::vector<glm::vec3> wavefrontColors;
     std::vector<glm::vec2> wavefrontTexCoords;
+    std::vector<glm::vec3> wavefrontNormals;
 
     std::string line;
     while (std::getline(ifs, line))
@@ -106,27 +109,43 @@ MeshData readFile(const std::string& fileName)
                 const std::string y = getNextToken(line, fileName);
                 wavefrontTexCoords.emplace_back(::atof(x.c_str()), ::atof(y.c_str()));
             }
+            else if (command == "vn")
+            {
+                const std::string x = getNextToken(line, fileName);
+                const std::string y = getNextToken(line, fileName);
+                const std::string z = getNextToken(line, fileName);
+                wavefrontNormals.emplace_back(::atof(x.c_str()), ::atof(y.c_str()), ::atof(z.c_str()));
+            }
             else if (command == "f")
             {
                 std::vector<int> faceIndices;
                 while (!line.empty())
                 {
                     const std::string vertexToken = getNextToken(line, fileName);
-                    const std::size_t separatorIndex = vertexToken.find('/');
-                    const std::size_t afterSeparator = vertexToken.size() - separatorIndex - 1;
-                    const int positionIndex = ::atoi(vertexToken.substr(0, separatorIndex).c_str());
-                    const int texCoordIndex = ::atoi(vertexToken.substr(separatorIndex + 1, afterSeparator).c_str());
+                    std::istringstream iss(vertexToken);
+                    std::string index;
+                    std::getline(iss, index, '/');
+                    const int positionIndex = ::atoi(index.c_str());
                     // - 1 because for some reason, in wavefront, indices start at 1 instead of 0...
                     const glm::vec3 position = wavefrontPositions[positionIndex - 1];
-                    std::optional<glm::vec3> color =
+                    const std::optional<glm::vec3> color =
                         wavefrontColors.empty() ? std::optional<glm::vec3>() : wavefrontColors[positionIndex - 1];
                     std::optional<glm::vec2> texCoord;
-                    if (!wavefrontTexCoords.empty())
+                    std::optional<glm::vec3> normal;
+                    if (std::getline(iss, index, '/') && !index.empty())
                     {
+                        HATCHER_ASSERT(!wavefrontTexCoords.empty());
+                        const int texCoordIndex = ::atoi(index.c_str());
                         texCoord = wavefrontTexCoords[texCoordIndex - 1];
                         texCoord->y = 1 - texCoord->y; // Because wavefront. I guess.
                     }
-                    const int vertexIndex = getOrCreateVertex(meshData.vertices, position, color, texCoord);
+                    if (std::getline(iss, index, '/') && !index.empty())
+                    {
+                        HATCHER_ASSERT(!wavefrontNormals.empty());
+                        const int normalIndex = ::atoi(index.c_str());
+                        normal = wavefrontNormals[normalIndex - 1];
+                    }
+                    const int vertexIndex = getOrCreateVertex(meshData.vertices, position, color, texCoord, normal);
                     faceIndices.push_back(vertexIndex);
                 }
                 switch (faceIndices.size())
@@ -175,10 +194,12 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
         std::vector<float> positionsData;
         std::vector<float> colorData;
         std::vector<float> textureCoordsData;
+        std::vector<float> normalsData;
 
         positionsData.reserve(meshData.vertices.size() * 3);
         colorData.reserve(meshData.vertices.size() * 3);
         textureCoordsData.reserve(meshData.vertices.size() * 2);
+        normalsData.reserve(meshData.vertices.size() * 3);
         for (const MeshData::Vertex& vertex : meshData.vertices)
         {
             positionsData.push_back(vertex.position.x);
@@ -195,6 +216,12 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
                 textureCoordsData.push_back(vertex.textureCoord->x);
                 textureCoordsData.push_back(vertex.textureCoord->y);
             }
+            if (vertex.normal)
+            {
+                normalsData.push_back(vertex.normal->x);
+                normalsData.push_back(vertex.normal->y);
+                normalsData.push_back(vertex.normal->z);
+            }
         }
 
         HATCHER_ASSERT(colorData.empty() || colorData.size() == positionsData.size());
@@ -205,6 +232,8 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
             mesh->SetColors(colorData.data(), colorData.size());
         if (!textureCoordsData.empty())
             mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
+        if (!normalsData.empty())
+            mesh->SetNormals(normalsData.data(), normalsData.size());
         mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
         return unique_ptr<Mesh>(mesh);
     }

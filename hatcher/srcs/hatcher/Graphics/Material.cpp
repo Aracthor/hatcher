@@ -56,6 +56,11 @@ GLint Material::TextureCoordsAttribLocation() const
     return m_shaderProgram->GetAttribLocation("vertTextureCoord");
 }
 
+GLint Material::NormalsAttribLocation() const
+{
+    return m_shaderProgram->GetAttribLocation("vertNormal");
+}
+
 GLint Material::InstancedAttribLocation(const char* name) const
 {
     return m_shaderProgram->GetAttribLocation(name);

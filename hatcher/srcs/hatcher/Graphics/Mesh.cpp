@@ -70,6 +70,21 @@ void Mesh::SetTextureCoords(const float* textureCoords, int textureCoordsCount)
     FillTextureCoords(textureCoords, textureCoordsCount);
 }
 
+void Mesh::SetNormals(const float* normals, int normalCount)
+{
+    m_VAO->Bind();
+
+    const GLint normalsAttribLocation = m_material->NormalsAttribLocation();
+    m_normalsVBO = make_unique<VertexBufferObject>(false);
+    m_normalsVBO->Bind();
+
+    m_VAO->AttribVBO(*m_normalsVBO, 3, normalsAttribLocation);
+
+    m_VAO->Unbind();
+
+    FillNormals(normals, normalCount);
+}
+
 void Mesh::SetIndices(const ushort* elements, int elementCount)
 {
     m_VAO->Bind();
@@ -123,6 +138,13 @@ void Mesh::FillTextureCoords(const float* textureCoords, int textureCoordsCount)
     HATCHER_ASSERT(m_textureCoordsVBO);
     HATCHER_ASSERT(m_elementCount == (int)textureCoordsCount / 2);
     m_textureCoordsVBO->SetData(textureCoords, textureCoordsCount, m_dynamic);
+}
+
+void Mesh::FillNormals(const float* normals, int normalsCount)
+{
+    HATCHER_ASSERT(m_normalsVBO);
+    HATCHER_ASSERT(m_elementCount == (int)normalsCount / 3);
+    m_normalsVBO->SetData(normals, normalsCount, m_dynamic);
 }
 
 void Mesh::FillIndices(const ushort* elements, int elementCount)
