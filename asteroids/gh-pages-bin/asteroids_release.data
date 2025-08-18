@@ -1,0 +1,61 @@
+#version 300 es
+
+precision mediump float;
+
+in vec2 textureCoord;
+
+uniform sampler2D uniTexture;
+
+out vec4 fragColor;
+
+void main()
+{
+    fragColor = texture(uniTexture, textureCoord);
+}
+#version 300 es
+
+in vec2 vertPosition;
+in vec2 vertTextureCoord;
+
+uniform mat4 uniProjectionViewMatrix;
+uniform mat4 uniModelMatrix;
+
+out vec2 textureCoord;
+
+void main()
+{
+    gl_Position = uniProjectionViewMatrix * uniModelMatrix * vec4(vertPosition, 0.0, 1.0);
+    textureCoord = vertTextureCoord;
+}
+#version 300 es
+
+in vec4 vertPosition;
+in mat4 inModelMatrix;
+
+uniform mat4 uniProjectionViewMatrix;
+
+void main()
+{
+    gl_Position = uniProjectionViewMatrix * inModelMatrix * vertPosition;
+}
+#version 300 es
+
+in vec2 vertPosition;
+
+uniform mat4 uniProjectionViewMatrix;
+uniform mat4 uniModelMatrix;
+
+void main()
+{
+    gl_Position = uniProjectionViewMatrix * uniModelMatrix * vec4(vertPosition, 0.0, 1.0);
+}
+#version 300 es
+
+precision mediump float;
+
+out vec4 frag_colour;
+
+void main()
+{
+    frag_colour = vec4(1.0, 1.0, 1.0, 1.0);
+}
