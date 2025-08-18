@@ -91,7 +91,7 @@ class DropOffWood : public IPlan
         }
         else
         {
-            items[gatherableWood]->count += 1;
+            items[gatherableWood]->count += items[*it]->count;
             entityManager->DeleteEntity(Entity(*it));
         }
 
