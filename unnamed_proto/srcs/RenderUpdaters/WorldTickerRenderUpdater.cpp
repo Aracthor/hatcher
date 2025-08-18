@@ -27,21 +27,27 @@ class WorldTickerEventListener : public IEventListener
         if (event.type == SDL_KEYDOWN)
         {
             float tickRate = application->GetUpdateTickrate();
-            if (event.key.keysym.scancode == SDL_SCANCODE_KP_PLUS)
+            switch (event.key.keysym.scancode)
             {
+            case SDL_SCANCODE_KP_PLUS:
                 if (tickRate == 0.f)
                     tickRate = 30.f;
                 else if (tickRate < baseTickSpeed * 8.f)
                     tickRate *= 2.f;
                 application->SetUpdateTickrate(tickRate);
-            }
-            else if (event.key.keysym.scancode == SDL_SCANCODE_KP_MINUS)
-            {
+                break;
+            case SDL_SCANCODE_KP_MINUS:
                 if (almostEquals(tickRate, baseTickSpeed * 0.5f, 000.1f))
                     tickRate = 0.0f;
                 else if (tickRate > 30.f)
                     tickRate /= 2.f;
                 application->SetUpdateTickrate(tickRate);
+                break;
+            case SDL_SCANCODE_KP_MULTIPLY:
+                application->SetUpdateTickrate(baseTickSpeed);
+                break;
+            default:
+                break;
             }
         }
     }
