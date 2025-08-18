@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 #include "basic_types.hpp"
 #include "constexpr_hash.hpp"
 
