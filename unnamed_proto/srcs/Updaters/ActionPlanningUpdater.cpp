@@ -190,12 +190,18 @@ class ChopTree : public IPlan
 
     void Start(IEntityManager* entityManager, ComponentAccessor* componentAccessor, Entity entity) const override
     {
+        auto positionComponents = componentAccessor->WriteComponents<Position2DComponent>();
         const Entity treeEntity = FindNearestEntity(componentAccessor, entity, IsChoppableTree);
+
         WorkerComponent& worker = *componentAccessor->WriteComponents<WorkerComponent>()[entity];
         worker.workIndex = EWork::ChopTree;
         worker.target = treeEntity;
         worker.workedTicks = 0;
         worker.workLength = MinutesToTicks(10);
+
+        const glm::vec2 lumberjackPosition = positionComponents[entity]->position;
+        const glm::vec2 treePosition = positionComponents[treeEntity]->position;
+        positionComponents[entity]->orientation = glm::normalize(treePosition - lumberjackPosition);
 
         componentAccessor->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = treeEntity;
         componentAccessor->WriteComponents<LockableComponent>()[treeEntity]->locker = entity;
