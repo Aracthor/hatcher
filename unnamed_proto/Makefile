@@ -10,12 +10,11 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Updaters/WorkerUpdater.cpp				\
 									\
 		RenderUpdaters/CameraRenderUpdater.cpp 			\
-		RenderUpdaters/DebugGridRenderUpdater.cpp		\
 		RenderUpdaters/DemoImguiRenderUpdater.cpp		\
 		RenderUpdaters/DebugShortcutsRenderUpdater.cpp		\
 		RenderUpdaters/EntityCreatorRenderUpdater.cpp		\
 		RenderUpdaters/FPSPanelRenderUpdater.cpp		\
-		RenderUpdaters/GridRenderUpdater.cpp		\
+		RenderUpdaters/GridRenderUpdater.cpp			\
 		RenderUpdaters/GridControlPanelRenderUpdater.cpp	\
 		RenderUpdaters/InventoryPanelRenderUpdater.cpp		\
 		RenderUpdaters/MoveOrderRenderUpdater.cpp		\
