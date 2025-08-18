@@ -14,6 +14,7 @@
 #include "Components/InventoryComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
+#include "Components/WorkerComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
 #include "utils/TransformationHelper.hpp"
@@ -61,6 +62,7 @@ public:
         const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
         const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        const auto workerComponents = componentAccessor->ReadComponents<WorkerComponent>();
         auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
 
         for (int i = 0; i < componentAccessor->Count(); i++)
@@ -70,14 +72,29 @@ public:
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
                 const bool moving = !movementComponents[i]->path.empty();
-                UpdateAnimationComponent(animation, moving);
+                const bool working = workerComponents[i] && workerComponents[i]->workIndex;
+                UpdateAnimationComponent(animation, moving, working);
                 const glm::mat4 rightLegMatrix =
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
-                const float armsAngle = inventoryComponents[i] && !inventoryComponents[i]->storage.empty() ? M_PI : 0.f;
-                const glm::mat4 rightArmMatrix = glm::rotate(m_rightArm.matrix, armsAngle, glm::vec3(1.f, 0.f, 0.f));
-                const glm::mat4 leftArmMatrix = glm::rotate(m_leftArm.matrix, armsAngle, glm::vec3(1.f, 0.f, 0.f));
+                float rightArmAngle = 0.f;
+                float leftArmAngle = 0.f;
+                if (inventoryComponents[i] && !inventoryComponents[i]->storage.empty())
+                {
+                    rightArmAngle = M_PI;
+                    leftArmAngle = M_PI;
+                }
+                else if (working)
+                {
+                    rightArmAngle = std::acos(animation.rightArmProgress);
+                    if (rightArmAngle > M_PI / 2.f)
+                        rightArmAngle = M_PI - rightArmAngle;
+                    rightArmAngle += M_PI / 2.f;
+                }
+                const glm::mat4 rightArmMatrix =
+                    glm::rotate(m_rightArm.matrix, rightArmAngle, glm::vec3(0.f, -1.f, 0.f));
+                const glm::mat4 leftArmMatrix = glm::rotate(m_leftArm.matrix, leftArmAngle, glm::vec3(0.f, 1.f, 0.f));
                 m_torso.mesh->Draw(modelMatrix * m_torso.matrix);
                 m_head.mesh->Draw(modelMatrix * m_head.matrix);
                 m_rightArm.mesh->Draw(modelMatrix * rightArmMatrix);
@@ -105,7 +122,7 @@ public:
     }
 
 private:
-    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving)
+    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving, bool working)
     {
         const float legMoveSpeed = 0.1f;
         const float legMaxAngle = M_PI / 4.f;
@@ -126,6 +143,14 @@ private:
             animationComponent.rightLegAngle += legSign * legMoveSpeed;
             if (animationComponent.rightLegAngle * legSign > 0.f)
                 animationComponent.rightLegAngle = 0.f;
+        }
+
+        const float armMoveSpeed = 0.05f;
+        if (working)
+        {
+            animationComponent.rightArmProgress += armMoveSpeed;
+            if (animationComponent.rightArmProgress > 1.f)
+                animationComponent.rightArmProgress -= 2.f;
         }
     }
 

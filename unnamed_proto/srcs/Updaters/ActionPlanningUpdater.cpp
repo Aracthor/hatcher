@@ -195,7 +195,7 @@ class ChopTree : public IPlan
         worker.workIndex = EWork::ChopTree;
         worker.target = treeEntity;
         worker.workedTicks = 0;
-        worker.workLength = MinutesToTicks(1);
+        worker.workLength = MinutesToTicks(10);
 
         componentAccessor->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = treeEntity;
         componentAccessor->WriteComponents<LockableComponent>()[treeEntity]->locker = entity;
