@@ -126,7 +126,7 @@ const onGlobalPageLoad = async () => {
         print: (text) => { logger.log(`[C++] ${text}`); },
         printErr: (text) => { logger.error(`[C++] ${text}`); },
 
-        locateFile: (path, prefix) => { return "bin/" + path; },
+        locateFile: (path, prefix) => { return "gh-pages-bin/" + path; },
 
         canvas: canvas,
         preinitializedWebGLContext: webglCtx,
