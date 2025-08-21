@@ -25,6 +25,83 @@ using namespace hatcher;
 namespace
 {
 
+class SteveAnimationUpdater final : public RenderUpdater
+{
+public:
+    SteveAnimationUpdater(const IRendering* rendering) {}
+
+    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
+                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
+    {
+        const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        const auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
+        const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
+        const auto workerComponents = componentAccessor->ReadComponents<WorkerComponent>();
+        auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
+
+        for (int i = 0; i < componentAccessor->Count(); i++)
+        {
+            if (positionComponents[i] && movementComponents[i] && animationComponents[i])
+            {
+                SteveAnimationComponent& animation = *animationComponents[i];
+                const bool moving = !movementComponents[i]->path.empty();
+                const bool working = workerComponents[i] && workerComponents[i]->workIndex;
+                UpdateAnimationComponent(animation, moving, working);
+
+                const auto IsResource = [&itemComponents](Entity entity)
+                { return itemComponents[entity]->type == ItemComponent::Resource; };
+                if (inventoryComponents[i] &&
+                    std::find_if(inventoryComponents[i]->storage.begin(), inventoryComponents[i]->storage.end(),
+                                 IsResource) != inventoryComponents[i]->storage.end())
+                {
+                    animation.rightArmAngle = M_PI;
+                    animation.leftArmAngle = M_PI;
+                }
+            }
+        }
+    }
+
+private:
+    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving, bool working)
+    {
+        const float legMoveSpeed = 0.1f;
+        const float legMaxAngle = M_PI / 4.f;
+        if (moving)
+        {
+            const float legSign = animationComponent.rightLegRising ? -1.f : 1.f;
+            animationComponent.rightLegAngle += legSign * legMoveSpeed;
+            if (std::abs(animationComponent.rightLegAngle) > legMaxAngle)
+            {
+                const float angleToBackdown = std::abs(animationComponent.rightLegAngle) - legMaxAngle;
+                animationComponent.rightLegAngle -= legSign * angleToBackdown * 2.f;
+                animationComponent.rightLegRising = !animationComponent.rightLegRising;
+            }
+        }
+        else if (animationComponent.rightLegAngle != 0.f)
+        {
+            const float legSign = (animationComponent.rightLegAngle > 0.f) ? -1.f : 1.f;
+            animationComponent.rightLegAngle += legSign * legMoveSpeed;
+            if (animationComponent.rightLegAngle * legSign > 0.f)
+                animationComponent.rightLegAngle = 0.f;
+        }
+
+        const float armMoveSpeed = 0.05f;
+        animationComponent.rightArmAngle = 0.f;
+        animationComponent.leftArmAngle = 0.f;
+        if (working)
+        {
+            animationComponent.rightArmProgress += armMoveSpeed;
+            if (animationComponent.rightArmProgress > 1.f)
+                animationComponent.rightArmProgress -= 2.f;
+            animationComponent.rightArmAngle = std::acos(animationComponent.rightArmProgress);
+            if (animationComponent.rightArmAngle > M_PI / 2.f)
+                animationComponent.rightArmAngle = M_PI - animationComponent.rightArmAngle;
+            animationComponent.rightArmAngle += M_PI / 2.f;
+        }
+    }
+};
+
 class SteveRenderUpdater final : public RenderUpdater
 {
 public:
@@ -61,37 +138,20 @@ public:
         frameRenderer.PrepareSceneDraw(m_material.get());
 
         const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
-        const auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
-        const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
-        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
-        const auto workerComponents = componentAccessor->ReadComponents<WorkerComponent>();
         auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
 
         for (int i = 0; i < componentAccessor->Count(); i++)
         {
-            if (positionComponents[i] && movementComponents[i] && animationComponents[i])
+            if (positionComponents[i] && animationComponents[i])
             {
                 const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
-                const bool moving = !movementComponents[i]->path.empty();
-                const bool working = workerComponents[i] && workerComponents[i]->workIndex;
-                UpdateAnimationComponent(animation, moving, working);
                 const glm::mat4 rightLegMatrix =
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 float rightArmAngle = animation.rightArmAngle;
-                float leftArmAngle = 0.f;
-                const auto IsResource = [&itemComponents](Entity entity)
-                { return itemComponents[entity]->type == ItemComponent::Resource; };
-                if (inventoryComponents[i] &&
-                    std::find_if(inventoryComponents[i]->storage.begin(), inventoryComponents[i]->storage.end(),
-                                 IsResource) != inventoryComponents[i]->storage.end())
-                {
-                    animation.rightArmAngle = M_PI;
-                    rightArmAngle = M_PI;
-                    leftArmAngle = M_PI;
-                }
+                float leftArmAngle = animation.leftArmAngle;
                 const glm::mat4 rightArmMatrix =
                     glm::rotate(m_rightArm.matrix, rightArmAngle, glm::vec3(0.f, -1.f, 0.f));
                 const glm::mat4 leftArmMatrix = glm::rotate(m_leftArm.matrix, leftArmAngle, glm::vec3(0.f, 1.f, 0.f));
@@ -121,44 +181,6 @@ public:
         }
     }
 
-private:
-    void UpdateAnimationComponent(SteveAnimationComponent& animationComponent, bool moving, bool working)
-    {
-        const float legMoveSpeed = 0.1f;
-        const float legMaxAngle = M_PI / 4.f;
-        if (moving)
-        {
-            const float legSign = animationComponent.rightLegRising ? -1.f : 1.f;
-            animationComponent.rightLegAngle += legSign * legMoveSpeed;
-            if (std::abs(animationComponent.rightLegAngle) > legMaxAngle)
-            {
-                const float angleToBackdown = std::abs(animationComponent.rightLegAngle) - legMaxAngle;
-                animationComponent.rightLegAngle -= legSign * angleToBackdown * 2.f;
-                animationComponent.rightLegRising = !animationComponent.rightLegRising;
-            }
-        }
-        else if (animationComponent.rightLegAngle != 0.f)
-        {
-            const float legSign = (animationComponent.rightLegAngle > 0.f) ? -1.f : 1.f;
-            animationComponent.rightLegAngle += legSign * legMoveSpeed;
-            if (animationComponent.rightLegAngle * legSign > 0.f)
-                animationComponent.rightLegAngle = 0.f;
-        }
-
-        const float armMoveSpeed = 0.05f;
-        animationComponent.rightArmAngle = 0.f;
-        if (working)
-        {
-            animationComponent.rightArmProgress += armMoveSpeed;
-            if (animationComponent.rightArmProgress > 1.f)
-                animationComponent.rightArmProgress -= 2.f;
-            animationComponent.rightArmAngle = std::acos(animationComponent.rightArmProgress);
-            if (animationComponent.rightArmAngle > M_PI / 2.f)
-                animationComponent.rightArmAngle = M_PI - animationComponent.rightArmAngle;
-            animationComponent.rightArmAngle += M_PI / 2.f;
-        }
-    }
-
     struct BodyPart
     {
         unique_ptr<Mesh> mesh;
@@ -175,6 +197,7 @@ private:
     std::array<BodyPart*, 6> m_bodyParts;
 };
 
+RenderUpdaterRegisterer<SteveAnimationUpdater> animationRegisterer((int)ERenderUpdaterOrder::PreRender);
 RenderUpdaterRegisterer<SteveRenderUpdater> registerer((int)ERenderUpdaterOrder::Scene);
 
 } // namespace
