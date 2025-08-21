@@ -35,7 +35,20 @@ public:
 
 bool IsEntityWood(const ComponentAccessor* componentAccessor, Entity entity)
 {
-    return componentAccessor->ReadComponents<NameComponent>()[entity]->name == "Wood";
+    const auto nameComponent = componentAccessor->ReadComponents<NameComponent>()[entity];
+    return nameComponent && nameComponent->name == "Wood";
+}
+
+bool IsEntityAxe(const ComponentAccessor* componentAccessor, Entity entity)
+{
+    const auto nameComponent = componentAccessor->ReadComponents<NameComponent>()[entity];
+    return nameComponent && nameComponent->name == "Axe";
+}
+
+bool IsAvailableEntityAxe(const ComponentAccessor* componentAccessor, Entity entity)
+{
+    return IsEntityAxe(componentAccessor, entity) &&
+           !componentAccessor->ReadComponents<LockableComponent>()[entity]->locker;
 }
 
 bool IsWoodStack(const ComponentAccessor* componentAccessor, Entity entity)
@@ -50,6 +63,25 @@ bool IsGatherableWood(const ComponentAccessor* componentAccessor, Entity entity)
     const auto& lockableComponent = componentAccessor->ReadComponents<LockableComponent>()[entity];
     return IsEntityWood(componentAccessor, entity) && positionComponent && positionComponent->position != woodTarget &&
            !lockableComponent->locker;
+}
+
+bool ContainsAxe(const ComponentAccessor* componentAccessor, Entity entity)
+{
+    const auto& inventoryComponent = componentAccessor->ReadComponents<InventoryComponent>()[entity];
+    if (!inventoryComponent)
+        return false;
+    auto IsAxe = [componentAccessor](Entity entity) { return IsEntityAxe(componentAccessor, entity); };
+    return std::any_of(inventoryComponent->storage.begin(), inventoryComponent->storage.end(), IsAxe);
+}
+
+bool ContainsAvailableAxe(const ComponentAccessor* componentAccessor, Entity entity)
+{
+    const auto& inventoryComponent = componentAccessor->ReadComponents<InventoryComponent>()[entity];
+    if (!inventoryComponent)
+        return false;
+    auto IsAvailableAxe = [componentAccessor](Entity entity)
+    { return IsAvailableEntityAxe(componentAccessor, entity); };
+    return std::any_of(inventoryComponent->storage.begin(), inventoryComponent->storage.end(), IsAvailableAxe);
 }
 
 bool IsChoppableTree(const ComponentAccessor* componentAccessor, Entity entity)
@@ -182,6 +214,8 @@ class ChopTree : public IPlan
 {
     bool CanBeAchieved(const ComponentAccessor* componentAccessor, Entity entity) const override
     {
+        if (!ContainsAxe(componentAccessor, entity))
+            return false;
         const auto& positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
         const Entity treeEntity = FindNearestEntity(componentAccessor, entity, IsChoppableTree);
         return treeEntity != Entity::Invalid() &&
@@ -218,6 +252,8 @@ class MoveToTree : public IPlan
 {
     bool CanBeAchieved(const ComponentAccessor* componentAccessor, Entity entity) const override
     {
+        if (!ContainsAxe(componentAccessor, entity))
+            return false;
         const Entity treeEntity = FindNearestEntity(componentAccessor, entity, IsChoppableTree);
         return treeEntity != Entity::Invalid();
     }
@@ -244,6 +280,70 @@ class MoveToTree : public IPlan
     }
 };
 
+class GetAxe : public IPlan
+{
+    bool CanBeAchieved(const ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        if (ContainsAxe(componentAccessor, entity))
+            return false;
+        const auto& positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        const Entity rackEntity = FindNearestEntity(componentAccessor, entity, ContainsAvailableAxe);
+        return rackEntity != Entity::Invalid() &&
+               glm::distance(positionComponents[rackEntity]->position, positionComponents[entity]->position) <= 1.f;
+    }
+
+    void Start(IEntityManager* entityManager, ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        auto inventoryComponents = componentAccessor->WriteComponents<InventoryComponent>();
+        const Entity rackEntity = FindNearestEntity(componentAccessor, entity, ContainsAvailableAxe);
+        HATCHER_ASSERT(rackEntity != Entity::Invalid());
+        auto& rackInventory = inventoryComponents[rackEntity];
+        HATCHER_ASSERT(rackInventory);
+        auto IsAvailableAxe = [componentAccessor](Entity entity)
+        { return IsAvailableEntityAxe(componentAccessor, entity); };
+        auto it = std::find_if(rackInventory->storage.begin(), rackInventory->storage.end(), IsAvailableAxe);
+        HATCHER_ASSERT(it != rackInventory->storage.end());
+
+        componentAccessor->WriteComponents<ItemComponent>()[*it]->inventory = entity;
+        componentAccessor->WriteComponents<LockableComponent>()[*it]->locker = entity;
+        inventoryComponents[entity]->storage.push_back(*it);
+        rackInventory->storage.erase(it);
+    }
+
+    bool IsOngoing(const ComponentAccessor* componentAccessor, Entity entity) const override { return false; }
+};
+
+class MoveToAxe : public IPlan
+{
+    bool CanBeAchieved(const ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        if (ContainsAxe(componentAccessor, entity))
+            return false;
+        const Entity rackEntity = FindNearestEntity(componentAccessor, entity, ContainsAvailableAxe);
+        return rackEntity != Entity::Invalid();
+    }
+
+    void Start(IEntityManager* entityManager, ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        const auto& positions = componentAccessor->ReadComponents<Position2DComponent>();
+        const Entity rackEntity = FindNearestEntity(componentAccessor, entity, ContainsAvailableAxe);
+        const SquareGrid* grid = componentAccessor->ReadWorldComponent<SquareGrid>();
+
+        const glm::vec2 position = positions[entity]->position;
+        const glm::vec2 treePosition = positions[rackEntity]->position;
+        std::vector<glm::vec2> path = grid->GetPathIfPossible(position, treePosition, 1.f);
+        componentAccessor->WriteComponents<Movement2DComponent>()[entity]->path = path;
+
+        componentAccessor->WriteComponents<ActionPlanningComponent>()[entity]->lockedEntity = rackEntity;
+    }
+
+    bool IsOngoing(const ComponentAccessor* componentAccessor, Entity entity) const override
+    {
+        const std::vector<glm::vec2>& path = componentAccessor->ReadComponents<Movement2DComponent>()[entity]->path;
+        return !path.empty();
+    }
+};
+
 const IPlan* plans[] = {
     new DropOffWood(),
     new BringBackWood(),
@@ -252,6 +352,8 @@ const IPlan* plans[] = {
     //
     new ChopTree(),
     new MoveToTree(),
+    new GetAxe(),
+    new MoveToAxe(),
 };
 
 void UpdatePlanning(ActionPlanningComponent& planning, IEntityManager* entityManager,

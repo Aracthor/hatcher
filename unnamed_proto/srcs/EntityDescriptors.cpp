@@ -46,6 +46,7 @@ EntityDescriptorRegisterer Axe{
         ItemComponent{
             .type = ItemComponent::Tool,
         },
+        LockableComponent{},
         NameComponent{
             .name = "Axe",
         },

@@ -91,7 +91,6 @@ public:
         , m_rackEntityDescriptor(EntityDescriptorID::Create("Rack"))
         , m_rackItemLocations(10, &ItemDisplayComponent::LocationHash)
     {
-        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
         m_rackInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
         m_rackInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
         m_rackInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
