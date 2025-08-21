@@ -12,6 +12,7 @@
 #include "Components/ObstacleComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "Components/WorkerComponent.hpp"
+#include "RenderComponents/ItemDisplayComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
@@ -34,6 +35,7 @@ ComponentTypeRegisterer<ObstacleComponent, EComponentList::Gameplay> obstacleReg
 ComponentTypeRegisterer<Position2DComponent, EComponentList::Gameplay> position2DRegisterer;
 ComponentTypeRegisterer<WorkerComponent, EComponentList::Gameplay> workerRegisterer;
 
+ComponentTypeRegisterer<ItemDisplayComponent, EComponentList::Rendering> itemDisplayRegisterer;
 ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> selectableRegisterer;
 ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> staticMeshRegisterer;
 ComponentTypeRegisterer<SteveAnimationComponent, EComponentList::Rendering> steveAnimationRegisterer;
@@ -87,6 +89,7 @@ EntityDescriptorRegisterer Steve{
         WorkerComponent{},
     },
     {
+        ItemDisplayComponent{},
         SelectableComponent{},
         SteveAnimationComponent{},
     },

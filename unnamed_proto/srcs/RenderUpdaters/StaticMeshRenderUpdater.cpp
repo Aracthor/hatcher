@@ -16,9 +16,9 @@
 #include "Components/GrowableComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
+#include "RenderComponents/ItemDisplayComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/StaticMeshComponent.hpp"
-#include "RenderComponents/SteveAnimationComponent.hpp"
 #include "utils/TransformationHelper.hpp"
 
 using namespace hatcher;
@@ -57,7 +57,7 @@ public:
         const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
         const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
         const auto growableComponents = componentAccessor->ReadComponents<GrowableComponent>();
-        const auto steveAnimationComponents = renderComponentAccessor->ReadComponents<SteveAnimationComponent>();
+        const auto itemDisplaysComponents = renderComponentAccessor->ReadComponents<ItemDisplayComponent>();
         auto staticMeshComponents = renderComponentAccessor->WriteComponents<StaticMeshComponent>();
 
         for (int i = 0; i < componentAccessor->Count(); i++)
@@ -84,21 +84,15 @@ public:
                 {
                     const Entity inventory = *itemComponent->inventory;
                     const auto storagePosition = positionComponents[inventory];
-                    if (storagePosition && steveAnimationComponents[inventory])
+                    if (storagePosition && itemDisplaysComponents[inventory])
                     {
-                        if (itemComponent->type == ItemComponent::Tool)
-                        {
-                            const float armAngle = steveAnimationComponents[inventory]->rightArmAngle;
-                            modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
-                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.0f, -0.3f, 1.1f));
-                            modelMatrix = glm::rotate(*modelMatrix, -armAngle + static_cast<float>(M_PI) / 2.f,
-                                                      glm::vec3(0.f, 1.f, 0.0f));
-                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.4f, 0.0f, -0.2f));
-                        }
-                        else
+                        const auto itemDisplayComponent = itemDisplaysComponents[inventory];
+                        const ItemDisplayComponent::LocationKey locationKey(itemComponent->type, 0);
+                        const auto it = itemDisplayComponent->locations.find(locationKey);
+                        if (it != itemDisplayComponent->locations.end())
                         {
                             modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
-                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
+                            modelMatrix = *modelMatrix * it->second;
                         }
                     }
                 }

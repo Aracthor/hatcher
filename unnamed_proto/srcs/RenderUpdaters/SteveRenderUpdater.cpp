@@ -16,6 +16,7 @@
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "Components/WorkerComponent.hpp"
+#include "RenderComponents/ItemDisplayComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "RenderComponents/SteveAnimationComponent.hpp"
 #include "utils/TransformationHelper.hpp"
@@ -38,6 +39,7 @@ public:
         const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
         const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
         const auto workerComponents = componentAccessor->ReadComponents<WorkerComponent>();
+        auto itemDisplayComponents = renderComponentAccessor->WriteComponents<ItemDisplayComponent>();
         auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
 
         for (int i = 0; i < componentAccessor->Count(); i++)
@@ -58,6 +60,19 @@ public:
                     animation.rightArmAngle = M_PI;
                     animation.leftArmAngle = M_PI;
                 }
+
+                HATCHER_ASSERT(itemDisplayComponents[i]);
+                ItemDisplayComponent& itemDisplayComponent = *itemDisplayComponents[i];
+                glm::mat4 toolLocation(1.f);
+                toolLocation = glm::translate(toolLocation, glm::vec3(0.0f, -0.3f, 1.1f));
+                toolLocation = glm::rotate(toolLocation, -animation.rightArmAngle + static_cast<float>(M_PI) / 2.f,
+                                           glm::vec3(0.f, 1.f, 0.0f));
+                toolLocation = glm::translate(toolLocation, glm::vec3(0.4f, 0.0f, -0.2f));
+                itemDisplayComponent.locations[std::make_pair(ItemComponent::Tool, 0)] = toolLocation;
+
+                glm::mat4 resourceLocation(1.f);
+                resourceLocation = glm::translate(resourceLocation, glm::vec3(0.f, 0.f, 1.8f));
+                itemDisplayComponent.locations[std::make_pair(ItemComponent::Resource, 0)] = resourceLocation;
             }
         }
     }

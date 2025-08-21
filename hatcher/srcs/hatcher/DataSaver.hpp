@@ -4,6 +4,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace hatcher
@@ -16,6 +17,9 @@ public:
 
     template <typename T>
     inline void operator<<(const T& value);
+
+    template <typename T, typename U>
+    void operator<<(const std::pair<T, U>& pair);
 
     template <typename T>
     void operator<<(const std::vector<T>& vector);

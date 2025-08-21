@@ -8,6 +8,13 @@ void DataLoader::operator>>(T& value)
     LoadData(&value, sizeof(value));
 }
 
+template <typename T, typename U>
+void DataLoader::operator>>(std::pair<T, U>& pair)
+{
+    *this >> pair.first;
+    *this >> pair.second;
+}
+
 template <typename T>
 void DataLoader::operator>>(std::vector<T>& vector)
 {

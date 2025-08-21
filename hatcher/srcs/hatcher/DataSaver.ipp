@@ -10,6 +10,13 @@ void DataSaver::operator<<(const T& value)
     SaveData(&value, sizeof(value));
 }
 
+template <typename T, typename U>
+void DataSaver::operator<<(const std::pair<T, U>& pair)
+{
+    *this << pair.first;
+    *this << pair.second;
+}
+
 template <typename T>
 void DataSaver::operator<<(const std::vector<T>& vector)
 {

@@ -17,6 +17,9 @@ public:
     template <typename T>
     inline void operator>>(T& value);
 
+    template <typename T, typename U>
+    void operator>>(std::pair<T, U>& pair);
+
     template <typename T>
     void operator>>(std::vector<T>& vector);
 

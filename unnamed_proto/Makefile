@@ -10,6 +10,8 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Updaters/ObstacleUpdater.cpp				\
 		Updaters/WorkerUpdater.cpp				\
 									\
+		RenderComponents/ItemDisplayComponent.cpp		\
+									\
 		RenderUpdaters/CameraRenderUpdater.cpp 			\
 		RenderUpdaters/DemoImguiRenderUpdater.cpp		\
 		RenderUpdaters/DebugShortcutsRenderUpdater.cpp		\
