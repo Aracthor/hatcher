@@ -68,7 +68,6 @@ EntityDescriptorRegisterer Melon{
         Position2DComponent{},
     },
     {
-        SelectableComponent{},
         StaticMeshComponent{
             .type = StaticMeshComponent::Melon,
         },
@@ -112,7 +111,6 @@ EntityDescriptorRegisterer Tree{
         Position2DComponent{},
     },
     {
-        SelectableComponent{},
         StaticMeshComponent{
             .type = StaticMeshComponent::Tree,
         },
@@ -129,7 +127,6 @@ EntityDescriptorRegisterer Wood{
         },
     },
     {
-        SelectableComponent{},
         StaticMeshComponent{
             .type = StaticMeshComponent::Wood,
         },
