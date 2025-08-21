@@ -55,23 +55,6 @@ EntityDescriptorRegisterer Axe{
     },
 };
 
-EntityDescriptorRegisterer Locker{
-    EntityDescriptorID::Create("Locker"),
-    {
-        InventoryComponent{},
-        NameComponent{
-            .name = "Locker",
-        },
-        Position2DComponent{},
-    },
-    {
-        SelectableComponent{},
-        StaticMeshComponent{
-            .type = StaticMeshComponent::Locker,
-        },
-    },
-};
-
 EntityDescriptorRegisterer Melon{
     EntityDescriptorID::Create("Melon"),
     {

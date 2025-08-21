@@ -43,8 +43,6 @@ public:
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Axe, "assets/meshes/axe.obj");
-        CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Locker, "assets/meshes/locker.obj",
-                           "assets/textures/locker.bmp");
         CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
                            "assets/textures/melon.bmp");
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Tree, "assets/meshes/tree.obj");
