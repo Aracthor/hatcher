@@ -16,13 +16,10 @@ class DataSaver;
 struct ItemDisplayComponent
 {
     using LocationKey = std::pair<ItemComponent::EType, int>;
-
-private:
     static size_t LocationHash(LocationKey key);
 
-public:
-    std::unordered_map<LocationKey, glm::mat4, decltype(&LocationHash)> locations =
-        std::unordered_map<LocationKey, glm::mat4, decltype(&LocationHash)>(10, &LocationHash);
+    using Locations = std::unordered_map<LocationKey, glm::mat4, decltype(&LocationHash)>;
+    Locations locations = Locations(10, &LocationHash);
 };
 
 void operator<<(DataSaver& saver, const ItemDisplayComponent& component);

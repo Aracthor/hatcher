@@ -76,6 +76,22 @@ EntityDescriptorRegisterer Melon{
     },
 };
 
+EntityDescriptorRegisterer Rack{
+    EntityDescriptorID::Create("Rack"),
+    {
+        InventoryComponent{},
+        ObstacleComponent{},
+        Position2DComponent{},
+    },
+    {
+        ItemDisplayComponent{.locations = {}},
+        SelectableComponent{},
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Rack,
+        },
+    },
+};
+
 EntityDescriptorRegisterer Steve{
     EntityDescriptorID::Create("Steve"),
     {

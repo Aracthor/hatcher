@@ -14,6 +14,7 @@
 #include <utility> // std::pair
 
 #include "Components/GrowableComponent.hpp"
+#include "Components/InventoryComponent.hpp"
 #include "Components/ItemComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/ItemDisplayComponent.hpp"
@@ -34,6 +35,21 @@ unique_ptr<Material> CreateTextureMaterial(MaterialFactory* materialFactory, con
     return material;
 }
 
+int ItemIndex(const InventoryComponent& inventory, Entity entity, ComponentReader<ItemComponent> itemComponents)
+{
+    const ItemComponent::EType itemType = itemComponents[entity]->type;
+    int typeIndex = 0;
+    int index = 0;
+    while (inventory.storage[index] != entity)
+    {
+        Entity entity = inventory.storage[index];
+        if (itemComponents[entity]->type == itemType)
+            typeIndex++;
+        index++;
+    }
+    return typeIndex;
+}
+
 class StaticMeshRenderUpdater final : public RenderUpdater
 {
 public:
@@ -45,6 +61,7 @@ public:
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Axe, "assets/meshes/axe.obj");
         CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
                            "assets/textures/melon.bmp");
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Rack, "assets/meshes/rack.obj");
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Tree, "assets/meshes/tree.obj");
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Wood, "assets/meshes/wood.obj");
     }
@@ -55,8 +72,9 @@ public:
                 ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
         const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
-        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
         const auto growableComponents = componentAccessor->ReadComponents<GrowableComponent>();
+        const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
         const auto itemDisplaysComponents = renderComponentAccessor->ReadComponents<ItemDisplayComponent>();
         auto staticMeshComponents = renderComponentAccessor->WriteComponents<StaticMeshComponent>();
 
@@ -87,7 +105,9 @@ public:
                     if (storagePosition && itemDisplaysComponents[inventory])
                     {
                         const auto itemDisplayComponent = itemDisplaysComponents[inventory];
-                        const ItemDisplayComponent::LocationKey locationKey(itemComponent->type, 0);
+                        const auto inventoryComponent = *inventoryComponents[inventory];
+                        const int itemIndex = ItemIndex(inventoryComponent, Entity(i), itemComponents);
+                        const ItemDisplayComponent::LocationKey locationKey(itemComponent->type, itemIndex);
                         const auto it = itemDisplayComponent->locations.find(locationKey);
                         if (it != itemDisplayComponent->locations.end())
                         {

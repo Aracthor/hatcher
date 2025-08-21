@@ -8,6 +8,7 @@ struct StaticMeshComponent
     {
         Axe,
         Melon,
+        Rack,
         Tree,
         Wood,
         COUNT,
