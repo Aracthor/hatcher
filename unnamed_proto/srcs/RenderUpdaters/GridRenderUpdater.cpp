@@ -65,10 +65,7 @@ public:
             for (int x = grid->GetTileCoordMin().x; x < grid->GetTileCoordMax().x; x++)
             {
                 const glm::vec2 tileCenter = grid->GetTileCenter({x, y});
-                if (!grid->HasTileData(tileCenter))
-                    continue;
-                const SquareGrid::TileData& tileData = grid->GetTileData(tileCenter);
-                if (tileData.walkable)
+                if (grid->HasTileData(tileCenter))
                 {
                     const glm::mat4 tileMatrix = glm::translate(glm::vec3(tileCenter, 0.f));
                     frameRenderer.PrepareSceneDraw(m_tileMaterial.get());
