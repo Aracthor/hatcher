@@ -182,6 +182,11 @@ void World::Update()
     m_entityManager->UpdateNewAndDeletedEntities();
     for (const Entity entity : entitiesAdded)
     {
+        for (unique_ptr<Updater>& updater : m_updaters)
+        {
+            updater->OnCreatedEntity(entity, m_settings, m_entityManager.get(),
+                                     m_entityManager->GetComponentAccessor());
+        }
         for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
         {
             renderUpdater->OnCreateEntity(entity, m_entityManager->GetComponentAccessor(),

@@ -71,11 +71,10 @@ void Pathfinding::DeleteNode(glm::vec2 position)
     m_nodes.erase(it);
 }
 
-std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos) const
+std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos, float distance) const
 {
     const Node* startNode = FindNodeByPosition(startPos);
-    const Node* endNode = FindNodeByPosition(endPos);
-    if (!startNode || !endNode)
+    if (!startNode)
         return {};
 
     std::unordered_map<const Pathfinding::Node*, const Pathfinding::Node*> previous;
@@ -86,7 +85,7 @@ std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos
     previous[startNode] = nullptr;
     toVisit.insert(startNode);
 
-    while (!toVisit.empty() && *toVisit.begin() != endNode)
+    while (!toVisit.empty() && glm::distance((*toVisit.begin())->pos, endPos) > distance)
     {
         const Node* node = *toVisit.begin();
         toVisit.erase(toVisit.begin());
@@ -101,10 +100,10 @@ std::vector<glm::vec2> Pathfinding::GetPath(glm::vec2 startPos, glm::vec2 endPos
         }
     }
 
-    if (!toVisit.empty() && *toVisit.begin() == endNode)
+    if (!toVisit.empty() && glm::distance((*toVisit.begin())->pos, endPos) <= distance)
     {
         std::vector<glm::vec2> result;
-        const Node* node = endNode;
+        const Node* node = *toVisit.begin();
         while (node != startNode)
         {
             result.push_back(node->pos);

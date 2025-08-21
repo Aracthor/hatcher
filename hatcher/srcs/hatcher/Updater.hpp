@@ -15,6 +15,11 @@ public:
 
     virtual void Update(WorldSettings& settings, IEntityManager* entityManager,
                         ComponentAccessor* componentAccessor) = 0;
+
+    virtual void OnCreatedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
+                                 ComponentAccessor* componentAccessor)
+    {
+    }
     virtual void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
                                  ComponentAccessor* componentAccessor)
     {

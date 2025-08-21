@@ -9,6 +9,7 @@
 #include "Components/LockableComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/NameComponent.hpp"
+#include "Components/ObstacleComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "Components/WorkerComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
@@ -29,6 +30,7 @@ ComponentTypeRegisterer<ItemComponent, EComponentList::Gameplay> itemRegisterer;
 ComponentTypeRegisterer<LockableComponent, EComponentList::Gameplay> lockableRegisterer;
 ComponentTypeRegisterer<Movement2DComponent, EComponentList::Gameplay> movement2DRegisterer;
 ComponentTypeRegisterer<NameComponent, EComponentList::Gameplay> nameRegisterer;
+ComponentTypeRegisterer<ObstacleComponent, EComponentList::Gameplay> obstacleRegisterer;
 ComponentTypeRegisterer<Position2DComponent, EComponentList::Gameplay> position2DRegisterer;
 ComponentTypeRegisterer<WorkerComponent, EComponentList::Gameplay> workerRegisterer;
 
@@ -106,6 +108,7 @@ EntityDescriptorRegisterer Tree{
             .amount = 5,
         },
         LockableComponent{},
+        ObstacleComponent{},
         Position2DComponent{},
     },
     {

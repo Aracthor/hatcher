@@ -58,26 +58,7 @@ std::vector<glm::vec2> SquareGrid::GetPathIfPossible(glm::vec2 start, glm::vec2 
 {
     const glm::vec2 startPos = GetTileCenter(start);
     const glm::vec2 endPos = GetTileCenter(end);
-    std::vector<glm::vec2> result = m_pathfinding.GetPath(startPos, endPos);
-    float currentDistance = 0.f;
-    std::reverse(result.begin(), result.end());
-    while (result.size() > 1 && currentDistance < distance)
-    {
-        const float segmentDistance = glm::length(end - result.back());
-        if (currentDistance + segmentDistance <= distance)
-        {
-            result.pop_back();
-            currentDistance += segmentDistance;
-        }
-        else
-        {
-            const glm::vec2 lastDirection = glm::normalize(result.back() - result[result.size() - 2]);
-            result.back() = result.back() + lastDirection * (distance - currentDistance);
-            currentDistance = distance;
-        }
-    }
-    std::reverse(result.begin(), result.end());
-    return result;
+    return m_pathfinding.GetPath(startPos, endPos, distance);
 }
 
 void SquareGrid::SetTileWalkable(glm::vec2 position, bool walkable)

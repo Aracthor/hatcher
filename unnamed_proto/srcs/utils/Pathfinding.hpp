@@ -16,7 +16,7 @@ public:
     void LinkNodes(glm::vec2 positionA, glm::vec2 positionB);
     void DeleteNode(glm::vec2 position);
 
-    std::vector<glm::vec2> GetPath(glm::vec2 startPos, glm::vec2 endPos) const;
+    std::vector<glm::vec2> GetPath(glm::vec2 startPos, glm::vec2 endPos, float distance) const;
 
     struct Node
     {
