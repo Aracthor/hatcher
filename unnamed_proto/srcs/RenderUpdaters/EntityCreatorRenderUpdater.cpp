@@ -81,7 +81,7 @@ public:
         , m_treeEntityDescriptor(EntityDescriptorID::Create("Tree"))
         , m_woodEntityDescriptor(EntityDescriptorID::Create("Wood"))
     {
-        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("Wood"));
+        m_steveInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
     }
 
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,

@@ -42,6 +42,7 @@ public:
         MeshLoader* meshLoader = rendering->GetMeshLoader().get();
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Axe, "assets/meshes/axe.obj");
         CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Locker, "assets/meshes/locker.obj",
                            "assets/textures/locker.bmp");
         CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
@@ -69,29 +70,44 @@ public:
                 const unique_ptr<Mesh>& mesh = m_meshes[staticMeshComponents[i]->type];
                 const unique_ptr<Material>& material = m_materials[staticMeshComponents[i]->type];
 
+                const auto positionComponent = positionComponents[i];
+                const auto itemComponent = itemComponents[i];
+
                 std::optional<glm::mat4> modelMatrix;
-                if (positionComponents[i])
+                if (positionComponent)
                 {
-                    modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                    modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
                     if (growableComponents[i])
                     {
                         modelMatrix = glm::scale(*modelMatrix, glm::vec3(growableComponents[i]->maturity));
                     }
                 }
-                else if (itemComponents[i] && itemComponents[i]->inventory)
+                else if (itemComponent && itemComponent->inventory)
                 {
-                    const Entity inventory = *itemComponents[i]->inventory;
+                    const Entity inventory = *itemComponent->inventory;
                     const auto storagePosition = positionComponents[inventory];
                     if (storagePosition && steveAnimationComponents[inventory])
                     {
-                        modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
-                        modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
+                        if (itemComponent->type == ItemComponent::Tool)
+                        {
+                            const float armAngle = steveAnimationComponents[inventory]->rightArmAngle;
+                            modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
+                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.0f, -0.3f, 1.1f));
+                            modelMatrix = glm::rotate(*modelMatrix, -armAngle + static_cast<float>(M_PI) / 2.f,
+                                                      glm::vec3(0.f, 1.f, 0.0f));
+                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.4f, 0.0f, -0.2f));
+                        }
+                        else
+                        {
+                            modelMatrix = TransformationHelper::ModelFromComponents(*storagePosition);
+                            modelMatrix = glm::translate(*modelMatrix, glm::vec3(0.f, 0.f, 1.8f));
+                        }
                     }
                 }
                 if (modelMatrix)
                 {
                     frameRenderer.PrepareSceneDraw(material.get());
-                    const int count = itemComponents[i] ? itemComponents[i]->count : 1;
+                    const int count = itemComponent ? itemComponent->count : 1;
                     HATCHER_ASSERT(count >= 1);
                     switch (count)
                     {

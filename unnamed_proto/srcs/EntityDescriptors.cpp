@@ -38,6 +38,23 @@ ComponentTypeRegisterer<SelectableComponent, EComponentList::Rendering> selectab
 ComponentTypeRegisterer<StaticMeshComponent, EComponentList::Rendering> staticMeshRegisterer;
 ComponentTypeRegisterer<SteveAnimationComponent, EComponentList::Rendering> steveAnimationRegisterer;
 
+EntityDescriptorRegisterer Axe{
+    EntityDescriptorID::Create("Axe"),
+    {
+        ItemComponent{
+            .type = ItemComponent::Tool,
+        },
+        NameComponent{
+            .name = "Axe",
+        },
+    },
+    {
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Axe,
+        },
+    },
+};
+
 EntityDescriptorRegisterer Locker{
     EntityDescriptorID::Create("Locker"),
     {
@@ -120,7 +137,9 @@ EntityDescriptorRegisterer Tree{
 EntityDescriptorRegisterer Wood{
     EntityDescriptorID::Create("Wood"),
     {
-        ItemComponent{},
+        ItemComponent{
+            .type = ItemComponent::Resource,
+        },
         LockableComponent{},
         NameComponent{
             .name = "Wood",

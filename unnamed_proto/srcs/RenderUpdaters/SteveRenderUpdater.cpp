@@ -12,6 +12,7 @@
 #include "hatcher/Maths/glm_pure.hpp"
 
 #include "Components/InventoryComponent.hpp"
+#include "Components/ItemComponent.hpp"
 #include "Components/Movement2DComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "Components/WorkerComponent.hpp"
@@ -62,6 +63,7 @@ public:
         const auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
         const auto movementComponents = componentAccessor->ReadComponents<Movement2DComponent>();
         const auto inventoryComponents = componentAccessor->ReadComponents<InventoryComponent>();
+        const auto itemComponents = componentAccessor->ReadComponents<ItemComponent>();
         const auto workerComponents = componentAccessor->ReadComponents<WorkerComponent>();
         auto animationComponents = renderComponentAccessor->WriteComponents<SteveAnimationComponent>();
 
@@ -78,19 +80,17 @@ public:
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
                 const glm::mat4 leftLegMatrix =
                     glm::rotate(m_leftLeg.matrix, -animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));
-                float rightArmAngle = 0.f;
+                float rightArmAngle = animation.rightArmAngle;
                 float leftArmAngle = 0.f;
-                if (inventoryComponents[i] && !inventoryComponents[i]->storage.empty())
+                const auto IsResource = [&itemComponents](Entity entity)
+                { return itemComponents[entity]->type == ItemComponent::Resource; };
+                if (inventoryComponents[i] &&
+                    std::find_if(inventoryComponents[i]->storage.begin(), inventoryComponents[i]->storage.end(),
+                                 IsResource) != inventoryComponents[i]->storage.end())
                 {
+                    animation.rightArmAngle = M_PI;
                     rightArmAngle = M_PI;
                     leftArmAngle = M_PI;
-                }
-                else if (working)
-                {
-                    rightArmAngle = std::acos(animation.rightArmProgress);
-                    if (rightArmAngle > M_PI / 2.f)
-                        rightArmAngle = M_PI - rightArmAngle;
-                    rightArmAngle += M_PI / 2.f;
                 }
                 const glm::mat4 rightArmMatrix =
                     glm::rotate(m_rightArm.matrix, rightArmAngle, glm::vec3(0.f, -1.f, 0.f));
@@ -146,11 +146,16 @@ private:
         }
 
         const float armMoveSpeed = 0.05f;
+        animationComponent.rightArmAngle = 0.f;
         if (working)
         {
             animationComponent.rightArmProgress += armMoveSpeed;
             if (animationComponent.rightArmProgress > 1.f)
                 animationComponent.rightArmProgress -= 2.f;
+            animationComponent.rightArmAngle = std::acos(animationComponent.rightArmProgress);
+            if (animationComponent.rightArmAngle > M_PI / 2.f)
+                animationComponent.rightArmAngle = M_PI - animationComponent.rightArmAngle;
+            animationComponent.rightArmAngle += M_PI / 2.f;
         }
     }
 
