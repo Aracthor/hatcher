@@ -66,15 +66,13 @@ GLint Material::InstancedAttribLocation(const char* name) const
     return m_shaderProgram->GetAttribLocation(name);
 }
 
-void Material::AddUniform(const char* name, float value)
+void Material::SetUniform(const char* name, float value)
 {
-    HATCHER_ASSERT(m_floatUniforms.find(name) == m_floatUniforms.end());
     m_floatUniforms[name] = value;
 }
 
-void Material::AddUniform(const char* name, const glm::vec4& value)
+void Material::SetUniform(const char* name, const glm::vec4& value)
 {
-    HATCHER_ASSERT(m_vec4Uniforms.find(name) == m_vec4Uniforms.end());
     m_vec4Uniforms[name] = value;
 }
 

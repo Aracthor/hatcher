@@ -42,8 +42,8 @@ public:
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
         m_gridMaterial = materialFactory->CreateMaterial("shaders/grounded.vert", "shaders/const_color.frag");
-        m_gridMaterial->AddUniform("uniHeight", 0.01f);
-        m_gridMaterial->AddUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
+        m_gridMaterial->SetUniform("uniHeight", 0.01f);
+        m_gridMaterial->SetUniform("uniColor", glm::vec4(0.2, 0.2, 0.2, 1.0));
         m_gridTileMesh = make_unique<Mesh>(m_gridMaterial.get(), Primitive::LineStrip);
 
         const Texture* texture = materialFactory->TextureFromFile("assets/textures/ground/grass.bmp");

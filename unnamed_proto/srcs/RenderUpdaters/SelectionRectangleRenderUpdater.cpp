@@ -104,7 +104,7 @@ public:
     {
         m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/grounded.vert", "shaders/const_color.frag");
-        m_material->AddUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 1.0));
+        m_material->SetUniform("uniColor", glm::vec4(1.0, 1.0, 1.0, 1.0));
         m_selectionRectangleMesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
 
         float positions[] = {

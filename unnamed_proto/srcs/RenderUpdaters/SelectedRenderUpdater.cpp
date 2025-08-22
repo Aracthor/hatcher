@@ -1,5 +1,6 @@
 #include "RenderUpdaterOrder.hpp"
 
+#include "hatcher/Clock.hpp"
 #include "hatcher/ComponentAccessor.hpp"
 #include "hatcher/Graphics/IFrameRenderer.hpp"
 #include "hatcher/Graphics/IRendering.hpp"
@@ -56,6 +57,8 @@ public:
     void Update(IApplication* application, const ComponentAccessor* componentAccessor,
                 ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
+        m_elapsedTime += frameRenderer.GetClock()->GetElapsedTime() / 1000.f;
+        m_material->SetUniform("uniElapsedTime", m_elapsedTime);
         frameRenderer.PrepareSceneDraw(m_material.get());
 
         auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
@@ -84,6 +87,7 @@ public:
 private:
     unique_ptr<Material> m_material;
     unique_ptr<Mesh> m_mesh;
+    float m_elapsedTime = 0.f;
 };
 
 RenderUpdaterRegisterer<SelectedRenderUpdater> registerer((int)ERenderUpdaterOrder::Interface);
