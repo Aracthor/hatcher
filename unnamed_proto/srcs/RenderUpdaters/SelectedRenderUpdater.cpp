@@ -9,6 +9,7 @@
 #include "hatcher/Graphics/RenderUpdater.hpp"
 #include "hatcher/unique_ptr.hpp"
 
+#include "Components/ObstacleComponent.hpp"
 #include "Components/Position2DComponent.hpp"
 #include "RenderComponents/SelectableComponent.hpp"
 #include "utils/TransformationHelper.hpp"
@@ -25,20 +26,28 @@ public:
     {
         m_material =
             rendering->GetMaterialFactory()->CreateMaterial("shaders/selection.vert", "shaders/selection.frag");
-        m_mesh = make_unique<Mesh>(m_material.get(), Primitive::Lines);
+        m_mesh = make_unique<Mesh>(m_material.get(), Primitive::TriangleStrip);
 
         float positions[] = {
-            -1.f, -1.f,
+            -0.5f, -0.5f, 0.0f,
 
-            1.f,  -1.f,
+            -0.5f, -0.5f, 0.5f,
 
-            1.f,  1.f,
+            -0.5f, 0.5f,  0.0f,
 
-            -1.f, 1.f,
+            -0.5f, 0.5f,  0.5f,
+
+            0.5f,  0.5f,  0.0f,
+
+            0.5f,  0.5f,  0.5f,
+
+            0.5f,  -0.5f, 0.0f,
+
+            0.5f,  -0.5f, 0.5f,
         };
-        ushort indices[] = {0, 1, 1, 2, 2, 3, 3, 0};
+        ushort indices[] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1};
 
-        m_mesh->Set2DPositions(positions, std::size(positions));
+        m_mesh->Set3DPositions(positions, std::size(positions));
         m_mesh->SetIndices(indices, std::size(indices));
     }
 
@@ -47,36 +56,29 @@ public:
     void Update(IApplication* application, const ComponentAccessor* componentAccessor,
                 ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        frameRenderer.DisableDepthTest();
-        frameRenderer.PrepareUIDraw(m_material.get());
+        frameRenderer.PrepareSceneDraw(m_material.get());
 
         auto selectableComponents = renderComponentAccessor->ReadComponents<SelectableComponent>();
         auto positionComponents = componentAccessor->ReadComponents<Position2DComponent>();
+        auto obstacleComponents = componentAccessor->ReadComponents<ObstacleComponent>();
         for (int i = 0; i < componentAccessor->Count(); i++)
         {
             const std::optional<SelectableComponent>& selectableComponent = selectableComponents[i];
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
             if (positionComponent && selectableComponent && selectableComponent->selected)
             {
-                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
+                glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
+                if (obstacleComponents[i])
+                {
+                    const glm::ivec2 boxExtent = obstacleComponents[i]->area.Extents();
+                    const glm::vec2 scaleXY = static_cast<glm::vec2>(boxExtent) + glm::vec2(1.f, 1.f);
+                    const glm::vec3 scale = glm::vec3(scaleXY, 1.f) * 1.1f;
+                    modelMatrix = glm::scale(modelMatrix, scale);
+                }
 
-                const Box2f selectionBox =
-                    frameRenderer.ProjectBox3DToWindowCoords(selectableComponent->box, modelMatrix);
-
-                const glm::vec2 rectangleCenter = selectionBox.Center();
-                const glm::vec2 rectangleSize = selectionBox.Extents();
-
-                const glm::vec3 position = {rectangleCenter.x, rectangleCenter.y, 0.f};
-                const glm::vec3 scale = {rectangleSize.x / 2.f, rectangleSize.y / 2.f, 0.f};
-
-                glm::mat4 selectedModelMatrix = glm::mat4(1.f);
-                selectedModelMatrix = glm::translate(selectedModelMatrix, position);
-                selectedModelMatrix = glm::scale(selectedModelMatrix, scale);
-
-                m_mesh->Draw(selectedModelMatrix);
+                m_mesh->Draw(modelMatrix);
             }
         }
-        frameRenderer.EnableDepthTest();
     }
 
 private:

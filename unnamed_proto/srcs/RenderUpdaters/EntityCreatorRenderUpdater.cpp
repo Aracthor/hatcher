@@ -133,7 +133,7 @@ public:
             }
             else if (event.button.button == SDL_BUTTON_MIDDLE)
             {
-                entityDescriptor = &m_treeEntityDescriptor;
+                entityDescriptor = &m_hutEntityDescriptor;
             }
             else if (event.button.button == SDL_BUTTON_LEFT)
             {
