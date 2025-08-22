@@ -9,22 +9,22 @@ template <typename T>
 class span
 {
 public:
-    span() = default;
+    constexpr span() = default;
 
-    span(T* pointer, std::size_t size)
+    constexpr span(T* pointer, std::size_t size)
         : ptr(pointer)
         , length(size)
     {
     }
 
     template <typename U>
-    span(std::vector<U>& container)
+    constexpr span(std::vector<U>& container)
         : ptr(container.data())
         , length(container.size())
     {
     }
     template <typename U>
-    span(const std::vector<U>& container)
+    constexpr span(const std::vector<U>& container)
         : ptr(container.data())
         , length(container.size())
     {
