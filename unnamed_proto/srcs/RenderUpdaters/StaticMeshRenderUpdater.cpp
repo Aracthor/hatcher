@@ -59,6 +59,7 @@ public:
         MaterialFactory* materialFactory = rendering->GetMaterialFactory().get();
 
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Axe, "assets/meshes/axe.obj");
+        CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Hut, "assets/meshes/hut.obj");
         CreateTexturedMesh(meshLoader, materialFactory, StaticMeshComponent::Melon, "assets/meshes/melon.obj",
                            "assets/textures/melon.bmp");
         CreateMesh(meshLoader, materialFactory, StaticMeshComponent::Rack, "assets/meshes/rack.obj");

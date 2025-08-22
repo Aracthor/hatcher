@@ -89,6 +89,7 @@ public:
         : m_steveEntityDescriptor(EntityDescriptorID::Create("Steve"))
         , m_treeEntityDescriptor(EntityDescriptorID::Create("Tree"))
         , m_rackEntityDescriptor(EntityDescriptorID::Create("Rack"))
+        , m_hutEntityDescriptor(EntityDescriptorID::Create("LoggingHut"))
         , m_rackItemLocations(10, &ItemDisplayComponent::LocationHash)
     {
         m_rackInventoryDescriptors.push_back(EntityDescriptorID::Create("Axe"));
@@ -151,6 +152,7 @@ private:
     EntityDescriptorID m_steveEntityDescriptor;
     EntityDescriptorID m_treeEntityDescriptor;
     EntityDescriptorID m_rackEntityDescriptor;
+    EntityDescriptorID m_hutEntityDescriptor;
     std::vector<EntityDescriptorID> m_steveInventoryDescriptors;
     std::vector<EntityDescriptorID> m_rackInventoryDescriptors;
     ItemDisplayComponent::Locations m_rackItemLocations;

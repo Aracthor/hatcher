@@ -58,6 +58,25 @@ EntityDescriptorRegisterer Axe{
     },
 };
 
+EntityDescriptorRegisterer LoggingHut{
+    EntityDescriptorID::Create("LoggingHut"),
+    {
+        NameComponent{
+            .name = "Logging Hut",
+        },
+        ObstacleComponent{
+            .area = Box2i(glm::ivec2(-1, -1), glm::ivec2(1, 1)),
+        },
+        Position2DComponent{},
+    },
+    {
+        SelectableComponent{},
+        StaticMeshComponent{
+            .type = StaticMeshComponent::Hut,
+        },
+    },
+};
+
 EntityDescriptorRegisterer Melon{
     EntityDescriptorID::Create("Melon"),
     {
@@ -81,7 +100,9 @@ EntityDescriptorRegisterer Rack{
     EntityDescriptorID::Create("Rack"),
     {
         InventoryComponent{},
-        ObstacleComponent{},
+        ObstacleComponent{
+            .area = Box2i(glm::ivec2(0, 0)),
+        },
         Position2DComponent{},
     },
     {
@@ -127,7 +148,9 @@ EntityDescriptorRegisterer Tree{
             .amount = 5,
         },
         LockableComponent{},
-        ObstacleComponent{},
+        ObstacleComponent{
+            .area = Box2i(glm::ivec2(0, 0)),
+        },
         Position2DComponent{},
     },
     {

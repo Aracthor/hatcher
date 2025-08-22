@@ -7,6 +7,7 @@ struct StaticMeshComponent
     enum Type : hatcher::uint
     {
         Axe,
+        Hut,
         Melon,
         Rack,
         Tree,
