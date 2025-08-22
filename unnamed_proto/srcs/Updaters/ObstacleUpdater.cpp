@@ -17,7 +17,7 @@ class ObstacleUpdater final : public Updater
     }
 
     virtual void OnCreatedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                                 ComponentAccessor* componentAccessor)
+                                 ComponentAccessor* componentAccessor) override
     {
         const auto obstacle = componentAccessor->ReadComponents<ObstacleComponent>()[entity];
         if (obstacle)
@@ -30,7 +30,7 @@ class ObstacleUpdater final : public Updater
     }
 
     virtual void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                                 ComponentAccessor* componentAccessor)
+                                 ComponentAccessor* componentAccessor) override
     {
         const auto obstacle = componentAccessor->ReadComponents<ObstacleComponent>()[entity];
         if (obstacle)
