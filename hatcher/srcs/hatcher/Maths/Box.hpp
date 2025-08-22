@@ -55,6 +55,7 @@ private:
     glm::vec<L, T> m_max;
 };
 
+using Box2i = Box<2, int>;
 using Box2f = Box<2, float>;
 using Box3f = Box<3, float>;
 

@@ -16,8 +16,8 @@ constexpr int Box<L, T>::_pow2(glm::length_t n)
 
 template <glm::length_t L, typename T>
 constexpr Box<L, T>::Box()
-    : m_min(std::numeric_limits<float>::max())
-    , m_max(std::numeric_limits<float>::lowest())
+    : m_min(std::numeric_limits<T>::max())
+    , m_max(std::numeric_limits<T>::lowest())
 {
 }
 
