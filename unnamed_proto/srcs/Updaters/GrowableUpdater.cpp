@@ -10,7 +10,7 @@ namespace
 
 class GrowableUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         ComponentWriter<GrowableComponent> growables = componentAccessor->WriteComponents<GrowableComponent>();
 

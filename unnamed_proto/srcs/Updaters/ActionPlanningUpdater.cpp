@@ -384,7 +384,7 @@ void UpdatePlanning(ActionPlanningComponent& planning, IEntityManager* entityMan
 
 class ActionPlanningUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto plannings = componentAccessor->WriteComponents<ActionPlanningComponent>();
 
@@ -398,8 +398,7 @@ class ActionPlanningUpdater final : public Updater
         }
     }
 
-    void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentAccessor* componentAccessor) override
+    void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         {
             const auto& planning = componentAccessor->ReadComponents<ActionPlanningComponent>()[entity];

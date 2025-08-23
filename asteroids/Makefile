@@ -1,6 +1,7 @@
 SRCS_FILES=	Components/ShooterComponent.cpp		\
 							\
 		WorldComponents/Lives.cpp		\
+		WorldComponents/RandomDirector.cpp	\
 		WorldComponents/Score.cpp		\
 							\
 		Updaters/AsteroidCreatorUpdater.cpp	\

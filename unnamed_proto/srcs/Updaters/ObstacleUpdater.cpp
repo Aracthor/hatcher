@@ -12,11 +12,9 @@ namespace
 {
 class ObstacleUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
-    {
-    }
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override {}
 
-    virtual void OnCreatedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
+    virtual void OnCreatedEntity(Entity entity, IEntityManager* entityManager,
                                  ComponentAccessor* componentAccessor) override
     {
         const auto obstacle = componentAccessor->ReadComponents<ObstacleComponent>()[entity];
@@ -38,7 +36,7 @@ class ObstacleUpdater final : public Updater
         }
     }
 
-    virtual void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
+    virtual void OnDeletedEntity(Entity entity, IEntityManager* entityManager,
                                  ComponentAccessor* componentAccessor) override
     {
         const auto obstacle = componentAccessor->ReadComponents<ObstacleComponent>()[entity];

@@ -11,12 +11,9 @@ namespace
 
 class InventoryUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
-    {
-    }
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override {}
 
-    void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentAccessor* componentAccessor) override
+    void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto positionComponents = componentAccessor->WriteComponents<Position2DComponent>();
         auto inventoryComponent = componentAccessor->ReadComponents<InventoryComponent>()[entity];

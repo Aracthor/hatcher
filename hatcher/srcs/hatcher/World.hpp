@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "WorldSettings.hpp"
 #include "span.hpp"
 #include "unique_ptr.hpp"
 
@@ -39,7 +38,6 @@ public:
 
 private:
     int m_tick = 0;
-    WorldSettings m_settings;
 
     unique_ptr<EntityManager> m_entityManager;
 

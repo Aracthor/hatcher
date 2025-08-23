@@ -30,7 +30,7 @@ bool IsPlayerOwnedEntity(ComponentReader<PlayerComponent> playerComponents,
 
 class CollisionUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto asteroidComponents = componentAccessor->ReadComponents<AsteroidComponent>();
         auto collidableComponents = componentAccessor->ReadComponents<CollidableComponent>();

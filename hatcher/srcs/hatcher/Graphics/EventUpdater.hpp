@@ -15,12 +15,11 @@ class ICommandManager;
 class IEntityManager;
 class IEventListener;
 class IFrameRenderer;
-struct WorldSettings;
 
 class EventUpdater final
 {
 public:
-    void ProcessApplicationEvents(span<const SDL_Event> events, WorldSettings& settings, IEntityManager* entityManager);
+    void ProcessApplicationEvents(span<const SDL_Event> events, IEntityManager* entityManager);
     void ProcessEventListeners(span<const SDL_Event> events, IApplication* application, ICommandManager* commandManager,
                                const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
                                const IFrameRenderer& frameRenderer);

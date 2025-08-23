@@ -13,12 +13,9 @@ namespace
 
 class ProjecitleUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
-    {
-    }
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override {}
 
-    void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentAccessor* componentAccessor) override
+    void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto projectileComponents = componentAccessor->WriteComponents<ProjectileComponent>();
         auto shooterComponents = componentAccessor->WriteComponents<ShooterComponent>();

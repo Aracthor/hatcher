@@ -11,7 +11,7 @@ namespace
 
 class LifespanUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto lifespanComponents = componentAccessor->WriteComponents<LifespanComponent>();
         for (int i = 0; i < componentAccessor->Count(); i++)

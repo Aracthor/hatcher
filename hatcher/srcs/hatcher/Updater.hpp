@@ -6,24 +6,16 @@ namespace hatcher
 {
 class ComponentAccessor;
 class IEntityManager;
-struct WorldSettings;
 
 class Updater
 {
 public:
     virtual ~Updater() {}
 
-    virtual void Update(WorldSettings& settings, IEntityManager* entityManager,
-                        ComponentAccessor* componentAccessor) = 0;
+    virtual void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) = 0;
 
-    virtual void OnCreatedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                                 ComponentAccessor* componentAccessor)
-    {
-    }
-    virtual void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                                 ComponentAccessor* componentAccessor)
-    {
-    }
+    virtual void OnCreatedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) {}
+    virtual void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) {}
 };
 
 class IUpdaterCreator

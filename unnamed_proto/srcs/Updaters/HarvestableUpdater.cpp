@@ -14,12 +14,9 @@ namespace
 
 class HarvestableUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
-    {
-    }
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override {}
 
-    void OnDeletedEntity(Entity entity, WorldSettings& settings, IEntityManager* entityManager,
-                         ComponentAccessor* componentAccessor) override
+    void OnDeletedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         const auto harvestableComponent = componentAccessor->ReadComponents<HarvestableComponent>()[entity];
         if (harvestableComponent)

@@ -4,7 +4,6 @@
 #include "hatcher/EntityManager.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Updater.hpp"
-#include "hatcher/WorldSettings.hpp"
 
 #include "Components/CollidableComponent.hpp"
 #include "Components/PlayerComponent.hpp"
@@ -12,6 +11,7 @@
 #include "Components/ProjectileComponent.hpp"
 #include "Components/ShooterComponent.hpp"
 #include "Components/UFOComponent.hpp"
+#include "WorldComponents/RandomDirector.hpp"
 
 using namespace hatcher;
 
@@ -19,11 +19,11 @@ namespace
 {
 class UFOUpdater final : public Updater
 {
-    void UpdateUFODirection(RandomGenerator& random, PositionComponent& positionComponent)
+    void UpdateUFODirection(RandomDirector* randomDirector, PositionComponent& positionComponent)
     {
-        if (random.RandomInt(1, 100) == 1)
+        if (randomDirector->RandomInt(1, 100) == 1)
         {
-            switch (random.RandomInt(1, 3))
+            switch (randomDirector->RandomInt(1, 3))
             {
             case 1:
                 positionComponent.speed.y = -2.f;
@@ -54,9 +54,9 @@ class UFOUpdater final : public Updater
         return {};
     }
 
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        RandomGenerator& random = settings.randomGenerator;
+        RandomDirector* randomDirector = componentAccessor->WriteWorldComponent<RandomDirector>();
         auto ufoComponents = componentAccessor->ReadComponents<UFOComponent>();
         bool hasAnyUFO = false;
         for (int i = 0; i < componentAccessor->Count(); i++)
@@ -65,18 +65,18 @@ class UFOUpdater final : public Updater
             {
                 auto& positionComponent = componentAccessor->WriteComponents<PositionComponent>()[i];
                 HATCHER_ASSERT(positionComponent);
-                UpdateUFODirection(random, *positionComponent);
+                UpdateUFODirection(randomDirector, *positionComponent);
 
                 auto collidableComponent = componentAccessor->ReadComponents<CollidableComponent>()[i];
                 auto& shooterComponent = componentAccessor->WriteComponents<ShooterComponent>()[i];
-                if (shooterComponent->shoots.size() < 1 && random.RandomInt(1, 20) == 1)
+                if (shooterComponent->shoots.size() < 1 && randomDirector->RandomInt(1, 20) == 1)
                 {
                     const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentAccessor);
                     if (playerPosition)
                     {
                         EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
                         const float aimingAngle = ufoComponents[i]->aimingAngle;
-                        const float angleToAdd = random.RandomFloat(-aimingAngle, aimingAngle);
+                        const float angleToAdd = randomDirector->RandomFloat(-aimingAngle, aimingAngle);
                         const float angleCos = glm::cos(angleToAdd);
                         const float angleSin = glm::sin(angleToAdd);
                         glm::vec2 direction = glm::normalize(*playerPosition - positionComponent->position);
@@ -96,14 +96,14 @@ class UFOUpdater final : public Updater
             }
         }
 
-        if (!hasAnyUFO && random.RandomInt(1, 1000) == 1)
+        if (!hasAnyUFO && randomDirector->RandomInt(1, 1000) == 1)
         {
-            const bool spawnLeft = random.RandomBool();
+            const bool spawnLeft = randomDirector->RandomBool();
             const float spawnX = spawnLeft ? 0.f : 800.f;
-            const float spawnY = random.RandomFloat(0.f, 600.f);
+            const float spawnY = randomDirector->RandomFloat(0.f, 600.f);
 
-            const EntityDescriptorID descriptor =
-                random.RandomBool() ? EntityDescriptorID::Create("UFOBig") : EntityDescriptorID::Create("UFOSmall");
+            const EntityDescriptorID descriptor = randomDirector->RandomBool() ? EntityDescriptorID::Create("UFOBig")
+                                                                               : EntityDescriptorID::Create("UFOSmall");
             EntityEgg ufoEgg = entityManager->CreateNewEntity(descriptor);
             auto& positionComponent = ufoEgg.GetComponent<PositionComponent>();
             positionComponent->position = {spawnX, spawnY};

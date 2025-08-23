@@ -27,7 +27,7 @@ Work works[] = {
 
 class WorkerUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         ComponentWriter<WorkerComponent> workers = componentAccessor->WriteComponents<WorkerComponent>();
 

@@ -12,7 +12,7 @@ namespace
 
 class PlayerMovementUpdater final : public Updater
 {
-    void Update(WorldSettings& settings, IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
+    void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         auto positionComponents = componentAccessor->WriteComponents<PositionComponent>();
         auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
