@@ -24,15 +24,15 @@ class Updater;
 class World final
 {
 public:
-    World(int64_t seed, const std::optional<std::string>& commandSaveFile,
+    World(unique_ptr<EntityManager>&& entityManager, int64_t seed, const std::optional<std::string>& commandSaveFile,
           const std::optional<std::string>& commandLoadFile);
     ~World();
 
-    void CreateRenderUpdaters(const IRendering* rendering);
+    EntityManager* GetEntityManager() { return m_entityManager.get(); }
+    CommandManager* GetCommandManager() { return m_commandManager.get(); }
 
-    void Update();
-    void UpdateFromEvents(span<const SDL_Event> events, IApplication* application, const IFrameRenderer& frameRenderer);
-    void UpdateRendering(IApplication* application, IFrameRenderer& frameRenderer);
+    void UpdateTickCommands();
+    void IncrementTick();
 
     int CurrentTick() const { return m_tick; }
 
@@ -41,13 +41,9 @@ private:
 
     unique_ptr<EntityManager> m_entityManager;
 
-    std::vector<unique_ptr<Updater>> m_updaters;
     unique_ptr<CommandManager> m_commandManager;
     std::optional<unique_ptr<CommandSaver>> m_commandSaver;
     std::optional<unique_ptr<CommandLoader>> m_commandLoader;
-
-    unique_ptr<EventUpdater> m_eventUpdater;
-    std::vector<unique_ptr<RenderUpdater>> m_renderUpdaters;
 };
 
 } // namespace hatcher

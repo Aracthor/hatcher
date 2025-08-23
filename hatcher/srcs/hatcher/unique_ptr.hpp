@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility> // std::forward
+
 #include "assert.hpp"
 
 namespace hatcher
@@ -64,7 +66,7 @@ private:
 template <class T, typename... Args>
 unique_ptr<T> make_unique(Args&&... args)
 {
-    return unique_ptr<T>(new T(args...));
+    return unique_ptr<T>(new T(std::forward<Args>(args)...));
 }
 
 } // namespace hatcher

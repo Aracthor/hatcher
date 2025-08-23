@@ -13,6 +13,7 @@ class FileSystem;
 class IRendering;
 class Rendering;
 class World;
+class WorldManager;
 
 class GameApplication : public IApplication
 {
@@ -33,6 +34,7 @@ private:
 
     unique_ptr<ApplicationConfiguration> m_configuration;
     unique_ptr<FileSystem> m_fileSystem;
+    unique_ptr<WorldManager> m_worldManager;
     unique_ptr<World> m_world;
 
     unique_ptr<Rendering> m_rendering;

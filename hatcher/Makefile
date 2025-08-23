@@ -108,6 +108,7 @@ SRCS_FILES=	Graphics/Core/GLContext.cpp		\
 		string_view.cpp				\
 		UpdateTicker.cpp 			\
 		World.cpp				\
+		WorldManager.cpp			\
 
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 

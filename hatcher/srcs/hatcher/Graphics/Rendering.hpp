@@ -14,6 +14,7 @@ class MaterialFactory;
 class MeshLoader;
 class Window;
 class World;
+class WorldManager;
 
 class Rendering : public IRendering
 {
@@ -21,8 +22,8 @@ public:
     Rendering(const char* name, int windowWidth, int windowHeight, const FileSystem* fileSystem);
     ~Rendering();
 
-    void HandleWindowEvents(IApplication* application, World* parWorld);
-    void UpdateWorldRendering(IApplication* application, World* parWorld);
+    void HandleWindowEvents(IApplication* application, WorldManager* worldManager, World* parWorld);
+    void UpdateWorldRendering(IApplication* application, WorldManager* worldManager, World* parWorld);
 
     const unique_ptr<MaterialFactory>& GetMaterialFactory() const override { return m_materialFactory; }
 

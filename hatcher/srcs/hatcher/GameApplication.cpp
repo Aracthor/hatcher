@@ -13,6 +13,7 @@
 #include "Clock.hpp"
 #include "FileSystem.hpp"
 #include "World.hpp"
+#include "WorldManager.hpp"
 
 namespace hatcher
 {
@@ -20,7 +21,7 @@ namespace hatcher
 GameApplication::GameApplication(int argc, char** argv)
     : m_configuration(new ApplicationConfiguration(argc, argv))
     , m_fileSystem(new FileSystem(m_configuration->pathToProject))
-    , m_world(new World(m_configuration->seed, m_configuration->commandSaveFile, m_configuration->commandLoadFile))
+    , m_worldManager(new WorldManager())
 {
 }
 
@@ -28,6 +29,8 @@ GameApplication::~GameApplication() = default;
 
 int GameApplication::Run()
 {
+    m_world = m_worldManager->CreateWorld(m_configuration->seed, m_configuration->commandSaveFile,
+                                          m_configuration->commandLoadFile);
     auto mainLoop = [](void* data)
     {
         try
@@ -88,14 +91,14 @@ float GameApplication::GetUpdateTickrate() const
 void GameApplication::StartRendering(const char* name, int windowWidth, int windowHeight)
 {
     m_rendering = make_unique<Rendering>(name, windowWidth, windowHeight, m_fileSystem.get());
-    m_world->CreateRenderUpdaters(m_rendering.get());
+    m_worldManager->CreateRenderUpdaters(m_rendering.get());
 }
 
 void GameApplication::Update()
 {
     if (m_rendering)
     {
-        m_rendering->HandleWindowEvents(this, m_world.get());
+        m_rendering->HandleWindowEvents(this, m_worldManager.get(), m_world.get());
     }
     {
         const float maxUpdateTime = 0.1f;
@@ -104,14 +107,14 @@ void GameApplication::Update()
         int ticks = m_updateTicker.TickCount();
         while (ticks-- > 0 && updateTime < maxUpdateTime)
         {
-            m_world->Update();
+            m_worldManager->Update(m_world.get());
             clock.Update();
             updateTime += clock.GetElapsedTime();
         }
     }
     if (m_rendering)
     {
-        m_rendering->UpdateWorldRendering(this, m_world.get());
+        m_rendering->UpdateWorldRendering(this, m_worldManager.get(), m_world.get());
     }
 }
 
