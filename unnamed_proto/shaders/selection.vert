@@ -2,14 +2,13 @@
 
 in vec3 vertPosition;
 
-uniform mat4 uniProjectionMatrix;
+uniform mat4 uniProjectionViewMatrix;
 uniform mat4 uniModelMatrix;
-uniform mat4 uniViewMatrix;
 
 out float altitude;
 
 void main()
 {
     altitude = vertPosition.z;
-    gl_Position = uniProjectionMatrix * uniViewMatrix * uniModelMatrix * vec4(vertPosition, 1.0);
+    gl_Position = uniProjectionViewMatrix * uniModelMatrix * vec4(vertPosition, 1.0);
 }

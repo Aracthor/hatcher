@@ -19,8 +19,7 @@ FrameRenderer::~FrameRenderer() = default;
 void FrameRenderer::PrepareSceneDraw(const Material* material) const
 {
     material->Use();
-    material->SetTransformationMatrix("uniViewMatrix", m_viewMatrix);
-    material->SetTransformationMatrix("uniProjectionMatrix", m_projectionMatrix);
+    material->SetTransformationMatrix("uniProjectionViewMatrix", m_projectionMatrix * m_viewMatrix);
 }
 
 void FrameRenderer::PrepareUIDraw(const Material* material) const
@@ -29,8 +28,7 @@ void FrameRenderer::PrepareUIDraw(const Material* material) const
     const float width = static_cast<float>(m_resolution.x);
     const float height = static_cast<float>(m_resolution.y);
     const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);
-    material->SetTransformationMatrix("uniViewMatrix", glm::mat4(1.f));
-    material->SetTransformationMatrix("uniProjectionMatrix", UIProjectionMatrix);
+    material->SetTransformationMatrix("uniProjectionViewMatrix", UIProjectionMatrix);
 }
 
 void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
