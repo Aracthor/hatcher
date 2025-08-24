@@ -40,6 +40,7 @@ std::vector<const IEventListenerCreator*>& EventListenerCreators()
 }
 
 using TComponentCreators = std::vector<const IComponentTypeCreator*>[(int)EComponentList::COUNT];
+using TWorldComponentCreators = std::vector<const IWorldComponentTypeCreator*>[(int)EComponentList::COUNT];
 
 TComponentCreators& ComponentTypeCreators()
 {
@@ -47,9 +48,9 @@ TComponentCreators& ComponentTypeCreators()
     return creators;
 }
 
-TComponentCreators& WorldComponentTypeCreators()
+TWorldComponentCreators& WorldComponentTypeCreators()
 {
-    static TComponentCreators creators;
+    static TWorldComponentCreators creators;
     return creators;
 }
 
@@ -82,7 +83,7 @@ void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, ECompone
     ComponentTypeCreators()[index].push_back(creator);
 }
 
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type)
+void RegisterWorldComponentTypeCreator(const IWorldComponentTypeCreator* creator, EComponentList type)
 {
     const int index = static_cast<int>(type);
     WorldComponentTypeCreators()[index].push_back(creator);
@@ -130,8 +131,8 @@ unique_ptr<World> WorldManager::CreateWorld(int64_t seed, const std::optional<st
     }
     for (auto creator : WorldComponentTypeCreators()[(int)EComponentList::Gameplay])
     {
-        creator->CreateComponentType(entityManager->GetComponentManager());
-        creator->CreateComponentType(entityManager->GetTemporaryComponentManager());
+        creator->CreateComponentType(entityManager->GetComponentManager(), seed);
+        creator->CreateComponentType(entityManager->GetTemporaryComponentManager(), seed);
     }
     const bool hasRendering = m_eventUpdater;
     if (hasRendering)
@@ -143,8 +144,8 @@ unique_ptr<World> WorldManager::CreateWorld(int64_t seed, const std::optional<st
         }
         for (auto creator : WorldComponentTypeCreators()[(int)EComponentList::Rendering])
         {
-            creator->CreateComponentType(entityManager->GetRenderingComponentManager());
-            creator->CreateComponentType(entityManager->GetTemporaryRenderingComponentManager());
+            creator->CreateComponentType(entityManager->GetRenderingComponentManager(), seed);
+            creator->CreateComponentType(entityManager->GetTemporaryRenderingComponentManager(), seed);
         }
     }
     return make_unique<World>(std::move(entityManager), seed, commandSaveFile, commandLoadFile);

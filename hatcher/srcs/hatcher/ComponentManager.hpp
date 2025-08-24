@@ -35,7 +35,7 @@ public:
     void AddComponentType();
 
     template <class Component>
-    void AddWorldComponent();
+    void AddWorldComponent(int64_t seed);
 
     template <class Component>
     const IComponentList* GetComponentList() const;

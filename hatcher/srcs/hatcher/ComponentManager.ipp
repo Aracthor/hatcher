@@ -23,13 +23,13 @@ void ComponentManager::AddComponentType()
 }
 
 template <class Component>
-void ComponentManager::AddWorldComponent()
+void ComponentManager::AddWorldComponent(int64_t seed)
 {
     constexpr uint key = ClassKey<Component>();
     HATCHER_ASSERT_MESSAGE(m_worldComponents.find(key) == m_worldComponents.end(),
                            "Trying to register two times te same world component: " << typeid(Component).name());
 
-    m_worldComponents.emplace(key, make_unique<Component>());
+    m_worldComponents.emplace(key, make_unique<Component>(seed));
 }
 
 template <class Component>

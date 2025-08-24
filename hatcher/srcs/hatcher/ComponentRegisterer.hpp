@@ -18,8 +18,14 @@ public:
     virtual void CreateComponentType(ComponentManager* componentManager) const = 0;
 };
 
+class IWorldComponentTypeCreator
+{
+public:
+    virtual void CreateComponentType(ComponentManager* componentManager, int64_t seed) const = 0;
+};
+
 void RegisterComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type);
-void RegisterWorldComponentTypeCreator(const IComponentTypeCreator* creator, EComponentList type);
+void RegisterWorldComponentTypeCreator(const IWorldComponentTypeCreator* creator, EComponentList type);
 
 template <class ComponentType, EComponentList list>
 class ComponentTypeRegisterer final : public IComponentTypeCreator
@@ -34,14 +40,14 @@ public:
 };
 
 template <class ComponentType, EComponentList list>
-class WorldComponentTypeRegisterer final : public IComponentTypeCreator
+class WorldComponentTypeRegisterer final : public IWorldComponentTypeCreator
 {
 public:
     WorldComponentTypeRegisterer() { RegisterWorldComponentTypeCreator(this, list); }
 
-    void CreateComponentType(ComponentManager* componentManager) const override
+    void CreateComponentType(ComponentManager* componentManager, int64_t seed) const override
     {
-        componentManager->AddWorldComponent<ComponentType>();
+        componentManager->AddWorldComponent<ComponentType>(seed);
     }
 };
 

@@ -4,12 +4,10 @@
 #include "hatcher/DataLoader.hpp"
 #include "hatcher/DataSaver.hpp"
 
-#include <ctime>
-
 using namespace hatcher;
 
-RandomDirector::RandomDirector()
-    : m_randomGenerator(std::time(nullptr))
+RandomDirector::RandomDirector(int64_t seed)
+    : m_randomGenerator(seed)
 {
 }
 

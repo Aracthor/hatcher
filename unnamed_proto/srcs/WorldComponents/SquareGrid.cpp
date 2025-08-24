@@ -20,7 +20,7 @@ SquareGrid::TileData SquareGrid::defaultTile = {
     .walkable = false,
 };
 
-SquareGrid::SquareGrid()
+SquareGrid::SquareGrid(int64_t seed)
 {
     m_tilesData.fill(defaultTile);
     for (int y = MIN_HEIGHT; y < MAX_HEIGHT; y++)

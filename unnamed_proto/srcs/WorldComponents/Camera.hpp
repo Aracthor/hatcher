@@ -17,6 +17,8 @@ struct Camera final : public IWorldComponent
 
     float pixelSize = 0.01f;
 
+    Camera(int64_t seed) {}
+
     glm::vec2 MouseCoordsToWorldCoords(int x, int y, const IFrameRenderer& frameRenderer) const;
 
     glm::vec3 Position() const;

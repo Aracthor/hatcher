@@ -20,7 +20,7 @@ public:
 
     static TileData defaultTile;
 
-    SquareGrid();
+    SquareGrid(int64_t seed);
     ~SquareGrid();
 
     bool HasTileData(glm::vec2 position) const;

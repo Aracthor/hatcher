@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace hatcher
 {
 class DataLoader;

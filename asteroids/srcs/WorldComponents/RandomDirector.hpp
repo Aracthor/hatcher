@@ -7,7 +7,7 @@
 class RandomDirector final : public hatcher::IWorldComponent
 {
 public:
-    RandomDirector();
+    RandomDirector(int64_t seed);
 
     bool RandomBool();
     int RandomInt(int min, int max);
