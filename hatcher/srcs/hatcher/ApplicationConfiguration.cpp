@@ -1,6 +1,8 @@
 #include "ApplicationConfiguration.hpp"
 
 #include <algorithm>
+#include <ctime>
+#include <iostream>
 #include <optional>
 #include <sstream>
 #include <stdexcept>
@@ -55,10 +57,10 @@ public:
     virtual void Process(CommandLineIterator& iterator) const = 0;
 };
 
-class ArgumentParserInteger64 : public IArgumentParser
+class ArgumentParserOptionalInteger64 : public IArgumentParser
 {
 public:
-    ArgumentParserInteger64(const char* flag, int64_t& result)
+    ArgumentParserOptionalInteger64(const char* flag, std::optional<int64_t>& result)
         : m_flag(flag)
         , m_result(result)
     {
@@ -72,13 +74,14 @@ public:
             throw std::invalid_argument("Missing number after '" + m_flag + "'");
 
         std::istringstream iss(*iterator);
-        iss >> m_result;
+        m_result = 0;
+        iss >> *m_result;
         iterator++;
     }
 
 private:
     const std::string m_flag;
-    int64_t& m_result;
+    std::optional<int64_t>& m_result;
 };
 
 class ArgumentParserOptionalString : public IArgumentParser
@@ -119,8 +122,10 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
     pathToProject += "../";
 #endif
 
+    std::optional<int64_t> seed;
+
     unique_ptr<IArgumentParser> parsers[] = {
-        hatcher::make_unique<ArgumentParserInteger64>("--seed", this->seed),
+        hatcher::make_unique<ArgumentParserOptionalInteger64>("--seed", seed),
         hatcher::make_unique<ArgumentParserOptionalString>("--save", this->commandSaveFile),
         hatcher::make_unique<ArgumentParserOptionalString>("--load", this->commandLoadFile),
     };
@@ -137,6 +142,13 @@ ApplicationConfiguration::ApplicationConfiguration(int argc, char** argv)
             throw std::invalid_argument("Unknown argument '" + arg + "'");
         (*it)->Process(iterator);
     }
+
+    if (!seed)
+    {
+        seed = std::time(nullptr);
+        std::cout << "Running with seed: " << *seed << std::endl;
+    }
+    this->seed = *seed;
 }
 
 } // namespace hatcher
