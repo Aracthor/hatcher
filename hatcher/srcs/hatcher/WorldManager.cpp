@@ -148,6 +148,12 @@ unique_ptr<World> WorldManager::CreateWorld(int64_t seed, const std::optional<st
             creator->CreateComponentType(entityManager->GetTemporaryRenderingComponentManager(), seed);
         }
     }
+
+    for (const unique_ptr<Updater>& updater : m_updaters)
+    {
+        updater->CreateWorld(seed, entityManager.get(), entityManager->GetComponentAccessor());
+    }
+
     return make_unique<World>(std::move(entityManager), seed, commandSaveFile, commandLoadFile);
 }
 

@@ -3,6 +3,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		Components/NameComponent.cpp				\
 									\
 		Updaters/ActionPlanningUpdater.cpp			\
+		Updaters/ForestUpdater.cpp				\
 		Updaters/GrowableUpdater.cpp				\
 		Updaters/HarvestableUpdater.cpp				\
 		Updaters/InventoryUpdater.cpp				\

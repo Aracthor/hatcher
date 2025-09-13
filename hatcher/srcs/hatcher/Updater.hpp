@@ -12,6 +12,7 @@ class Updater
 public:
     virtual ~Updater() {}
 
+    virtual void CreateWorld(int64_t seed, IEntityManager* entityManager, ComponentAccessor* componentAccessor) const {}
     virtual void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) = 0;
 
     virtual void OnCreatedEntity(Entity entity, IEntityManager* entityManager, ComponentAccessor* componentAccessor) {}
