@@ -12,8 +12,6 @@
 
 namespace hatcher
 {
-namespace
-{
 struct MeshData
 {
     struct Vertex
@@ -33,6 +31,8 @@ struct MeshData
     std::vector<ushort> indices;
 };
 
+namespace
+{
 std::string getNextToken(std::string& line, const std::string& fileName)
 {
     if (line.empty())
@@ -66,7 +66,7 @@ int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 positio
     return vertices.size() - 1;
 }
 
-MeshData readFile(const std::string& fileName)
+unique_ptr<MeshData> readFile(const std::string& fileName)
 {
     MeshData meshData;
     std::ifstream ifs;
@@ -175,7 +175,7 @@ MeshData readFile(const std::string& fileName)
         }
     }
 
-    return meshData;
+    return make_unique<MeshData>(std::move(meshData));
 }
 
 } // namespace
@@ -185,12 +185,18 @@ MeshLoader::MeshLoader(const FileSystem* fileSystem)
 {
 }
 
-unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName) const
+MeshLoader::~MeshLoader() = default;
+
+unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::string& fileName)
 {
     try
     {
-        const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
-        MeshData meshData = readFile(pathToFile);
+        if (m_dataLibrary.find(fileName) == m_dataLibrary.end())
+        {
+            const std::string pathToFile = m_fileSystem->PathToFileName(fileName);
+            m_dataLibrary[fileName] = readFile(pathToFile);
+        }
+        const MeshData& meshData = *m_dataLibrary[fileName];
         std::vector<float> positionsData;
         std::vector<float> colorData;
         std::vector<float> textureCoordsData;
