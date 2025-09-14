@@ -70,7 +70,7 @@ public:
             const std::optional<Position2DComponent>& positionComponent = positionComponents[i];
             if (positionComponent && selectableComponent && selectableComponent->selected)
             {
-                glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
+                glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(*positionComponent);
                 if (obstacleComponents[i])
                 {
                     const glm::ivec2 boxExtent = obstacleComponents[i]->area.Extents();

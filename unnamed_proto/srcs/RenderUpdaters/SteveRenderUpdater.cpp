@@ -159,7 +159,7 @@ public:
         {
             if (positionComponents[i] && animationComponents[i])
             {
-                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(positionComponents[i]);
+                const glm::mat4 modelMatrix = TransformationHelper::ModelFromComponents(*positionComponents[i]);
                 SteveAnimationComponent& animation = *animationComponents[i];
                 const glm::mat4 rightLegMatrix =
                     glm::rotate(m_rightLeg.matrix, animation.rightLegAngle, glm::vec3(0.f, 1.f, 0.f));

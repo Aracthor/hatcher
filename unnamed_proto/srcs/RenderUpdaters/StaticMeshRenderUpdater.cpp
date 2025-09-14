@@ -93,7 +93,7 @@ public:
                 std::optional<glm::mat4> modelMatrix;
                 if (positionComponent)
                 {
-                    modelMatrix = TransformationHelper::ModelFromComponents(positionComponent);
+                    modelMatrix = TransformationHelper::ModelFromComponents(*positionComponent);
                     if (growableComponents[i])
                     {
                         modelMatrix = glm::scale(*modelMatrix, glm::vec3(growableComponents[i]->maturity));
