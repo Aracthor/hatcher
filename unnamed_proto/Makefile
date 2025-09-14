@@ -13,7 +13,8 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 									\
 		RenderComponents/ItemDisplayComponent.cpp		\
 									\
-		RenderUpdaters/CameraRenderUpdater.cpp 			\
+		RenderUpdaters/BlueprintRenderUpdater.cpp		\
+		RenderUpdaters/CameraRenderUpdater.cpp			\
 		RenderUpdaters/DemoImguiRenderUpdater.cpp		\
 		RenderUpdaters/DebugShortcutsRenderUpdater.cpp		\
 		RenderUpdaters/EntityCreatorRenderUpdater.cpp		\
@@ -28,6 +29,7 @@ SRCS_FILES=	Components/InventoryComponent.cpp			\
 		RenderUpdaters/SteveRenderUpdater.cpp			\
 		RenderUpdaters/WorldTickerRenderUpdater.cpp		\
 									\
+		WorldComponents/Blueprint.cpp				\
 		WorldComponents/Camera.cpp				\
 		WorldComponents/SquareGrid.cpp				\
 									\
