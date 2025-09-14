@@ -16,6 +16,7 @@ struct Blueprint final : public IWorldComponent
 {
     glm::vec2 position{};
     bool active{};
+    bool possible{};
 
     Blueprint(int64_t seed) {}
 

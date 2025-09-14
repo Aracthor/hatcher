@@ -8,12 +8,14 @@ void Blueprint::Save(DataSaver& saver) const
 {
     saver << position;
     saver << active;
+    saver << possible;
 }
 
 void Blueprint::Load(DataLoader& loader)
 {
     loader >> position;
     loader >> active;
+    loader >> possible;
 }
 
 namespace

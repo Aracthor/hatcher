@@ -64,6 +64,21 @@ private:
 };
 REGISTER_COMMAND(CreateBuildingFromBlueprint);
 
+bool CanCreateBuilding(const SquareGrid* squareGrid, glm::vec2 position)
+{
+    const Box2i obstacle(glm::ivec2(-1, -1), glm::ivec2(1, 1)); // TODO read ObstacleComponent.
+    for (int y = obstacle.Min().y; y <= obstacle.Max().y; y++)
+    {
+        for (int x = obstacle.Min().x; x <= obstacle.Max().x; x++)
+        {
+            const glm::vec2 tilePosition = position + glm::vec2({x, y});
+            if (!squareGrid->GetTileData(tilePosition).walkable)
+                return false;
+        }
+    }
+    return true;
+}
+
 class BlueprintEventListener : public IEventListener
 {
     void GetEvent(const SDL_Event& event, IApplication* application, ICommandManager* commandManager,
@@ -82,8 +97,10 @@ class BlueprintEventListener : public IEventListener
             const glm::vec2 worldCoords2D =
                 camera->MouseCoordsToWorldCoords(event.motion.x, event.motion.y, frameRenderer);
             blueprint->position = grid->GetTileCenter(worldCoords2D);
+            blueprint->possible = CanCreateBuilding(grid, blueprint->position);
         }
-        else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT && blueprint->active)
+        else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT && blueprint->active &&
+                 blueprint->possible)
         {
             blueprint->active = false;
             commandManager->AddCommand(
@@ -98,7 +115,6 @@ public:
     BlueprintRenderUpdater(const IRendering* rendering)
     {
         m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/colored.vert", "shaders/blueprint.frag");
-        m_material->SetUniform("uniColor", glm::vec4(0.f, 1.f, 0.f, 1.f));
         m_mesh = rendering->GetMeshLoader()->LoadWavefront(m_material.get(), "assets/meshes/hut.obj");
     }
 
@@ -108,6 +124,9 @@ public:
         const Blueprint* blueprint = renderComponentAccessor->WriteWorldComponent<Blueprint>();
         if (blueprint->active)
         {
+            constexpr glm::vec4 possibleColor = glm::vec4(0.f, 1.f, 0.f, 1.f);
+            constexpr glm::vec4 impossibleColor = glm::vec4(1.f, 0.f, 0.f, 1.f);
+            m_material->SetUniform("uniColor", blueprint->possible ? possibleColor : impossibleColor);
             frameRenderer.PrepareSceneDraw(m_material.get());
             const glm::mat4 modelMatrix = glm::translate(glm::mat4(1.f), glm::vec3(blueprint->position, 0.f));
             m_mesh->Draw(modelMatrix);
