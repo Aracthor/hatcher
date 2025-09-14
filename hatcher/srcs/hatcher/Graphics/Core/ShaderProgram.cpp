@@ -153,4 +153,11 @@ GLint ShaderProgram::GetAttribLocation(const char* name) const
     return attribLocation;
 }
 
+bool ShaderProgram::HasAttribute(const char* name) const
+{
+    GLint attribLocation;
+    GL_CHECK(attribLocation = glGetAttribLocation(m_programID, name));
+    return attribLocation >= 0;
+}
+
 } // namespace hatcher

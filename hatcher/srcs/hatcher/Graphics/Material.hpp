@@ -26,6 +26,10 @@ public:
     GLint NormalsAttribLocation() const;
     GLint InstancedAttribLocation(const char* name) const;
 
+    bool HasColorAttribute() const;
+    bool HasTextureCoordAttribute() const;
+    bool HasNormalAttribute() const;
+
     void SetUniform(const char* name, float value);
     void SetUniform(const char* name, const glm::vec4& value);
     void AddTexture(const char* name, const Texture* texture);

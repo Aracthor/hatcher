@@ -66,6 +66,21 @@ GLint Material::InstancedAttribLocation(const char* name) const
     return m_shaderProgram->GetAttribLocation(name);
 }
 
+bool Material::HasColorAttribute() const
+{
+    return m_shaderProgram->HasAttribute("vertColor");
+}
+
+bool Material::HasTextureCoordAttribute() const
+{
+    return m_shaderProgram->HasAttribute("vertTextureCoord");
+}
+
+bool Material::HasNormalAttribute() const
+{
+    return m_shaderProgram->HasAttribute("vertNormal");
+}
+
 void Material::SetUniform(const char* name, float value)
 {
     m_floatUniforms[name] = value;

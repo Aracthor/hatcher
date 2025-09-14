@@ -19,6 +19,7 @@ public:
     void SetMatrix4Uniform(const char* name, const float* matrixPtr) const;
 
     GLint GetAttribLocation(const char* name) const;
+    bool HasAttribute(const char* name) const;
 
 private:
     GLuint m_vertexShaderID;

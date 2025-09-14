@@ -97,7 +97,8 @@ class BlueprintRenderUpdater final : public RenderUpdater
 public:
     BlueprintRenderUpdater(const IRendering* rendering)
     {
-        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/colored.vert", "shaders/colored.frag");
+        m_material = rendering->GetMaterialFactory()->CreateMaterial("shaders/colored.vert", "shaders/blueprint.frag");
+        m_material->SetUniform("uniColor", glm::vec4(0.f, 1.f, 0.f, 1.f));
         m_mesh = rendering->GetMeshLoader()->LoadWavefront(m_material.get(), "assets/meshes/hut.obj");
     }
 

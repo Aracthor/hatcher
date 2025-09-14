@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 
+#include "Material.hpp"
 #include "Mesh.hpp"
 #include "hatcher/FileSystem.hpp"
 #include "hatcher/assert.hpp"
@@ -234,11 +235,11 @@ unique_ptr<Mesh> MeshLoader::LoadWavefront(const Material* material, const std::
         HATCHER_ASSERT(textureCoordsData.empty() || textureCoordsData.size() == positionsData.size() / 3 * 2);
         Mesh* mesh = new Mesh(material, Primitive::Triangles);
         mesh->Set3DPositions(positionsData.data(), positionsData.size());
-        if (!colorData.empty())
+        if (!colorData.empty() && material->HasColorAttribute())
             mesh->SetColors(colorData.data(), colorData.size());
-        if (!textureCoordsData.empty())
+        if (!textureCoordsData.empty() && material->HasTextureCoordAttribute())
             mesh->SetTextureCoords(textureCoordsData.data(), textureCoordsData.size());
-        if (!normalsData.empty())
+        if (!normalsData.empty() && material->HasNormalAttribute())
             mesh->SetNormals(normalsData.data(), normalsData.size());
         mesh->SetIndices(meshData.indices.data(), meshData.indices.size());
         return unique_ptr<Mesh>(mesh);
