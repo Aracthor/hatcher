@@ -13,7 +13,7 @@ EntityDescriptorCatalog::~EntityDescriptorCatalog() = default;
 void EntityDescriptorCatalog::AddEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descriptor)
 {
     if (m_catalog.find(id) != m_catalog.end())
-        throw std::runtime_error("EntityDescriptorID not in catalog");
+        throw std::runtime_error("Duplicate EnttiyDescriptorID");
     m_catalog.emplace(id, descriptor);
 }
 
