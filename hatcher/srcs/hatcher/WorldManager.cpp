@@ -154,7 +154,7 @@ unique_ptr<World> WorldManager::CreateWorld(int64_t seed, const std::optional<st
         updater->CreateWorld(seed, entityManager.get(), entityManager->GetComponentAccessor());
     }
 
-    return make_unique<World>(std::move(entityManager), seed, commandSaveFile, commandLoadFile);
+    return hatcher::make_unique<World>(std::move(entityManager), seed, commandSaveFile, commandLoadFile);
 }
 
 void WorldManager::Update(World* world)
