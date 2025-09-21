@@ -39,11 +39,6 @@ const onFileRequest = async (req, res) => {
     // if the file is found, set Content-type and send data
     res.setHeader('Content-type', formatsMap.get(ext) || contentType );
 
-    // firefox mulithreading
-    res.setHeader('Cross-Origin-Opener-Policy', "same-origin");
-    res.setHeader('Cross-Origin-Embedder-Policy', "require-corp");
-
-
     res.end(data);
 }
 
