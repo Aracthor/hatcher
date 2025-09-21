@@ -29,17 +29,14 @@ const onFileRequest = async (req, res) => {
         return;
     }
 
-    let data;
-    let contentType = "text/plain";
-
     if (fs.statSync(pathname).isDirectory()) {
         res.statusCode = 400;
         res.end(`File "${pathname}" is a directory !`);
         return;
     }
-    else {
-        data = fs.readFileSync(pathname);
-    }
+
+    let data = fs.readFileSync(pathname);
+    let contentType = "text/plain";
 
     // if the file is found, set Content-type and send data
     res.setHeader('Content-type', formatsMap.get(ext) || contentType );
