@@ -16,7 +16,7 @@ class PlayerCreatorUpdater final : public Updater
 {
     void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
-        const Lives* lives = componentAccessor->ReadWorldComponent<Lives>();
+        Lives* lives = componentAccessor->WriteWorldComponent<Lives>();
         if (lives->remaining == 0)
             return;
 
@@ -30,19 +30,17 @@ class PlayerCreatorUpdater final : public Updater
 
         if (!hasPlayer)
         {
-            if (m_cyclesToWait > 0)
+            if (lives->cyclesToWait > 0)
             {
-                m_cyclesToWait -= 1;
+                lives->cyclesToWait -= 1;
             }
             else
             {
-                m_cyclesToWait = 50;
+                lives->cyclesToWait = 50;
                 entityManager->CreateNewEntity(EntityDescriptorID::Create("Player"));
             }
         }
     }
-
-    int m_cyclesToWait = 0;
 };
 
 UpdaterRegisterer<PlayerCreatorUpdater> registerer;

@@ -5,6 +5,7 @@
 struct Lives final : public hatcher::IWorldComponent
 {
     int remaining = 3;
+    int cyclesToWait = 0;
 
     Lives(int64_t seed) {}
 
