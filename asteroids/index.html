@@ -25,6 +25,10 @@
         display: block;
       }
 
+      #commands {
+        vertical-align: top;
+      }
+
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       #emscriptenCanvas {
         border: 0px none;
@@ -59,6 +63,18 @@
             <canvas id="emscriptenCanvas" width="800" height="600"></canvas>
             <p id="errorText">Loading...</p>
           </div>
+        </td>
+        <td id="commands">
+          <fieldset>
+            <legend>Commands</legend>
+            <ul>
+              <li><b>W</b>: Accelerate</li>
+              <li><b>A</b>: Turn left</li>
+              <li><b>D</b>: Turn right</li>
+              <li><b>Space</b>: Shoot</li>
+              <li><b>R</b>: Restart</li>
+            </ul>
+          </fieldset>
         </td>
       </tr>
 
