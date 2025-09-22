@@ -58,6 +58,7 @@ public:
         if (lives->remaining == 0)
         {
             m_textDrawer.AddTextToDraw("GAME OVER", glm::vec2(175.f, 275.f), glm::vec2(50.f, 50.f));
+            m_textDrawer.AddTextToDraw("Press R to restart", glm::vec2(225.f, 225.f), glm::vec2(20.f, 20.f));
             m_textDrawer.Draw(frameRenderer);
         }
     }

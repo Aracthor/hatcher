@@ -24,6 +24,7 @@ public:
     int Run();
 
     void Stop() override;
+    void Restart() override;
     void SetUpdateTickrate(float tickrate) override;
     float GetUpdateTickrate() const override;
 

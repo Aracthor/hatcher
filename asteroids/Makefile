@@ -39,6 +39,7 @@ SRCS_FILES=	Components/ShooterComponent.cpp		\
 		RenderUpdaters/LivesRenderUpdater.cpp	\
 		RenderUpdaters/MeshDisplayUpdater.cpp	\
 		RenderUpdaters/ProjectionViewUpdater.cpp\
+		RenderUpdaters/RestartEventHandler.cpp	\
 		RenderUpdaters/ScoreRenderUpdater.cpp	\
 		RenderUpdaters/PlayerControlUpdater.cpp	\
 							\

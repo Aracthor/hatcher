@@ -78,6 +78,12 @@ void GameApplication::Stop()
 #endif
 }
 
+void GameApplication::Restart()
+{
+    m_world = m_worldManager->CreateWorld(m_configuration->seed, m_configuration->commandSaveFile,
+                                          m_configuration->commandLoadFile);
+}
+
 void GameApplication::SetUpdateTickrate(float tickrate)
 {
     m_updateTicker.SetTickrate(tickrate);
