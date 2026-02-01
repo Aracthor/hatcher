@@ -23,7 +23,7 @@ unique_ptr<Counter> MakeCounter()
     return make_unique<Counter>();
 }
 
-void testUniquePtr()
+REGISTER_TEST(testUniquePtr)
 {
     {
         unique_ptr<Counter> ptr;

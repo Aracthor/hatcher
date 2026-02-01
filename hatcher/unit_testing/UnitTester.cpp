@@ -6,27 +6,30 @@
 
 namespace
 {
-class UnitTester
-{
-public:
-    UnitTester() { std::cerr << std::setprecision(std::numeric_limits<float>::digits); }
-
-    void RegisterFail() { m_errorCount++; }
-    int GetErrorCount() const { return m_errorCount; }
-
-private:
-    int m_errorCount = 0;
-};
-
-UnitTester unitTester;
+int s_errorCount = 0;
 } // namespace
+
+RegisteredTest* RegisteredTest::s_first = nullptr;
+RegisteredTest::RegisteredTest(std::function<void()> test)
+    : test(test)
+    , next(s_first)
+{
+    s_first = this;
+}
 
 void RegisterFail()
 {
-    unitTester.RegisterFail();
+    s_errorCount++;
 }
 
-int GetErrorCount()
+int main()
 {
-    return unitTester.GetErrorCount();
+    std::cerr << std::setprecision(std::numeric_limits<float>::digits);
+    const RegisteredTest* test = RegisteredTest::s_first;
+    while (test)
+    {
+        test->test();
+        test = test->next;
+    }
+    return s_errorCount;
 }

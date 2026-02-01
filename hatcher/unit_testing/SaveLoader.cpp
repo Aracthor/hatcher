@@ -36,7 +36,7 @@ std::ostream& operator<<(std::ostream& stream, const Box<L, T>& box)
 
 #include "UnitTester.hpp"
 
-void testInt()
+REGISTER_TEST(SaveLoader_Int)
 {
     int input[] = {
         3,
@@ -59,7 +59,7 @@ void testInt()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testFloat()
+REGISTER_TEST(SaveLoader_Float)
 {
     float input[] = {
         0.f,
@@ -86,7 +86,7 @@ void testFloat()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testVector()
+REGISTER_TEST(SaveLoader_Vector)
 {
     glm::vec3 input[] = {
         {0.f, 0.f, 0.f},
@@ -108,7 +108,7 @@ void testVector()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testBox()
+REGISTER_TEST(SaveLoader_Box)
 {
     Box3f input[] = {
         {},
@@ -130,7 +130,7 @@ void testBox()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testRandomGenerator()
+REGISTER_TEST(SaveLoader_RandomGenerator)
 {
     RandomGenerator randomGenerator(4242);
 
@@ -156,7 +156,7 @@ void testRandomGenerator()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testString()
+REGISTER_TEST(SaveLoader_String)
 {
     std::string input[] = {
         "Hello World!",
@@ -178,7 +178,7 @@ void testString()
         TEST_EQUALS(output[i], input[i]);
 }
 
-void testCombined()
+REGISTER_TEST(SaveLoader_Combined)
 {
     glm::vec2 inputVec = {2.5f, -1.5f};
     uint inputCount1 = 2u;
@@ -216,20 +216,4 @@ void testCombined()
     TEST_EQUALS(outputBox, Box3f(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f)));
     TEST_EQUALS(outputBool, false);
     TEST_EQUALS(outputString, std::string("Hello World!"));
-}
-
-void testUniquePtr();
-
-int main()
-{
-    testInt();
-    testFloat();
-    testVector();
-    testBox();
-    testRandomGenerator();
-    testString();
-    testCombined();
-    testUniquePtr();
-
-    return GetErrorCount();
 }
