@@ -1,6 +1,5 @@
-#include <iomanip>
-#include <iostream>
 #include <limits>
+#include <ostream>
 
 #include "hatcher/DataLoader.hpp"
 #include "hatcher/DataSaver.hpp"
@@ -35,19 +34,9 @@ std::ostream& operator<<(std::ostream& stream, const Box<L, T>& box)
     return stream;
 }
 
-namespace
-{
-template <typename T>
-int testEquals(const T& a, const T& b)
-{
-    if (a != b)
-        std::cerr << std::setprecision(std::numeric_limits<float>::digits) << "unit test fail: " << a << " != " << b
-                  << std::endl;
-    return a != b;
-}
-} // namespace
+#include "UnitTester.hpp"
 
-int testInt()
+void testInt()
 {
     int input[] = {
         3,
@@ -66,14 +55,11 @@ int testInt()
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
-    int fails = 0;
     for (int i = 0; i < testCount; i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testFloat()
+void testFloat()
 {
     float input[] = {
         0.f,
@@ -96,14 +82,11 @@ int testFloat()
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
-    int fails = 0;
     for (int i = 0; i < testCount; i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testVector()
+void testVector()
 {
     glm::vec3 input[] = {
         {0.f, 0.f, 0.f},
@@ -121,14 +104,11 @@ int testVector()
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
-    int fails = 0;
     for (int i = 0; i < testCount; i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testBox()
+void testBox()
 {
     Box3f input[] = {
         {},
@@ -146,14 +126,11 @@ int testBox()
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
-    int fails = 0;
     for (int i = 0; i < testCount; i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testRandomGenerator()
+void testRandomGenerator()
 {
     RandomGenerator randomGenerator(4242);
 
@@ -175,14 +152,11 @@ int testRandomGenerator()
         randomGenerator.RandomFloat(0.f, 1.f),
     };
 
-    int fails = 0;
     for (int i = 0; i < (int)std::size(input); i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testString()
+void testString()
 {
     std::string input[] = {
         "Hello World!",
@@ -200,14 +174,11 @@ int testString()
     for (int i = 0; i < testCount; i++)
         loader >> output[i];
 
-    int fails = 0;
     for (int i = 0; i < testCount; i++)
-        fails += testEquals(output[i], input[i]);
-
-    return fails;
+        TEST_EQUALS(output[i], input[i]);
 }
 
-int testCombined()
+void testCombined()
 {
     glm::vec2 inputVec = {2.5f, -1.5f};
     uint inputCount1 = 2u;
@@ -239,31 +210,26 @@ int testCombined()
     loader >> outputBox;
     loader >> outputString;
 
-    int fails = 0;
-    fails += testEquals(outputVec, {2.5f, -1.5f});
-    fails += testEquals(outputCount1, 2u);
-    fails += testEquals(outputCount2, 42);
-    fails += testEquals(outputBox, {{0.f, 0.f, 0.f}, {0.f, 0.f, 0.f}});
-    fails += testEquals(outputBool, false);
-    fails += testEquals(outputString, std::string("Hello World!"));
-
-    return fails;
+    TEST_EQUALS(outputVec, glm::vec2(2.5f, -1.5f));
+    TEST_EQUALS(outputCount1, 2u);
+    TEST_EQUALS(outputCount2, 42);
+    TEST_EQUALS(outputBox, Box3f(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f)));
+    TEST_EQUALS(outputBool, false);
+    TEST_EQUALS(outputString, std::string("Hello World!"));
 }
 
-int testUniquePtr();
+void testUniquePtr();
 
 int main()
 {
-    int fails = 0;
+    testInt();
+    testFloat();
+    testVector();
+    testBox();
+    testRandomGenerator();
+    testString();
+    testCombined();
+    testUniquePtr();
 
-    fails += testInt();
-    fails += testFloat();
-    fails += testVector();
-    fails += testBox();
-    fails += testRandomGenerator();
-    fails += testString();
-    fails += testCombined();
-    fails += testUniquePtr();
-
-    return fails;
+    return GetErrorCount();
 }
