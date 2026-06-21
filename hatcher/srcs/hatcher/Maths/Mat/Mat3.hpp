@@ -1,7 +1,5 @@
 #pragma once
 
-#include "hatcher/Maths/Vect.hpp"
-
 namespace hatcher
 {
 template <typename T>

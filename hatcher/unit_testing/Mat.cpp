@@ -25,6 +25,33 @@ REGISTER_TEST(MatIdentity)
     }
 }
 
+REGISTER_TEST(MatProduct)
+{
+    Mat4f u = Mat4f{
+        {1.f, 4.f, -4.f, 3.f},
+        {2.f, 0.f, 2.f, 2.f},
+        {-2.f, 4.f, 10.f, 0.f},
+        {0.f, 42.f, -1.f, 3.f},
+    };
+    Mat4f v = Mat4f{
+        {4.f, 1.f, 0.f, 2.f},
+        {6.f, 5.f, -1.f, 4.f},
+        {2.f, 6.f, -3.f, 2.f},
+        {-2.f, 0.f, 4.f, -1.f},
+    };
+
+    TEST_EQUALS(u * Vect3f(42.f, 4.f, -42.f), Vect3f(134.f, 42.f, -581.f));
+    TEST_EQUALS(u * Vect4f(42.f, 4.f, -42.f, 1.0), Vect4f(134.f, 42.f, -581.f, 137.f));
+
+    Mat4f expected{
+        {6.f, 100.f, -16.f, 20.f},
+        {18.f, 188.f, -28.f, 40.f},
+        {20.f, 80.f, -28.f, 24.f},
+        {-10.f, -34.f, 49.f, -9.f},
+    };
+    TEST_EQUALS(u * v, expected);
+}
+
 REGISTER_TEST(MatDeterminant)
 {
     {
