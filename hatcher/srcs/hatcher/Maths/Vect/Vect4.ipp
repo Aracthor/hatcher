@@ -82,4 +82,11 @@ constexpr T Vect<4, T>::operator[](int index) const
     return reinterpret_cast<const T*>(this)[index];
 }
 
+template <typename T>
+constexpr T Vect<4, T>::length() const
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    return std::sqrt(x * x + y * y + z * z + w * w);
+}
+
 } // namespace hatcher

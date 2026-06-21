@@ -30,7 +30,12 @@ struct Vect<3, T>
     constexpr bool operator!=(Self other) const;
 
     constexpr T operator[](int index) const;
+
+    constexpr T length() const;
 };
+
+template <typename T>
+constexpr Vect<3, T> cross(Vect<3, T> u, Vect<3, T> v);
 
 using Vect3f = Vect<3, float>;
 

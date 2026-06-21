@@ -29,6 +29,8 @@ struct Vect<2, T>
     constexpr bool operator!=(Self other) const;
 
     constexpr T operator[](int index) const;
+
+    constexpr T length() const;
 };
 
 using Vect2f = Vect<2, float>;

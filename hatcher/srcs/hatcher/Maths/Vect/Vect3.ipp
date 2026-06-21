@@ -81,4 +81,21 @@ constexpr T Vect<3, T>::operator[](int index) const
     return reinterpret_cast<const T*>(this)[index];
 }
 
+template <typename T>
+constexpr T Vect<3, T>::length() const
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    return std::sqrt(x * x + y * y + z * z);
+}
+
+template <typename T>
+constexpr Vect<3, T> cross(Vect<3, T> u, Vect<3, T> v)
+{
+    return {
+        u.y * v.z - u.z * v.y,
+        u.z * v.x - u.x * v.z,
+        u.x * v.y - u.y * v.x,
+    };
+}
+
 } // namespace hatcher
