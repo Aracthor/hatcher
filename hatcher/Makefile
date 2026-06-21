@@ -115,6 +115,7 @@ SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 TEST_SRCS_FILES=SaveLoader.cpp				\
 		UnitTester.cpp 				\
 		unique_ptr.cpp 				\
+		Vect.cpp				\
 
 TEST_SRCS=	$(addprefix $(TEST_DIR),$(TEST_SRCS_FILES))
 
