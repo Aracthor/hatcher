@@ -108,6 +108,34 @@ constexpr Mat<4, T> Mat<4, T>::identity()
 }
 
 template <typename T>
+constexpr Mat<4, T> Mat<4, T>::translation(Vect<3, T> translation)
+{
+    return {
+        {T(1), T(0), T(0), T(0)},
+        {T(0), T(1), T(0), T(0)},
+        {T(0), T(0), T(1), T(0)},
+        {translation, T(1)},
+    };
+}
+
+template <typename T>
+constexpr Mat<4, T> Mat<4, T>::scale(T scale)
+{
+    return scale(Vect<3, T>(scale, scale, scale));
+}
+
+template <typename T>
+constexpr Mat<4, T> Mat<4, T>::scale(Vect<3, T> scale)
+{
+    return {
+        {scale.x, T(0), T(0), T(0)},
+        {T(0), scale.y, T(0), T(0)},
+        {T(0), T(0), scale.z, T(0)},
+        {T(0), T(0), T(0), T(1)},
+    };
+}
+
+template <typename T>
 constexpr Mat<4, T> Mat<4, T>::orthographic(T left, T right, T bottom, T top)
 {
     return {

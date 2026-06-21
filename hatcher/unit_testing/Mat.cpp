@@ -117,6 +117,22 @@ REGISTER_TEST(MatRotation)
     }
 }
 
+REGISTER_TEST(MatTransformation)
+{
+    const float angle = M_PI / 2.f;
+    Mat4f translation = Mat4f::translation(Vect3f(2.f, -1.f, 3.f));
+    Mat4f rotation = Mat3f::rotationAroundZ(M_PI / 2.f);
+    Mat4f scale = Mat4f::scale(Vect3f(2.f, 1.f, 1.f));
+    Mat4f transformation = translation * rotation * scale;
+    Mat4f expected{
+        {std::cos(angle) * 2.f, std::sin(angle) * 2.f, 0.f, 0.f},
+        {-std::sin(angle), std::cos(angle), 0.f, 0.f},
+        {0.f, 0.f, 1.f, 0.f},
+        {2.f, -1.f, 3.f, 1.f},
+    };
+    TEST_EQUALS(transformation, expected);
+}
+
 REGISTER_TEST(MatProjection)
 {
     Mat4f ortho = Mat4f::zero();
