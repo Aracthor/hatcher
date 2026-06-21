@@ -33,9 +33,9 @@ Then rewatch the exact same game by running this command line :
 
 Check an online [remake of Asteroids](https://aracthor.github.io/hatcher/asteroids/index.html) as a proof-of-concept, or an [ongoing prototype](https://aracthor.github.io/stevetopia/index.html) for a somewhat more elaborate game.
 
-You can also run a native linux version locally. You shall need glm and SDL2 dev libraries, installable in apt packages :
+You can also run a native linux version locally. You shall need SDL2 dev library, installable in apt packages :
 ```
-sudo apt install libglm-dev libsdl2-dev
+sudo apt install libsdl2-dev
 ```
 You can then compile and run asteroids project:
 ```
@@ -46,7 +46,6 @@ make
 
 ## Dependencies
 * [OpenGL ES 3.0](https://en.wikipedia.org/wiki/OpenGL_ES) for rendering.
-* [LibGLM](https://github.com/icaven/glm) for vector and matrix analysis.
 * [SDL 2](https://wiki.libsdl.org/SDL2/FrontPage) for native window creation and event handling.
 * [Dear ImGui](https://github.com/ocornut/imgui) for interface widgets.
 * [Emscripten](https://emscripten.org/) to compile in websm version running in web browser.
