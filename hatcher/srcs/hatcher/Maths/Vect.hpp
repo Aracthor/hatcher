@@ -9,7 +9,7 @@ template <std::size_t L, typename T>
 struct Vect;
 
 template <std::size_t L, typename T>
-constexpr T dot(Vect<L, T> u, Vect<L, T> v);
+constexpr T Dot(Vect<L, T> u, Vect<L, T> v);
 
 } // namespace hatcher
 

@@ -15,7 +15,7 @@ struct Mat<3, T>
 
     Column columns[3];
 
-    constexpr T determinant() const;
+    constexpr T Determinant() const;
 
     constexpr Column operator[](int index) const;
     constexpr Column& operator[](int index);
@@ -23,13 +23,13 @@ struct Mat<3, T>
     constexpr bool operator==(const Self& other) const;
     constexpr bool operator!=(const Self& other) const;
 
-    static constexpr Self zero();
-    static constexpr Self identity();
+    static constexpr Self Zero();
+    static constexpr Self Identity();
 
     // C++26 and constexpr cosinus are still so far...
-    static Self rotationAroundX(T angle);
-    static Self rotationAroundY(T angle);
-    static Self rotationAroundZ(T angle);
+    static Self RotationAroundX(T angle);
+    static Self RotationAroundY(T angle);
+    static Self RotationAroundZ(T angle);
 };
 
 using Mat3f = Mat<3, float>;

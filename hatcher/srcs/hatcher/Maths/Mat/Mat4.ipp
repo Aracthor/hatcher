@@ -18,7 +18,7 @@ constexpr Mat<4, T>::Mat(const Mat<3, T>& mat3)
 }
 
 template <typename T>
-constexpr T Mat<4, T>::determinant() const
+constexpr T Mat<4, T>::Determinant() const
 {
     const T det1 =
         Mat<3, T>{
@@ -26,7 +26,7 @@ constexpr T Mat<4, T>::determinant() const
             {columns[2][1], columns[2][2], columns[2][3]},
             {columns[3][1], columns[3][2], columns[3][3]},
         }
-            .determinant() *
+            .Determinant() *
         columns[0][0];
     const T det2 =
         Mat<3, T>{
@@ -34,7 +34,7 @@ constexpr T Mat<4, T>::determinant() const
             {columns[2][1], columns[2][2], columns[2][3]},
             {columns[3][1], columns[3][2], columns[3][3]},
         }
-            .determinant() *
+            .Determinant() *
         columns[1][0];
     const T det3 =
         Mat<3, T>{
@@ -42,7 +42,7 @@ constexpr T Mat<4, T>::determinant() const
             {columns[1][1], columns[1][2], columns[1][3]},
             {columns[3][1], columns[3][2], columns[3][3]},
         }
-            .determinant() *
+            .Determinant() *
         columns[2][0];
     const T det4 =
         Mat<3, T>{
@@ -50,7 +50,7 @@ constexpr T Mat<4, T>::determinant() const
             {columns[1][1], columns[1][2], columns[1][3]},
             {columns[2][1], columns[2][2], columns[2][3]},
         }
-            .determinant() *
+            .Determinant() *
         columns[3][0];
 
     return det1 - det2 + det3 - det4;
@@ -86,7 +86,7 @@ constexpr bool Mat<4, T>::operator!=(const Self& other) const
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::zero()
+constexpr Mat<4, T> Mat<4, T>::Zero()
 {
     return {
         {T(0), T(0), T(0), T(0)},
@@ -97,7 +97,7 @@ constexpr Mat<4, T> Mat<4, T>::zero()
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::identity()
+constexpr Mat<4, T> Mat<4, T>::Identity()
 {
     return {
         {T(1), T(0), T(0), T(0)},
@@ -108,7 +108,7 @@ constexpr Mat<4, T> Mat<4, T>::identity()
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::translation(Vect<3, T> translation)
+constexpr Mat<4, T> Mat<4, T>::Translation(Vect<3, T> translation)
 {
     return {
         {T(1), T(0), T(0), T(0)},
@@ -119,13 +119,13 @@ constexpr Mat<4, T> Mat<4, T>::translation(Vect<3, T> translation)
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::scale(T scale)
+constexpr Mat<4, T> Mat<4, T>::Scale(T scale)
 {
     return scale(Vect<3, T>(scale, scale, scale));
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::scale(Vect<3, T> scale)
+constexpr Mat<4, T> Mat<4, T>::Scale(Vect<3, T> scale)
 {
     return {
         {scale.x, T(0), T(0), T(0)},
@@ -136,7 +136,7 @@ constexpr Mat<4, T> Mat<4, T>::scale(Vect<3, T> scale)
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::orthographic(T left, T right, T bottom, T top)
+constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top)
 {
     return {
         {T(2) / (right - left), T(0), T(0), T(0)},
@@ -147,16 +147,16 @@ constexpr Mat<4, T> Mat<4, T>::orthographic(T left, T right, T bottom, T top)
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::lookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up)
+constexpr Mat<4, T> Mat<4, T>::LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up)
 {
-    const Vect<3, T> zaxis = (target - position).normalized();
-    const Vect<3, T> xaxis = cross(zaxis, up).normalized();
-    const Vect<3, T> yaxis = cross(xaxis, zaxis);
+    const Vect<3, T> zaxis = (target - position).Normalized();
+    const Vect<3, T> xaxis = Cross(zaxis, up).Normalized();
+    const Vect<3, T> yaxis = Cross(xaxis, zaxis);
     return {
         {xaxis.x, yaxis.x, -zaxis.x, T(0)},
         {xaxis.y, yaxis.y, -zaxis.y, T(0)},
         {xaxis.z, yaxis.z, -zaxis.z, T(0)},
-        {-dot(xaxis, position), -dot(yaxis, position), dot(zaxis, position), T(1)},
+        {-Dot(xaxis, position), -Dot(yaxis, position), Dot(zaxis, position), T(1)},
     };
 }
 

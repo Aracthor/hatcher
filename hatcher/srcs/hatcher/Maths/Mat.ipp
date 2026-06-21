@@ -23,7 +23,7 @@ constexpr Vect<VL, T> operator*(const Mat<L, T>& u, const Vect<VL, T>& v)
 template <std::size_t L, typename T>
 constexpr Mat<L, T> operator*(const Mat<L, T>& u, const Mat<L, T>& v)
 {
-    Mat<L, T> result = Mat<L, T>::zero();
+    Mat<L, T> result = Mat<L, T>::Zero();
     for (std::size_t y = 0; y < L; y++)
     {
         for (std::size_t x = 0; x < L; x++)

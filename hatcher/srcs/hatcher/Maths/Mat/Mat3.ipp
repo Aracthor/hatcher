@@ -8,7 +8,7 @@ constexpr Mat<3, T>::Mat(Column u0, Column u1, Column u2)
 }
 
 template <typename T>
-constexpr T Mat<3, T>::determinant() const
+constexpr T Mat<3, T>::Determinant() const
 {
     return columns[0][0] * columns[1][1] * columns[2][2] + columns[0][1] * columns[1][2] * columns[2][0] +
            columns[0][2] * columns[1][0] * columns[2][1] - columns[0][2] * columns[1][1] * columns[2][0] -
@@ -45,7 +45,7 @@ constexpr bool Mat<3, T>::operator!=(const Self& other) const
 }
 
 template <typename T>
-constexpr Mat<3, T> Mat<3, T>::zero()
+constexpr Mat<3, T> Mat<3, T>::Zero()
 {
     return {
         {T(0), T(0), T(0)},
@@ -55,7 +55,7 @@ constexpr Mat<3, T> Mat<3, T>::zero()
 }
 
 template <typename T>
-constexpr Mat<3, T> Mat<3, T>::identity()
+constexpr Mat<3, T> Mat<3, T>::Identity()
 {
     return {
         {T(1), T(0), T(0)},
@@ -65,7 +65,7 @@ constexpr Mat<3, T> Mat<3, T>::identity()
 }
 
 template <typename T>
-Mat<3, T> Mat<3, T>::rotationAroundX(T angle)
+Mat<3, T> Mat<3, T>::RotationAroundX(T angle)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     const T cos = std::cos(angle);
@@ -78,7 +78,7 @@ Mat<3, T> Mat<3, T>::rotationAroundX(T angle)
 }
 
 template <typename T>
-Mat<3, T> Mat<3, T>::rotationAroundY(T angle)
+Mat<3, T> Mat<3, T>::RotationAroundY(T angle)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     const T cos = std::cos(angle);
@@ -91,7 +91,7 @@ Mat<3, T> Mat<3, T>::rotationAroundY(T angle)
 }
 
 template <typename T>
-Mat<3, T> Mat<3, T>::rotationAroundZ(T angle)
+Mat<3, T> Mat<3, T>::RotationAroundZ(T angle)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     const T cos = std::cos(angle);

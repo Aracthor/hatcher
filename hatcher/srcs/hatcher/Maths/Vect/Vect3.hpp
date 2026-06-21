@@ -32,12 +32,12 @@ struct Vect<3, T>
     constexpr T operator[](int index) const;
     constexpr T& operator[](int index);
 
-    constexpr T length() const;
-    constexpr Self normalized() const;
+    constexpr T Length() const;
+    constexpr Self Normalized() const;
 };
 
 template <typename T>
-constexpr Vect<3, T> cross(Vect<3, T> u, Vect<3, T> v);
+constexpr Vect<3, T> Cross(Vect<3, T> u, Vect<3, T> v);
 
 using Vect3f = Vect<3, float>;
 

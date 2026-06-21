@@ -88,21 +88,21 @@ constexpr T& Vect<3, T>::operator[](int index)
 }
 
 template <typename T>
-constexpr T Vect<3, T>::length() const
+constexpr T Vect<3, T>::Length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     return std::sqrt(x * x + y * y + z * z);
 }
 
 template <typename T>
-constexpr Vect<3, T> Vect<3, T>::normalized() const
+constexpr Vect<3, T> Vect<3, T>::Normalized() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
-    return *this / length();
+    return *this / Length();
 }
 
 template <typename T>
-constexpr Vect<3, T> cross(Vect<3, T> u, Vect<3, T> v)
+constexpr Vect<3, T> Cross(Vect<3, T> u, Vect<3, T> v)
 {
     return {
         u.y * v.z - u.z * v.y,

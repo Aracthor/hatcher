@@ -4,7 +4,7 @@
 namespace hatcher
 {
 template <std::size_t L, typename T>
-constexpr T dot(Vect<L, T> u, Vect<L, T> v)
+constexpr T Dot(Vect<L, T> u, Vect<L, T> v)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'dot' is only possible for floating-point Vect.");
     T result = T(0);

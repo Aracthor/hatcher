@@ -90,17 +90,17 @@ constexpr T& Vect<2, T>::operator[](int index)
 }
 
 template <typename T>
-constexpr T Vect<2, T>::length() const
+constexpr T Vect<2, T>::Length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     return std::sqrt(x * x + y * y);
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::normalized() const
+constexpr Vect<2, T> Vect<2, T>::Normalized() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
-    return *this / length();
+    return *this / Length();
 }
 
 } // namespace hatcher

@@ -34,8 +34,8 @@ struct Vect<4, T>
     constexpr T operator[](int index) const;
     constexpr T& operator[](int index);
 
-    constexpr T length() const;
-    constexpr Self normalized() const;
+    constexpr T Length() const;
+    constexpr Self Normalized() const;
 };
 
 using Vect4f = Vect<4, float>;

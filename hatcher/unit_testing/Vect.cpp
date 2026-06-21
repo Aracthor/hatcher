@@ -54,17 +54,17 @@ REGISTER_TEST(VectLength)
 {
     {
         Vect2f u(1.f, -1.f);
-        TEST_EQUALS(u.length(), std::sqrt(2.f));
+        TEST_EQUALS(u.Length(), std::sqrt(2.f));
     }
 
     {
         Vect3f u(1.f, -2.f, 2.f);
-        TEST_EQUALS(u.length(), 3.f);
+        TEST_EQUALS(u.Length(), 3.f);
     }
 
     {
         Vect4f u(1.f, -2.f, 2.f, 4.f);
-        TEST_EQUALS(u.length(), 5.f);
+        TEST_EQUALS(u.Length(), 5.f);
     }
 }
 
@@ -73,19 +73,19 @@ REGISTER_TEST(dotProduct)
     {
         Vect2f u(1.f, -2.f);
         Vect2f v(4.f, 3.f);
-        TEST_EQUALS(dot(u, v), -2.f);
+        TEST_EQUALS(Dot(u, v), -2.f);
     }
 
     {
         Vect3f u(1.f, -2.f, 0.5f);
         Vect3f v(4.f, 3.f, 1.f);
-        TEST_EQUALS(dot(u, v), -1.5f);
+        TEST_EQUALS(Dot(u, v), -1.5f);
     }
 
     {
         Vect4f u(1.f, -2.f, 0.5f, 0.f);
         Vect4f v(4.f, 3.f, 1.f, 3.f);
-        TEST_EQUALS(dot(u, v), -1.5f);
+        TEST_EQUALS(Dot(u, v), -1.5f);
     }
 }
 
@@ -94,12 +94,12 @@ REGISTER_TEST(crossProduct)
     {
         Vect3f u(1.f, 0.f, 0.f);
         Vect3f v(0.f, 1.f, 0.f);
-        TEST_EQUALS(cross(u, v), Vect3f(0.f, 0.f, 1.f));
+        TEST_EQUALS(Cross(u, v), Vect3f(0.f, 0.f, 1.f));
     }
 
     {
         Vect3f u(3.f, -3.f, 1.f);
         Vect3f v(4.f, 9.f, 2.f);
-        TEST_EQUALS(cross(u, v), Vect3f(-15.f, -2.f, 39.f));
+        TEST_EQUALS(Cross(u, v), Vect3f(-15.f, -2.f, 39.f));
     }
 }

@@ -98,17 +98,17 @@ constexpr T& Vect<4, T>::operator[](int index)
 }
 
 template <typename T>
-constexpr T Vect<4, T>::length() const
+constexpr T Vect<4, T>::Length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
 template <typename T>
-constexpr Vect<4, T> Vect<4, T>::normalized() const
+constexpr Vect<4, T> Vect<4, T>::Normalized() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
-    return *this / length();
+    return *this / Length();
 }
 
 } // namespace hatcher
