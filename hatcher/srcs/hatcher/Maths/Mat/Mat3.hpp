@@ -5,17 +5,17 @@
 namespace hatcher
 {
 template <typename T>
-struct Mat<4, T>
+struct Mat<3, T>
 {
-    using Self = Mat<4, T>;
-    using Column = Vect<4, T>;
+    using Self = Mat<3, T>;
+    using Column = Vect<3, T>;
 
     constexpr Mat() = default;
     constexpr Mat(const Mat& other) = default;
     constexpr Mat(Mat&& other) = default;
-    constexpr Mat(Column u0, Column u1, Column u2, Column u3);
+    constexpr Mat(Column u0, Column u1, Column u2);
 
-    Column columns[4];
+    Column columns[3];
 
     constexpr T determinant() const;
 
@@ -27,11 +27,10 @@ struct Mat<4, T>
 
     static constexpr Self zero();
     static constexpr Self identity();
-    static constexpr Self orthographic(T left, T right, T bottom, T top);
 };
 
-using Mat4f = Mat<4, float>;
+using Mat3f = Mat<3, float>;
 
 } // namespace hatcher
 
-#include "Mat4.ipp"
+#include "Mat3.ipp"
