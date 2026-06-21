@@ -1,5 +1,5 @@
 #include "hatcher/ComponentAccessor.hpp"
-#include "hatcher/Maths/glm_pure.hpp"
+#include "hatcher/Maths/Vect.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "Components/PlayerComponent.hpp"
@@ -24,13 +24,12 @@ class PlayerMovementUpdater final : public Updater
             {
                 HATCHER_ASSERT(positionComponent);
                 if (playerComponent->turningLeft)
-                    positionComponent->angle += glm::radians(5.f);
+                    positionComponent->angle += 5.f * M_PI / 180.f;
                 if (playerComponent->turningRight)
-                    positionComponent->angle -= glm::radians(5.f);
+                    positionComponent->angle -= 5.f * M_PI / 180.f;
                 if (playerComponent->accelerating)
                 {
-                    const glm::vec2 orientation = {glm::cos(positionComponent->angle),
-                                                   glm::sin(positionComponent->angle)};
+                    const Vect2f orientation = {std::cos(positionComponent->angle), std::sin(positionComponent->angle)};
                     positionComponent->speed += orientation * 0.1f;
                 }
                 positionComponent->speed *= 0.99f;

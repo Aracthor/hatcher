@@ -25,8 +25,8 @@ public:
     void Update(IApplication* application, const ComponentAccessor* componentAccessor,
                 ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        const glm::vec2 textSize = {16, 16};
-        const glm::vec2 textPosition = {20.f, frameRenderer.Resolution().y - textSize.y - 20.f};
+        const Vect2f textSize = {16, 16};
+        const Vect2f textPosition = {20.f, frameRenderer.Resolution().y - textSize.y - 20.f};
         std::ostringstream oss;
         const Score* score = componentAccessor->ReadWorldComponent<Score>();
         oss << "Score: " << score->points;

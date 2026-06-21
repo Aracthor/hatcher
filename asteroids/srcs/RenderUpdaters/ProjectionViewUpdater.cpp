@@ -14,8 +14,8 @@ public:
     void Update(IApplication* application, const ComponentAccessor* componentAccessor,
                 ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
     {
-        const glm::ivec2 resolution = frameRenderer.Resolution();
-        frameRenderer.SetProjectionMatrix(glm::ortho(0.f, float(resolution.x), 0.f, float(resolution.y)));
+        const Vect2i resolution = frameRenderer.Resolution();
+        frameRenderer.SetProjectionMatrix(Mat4f::Orthographic(0.f, float(resolution.x), 0.f, float(resolution.y)));
     }
 };
 

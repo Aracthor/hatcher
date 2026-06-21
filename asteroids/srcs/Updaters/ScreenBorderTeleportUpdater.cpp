@@ -1,5 +1,5 @@
 #include "hatcher/ComponentAccessor.hpp"
-#include "hatcher/Maths/glm_pure.hpp"
+#include "hatcher/Maths/Vect.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "Components/CollidableComponent.hpp"
@@ -15,9 +15,9 @@ class ScreenBorderTeleportUpdater final : public Updater
     void Update(IEntityManager* entityManager, ComponentAccessor* componentAccessor) override
     {
         // TODO Store it somewhere else ?
-        const glm::vec2 screenMin = {0, 0};
-        const glm::vec2 screenMax = {800, 600};
-        const glm::vec2 screenSize = screenMax - screenMin;
+        const Vect2f screenMin = {0, 0};
+        const Vect2f screenMax = {800, 600};
+        const Vect2f screenSize = screenMax - screenMin;
 
         auto positionComponents = componentAccessor->WriteComponents<PositionComponent>();
         auto collidableComponents = componentAccessor->ReadComponents<CollidableComponent>();

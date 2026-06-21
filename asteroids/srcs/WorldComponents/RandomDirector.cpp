@@ -31,10 +31,10 @@ float RandomDirector::RandomAngle()
     return m_randomGenerator.RandomFloat(-M_PI, M_PI);
 }
 
-glm::vec2 RandomDirector::RandomDirection(float speedMin, float speedMax)
+Vect2f RandomDirector::RandomDirection(float speedMin, float speedMax)
 {
     const float angle = RandomAngle();
-    return glm::vec2(glm::cos(angle), glm::sin(angle)) * m_randomGenerator.RandomFloat(speedMin, speedMax);
+    return Vect2f(std::cos(angle), std::sin(angle)) * m_randomGenerator.RandomFloat(speedMin, speedMax);
 }
 
 void RandomDirector::Save(DataSaver& saver) const

@@ -122,9 +122,9 @@ public:
         HATCHER_ASSERT(shooterComponent);
         if (shooterComponent->shoots.size() < 4)
         {
-            const glm::vec2 direction = {glm::cos(positionComponent->angle), glm::sin(positionComponent->angle)};
-            const glm::vec2 start = positionComponent->position + direction * (collidableComponent->size + 3);
-            const glm::vec2 startSpeed = positionComponent->speed + direction * 8.f;
+            const Vect2f direction = {std::cos(positionComponent->angle), std::sin(positionComponent->angle)};
+            const Vect2f start = positionComponent->position + direction * (collidableComponent->size + 3);
+            const Vect2f startSpeed = positionComponent->speed + direction * 8.f;
             EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
             newProjectile.GetComponent<ProjectileComponent>()->shooter = playerEntity.ID();
             auto& projectilePositionComponent = newProjectile.GetComponent<PositionComponent>();

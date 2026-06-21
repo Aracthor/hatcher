@@ -167,7 +167,7 @@ public:
     {
         frameRenderer.PrepareSceneDraw(m_basicMaterial.get());
 
-        std::array<std::vector<glm::mat4>, MeshComponent::COUNT> reperesByMesh;
+        std::array<std::vector<Mat4f>, MeshComponent::COUNT> reperesByMesh;
 
         auto meshComponents = renderComponentAccessor->ReadComponents<MeshComponent>();
         auto positionComponents = componentAccessor->ReadComponents<PositionComponent>();
@@ -180,10 +180,10 @@ public:
             if (meshComponent)
             {
                 HATCHER_ASSERT(positionComponent);
-                glm::mat4 modelMatrix = glm::mat4(1.f);
-                modelMatrix = glm::translate(modelMatrix, glm::vec3(positionComponent->position, 0.f));
-                modelMatrix = glm::rotate(modelMatrix, positionComponent->angle, glm::vec3(0.f, 0.f, 1.f));
-                modelMatrix = glm::scale(modelMatrix, glm::vec3(meshComponent->scale));
+                Mat4f modelMatrix = Mat4f::Identity();
+                modelMatrix *= Mat4f::Translation(Vect3f(positionComponent->position, 0.f));
+                modelMatrix *= Mat4f(Mat3f::RotationAroundZ(positionComponent->angle));
+                modelMatrix *= Mat4f::Scale(meshComponent->scale);
                 reperesByMesh[meshComponent->ID].push_back(modelMatrix);
                 if (playerComponent && playerComponent->accelerating)
                 {
@@ -202,7 +202,7 @@ public:
         frameRenderer.PrepareSceneDraw(m_instancedMaterial.get());
         for (int meshID = 0; meshID < (int)MeshComponent::COUNT; meshID++)
         {
-            const std::vector<glm::mat4>& repereList = reperesByMesh[meshID];
+            const std::vector<Mat4f>& repereList = reperesByMesh[meshID];
             if (!repereList.empty())
             {
                 const unique_ptr<Mesh>& mesh = m_meshes[meshID];

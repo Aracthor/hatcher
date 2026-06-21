@@ -14,7 +14,7 @@
 #include "Components/WreckageGeneratorComponent.hpp"
 #include "RenderComponents/MeshComponent.hpp"
 
-#include "hatcher/Maths/glm_pure.hpp"
+#include "hatcher/Maths/Vect.hpp"
 
 using namespace hatcher;
 

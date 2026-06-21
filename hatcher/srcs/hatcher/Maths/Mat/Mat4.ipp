@@ -156,7 +156,7 @@ constexpr Mat<4, T> Mat<4, T>::Translation(Vect<3, T> translation)
 template <typename T>
 constexpr Mat<4, T> Mat<4, T>::Scale(T scale)
 {
-    return scale(Vect<3, T>(scale, scale, scale));
+    return Scale(Vect<3, T>(scale, scale, scale));
 }
 
 template <typename T>

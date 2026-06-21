@@ -16,6 +16,7 @@ struct Vect<3, T>
     constexpr Vect(Self&& other) = default;
     explicit constexpr Vect(T scalar);
     constexpr Vect(T x, T y, T z);
+    constexpr Vect(Vect<2, T> v, T z);
 
     constexpr Self& operator=(const Self& other) = default;
     constexpr Self& operator=(Self&& other) = default;

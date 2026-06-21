@@ -194,7 +194,7 @@ BasicTextDrawer::BasicTextDrawer(MaterialFactory* materialFactory)
 
 BasicTextDrawer::~BasicTextDrawer() = default;
 
-void BasicTextDrawer::AddTextToDraw(const char* text, glm::vec2 position, glm::vec2 size)
+void BasicTextDrawer::AddTextToDraw(const char* text, Vect2f position, Vect2f size)
 {
     while (*text)
     {
@@ -243,7 +243,7 @@ void BasicTextDrawer::Draw(IFrameRenderer& frameRenderer)
     m_mesh->Fill2DPositions(m_positionBuffer.data(), m_positionBuffer.size());
     m_mesh->FillTextureCoords(m_textureCoordsBuffer.data(), m_positionBuffer.size());
     frameRenderer.PrepareSceneDraw(m_material.get());
-    m_mesh->Draw(glm::mat4(1.f));
+    m_mesh->Draw(Mat4f::Identity());
     m_positionBuffer.clear();
     m_textureCoordsBuffer.clear();
 }

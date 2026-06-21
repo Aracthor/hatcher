@@ -35,4 +35,11 @@ constexpr Mat<L, T> operator*(const Mat<L, T>& u, const Mat<L, T>& v)
     return result;
 }
 
+template <std::size_t L, typename T>
+constexpr Mat<L, T>& operator*=(Mat<L, T>& u, const Mat<L, T>& v)
+{
+    u = u * v;
+    return u;
+}
+
 } // namespace hatcher

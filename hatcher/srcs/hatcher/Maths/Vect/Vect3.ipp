@@ -20,6 +20,14 @@ constexpr Vect<3, T>::Vect(T x, T y, T z)
 }
 
 template <typename T>
+constexpr Vect<3, T>::Vect(Vect<2, T> v, T z)
+    : x(v.x)
+    , y(v.y)
+    , z(z)
+{
+}
+
+template <typename T>
 constexpr Vect<3, T> Vect<3, T>::operator+(Self other) const
 {
     return {x + other.x, y + other.y, z + other.z};

@@ -41,7 +41,7 @@ class UFOUpdater final : public Updater
         }
     }
 
-    std::optional<glm::vec2> GetPlayerPosition(ComponentAccessor* componentAccessor)
+    std::optional<Vect2f> GetPlayerPosition(ComponentAccessor* componentAccessor)
     {
         auto playerComponents = componentAccessor->ReadComponents<PlayerComponent>();
         for (int i = 0; i < componentAccessor->Count(); i++)
@@ -71,15 +71,15 @@ class UFOUpdater final : public Updater
                 auto& shooterComponent = componentAccessor->WriteComponents<ShooterComponent>()[i];
                 if (shooterComponent->shoots.size() < 1 && randomDirector->RandomInt(1, 20) == 1)
                 {
-                    const std::optional<glm::vec2> playerPosition = GetPlayerPosition(componentAccessor);
+                    const std::optional<Vect2f> playerPosition = GetPlayerPosition(componentAccessor);
                     if (playerPosition)
                     {
                         EntityEgg newProjectile = entityManager->CreateNewEntity(EntityDescriptorID::Create("Shoot"));
                         const float aimingAngle = ufoComponents[i]->aimingAngle;
                         const float angleToAdd = randomDirector->RandomFloat(-aimingAngle, aimingAngle);
-                        const float angleCos = glm::cos(angleToAdd);
-                        const float angleSin = glm::sin(angleToAdd);
-                        glm::vec2 direction = glm::normalize(*playerPosition - positionComponent->position);
+                        const float angleCos = std::cos(angleToAdd);
+                        const float angleSin = std::sin(angleToAdd);
+                        Vect2f direction = (*playerPosition - positionComponent->position).Normalized();
                         direction = {angleCos * direction.x - angleSin * direction.y,
                                      angleSin * direction.x + angleCos * direction.y};
 
@@ -108,7 +108,7 @@ class UFOUpdater final : public Updater
             auto& positionComponent = ufoEgg.GetComponent<PositionComponent>();
             positionComponent->position = {spawnX, spawnY};
             positionComponent->angle = 0.f;
-            positionComponent->speed = spawnLeft ? glm::vec2(2.f, 0.f) : glm::vec2(-2.f, 0.f);
+            positionComponent->speed = spawnLeft ? Vect2f(2.f, 0.f) : Vect2f(-2.f, 0.f);
         }
     }
 };
