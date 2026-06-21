@@ -33,6 +33,7 @@ struct Vect<3, T>
     constexpr T& operator[](int index);
 
     constexpr T length() const;
+    constexpr Self normalized() const;
 };
 
 template <typename T>

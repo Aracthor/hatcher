@@ -32,6 +32,7 @@ struct Vect<2, T>
     constexpr T& operator[](int index);
 
     constexpr T length() const;
+    constexpr Self normalized() const;
 };
 
 using Vect2f = Vect<2, float>;

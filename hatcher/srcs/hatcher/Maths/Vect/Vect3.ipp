@@ -95,6 +95,12 @@ constexpr T Vect<3, T>::length() const
 }
 
 template <typename T>
+constexpr Vect<3, T> Vect<3, T>::normalized() const
+{
+    return *this / length();
+}
+
+template <typename T>
 constexpr Vect<3, T> cross(Vect<3, T> u, Vect<3, T> v)
 {
     return {

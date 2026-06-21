@@ -108,4 +108,18 @@ constexpr Mat<4, T> Mat<4, T>::orthographic(T left, T right, T bottom, T top)
     };
 }
 
+template <typename T>
+constexpr Mat<4, T> Mat<4, T>::lookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up)
+{
+    const Vect<3, T> zaxis = (target - position).normalized();
+    const Vect<3, T> xaxis = cross(zaxis, up).normalized();
+    const Vect<3, T> yaxis = cross(xaxis, zaxis);
+    return {
+        {xaxis.x, yaxis.x, -zaxis.x, T(0)},
+        {xaxis.y, yaxis.y, -zaxis.y, T(0)},
+        {xaxis.z, yaxis.z, -zaxis.z, T(0)},
+        {-dot(xaxis, position), -dot(yaxis, position), dot(zaxis, position), T(1)},
+    };
+}
+
 } // namespace hatcher

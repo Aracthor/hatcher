@@ -28,6 +28,7 @@ struct Mat<4, T>
     static constexpr Self zero();
     static constexpr Self identity();
     static constexpr Self orthographic(T left, T right, T bottom, T top);
+    static constexpr Self lookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up);
 };
 
 using Mat4f = Mat<4, float>;

@@ -95,4 +95,10 @@ constexpr T Vect<4, T>::length() const
     return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
+template <typename T>
+constexpr Vect<4, T> Vect<4, T>::normalized() const
+{
+    return *this / length();
+}
+
 } // namespace hatcher

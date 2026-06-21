@@ -64,3 +64,14 @@ REGISTER_TEST(MatProjection)
     ortho[3][3] = 1.f;
     TEST_EQUALS(ortho, Mat4f::orthographic(0.f, 800.f, 0.f, 600.f));
 }
+
+REGISTER_TEST(MatView)
+{
+    Mat4f lookAt = Mat4f::zero();
+    lookAt[0][2] = 1.f;
+    lookAt[1][1] = 1.f;
+    lookAt[2][0] = -1.f;
+    lookAt[3][2] = -1.f;
+    lookAt[3][3] = 1.f;
+    TEST_EQUALS(lookAt, Mat4f::lookAt({1.f, 0.f, 0.f}, {0.f, 0.f, 0.f}, {0.f, 1.f, 0.f}));
+}
