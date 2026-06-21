@@ -64,4 +64,43 @@ constexpr Mat<3, T> Mat<3, T>::identity()
     };
 }
 
+template <typename T>
+Mat<3, T> Mat<3, T>::rotationAroundX(T angle)
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    const T cos = std::cos(angle);
+    const T sin = std::sin(angle);
+    return {
+        {T(1), T(0), T(0)},
+        {T(0), cos, sin},
+        {T(0), -sin, cos},
+    };
+}
+
+template <typename T>
+Mat<3, T> Mat<3, T>::rotationAroundY(T angle)
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    const T cos = std::cos(angle);
+    const T sin = std::sin(angle);
+    return {
+        {cos, T(0), -sin},
+        {T(0), T(1), T(0)},
+        {sin, T(0), cos},
+    };
+}
+
+template <typename T>
+Mat<3, T> Mat<3, T>::rotationAroundZ(T angle)
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    const T cos = std::cos(angle);
+    const T sin = std::sin(angle);
+    return {
+        {cos, sin, T(0)},
+        {-sin, cos, T(0)},
+        {T(0), T(0), T(1)},
+    };
+}
+
 } // namespace hatcher

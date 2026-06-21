@@ -80,6 +80,43 @@ REGISTER_TEST(MatDeterminant)
     }
 }
 
+REGISTER_TEST(MatRotation)
+{
+    const float angle = 30.f * M_PI / 180.f;
+    {
+        Mat4f matrixAroundX(Mat3f::rotationAroundX(angle));
+        Mat4f expected{
+            {1.f, 0.f, 0.f, 0.f},
+            {0.f, std::cos(angle), std::sin(angle), 0.f},
+            {0.f, -std::sin(angle), std::cos(angle), 0.f},
+            {0.f, 0.f, 0.f, 1.f},
+        };
+        TEST_EQUALS(matrixAroundX, expected);
+    }
+
+    {
+        Mat4f matrixAroundY(Mat3f::rotationAroundY(angle));
+        Mat4f expected{
+            {std::cos(angle), 0.f, -std::sin(angle), 0.f},
+            {0.f, 1.f, 0.f, 0.f},
+            {std::sin(angle), 0.f, std::cos(angle), 0.f},
+            {0.f, 0.f, 0.f, 1.f},
+        };
+        TEST_EQUALS(matrixAroundY, expected);
+    }
+
+    {
+        Mat4f matrixAroundZ(Mat3f::rotationAroundZ(angle));
+        Mat4f expected{
+            {std::cos(angle), std::sin(angle), 0.f, 0.f},
+            {-std::sin(angle), std::cos(angle), 0.f, 0.f},
+            {0.f, 0.f, 1.f, 0.f},
+            {0.f, 0.f, 0.f, 1.f},
+        };
+        TEST_EQUALS(matrixAroundZ, expected);
+    }
+}
+
 REGISTER_TEST(MatProjection)
 {
     Mat4f ortho = Mat4f::zero();

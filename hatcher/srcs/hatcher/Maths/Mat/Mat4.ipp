@@ -6,6 +6,16 @@ constexpr Mat<4, T>::Mat(Column u0, Column u1, Column u2, Column u3)
     : columns{u0, u1, u2, u3}
 {
 }
+template <typename T>
+constexpr Mat<4, T>::Mat(const Mat<3, T>& mat3)
+    : columns{
+          Vect<4, T>(mat3[0], 0.f),
+          Vect<4, T>(mat3[1], 0.f),
+          Vect<4, T>(mat3[2], 0.f),
+          Vect<4, T>(0.f, 0.f, 0.f, 1.f),
+      }
+{
+}
 
 template <typename T>
 constexpr T Mat<4, T>::determinant() const

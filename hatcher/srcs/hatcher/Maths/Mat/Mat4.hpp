@@ -12,6 +12,7 @@ struct Mat<4, T>
     constexpr Mat(const Mat& other) = default;
     constexpr Mat(Mat&& other) = default;
     constexpr Mat(Column u0, Column u1, Column u2, Column u3);
+    constexpr Mat(const Mat<3, T>& mat3);
 
     Column columns[4];
 

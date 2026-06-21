@@ -13,6 +13,15 @@ constexpr Vect<4, T>::Vect(T x, T y, T z, T w)
 }
 
 template <typename T>
+constexpr Vect<4, T>::Vect(Vect<3, T> v, T w)
+    : x(v.x)
+    , y(v.y)
+    , z(v.z)
+    , w(w)
+{
+}
+
+template <typename T>
 constexpr Vect<4, T> Vect<4, T>::operator+(Self other) const
 {
     return {x + other.x, y + other.y, z + other.z, w + other.w};
@@ -98,6 +107,7 @@ constexpr T Vect<4, T>::length() const
 template <typename T>
 constexpr Vect<4, T> Vect<4, T>::normalized() const
 {
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     return *this / length();
 }
 

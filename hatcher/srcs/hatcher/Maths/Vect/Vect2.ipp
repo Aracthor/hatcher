@@ -99,6 +99,7 @@ constexpr T Vect<2, T>::length() const
 template <typename T>
 constexpr Vect<2, T> Vect<2, T>::normalized() const
 {
+    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
     return *this / length();
 }
 

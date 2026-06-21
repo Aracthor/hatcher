@@ -25,6 +25,11 @@ struct Mat<3, T>
 
     static constexpr Self zero();
     static constexpr Self identity();
+
+    // C++26 and constexpr cosinus are still so far...
+    static Self rotationAroundX(T angle);
+    static Self rotationAroundY(T angle);
+    static Self rotationAroundZ(T angle);
 };
 
 using Mat3f = Mat<3, float>;
