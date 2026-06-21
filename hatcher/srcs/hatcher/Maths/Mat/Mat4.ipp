@@ -57,6 +57,34 @@ constexpr T Mat<4, T>::Determinant() const
 }
 
 template <typename T>
+constexpr Mat<4, T> Mat<4, T>::Inverse() const
+{
+    const T oDeterminant = T(1) / Determinant();
+    T sign = T(1);
+    Self result = Self::Zero();
+    for (std::size_t x = 0; x < 4; x++)
+    {
+        for (std::size_t y = 0; y < 4; y++)
+        {
+            Mat<3, T> subMatrix = Mat<3, T>::Zero();
+            for (std::size_t subX = 0; subX < 3; subX++)
+            {
+                for (std::size_t subY = 0; subY < 3; subY++)
+                {
+                    const int xToGet = subX >= x ? subX + 1 : subX;
+                    const int yToGet = subY >= y ? subY + 1 : subY;
+                    subMatrix[subX][subY] = columns[xToGet][yToGet];
+                }
+            }
+            result[y][x] = oDeterminant * subMatrix.Determinant() * sign;
+            sign *= T(-1);
+        }
+        sign *= T(-1);
+    }
+    return result;
+}
+
+template <typename T>
 constexpr typename Mat<4, T>::Column Mat<4, T>::operator[](int index) const
 {
     return columns[index];

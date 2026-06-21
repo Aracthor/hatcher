@@ -17,6 +17,7 @@ struct Mat<4, T>
     Column columns[4];
 
     constexpr T Determinant() const;
+    constexpr Self Inverse() const;
 
     constexpr Column operator[](int index) const;
     constexpr Column& operator[](int index);

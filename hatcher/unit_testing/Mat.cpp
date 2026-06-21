@@ -80,6 +80,39 @@ REGISTER_TEST(MatDeterminant)
     }
 }
 
+REGISTER_TEST(MatInverse)
+{
+    auto MatAlmostEquals = [](const Mat4f& a, const Mat4f& b)
+    {
+        const float epsilon = 0.0001f;
+        for (int y = 0; y < 4; y++)
+        {
+            for (int x = 0; x < 4; x++)
+            {
+                const float valueA = a[x][y];
+                const float valueB = b[x][y];
+                if (std::abs(valueA - valueB) > epsilon)
+                    return false;
+            }
+        }
+        return true;
+    };
+
+    Mat4f matrix = Mat4f{
+        {1.0f, 4.0f, -4.2f, 3.0f},
+        {2.0f, -1.0f, 2.2f, 2.1f},
+        {-2.1f, 4.3f, 10.0f, 0.0f},
+        {0.0f, 42.0f, -1.0f, 3.2f},
+    };
+    Mat4f expected{
+        {-0.37738f, 0.430349f, -0.246039f, 0.071377f},
+        {-0.0329337f, 0.00398875f, -0.0118839f, 0.0282577f},
+        {-0.0650883f, 0.0886582f, 0.0534419f, 0.00283836f},
+        {0.411915f, -0.0246466f, 0.172677f, -0.0574956f},
+    };
+    TEST_EQUALS_FUNC(matrix.Inverse(), expected, MatAlmostEquals);
+}
+
 REGISTER_TEST(MatRotation)
 {
     const float angle = 30.f * M_PI / 180.f;
