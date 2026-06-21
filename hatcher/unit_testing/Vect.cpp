@@ -1,5 +1,3 @@
-#include <ostream>
-
 #include "hatcher/Maths/Vect.hpp"
 #include "hatcher/Maths/streamable.hpp"
 
