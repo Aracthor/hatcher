@@ -17,10 +17,10 @@ struct MeshData
 {
     struct Vertex
     {
-        glm::vec3 position;
-        std::optional<glm::vec3> color;
-        std::optional<glm::vec2> textureCoord;
-        std::optional<glm::vec3> normal;
+        Vect3f position;
+        std::optional<Vect3f> color;
+        std::optional<Vect2f> textureCoord;
+        std::optional<Vect3f> normal;
 
         bool operator==(const Vertex& other) const
         {
@@ -54,8 +54,8 @@ std::string getNextToken(std::string& line, const std::string& fileName)
     return token;
 }
 
-int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, glm::vec3 position, std::optional<glm::vec3> color,
-                      std::optional<glm::vec2> texCoord, std::optional<glm::vec3> normal)
+int getOrCreateVertex(std::vector<MeshData::Vertex>& vertices, Vect3f position, std::optional<Vect3f> color,
+                      std::optional<Vect2f> texCoord, std::optional<Vect3f> normal)
 {
     MeshData::Vertex vertex({position, color, texCoord, normal});
     auto it = std::find(vertices.begin(), vertices.end(), vertex);
@@ -75,10 +75,10 @@ unique_ptr<MeshData> readFile(const std::string& fileName)
     if (ifs.rdstate() & std::ios::failbit)
         throw std::runtime_error(std::string("Couldn't open mesh file '") + fileName + "'.");
 
-    std::vector<glm::vec3> wavefrontPositions;
-    std::vector<glm::vec3> wavefrontColors;
-    std::vector<glm::vec2> wavefrontTexCoords;
-    std::vector<glm::vec3> wavefrontNormals;
+    std::vector<Vect3f> wavefrontPositions;
+    std::vector<Vect3f> wavefrontColors;
+    std::vector<Vect2f> wavefrontTexCoords;
+    std::vector<Vect3f> wavefrontNormals;
 
     std::string line;
     while (std::getline(ifs, line))
@@ -128,11 +128,11 @@ unique_ptr<MeshData> readFile(const std::string& fileName)
                     std::getline(iss, index, '/');
                     const int positionIndex = ::atoi(index.c_str());
                     // - 1 because for some reason, in wavefront, indices start at 1 instead of 0...
-                    const glm::vec3 position = wavefrontPositions[positionIndex - 1];
-                    const std::optional<glm::vec3> color =
-                        wavefrontColors.empty() ? std::optional<glm::vec3>() : wavefrontColors[positionIndex - 1];
-                    std::optional<glm::vec2> texCoord;
-                    std::optional<glm::vec3> normal;
+                    const Vect3f position = wavefrontPositions[positionIndex - 1];
+                    const std::optional<Vect3f> color =
+                        wavefrontColors.empty() ? std::optional<Vect3f>() : wavefrontColors[positionIndex - 1];
+                    std::optional<Vect2f> texCoord;
+                    std::optional<Vect3f> normal;
                     if (std::getline(iss, index, '/') && !index.empty())
                     {
                         HATCHER_ASSERT(!wavefrontTexCoords.empty());

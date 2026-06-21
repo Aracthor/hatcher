@@ -5,15 +5,15 @@
 #include "hatcher/DataSaver.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/RandomGenerator.hpp"
-#include "hatcher/Maths/glm_pure.hpp"
+#include "hatcher/Maths/Vect.hpp"
 
 using namespace hatcher;
 
-template <glm::length_t L, typename T>
-std::ostream& operator<<(std::ostream& stream, const glm::vec<L, T>& vec)
+template <std::size_t L, typename T>
+std::ostream& operator<<(std::ostream& stream, Vect<L, T> vec)
 {
     stream << '[';
-    for (glm::length_t i = 0; i < L; i++)
+    for (std::size_t i = 0; i < L; i++)
     {
         if (i > 0)
             stream << ',';
@@ -23,7 +23,7 @@ std::ostream& operator<<(std::ostream& stream, const glm::vec<L, T>& vec)
     return stream;
 }
 
-template <glm::length_t L, typename T>
+template <std::size_t L, typename T>
 std::ostream& operator<<(std::ostream& stream, const Box<L, T>& box)
 {
     stream << '{';
@@ -88,13 +88,13 @@ REGISTER_TEST(SaveLoader_Float)
 
 REGISTER_TEST(SaveLoader_Vector)
 {
-    glm::vec3 input[] = {
+    Vect3f input[] = {
         {0.f, 0.f, 0.f},
         {2.f, -42.f, 42.f},
         {2.1f, -78.5f, 1.f},
     };
     constexpr int testCount = std::size(input);
-    glm::vec3 output[testCount];
+    Vect3f output[testCount];
 
     DataSaver saver;
     for (int i = 0; i < testCount; i++)
@@ -180,7 +180,7 @@ REGISTER_TEST(SaveLoader_String)
 
 REGISTER_TEST(SaveLoader_Combined)
 {
-    glm::vec2 inputVec = {2.5f, -1.5f};
+    Vect2f inputVec = {2.5f, -1.5f};
     uint inputCount1 = 2u;
     int inputCount2 = 42;
     bool inputBool = false;
@@ -195,7 +195,7 @@ REGISTER_TEST(SaveLoader_Combined)
     saver << inputBox;
     saver << inputString;
 
-    glm::vec2 outputVec;
+    Vect2f outputVec;
     uint outputCount1;
     int outputCount2;
     Box3f outputBox;
@@ -210,10 +210,10 @@ REGISTER_TEST(SaveLoader_Combined)
     loader >> outputBox;
     loader >> outputString;
 
-    TEST_EQUALS(outputVec, glm::vec2(2.5f, -1.5f));
+    TEST_EQUALS(outputVec, Vect2f(2.5f, -1.5f));
     TEST_EQUALS(outputCount1, 2u);
     TEST_EQUALS(outputCount2, 42);
-    TEST_EQUALS(outputBox, Box3f(glm::vec3(0.f, 0.f, 0.f), glm::vec3(0.f, 0.f, 0.f)));
+    TEST_EQUALS(outputBox, Box3f(Vect3f(0.f, 0.f, 0.f), Vect3f(0.f, 0.f, 0.f)));
     TEST_EQUALS(outputBool, false);
     TEST_EQUALS(outputString, std::string("Hello World!"));
 }

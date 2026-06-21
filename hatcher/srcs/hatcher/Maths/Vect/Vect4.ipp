@@ -4,6 +4,15 @@ namespace hatcher
 {
 
 template <typename T>
+constexpr Vect<4, T>::Vect(T scalar)
+    : x(scalar)
+    , y(scalar)
+    , z(scalar)
+    , w(scalar)
+{
+}
+
+template <typename T>
 constexpr Vect<4, T>::Vect(T x, T y, T z, T w)
     : x(x)
     , y(y)
@@ -88,13 +97,32 @@ constexpr bool Vect<4, T>::operator!=(Self other) const
 template <typename T>
 constexpr T Vect<4, T>::operator[](int index) const
 {
-    return reinterpret_cast<const T*>(this)[index];
+    return Data()[index];
 }
 
 template <typename T>
 constexpr T& Vect<4, T>::operator[](int index)
 {
     return reinterpret_cast<T*>(this)[index];
+}
+
+template <typename T>
+template <typename T2>
+constexpr Vect<4, T>::operator Vect<4, T2>() const
+{
+    return Vect<4, T2>(static_cast<T2>(x), static_cast<T2>(y), static_cast<T2>(z), static_cast<T2>(w));
+}
+
+template <typename T>
+constexpr const T* Vect<4, T>::Data() const
+{
+    return reinterpret_cast<const T*>(this);
+}
+
+template <typename T>
+constexpr Vect<3, T> Vect<4, T>::xyz() const
+{
+    return Vect<3, T>(x, y, z);
 }
 
 template <typename T>

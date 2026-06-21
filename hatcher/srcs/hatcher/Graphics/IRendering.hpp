@@ -1,6 +1,5 @@
 #pragma once
 
-#include "hatcher/Maths/glm_pure.hpp"
 #include "hatcher/unique_ptr.hpp"
 
 namespace hatcher

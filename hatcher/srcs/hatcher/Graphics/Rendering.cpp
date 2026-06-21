@@ -27,7 +27,7 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight, const 
 
 Rendering::~Rendering() = default;
 
-glm::ivec2 Rendering::Resolution() const
+Vect2i Rendering::Resolution() const
 {
     return {m_window->Width(), m_window->Height()};
 }

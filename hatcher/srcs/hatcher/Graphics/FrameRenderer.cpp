@@ -7,7 +7,7 @@
 namespace hatcher
 {
 
-FrameRenderer::FrameRenderer(GLContext* context, const Clock* clock, const glm::vec2& resolution)
+FrameRenderer::FrameRenderer(GLContext* context, const Clock* clock, Vect2i resolution)
     : m_context(context)
     , m_clock(clock)
     , m_resolution(resolution)
@@ -27,16 +27,16 @@ void FrameRenderer::PrepareUIDraw(const Material* material) const
     material->Use();
     const float width = static_cast<float>(m_resolution.x);
     const float height = static_cast<float>(m_resolution.y);
-    const glm::mat4 UIProjectionMatrix = glm::ortho(0.f, width, 0.f, height);
+    const Mat4f UIProjectionMatrix = Mat4f::Orthographic(0.f, width, 0.f, height);
     material->SetTransformationMatrix("uniProjectionViewMatrix", UIProjectionMatrix);
 }
 
-void FrameRenderer::SetProjectionMatrix(const glm::mat4& matrix)
+void FrameRenderer::SetProjectionMatrix(const Mat4f& matrix)
 {
     m_projectionMatrix = matrix;
 }
 
-void FrameRenderer::SetViewMatrix(const glm::mat4& matrix)
+void FrameRenderer::SetViewMatrix(const Mat4f& matrix)
 {
     m_viewMatrix = matrix;
 }
@@ -51,32 +51,32 @@ void FrameRenderer::DisableDepthTest()
     m_context->DisableDepthTest();
 }
 
-glm::vec2 FrameRenderer::WorldCoordsToWindowCoords(const glm::vec3& worldCoords, const glm::mat4& modelMatrix) const
+Vect2f FrameRenderer::WorldCoordsToWindowCoords(Vect3f worldCoords, const Mat4f& modelMatrix) const
 {
-    const glm::ivec2 resolution = m_resolution;
-    const glm::vec4 projectedVertex = m_projectionMatrix * m_viewMatrix * modelMatrix * glm::vec4(worldCoords, 1.f);
+    const Vect2i resolution = m_resolution;
+    const Vect4f projectedVertex = m_projectionMatrix * m_viewMatrix * modelMatrix * Vect4f(worldCoords, 1.f);
     return {(projectedVertex.x + 1.f) / 2.f * resolution.x, (projectedVertex.y + 1.f) / 2.f * resolution.y};
 }
 
-Box2f FrameRenderer::ProjectBox3DToWindowCoords(const Box3f& box, const glm::mat4& modelMatrix) const
+Box2f FrameRenderer::ProjectBox3DToWindowCoords(const Box3f& box, const Mat4f& modelMatrix) const
 {
     Box2f result = WorldCoordsToWindowCoords(box.Min(), modelMatrix);
-    std::array<glm::vec3, 8> corners = box.GetCorners();
+    std::array<Vect3f, 8> corners = box.GetCorners();
 
-    for (const glm::vec3& corner : corners)
+    for (const Vect3f& corner : corners)
     {
         result.AddPoint(WorldCoordsToWindowCoords(corner, modelMatrix));
     }
     return result;
 }
 
-glm::vec3 FrameRenderer::WindowCoordsToWorldCoords(const glm::vec2 windowCoords) const
+Vect3f FrameRenderer::WindowCoordsToWorldCoords(Vect2f windowCoords) const
 {
-    const glm::ivec2 resolution = m_resolution;
-    const glm::vec3 winCoords(windowCoords.x, windowCoords.y, 0.f);
-    const glm::mat4 modelViewMatrix = m_viewMatrix;
-    const glm::vec4 viewport = {0.f, 0.f, resolution.x, resolution.y};
-    return glm::unProject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
+    const Vect2f resolution = m_resolution;
+    const Vect3f winCoords(windowCoords.x, windowCoords.y, 0.f);
+    const Mat4f modelViewMatrix = m_viewMatrix;
+    const Vect4f viewport = {0.f, 0.f, resolution.x, resolution.y};
+    return Mat4f::Unproject(winCoords, modelViewMatrix, m_projectionMatrix, viewport);
 }
 
 } // namespace hatcher

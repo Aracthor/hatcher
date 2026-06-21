@@ -85,6 +85,13 @@ constexpr Mat<4, T> Mat<4, T>::Inverse() const
 }
 
 template <typename T>
+constexpr const T* Mat<4, T>::Data() const
+{
+    static_assert(sizeof(*this) == sizeof(T) * 4 * 4);
+    return reinterpret_cast<const T*>(this);
+}
+
+template <typename T>
 constexpr typename Mat<4, T>::Column Mat<4, T>::operator[](int index) const
 {
     return columns[index];
@@ -186,6 +193,23 @@ constexpr Mat<4, T> Mat<4, T>::LookAt(Vect<3, T> position, Vect<3, T> target, Ve
         {xaxis.z, yaxis.z, -zaxis.z, T(0)},
         {-Dot(xaxis, position), -Dot(yaxis, position), Dot(zaxis, position), T(1)},
     };
+}
+
+template <typename T>
+constexpr Vect<3, T> Mat<4, T>::Unproject(Vect<3, T> winCoords, const Self& modelView, const Self& projection,
+                                          Vect<4, T> viewport)
+{
+    const Self inverse = (projection * modelView).Inverse();
+
+    Vect<4, T> temp(winCoords, T(1));
+    temp.x = (temp.x - viewport.x) / viewport.z;
+    temp.y = (temp.y - viewport.y) / viewport.w;
+    temp = temp * T(2) - Vect<4, T>(T(1), T(1), T(1), T(1));
+
+    Vect<4, T> result = inverse * temp;
+    result /= result.w;
+
+    return result.xyz();
 }
 
 } // namespace hatcher

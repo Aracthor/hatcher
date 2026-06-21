@@ -28,7 +28,7 @@ void Material::Use() const
     }
     for (auto uniform : m_vec4Uniforms)
     {
-        m_shaderProgram->SetVector4Uniform(uniform.first, glm::value_ptr(uniform.second));
+        m_shaderProgram->SetVector4Uniform(uniform.first, uniform.second.Data());
     }
     for (auto texture : m_textures)
     {
@@ -36,9 +36,9 @@ void Material::Use() const
     }
 }
 
-void Material::SetTransformationMatrix(const char* name, const glm::mat4& matrix) const
+void Material::SetTransformationMatrix(const char* name, const Mat4f& matrix) const
 {
-    m_shaderProgram->SetMatrix4Uniform(name, glm::value_ptr(matrix));
+    m_shaderProgram->SetMatrix4Uniform(name, matrix.Data());
 }
 
 GLint Material::PositionAttribLocation() const
@@ -86,7 +86,7 @@ void Material::SetUniform(const char* name, float value)
     m_floatUniforms[name] = value;
 }
 
-void Material::SetUniform(const char* name, const glm::vec4& value)
+void Material::SetUniform(const char* name, Vect4f value)
 {
     m_vec4Uniforms[name] = value;
 }

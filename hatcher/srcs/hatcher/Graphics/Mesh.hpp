@@ -4,7 +4,8 @@
 #include <unordered_map>
 
 #include "hatcher/Maths/Box.hpp"
-#include "hatcher/Maths/glm_pure.hpp"
+#include "hatcher/Maths/Mat.hpp"
+#include "hatcher/Maths/Vect.hpp"
 #include "hatcher/basic_types.hpp"
 #include "hatcher/unique_ptr.hpp"
 
@@ -39,7 +40,7 @@ public:
     void FillInstancedBuffer(const std::string& name, const float* data, int length);
 
     const Box3f& Box() const { return m_box; }
-    void Draw(const glm::mat4& modelMatrix) const;
+    void Draw(const Mat4f& modelMatrix) const;
     void DrawInstanced(int instanceCount) const;
 
 private:

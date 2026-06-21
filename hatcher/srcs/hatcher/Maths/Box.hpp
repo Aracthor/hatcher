@@ -2,19 +2,19 @@
 
 #include <array>
 
-#include "glm_pure.hpp"
+#include "Vect.hpp"
 
 namespace hatcher
 {
 
-template <glm::length_t L, typename T>
+template <std::size_t L, typename T>
 class Box
 {
 private:
-    constexpr static int _pow2(glm::length_t n);
+    constexpr static int _pow2(std::size_t n);
     const static int CornerCount = _pow2(L);
 
-    using Vec = glm::vec<L, T>;
+    using Vec = Vect<L, T>;
 
 public:
     constexpr Box();
@@ -51,8 +51,8 @@ public:
     bool operator!=(const Box& other) const;
 
 private:
-    glm::vec<L, T> m_min;
-    glm::vec<L, T> m_max;
+    Vec m_min;
+    Vec m_max;
 };
 
 using Box2i = Box<2, int>;

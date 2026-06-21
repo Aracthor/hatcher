@@ -17,6 +17,9 @@ struct Mat<3, T>
 
     constexpr T Determinant() const;
 
+    constexpr Self& operator=(const Self& other) = default;
+    constexpr Self& operator=(Self&& other) = default;
+
     constexpr Column operator[](int index) const;
     constexpr Column& operator[](int index);
 

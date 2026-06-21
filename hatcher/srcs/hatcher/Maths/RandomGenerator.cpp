@@ -43,10 +43,10 @@ float RandomGenerator::RandomAngle()
     return RandomFloat(-M_PI, M_PI);
 }
 
-glm::vec2 RandomGenerator::RandomDirection()
+Vect2f RandomGenerator::RandomDirection()
 {
     const float angle = RandomAngle();
-    return {cos(angle), sin(angle)};
+    return {std::cos(angle), std::sin(angle)};
 }
 
 float RandomGenerator::RandomBetween0And1()

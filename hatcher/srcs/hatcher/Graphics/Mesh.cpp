@@ -24,7 +24,7 @@ void Mesh::Set2DPositions(const float* positions, int positionCount)
     for (int i = 0; i < positionCount / 2; i++)
     {
         const int vertexIndex = i * 2;
-        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1], 0.f));
+        m_box.AddPoint(Vect3f(positions[vertexIndex], positions[vertexIndex + 1], 0.f));
     }
 }
 
@@ -36,7 +36,7 @@ void Mesh::Set3DPositions(const float* positions, int positionCount)
     for (int i = 0; i < positionCount / 3; i++)
     {
         const int vertexIndex = i * 3;
-        m_box.AddPoint(glm::vec3(positions[vertexIndex], positions[vertexIndex + 1], positions[vertexIndex + 2]));
+        m_box.AddPoint(Vect3f(positions[vertexIndex], positions[vertexIndex + 1], positions[vertexIndex + 2]));
     }
 }
 
@@ -159,7 +159,7 @@ void Mesh::FillInstancedBuffer(const std::string& name, const float* data, int l
     m_instancedVBO[name]->SetData(data, length, true);
 }
 
-void Mesh::Draw(const glm::mat4& modelMatrix) const
+void Mesh::Draw(const Mat4f& modelMatrix) const
 {
     HATCHER_ASSERT(m_material->IsUsed());
 
