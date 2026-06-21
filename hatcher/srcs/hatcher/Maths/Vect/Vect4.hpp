@@ -31,6 +31,7 @@ struct Vect<4, T>
     constexpr bool operator!=(Self other) const;
 
     constexpr T operator[](int index) const;
+    constexpr T& operator[](int index);
 
     constexpr T length() const;
 };

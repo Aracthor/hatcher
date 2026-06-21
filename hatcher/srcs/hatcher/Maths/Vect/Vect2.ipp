@@ -84,6 +84,12 @@ constexpr T Vect<2, T>::operator[](int index) const
 }
 
 template <typename T>
+constexpr T& Vect<2, T>::operator[](int index)
+{
+    return reinterpret_cast<T*>(this)[index];
+}
+
+template <typename T>
 constexpr T Vect<2, T>::length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");

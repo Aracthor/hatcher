@@ -112,7 +112,8 @@ SRCS_FILES=	Graphics/Core/GLContext.cpp		\
 
 SRCS=   	$(addprefix $(SRCS_DIR),$(SRCS_FILES))
 
-TEST_SRCS_FILES=SaveLoader.cpp				\
+TEST_SRCS_FILES=Mat.cpp					\
+		SaveLoader.cpp				\
 		UnitTester.cpp 				\
 		unique_ptr.cpp 				\
 		Vect.cpp				\
