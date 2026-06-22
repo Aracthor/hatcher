@@ -18,6 +18,14 @@ constexpr T RadToDeg(T angle)
 }
 
 template <typename T>
+T Angle(Vect<2, T> vNormalized)
+{
+    static_assert(std::numeric_limits<T>::is_iec559, "'Angle' is only possible for floating-point type.");
+    const T acos = std::acos(vNormalized.x);
+    return vNormalized.y < 0 ? -acos : acos;
+}
+
+template <typename T>
 T OrientedAngle(Vect<2, T> u, Vect<2, T> v)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'OrientedAngle' is only possible for floating-point type.");

@@ -11,6 +11,9 @@ template <typename T>
 constexpr T RadToDeg(T angle);
 
 template <typename T>
+T Angle(Vect<2, T> vNormalized);
+
+template <typename T>
 T OrientedAngle(Vect<2, T> u, Vect<2, T> v);
 
 } // namespace hatcher
