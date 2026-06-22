@@ -133,7 +133,13 @@ template <typename T>
 constexpr T Vect<3, T>::Length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
-    return std::sqrt(x * x + y * y + z * z);
+    return std::sqrt(LengthSqr());
+}
+
+template <typename T>
+constexpr T Vect<3, T>::LengthSqr() const
+{
+    return x * x + y * y + z * z;
 }
 
 template <typename T>

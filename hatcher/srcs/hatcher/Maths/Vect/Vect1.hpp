@@ -41,6 +41,7 @@ struct Vect<1, T>
     constexpr operator Vect<1, T2>() const;
 
     constexpr T Length() const;
+    constexpr T LengthSqr() const;
     constexpr Self Normalized() const;
 };
 

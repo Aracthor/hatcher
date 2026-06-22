@@ -115,6 +115,12 @@ constexpr T Vect<1, T>::Length() const
 }
 
 template <typename T>
+constexpr T Vect<1, T>::LengthSqr() const
+{
+    return x * x;
+}
+
+template <typename T>
 constexpr Vect<1, T> Vect<1, T>::Normalized() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'Normalized' is only possible for floating-point Vect.");

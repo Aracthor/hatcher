@@ -46,6 +46,7 @@ struct Vect<3, T>
     constexpr Vect<2, T> xy() const;
 
     constexpr T Length() const;
+    constexpr T LengthSqr() const;
     constexpr Self Normalized() const;
 };
 
