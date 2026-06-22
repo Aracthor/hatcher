@@ -182,6 +182,17 @@ constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top)
 }
 
 template <typename T>
+constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top, T zNear, T zFar)
+{
+    return {
+        {T(2) / (right - left), T(0), T(0), T(0)},
+        {T(0), T(2) / (top - bottom), T(0), T(0)},
+        {T(0), T(0), T(2) / (zFar - zNear), T(0)},
+        {-(right + left) / (right - left), -(top + bottom) / (top - bottom), -(zFar + zNear) / (zFar - zNear), T(1)},
+    };
+}
+
+template <typename T>
 constexpr Mat<4, T> Mat<4, T>::LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up)
 {
     const Vect<3, T> zaxis = (target - position).Normalized();

@@ -176,6 +176,16 @@ REGISTER_TEST(MatProjection)
     ortho[3][1] = -1.f;
     ortho[3][3] = 1.f;
     TEST_EQUALS(ortho, Mat4f::Orthographic(0.f, 800.f, 0.f, 600.f));
+
+    Mat4f orthoWithZ = Mat4f::Zero();
+    orthoWithZ[0][0] = 1.f / 400.f;
+    orthoWithZ[1][1] = 1.f / 300.f;
+    orthoWithZ[2][2] = 2.f / 999.9f;
+    orthoWithZ[3][0] = -1.f;
+    orthoWithZ[3][1] = -1.f;
+    orthoWithZ[3][2] = -1000.1f / 999.9f;
+    orthoWithZ[3][3] = 1.f;
+    TEST_EQUALS(orthoWithZ, Mat4f::Orthographic(0.f, 800.f, 0.f, 600.f, 0.1f, 1000.f));
 }
 
 REGISTER_TEST(MatView)

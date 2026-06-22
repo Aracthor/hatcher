@@ -38,6 +38,7 @@ struct Mat<4, T>
     static constexpr Self Scale(Vect<3, T> scale);
 
     static constexpr Self Orthographic(T left, T right, T bottom, T top);
+    static constexpr Self Orthographic(T left, T right, T bottom, T top, T zNear, T zFar);
     static constexpr Self LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up);
 
     static constexpr Vect<3, T> Unproject(Vect<3, T> winCoords, const Self& modelView, const Self& projection,
