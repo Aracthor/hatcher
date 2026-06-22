@@ -106,14 +106,14 @@ constexpr Vect<2, T>::operator Vect<2, T2>() const
 template <typename T>
 constexpr T Vect<2, T>::Length() const
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'Length' is only possible for floating-point Vect.");
     return std::sqrt(x * x + y * y);
 }
 
 template <typename T>
 constexpr Vect<2, T> Vect<2, T>::Normalized() const
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'Normalized' is only possible for floating-point Vect.");
     return *this / Length();
 }
 

@@ -1,4 +1,5 @@
 #include "hatcher/Maths/Mat.hpp"
+#include "hatcher/Maths/angles.hpp"
 #include "hatcher/Maths/streamable.hpp"
 
 #include "UnitTester.hpp"
@@ -115,7 +116,7 @@ REGISTER_TEST(MatInverse)
 
 REGISTER_TEST(MatRotation)
 {
-    const float angle = 30.f * M_PI / 180.f;
+    const float angle = DegToRad(30.f);
     {
         Mat4f matrixAroundX(Mat3f::RotationAroundX(angle));
         Mat4f expected{
@@ -152,7 +153,7 @@ REGISTER_TEST(MatRotation)
 
 REGISTER_TEST(MatTransformation)
 {
-    const float angle = M_PI / 2.f;
+    const float angle = DegToRad(90.f);
     Mat4f translation = Mat4f::Translation(Vect3f(2.f, -1.f, 3.f));
     Mat4f rotation = Mat3f::RotationAroundZ(M_PI / 2.f);
     Mat4f scale = Mat4f::Scale(Vect3f(2.f, 1.f, 1.f));
