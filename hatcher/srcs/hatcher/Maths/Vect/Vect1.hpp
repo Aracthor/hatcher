@@ -17,6 +17,8 @@ struct Vect<1, T>
     constexpr Self& operator=(const Self& other) = default;
     constexpr Self& operator=(Self&& other) = default;
 
+    constexpr Self operator-() const;
+
     constexpr Self operator+(Self other) const;
     constexpr Self operator-(Self other) const;
     constexpr Self operator*(T scalar) const;

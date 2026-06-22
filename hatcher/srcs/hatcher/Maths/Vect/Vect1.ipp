@@ -13,6 +13,12 @@ constexpr Vect<1, T>::Vect(T scalar)
 }
 
 template <typename T>
+constexpr Vect<1, T> Vect<1, T>::operator-() const
+{
+    return *this * -1;
+}
+
+template <typename T>
 constexpr Vect<1, T> Vect<1, T>::operator+(Self other) const
 {
     return {x + other.x};

@@ -31,6 +31,12 @@ constexpr Vect<4, T>::Vect(Vect<3, T> v, T w)
 }
 
 template <typename T>
+constexpr Vect<4, T> Vect<4, T>::operator-() const
+{
+    return *this * -1;
+}
+
+template <typename T>
 constexpr Vect<4, T> Vect<4, T>::operator+(Self other) const
 {
     return {x + other.x, y + other.y, z + other.z, w + other.w};
