@@ -180,7 +180,7 @@ REGISTER_TEST(MatProjection)
     Mat4f orthoWithZ = Mat4f::Zero();
     orthoWithZ[0][0] = 1.f / 400.f;
     orthoWithZ[1][1] = 1.f / 300.f;
-    orthoWithZ[2][2] = 2.f / 999.9f;
+    orthoWithZ[2][2] = -2.f / 999.9f;
     orthoWithZ[3][0] = -1.f;
     orthoWithZ[3][1] = -1.f;
     orthoWithZ[3][2] = -1000.1f / 999.9f;

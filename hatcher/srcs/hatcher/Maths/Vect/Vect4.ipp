@@ -116,6 +116,7 @@ constexpr Vect<4, T>::operator Vect<4, T2>() const
 template <typename T>
 constexpr const T* Vect<4, T>::Data() const
 {
+    static_assert(sizeof(*this) == sizeof(T) * 4);
     return reinterpret_cast<const T*>(this);
 }
 

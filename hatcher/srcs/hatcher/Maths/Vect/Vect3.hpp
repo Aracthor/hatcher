@@ -40,6 +40,9 @@ struct Vect<3, T>
     template <typename T2>
     constexpr operator Vect<3, T2>() const;
 
+    constexpr const T* Data() const;
+    constexpr Vect<2, T> xy() const;
+
     constexpr T Length() const;
     constexpr Self Normalized() const;
 };

@@ -111,6 +111,19 @@ constexpr Vect<3, T>::operator Vect<3, T2>() const
 }
 
 template <typename T>
+constexpr const T* Vect<3, T>::Data() const
+{
+    static_assert(sizeof(*this) == sizeof(T) * 3);
+    return reinterpret_cast<const T*>(this);
+}
+
+template <typename T>
+constexpr Vect<2, T> Vect<3, T>::xy() const
+{
+    return Vect<2, T>(x, y);
+}
+
+template <typename T>
 constexpr T Vect<3, T>::Length() const
 {
     static_assert(std::numeric_limits<T>::is_iec559, "'length' is only possible for floating-point Vect.");

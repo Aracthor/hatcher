@@ -37,6 +37,10 @@ struct Mat<4, T>
     static constexpr Self Scale(T scale);
     static constexpr Self Scale(Vect<3, T> scale);
 
+    static Self RotationAroundX(T angle);
+    static Self RotationAroundY(T angle);
+    static Self RotationAroundZ(T angle);
+
     static constexpr Self Orthographic(T left, T right, T bottom, T top);
     static constexpr Self Orthographic(T left, T right, T bottom, T top, T zNear, T zFar);
     static constexpr Self LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up);

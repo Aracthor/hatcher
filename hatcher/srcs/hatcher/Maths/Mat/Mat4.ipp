@@ -171,6 +171,24 @@ constexpr Mat<4, T> Mat<4, T>::Scale(Vect<3, T> scale)
 }
 
 template <typename T>
+Mat<4, T> Mat<4, T>::RotationAroundX(T angle)
+{
+    return Mat4f(Mat3f::RotationAroundX(angle));
+}
+
+template <typename T>
+Mat<4, T> Mat<4, T>::RotationAroundY(T angle)
+{
+    return Mat4f(Mat3f::RotationAroundY(angle));
+}
+
+template <typename T>
+Mat<4, T> Mat<4, T>::RotationAroundZ(T angle)
+{
+    return Mat4f(Mat3f::RotationAroundZ(angle));
+}
+
+template <typename T>
 constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top)
 {
     return {
@@ -187,7 +205,7 @@ constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top, T 
     return {
         {T(2) / (right - left), T(0), T(0), T(0)},
         {T(0), T(2) / (top - bottom), T(0), T(0)},
-        {T(0), T(0), T(2) / (zFar - zNear), T(0)},
+        {T(0), T(0), -T(2) / (zFar - zNear), T(0)},
         {-(right + left) / (right - left), -(top + bottom) / (top - bottom), -(zFar + zNear) / (zFar - zNear), T(1)},
     };
 }
