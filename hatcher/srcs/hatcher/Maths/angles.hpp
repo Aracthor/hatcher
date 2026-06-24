@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Vect.hpp"
+#include "Vec.hpp"
 
 namespace hatcher
 {
@@ -11,10 +11,10 @@ template <typename T>
 constexpr T RadToDeg(T angle);
 
 template <typename T>
-T Angle(Vect<2, T> vNormalized);
+T Angle(Vec<2, T> vNormalized);
 
 template <typename T>
-T OrientedAngle(Vect<2, T> u, Vect<2, T> v);
+T OrientedAngle(Vec<2, T> u, Vec<2, T> v);
 
 } // namespace hatcher
 

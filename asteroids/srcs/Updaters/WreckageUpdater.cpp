@@ -24,7 +24,7 @@ class WreckageUpdater final : public Updater
             RandomDirector* randomDirector = componentAccessor->WriteWorldComponent<RandomDirector>();
             for (int i = 0; i < wreckageGeneratorComponent->count; i++)
             {
-                const Vect2f position = componentAccessor->ReadComponents<PositionComponent>()[entity]->position;
+                const Vec2f position = componentAccessor->ReadComponents<PositionComponent>()[entity]->position;
                 const float size = componentAccessor->ReadComponents<CollidableComponent>()[entity]->size;
                 EntityEgg wreckage = entityManager->CreateNewEntity(wreckageGeneratorComponent->WreckageID);
                 wreckage.GetComponent<PositionComponent>()->position = position;

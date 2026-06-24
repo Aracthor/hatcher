@@ -122,7 +122,7 @@ void ShaderProgram::SetFloatUniform(const char* name, float value) const
     GL_CHECK(glUniform1f(uniformLocation, value));
 }
 
-void ShaderProgram::SetVector4Uniform(const char* name, const float* vectorPtr) const
+void ShaderProgram::SetVecor4Uniform(const char* name, const float* vectorPtr) const
 {
     HATCHER_ASSERT(IsCurrentlyUsed());
     // TODO cache uniform locations ?

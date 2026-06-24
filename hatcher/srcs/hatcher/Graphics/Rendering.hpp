@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IRendering.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 #include "hatcher/unique_ptr.hpp"
 
 namespace hatcher
@@ -30,7 +30,7 @@ public:
     const unique_ptr<MeshLoader>& GetMeshLoader() const override { return m_meshLoader; }
 
 private:
-    Vect2i Resolution() const;
+    Vec2i Resolution() const;
 
     unique_ptr<Clock> m_clock;
     unique_ptr<MaterialFactory> m_materialFactory;

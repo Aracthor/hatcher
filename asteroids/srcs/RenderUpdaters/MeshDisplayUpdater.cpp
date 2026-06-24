@@ -181,7 +181,7 @@ public:
             {
                 HATCHER_ASSERT(positionComponent);
                 Mat4f modelMatrix = Mat4f::Identity();
-                modelMatrix *= Mat4f::Translation(Vect3f(positionComponent->position, 0.f));
+                modelMatrix *= Mat4f::Translation(Vec3f(positionComponent->position, 0.f));
                 modelMatrix *= Mat4f(Mat3f::RotationAroundZ(positionComponent->angle));
                 modelMatrix *= Mat4f::Scale(meshComponent->scale);
                 reperesByMesh[meshComponent->ID].push_back(modelMatrix);

@@ -1,5 +1,5 @@
 template <std::size_t L, typename T>
-std::ostream& operator<<(std::ostream& stream, hatcher::Vect<L, T> vect)
+std::ostream& operator<<(std::ostream& stream, hatcher::Vec<L, T> vect)
 {
     stream << "(";
     for (std::size_t i = 0; i < L; i++)

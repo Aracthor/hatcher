@@ -24,7 +24,7 @@ void Mesh::Set2DPositions(const float* positions, int positionCount)
     for (int i = 0; i < positionCount / 2; i++)
     {
         const int vertexIndex = i * 2;
-        m_box.AddPoint(Vect3f(positions[vertexIndex], positions[vertexIndex + 1], 0.f));
+        m_box.AddPoint(Vec3f(positions[vertexIndex], positions[vertexIndex + 1], 0.f));
     }
 }
 
@@ -36,7 +36,7 @@ void Mesh::Set3DPositions(const float* positions, int positionCount)
     for (int i = 0; i < positionCount / 3; i++)
     {
         const int vertexIndex = i * 3;
-        m_box.AddPoint(Vect3f(positions[vertexIndex], positions[vertexIndex + 1], positions[vertexIndex + 2]));
+        m_box.AddPoint(Vec3f(positions[vertexIndex], positions[vertexIndex + 1], positions[vertexIndex + 2]));
     }
 }
 

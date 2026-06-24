@@ -27,7 +27,7 @@ Rendering::Rendering(const char* name, int windowWidth, int windowHeight, const 
 
 Rendering::~Rendering() = default;
 
-Vect2i Rendering::Resolution() const
+Vec2i Rendering::Resolution() const
 {
     return {m_window->Width(), m_window->Height()};
 }

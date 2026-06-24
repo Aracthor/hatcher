@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 
 namespace hatcher
 {
@@ -18,7 +18,7 @@ public:
     float RandomFloat(float min, float max);
 
     float RandomAngle();
-    Vect2f RandomDirection();
+    Vec2f RandomDirection();
 
 private:
     float RandomBetween0And1();

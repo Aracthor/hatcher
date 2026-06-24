@@ -5,7 +5,7 @@
 
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/Mat.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 #include "hatcher/basic_types.hpp"
 #include "hatcher/unique_ptr.hpp"
 

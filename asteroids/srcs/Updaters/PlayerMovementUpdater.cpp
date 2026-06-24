@@ -1,5 +1,5 @@
 #include "hatcher/ComponentAccessor.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 #include "hatcher/Maths/angles.hpp"
 #include "hatcher/Updater.hpp"
 
@@ -30,7 +30,7 @@ class PlayerMovementUpdater final : public Updater
                     positionComponent->angle -= DegToRad(5.f);
                 if (playerComponent->accelerating)
                 {
-                    const Vect2f orientation = {std::cos(positionComponent->angle), std::sin(positionComponent->angle)};
+                    const Vec2f orientation = {std::cos(positionComponent->angle), std::sin(positionComponent->angle)};
                     positionComponent->speed += orientation * 0.1f;
                 }
                 positionComponent->speed *= 0.99f;

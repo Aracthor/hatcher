@@ -48,17 +48,17 @@ public:
         frameRenderer.PrepareSceneDraw(m_material.get());
 
         const Lives* lives = componentAccessor->ReadWorldComponent<Lives>();
-        Vect2f meshPosition = {30.f, frameRenderer.Resolution().y - 60.f};
+        Vec2f meshPosition = {30.f, frameRenderer.Resolution().y - 60.f};
         for (int i = 0; i < lives->remaining; i++)
         {
-            m_lifeMesh->Draw(Mat4f::Translation(Vect3f(meshPosition.x, meshPosition.y, 0.f)));
+            m_lifeMesh->Draw(Mat4f::Translation(Vec3f(meshPosition.x, meshPosition.y, 0.f)));
             meshPosition.x += 30.f;
         }
 
         if (lives->remaining == 0)
         {
-            m_textDrawer.AddTextToDraw("GAME OVER", Vect2f(175.f, 275.f), Vect2f(50.f, 50.f));
-            m_textDrawer.AddTextToDraw("Press R to restart", Vect2f(225.f, 225.f), Vect2f(20.f, 20.f));
+            m_textDrawer.AddTextToDraw("GAME OVER", Vec2f(175.f, 275.f), Vec2f(50.f, 50.f));
+            m_textDrawer.AddTextToDraw("Press R to restart", Vec2f(225.f, 225.f), Vec2f(20.f, 20.f));
             m_textDrawer.Draw(frameRenderer);
         }
     }

@@ -43,7 +43,7 @@ float RandomGenerator::RandomAngle()
     return RandomFloat(-M_PI, M_PI);
 }
 
-Vect2f RandomGenerator::RandomDirection()
+Vec2f RandomGenerator::RandomDirection()
 {
     const float angle = RandomAngle();
     return {std::cos(angle), std::sin(angle)};

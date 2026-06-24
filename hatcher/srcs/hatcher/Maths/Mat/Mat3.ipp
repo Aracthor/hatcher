@@ -67,7 +67,7 @@ constexpr Mat<3, T> Mat<3, T>::Identity()
 template <typename T>
 Mat<3, T> Mat<3, T>::RotationAroundX(T angle)
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundX' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundX' is only possible for floating-point Vec.");
     const T cos = std::cos(angle);
     const T sin = std::sin(angle);
     return {
@@ -80,7 +80,7 @@ Mat<3, T> Mat<3, T>::RotationAroundX(T angle)
 template <typename T>
 Mat<3, T> Mat<3, T>::RotationAroundY(T angle)
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundY' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundY' is only possible for floating-point Vec.");
     const T cos = std::cos(angle);
     const T sin = std::sin(angle);
     return {
@@ -93,7 +93,7 @@ Mat<3, T> Mat<3, T>::RotationAroundY(T angle)
 template <typename T>
 Mat<3, T> Mat<3, T>::RotationAroundZ(T angle)
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundZ' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'RotationAroundZ' is only possible for floating-point Vec.");
     const T cos = std::cos(angle);
     const T sin = std::sin(angle);
     return {

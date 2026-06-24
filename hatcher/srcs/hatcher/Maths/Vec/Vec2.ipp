@@ -7,125 +7,125 @@ namespace hatcher
 {
 
 template <typename T>
-constexpr Vect<2, T>::Vect(T scalar)
+constexpr Vec<2, T>::Vec(T scalar)
     : x(scalar)
     , y(scalar)
 {
 }
 
 template <typename T>
-constexpr Vect<2, T>::Vect(T x, T y)
+constexpr Vec<2, T>::Vec(T x, T y)
     : x(x)
     , y(y)
 {
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::operator-() const
+constexpr Vec<2, T> Vec<2, T>::operator-() const
 {
     return *this * -1;
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::operator+(Self other) const
+constexpr Vec<2, T> Vec<2, T>::operator+(Self other) const
 {
     return {x + other.x, y + other.y};
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::operator-(Self other) const
+constexpr Vec<2, T> Vec<2, T>::operator-(Self other) const
 {
     return {x - other.x, y - other.y};
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::operator*(T scalar) const
+constexpr Vec<2, T> Vec<2, T>::operator*(T scalar) const
 {
     return {x * scalar, y * scalar};
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::operator/(T scalar) const
+constexpr Vec<2, T> Vec<2, T>::operator/(T scalar) const
 {
     return {x / scalar, y / scalar};
 }
 
 template <typename T>
-constexpr Vect<2, T>& Vect<2, T>::operator+=(Self other)
+constexpr Vec<2, T>& Vec<2, T>::operator+=(Self other)
 {
     *this = *this + other;
     return *this;
 }
 
 template <typename T>
-constexpr Vect<2, T>& Vect<2, T>::operator-=(Self other)
+constexpr Vec<2, T>& Vec<2, T>::operator-=(Self other)
 {
     *this = *this - other;
     return *this;
 }
 
 template <typename T>
-constexpr Vect<2, T>& Vect<2, T>::operator*=(T scalar)
+constexpr Vec<2, T>& Vec<2, T>::operator*=(T scalar)
 {
     *this = *this * scalar;
     return *this;
 }
 
 template <typename T>
-constexpr Vect<2, T>& Vect<2, T>::operator/=(T scalar)
+constexpr Vec<2, T>& Vec<2, T>::operator/=(T scalar)
 {
     *this = *this / scalar;
     return *this;
 }
 
 template <typename T>
-constexpr bool Vect<2, T>::operator==(Self other) const
+constexpr bool Vec<2, T>::operator==(Self other) const
 {
     return x == other.x && y == other.y;
 }
 
 template <typename T>
-constexpr bool Vect<2, T>::operator!=(Self other) const
+constexpr bool Vec<2, T>::operator!=(Self other) const
 {
     return !operator==(other);
 }
 
 template <typename T>
-constexpr T Vect<2, T>::operator[](int index) const
+constexpr T Vec<2, T>::operator[](int index) const
 {
     return reinterpret_cast<const T*>(this)[index];
 }
 
 template <typename T>
-constexpr T& Vect<2, T>::operator[](int index)
+constexpr T& Vec<2, T>::operator[](int index)
 {
     return reinterpret_cast<T*>(this)[index];
 }
 
 template <typename T>
 template <typename T2>
-constexpr Vect<2, T>::operator Vect<2, T2>() const
+constexpr Vec<2, T>::operator Vec<2, T2>() const
 {
-    return Vect<2, T2>(static_cast<T2>(x), static_cast<T2>(y));
+    return Vec<2, T2>(static_cast<T2>(x), static_cast<T2>(y));
 }
 
 template <typename T>
-constexpr T Vect<2, T>::Length() const
+constexpr T Vec<2, T>::Length() const
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'Length' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'Length' is only possible for floating-point Vec.");
     return std::sqrt(LengthSqr());
 }
 
 template <typename T>
-constexpr T Vect<2, T>::LengthSqr() const
+constexpr T Vec<2, T>::LengthSqr() const
 {
     return x * x + y * y;
 }
 
 template <typename T>
-constexpr Vect<2, T> Vect<2, T>::Normalized() const
+constexpr Vec<2, T> Vec<2, T>::Normalized() const
 {
-    static_assert(std::numeric_limits<T>::is_iec559, "'Normalized' is only possible for floating-point Vect.");
+    static_assert(std::numeric_limits<T>::is_iec559, "'Normalized' is only possible for floating-point Vec.");
     return *this / Length();
 }
 

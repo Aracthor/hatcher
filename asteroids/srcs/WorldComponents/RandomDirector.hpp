@@ -2,7 +2,7 @@
 
 #include "hatcher/IWorldComponent.hpp"
 #include "hatcher/Maths/RandomGenerator.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 
 class RandomDirector final : public hatcher::IWorldComponent
 {
@@ -13,7 +13,7 @@ public:
     int RandomInt(int min, int max);
     float RandomFloat(float min, float max);
     float RandomAngle();
-    hatcher::Vect2f RandomDirection(float speedMin, float speedMax);
+    hatcher::Vec2f RandomDirection(float speedMin, float speedMax);
 
 private:
     void Save(hatcher::DataSaver& saver) const override;

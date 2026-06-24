@@ -2,7 +2,7 @@
 #include "hatcher/EntityDescriptorID.hpp"
 #include "hatcher/EntityEgg.hpp"
 #include "hatcher/IEntityManager.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 #include "hatcher/Updater.hpp"
 
 #include "Components/AsteroidComponent.hpp"

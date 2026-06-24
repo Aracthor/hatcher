@@ -194,7 +194,7 @@ BasicTextDrawer::BasicTextDrawer(MaterialFactory* materialFactory)
 
 BasicTextDrawer::~BasicTextDrawer() = default;
 
-void BasicTextDrawer::AddTextToDraw(const char* text, Vect2f position, Vect2f size)
+void BasicTextDrawer::AddTextToDraw(const char* text, Vec2f position, Vec2f size)
 {
     while (*text)
     {

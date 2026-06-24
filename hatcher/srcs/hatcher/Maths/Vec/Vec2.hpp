@@ -3,20 +3,18 @@
 namespace hatcher
 {
 template <typename T>
-struct Vect<3, T>
+struct Vec<2, T>
 {
-    using Self = Vect<3, T>;
+    using Self = Vec<2, T>;
 
     T x;
     T y;
-    T z;
 
-    constexpr Vect() = default;
-    constexpr Vect(const Self& other) = default;
-    constexpr Vect(Self&& other) = default;
-    explicit constexpr Vect(T scalar);
-    constexpr Vect(T x, T y, T z);
-    constexpr Vect(Vect<2, T> v, T z);
+    constexpr Vec() = default;
+    constexpr Vec(const Self& other) = default;
+    constexpr Vec(Self&& other) = default;
+    explicit constexpr Vec(T scalar);
+    constexpr Vec(T x, T y);
 
     constexpr Self& operator=(const Self& other) = default;
     constexpr Self& operator=(Self&& other) = default;
@@ -40,21 +38,16 @@ struct Vect<3, T>
     constexpr T& operator[](int index);
 
     template <typename T2>
-    constexpr operator Vect<3, T2>() const;
-
-    constexpr const T* Data() const;
-    constexpr Vect<2, T> xy() const;
+    constexpr operator Vec<2, T2>() const;
 
     constexpr T Length() const;
     constexpr T LengthSqr() const;
     constexpr Self Normalized() const;
 };
 
-template <typename T>
-constexpr Vect<3, T> Cross(Vect<3, T> u, Vect<3, T> v);
-
-using Vect3f = Vect<3, float>;
+using Vec2f = Vec<2, float>;
+using Vec2i = Vec<2, int>;
 
 } // namespace hatcher
 
-#include "Vect3.ipp"
+#include "Vec2.ipp"

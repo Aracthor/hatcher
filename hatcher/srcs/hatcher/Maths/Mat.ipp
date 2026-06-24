@@ -2,10 +2,10 @@ namespace hatcher
 {
 
 template <std::size_t L, std::size_t VL, typename T>
-constexpr Vect<VL, T> operator*(const Mat<L, T>& u, const Vect<VL, T>& v)
+constexpr Vec<VL, T> operator*(const Mat<L, T>& u, const Vec<VL, T>& v)
 {
     static_assert(L >= VL);
-    Vect<VL, T> result;
+    Vec<VL, T> result;
     for (std::size_t y = 0; y < VL; y++)
     {
         result[y] = T(0);

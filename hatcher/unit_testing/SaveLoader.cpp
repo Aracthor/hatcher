@@ -5,12 +5,12 @@
 #include "hatcher/DataSaver.hpp"
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/RandomGenerator.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 
 using namespace hatcher;
 
 template <std::size_t L, typename T>
-std::ostream& operator<<(std::ostream& stream, Vect<L, T> vec)
+std::ostream& operator<<(std::ostream& stream, Vec<L, T> vec)
 {
     stream << '[';
     for (std::size_t i = 0; i < L; i++)
@@ -86,15 +86,15 @@ REGISTER_TEST(SaveLoader_Float)
         TEST_EQUALS(output[i], input[i]);
 }
 
-REGISTER_TEST(SaveLoader_Vector)
+REGISTER_TEST(SaveLoader_Vecor)
 {
-    Vect3f input[] = {
+    Vec3f input[] = {
         {0.f, 0.f, 0.f},
         {2.f, -42.f, 42.f},
         {2.1f, -78.5f, 1.f},
     };
     constexpr int testCount = std::size(input);
-    Vect3f output[testCount];
+    Vec3f output[testCount];
 
     DataSaver saver;
     for (int i = 0; i < testCount; i++)
@@ -180,7 +180,7 @@ REGISTER_TEST(SaveLoader_String)
 
 REGISTER_TEST(SaveLoader_Combined)
 {
-    Vect2f inputVec = {2.5f, -1.5f};
+    Vec2f inputVec = {2.5f, -1.5f};
     uint inputCount1 = 2u;
     int inputCount2 = 42;
     bool inputBool = false;
@@ -195,7 +195,7 @@ REGISTER_TEST(SaveLoader_Combined)
     saver << inputBox;
     saver << inputString;
 
-    Vect2f outputVec;
+    Vec2f outputVec;
     uint outputCount1;
     int outputCount2;
     Box3f outputBox;
@@ -210,10 +210,10 @@ REGISTER_TEST(SaveLoader_Combined)
     loader >> outputBox;
     loader >> outputString;
 
-    TEST_EQUALS(outputVec, Vect2f(2.5f, -1.5f));
+    TEST_EQUALS(outputVec, Vec2f(2.5f, -1.5f));
     TEST_EQUALS(outputCount1, 2u);
     TEST_EQUALS(outputCount2, 42);
-    TEST_EQUALS(outputBox, Box3f(Vect3f(0.f, 0.f, 0.f), Vect3f(0.f, 0.f, 0.f)));
+    TEST_EQUALS(outputBox, Box3f(Vec3f(0.f, 0.f, 0.f), Vec3f(0.f, 0.f, 0.f)));
     TEST_EQUALS(outputBool, false);
     TEST_EQUALS(outputString, std::string("Hello World!"));
 }

@@ -15,7 +15,7 @@ public:
     bool IsCurrentlyUsed() const;
 
     void SetFloatUniform(const char* name, float value) const;
-    void SetVector4Uniform(const char* name, const float* vectorPtr) const;
+    void SetVecor4Uniform(const char* name, const float* vectorPtr) const;
     void SetMatrix4Uniform(const char* name, const float* matrixPtr) const;
 
     GLint GetAttribLocation(const char* name) const;

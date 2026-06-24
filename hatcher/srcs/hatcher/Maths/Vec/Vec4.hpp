@@ -3,18 +3,21 @@
 namespace hatcher
 {
 template <typename T>
-struct Vect<2, T>
+struct Vec<4, T>
 {
-    using Self = Vect<2, T>;
+    using Self = Vec<4, T>;
 
     T x;
     T y;
+    T z;
+    T w;
 
-    constexpr Vect() = default;
-    constexpr Vect(const Self& other) = default;
-    constexpr Vect(Self&& other) = default;
-    explicit constexpr Vect(T scalar);
-    constexpr Vect(T x, T y);
+    constexpr Vec() = default;
+    constexpr Vec(const Self& other) = default;
+    constexpr Vec(Self&& other) = default;
+    explicit constexpr Vec(T scalar);
+    constexpr Vec(T x, T y, T z, T w);
+    constexpr Vec(Vec<3, T> v, T w);
 
     constexpr Self& operator=(const Self& other) = default;
     constexpr Self& operator=(Self&& other) = default;
@@ -38,16 +41,18 @@ struct Vect<2, T>
     constexpr T& operator[](int index);
 
     template <typename T2>
-    constexpr operator Vect<2, T2>() const;
+    constexpr operator Vec<4, T2>() const;
+
+    constexpr const T* Data() const;
+    constexpr Vec<3, T> xyz() const;
 
     constexpr T Length() const;
     constexpr T LengthSqr() const;
     constexpr Self Normalized() const;
 };
 
-using Vect2f = Vect<2, float>;
-using Vect2i = Vect<2, int>;
+using Vec4f = Vec<4, float>;
 
 } // namespace hatcher
 
-#include "Vect2.ipp"
+#include "Vec4.ipp"

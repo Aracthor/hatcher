@@ -22,14 +22,14 @@ constexpr Box<L, T>::Box()
 }
 
 template <std::size_t L, typename T>
-constexpr Box<L, T>::Box(const Vec& point)
+constexpr Box<L, T>::Box(const VecType& point)
     : m_min(point)
     , m_max(point)
 {
 }
 
 template <std::size_t L, typename T>
-constexpr Box<L, T>::Box(const Vec& min, const Vec& max)
+constexpr Box<L, T>::Box(const VecType& min, const VecType& max)
     : m_min(min)
     , m_max(max)
 {
@@ -39,8 +39,8 @@ template <std::size_t L, typename T>
 template <class Iterator>
 constexpr Box<L, T>::Box(Iterator first, Iterator last)
 {
-    m_min = Vec(std::numeric_limits<T>::max());
-    m_max = Vec(std::numeric_limits<T>::lowest());
+    m_min = VecType(std::numeric_limits<T>::max());
+    m_max = VecType(std::numeric_limits<T>::lowest());
     for (Iterator it = first; it != last; it++)
     {
         AddPoint(*it);
@@ -48,7 +48,7 @@ constexpr Box<L, T>::Box(Iterator first, Iterator last)
 }
 
 template <std::size_t L, typename T>
-void Box<L, T>::AddPoint(const Vec& point)
+void Box<L, T>::AddPoint(const VecType& point)
 {
     for (std::size_t i = 0; i < L; i++)
     {
@@ -65,7 +65,7 @@ void Box<L, T>::Add(const Box<L, T>& box)
 }
 
 template <std::size_t L, typename T>
-Box<L, T> Box<L, T>::Translated(const Vec& translation) const
+Box<L, T> Box<L, T>::Translated(const VecType& translation) const
 {
     return Box(m_min + translation, m_max + translation);
 }
@@ -89,7 +89,7 @@ bool Box<L, T>::IsPoint() const
 }
 
 template <std::size_t L, typename T>
-bool Box<L, T>::Contains(const Vec& point) const
+bool Box<L, T>::Contains(const VecType& point) const
 {
     for (std::size_t i = 0; i < L; i++)
     {
@@ -122,9 +122,9 @@ bool Box<L, T>::Touches(const Box<L, T>& box) const
 }
 
 template <std::size_t L, typename T>
-std::array<Vect<L, T>, Box<L, T>::CornerCount> Box<L, T>::GetCorners() const
+std::array<Vec<L, T>, Box<L, T>::CornerCount> Box<L, T>::GetCorners() const
 {
-    std::array<Vec, CornerCount> corners;
+    std::array<VecType, CornerCount> corners;
     for (std::size_t n = 0; n < L; n++)
     {
         for (int i = 0; i < CornerCount; i++)

@@ -6,7 +6,7 @@ template <typename T>
 struct Mat<4, T>
 {
     using Self = Mat<4, T>;
-    using Column = Vect<4, T>;
+    using Column = Vec<4, T>;
 
     constexpr Mat() = default;
     constexpr Mat(const Self& other) = default;
@@ -33,9 +33,9 @@ struct Mat<4, T>
     static constexpr Self Zero();
     static constexpr Self Identity();
 
-    static constexpr Self Translation(Vect<3, T> translation);
+    static constexpr Self Translation(Vec<3, T> translation);
     static constexpr Self Scale(T scale);
-    static constexpr Self Scale(Vect<3, T> scale);
+    static constexpr Self Scale(Vec<3, T> scale);
 
     static Self RotationAroundX(T angle);
     static Self RotationAroundY(T angle);
@@ -43,10 +43,10 @@ struct Mat<4, T>
 
     static constexpr Self Orthographic(T left, T right, T bottom, T top);
     static constexpr Self Orthographic(T left, T right, T bottom, T top, T zNear, T zFar);
-    static constexpr Self LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up);
+    static constexpr Self LookAt(Vec<3, T> position, Vec<3, T> target, Vec<3, T> up);
 
-    static constexpr Vect<3, T> Unproject(Vect<3, T> winCoords, const Self& modelView, const Self& projection,
-                                          Vect<4, T> viewport);
+    static constexpr Vec<3, T> Unproject(Vec<3, T> winCoords, const Self& modelView, const Self& projection,
+                                         Vec<4, T> viewport);
 };
 
 using Mat4f = Mat<4, float>;

@@ -116,7 +116,7 @@ TEST_SRCS_FILES=Mat.cpp					\
 		SaveLoader.cpp				\
 		UnitTester.cpp 				\
 		unique_ptr.cpp 				\
-		Vect.cpp				\
+		Vec.cpp					\
 
 TEST_SRCS=	$(addprefix $(TEST_DIR),$(TEST_SRCS_FILES))
 

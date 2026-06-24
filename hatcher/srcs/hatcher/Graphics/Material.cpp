@@ -28,7 +28,7 @@ void Material::Use() const
     }
     for (auto uniform : m_vec4Uniforms)
     {
-        m_shaderProgram->SetVector4Uniform(uniform.first, uniform.second.Data());
+        m_shaderProgram->SetVecor4Uniform(uniform.first, uniform.second.Data());
     }
     for (auto texture : m_textures)
     {
@@ -86,7 +86,7 @@ void Material::SetUniform(const char* name, float value)
     m_floatUniforms[name] = value;
 }
 
-void Material::SetUniform(const char* name, Vect4f value)
+void Material::SetUniform(const char* name, Vec4f value)
 {
     m_vec4Uniforms[name] = value;
 }

@@ -2,7 +2,7 @@
 
 #include "hatcher/Maths/Box.hpp"
 #include "hatcher/Maths/Mat.hpp"
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 
 namespace hatcher
 {
@@ -24,11 +24,11 @@ public:
 
     virtual int CurrentTick() const = 0;
     virtual const Clock* GetClock() const = 0;
-    virtual Vect2i Resolution() const = 0;
-    virtual Vect2f WorldCoordsToWindowCoords(Vect3f worldCoords, const Mat4f& modelMatrix) const = 0;
+    virtual Vec2i Resolution() const = 0;
+    virtual Vec2f WorldCoordsToWindowCoords(Vec3f worldCoords, const Mat4f& modelMatrix) const = 0;
     virtual Box2f ProjectBox3DToWindowCoords(const Box3f& box, const Mat4f& modelMatrix) const = 0;
 
-    virtual Vect3f WindowCoordsToWorldCoords(Vect2f windowCoords) const = 0;
+    virtual Vec3f WindowCoordsToWorldCoords(Vec2f windowCoords) const = 0;
 };
 
 } // namespace hatcher

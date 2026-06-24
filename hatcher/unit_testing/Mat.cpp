@@ -41,8 +41,8 @@ REGISTER_TEST(MatProduct)
         {-2.f, 0.f, 4.f, -1.f},
     };
 
-    TEST_EQUALS(u * Vect3f(42.f, 4.f, -42.f), Vect3f(134.f, 42.f, -581.f));
-    TEST_EQUALS(u * Vect4f(42.f, 4.f, -42.f, 1.0), Vect4f(134.f, 42.f, -581.f, 137.f));
+    TEST_EQUALS(u * Vec3f(42.f, 4.f, -42.f), Vec3f(134.f, 42.f, -581.f));
+    TEST_EQUALS(u * Vec4f(42.f, 4.f, -42.f, 1.0), Vec4f(134.f, 42.f, -581.f, 137.f));
 
     Mat4f expected{
         {6.f, 100.f, -16.f, 20.f},
@@ -154,9 +154,9 @@ REGISTER_TEST(MatRotation)
 REGISTER_TEST(MatTransformation)
 {
     const float angle = DegToRad(90.f);
-    Mat4f translation = Mat4f::Translation(Vect3f(2.f, -1.f, 3.f));
+    Mat4f translation = Mat4f::Translation(Vec3f(2.f, -1.f, 3.f));
     Mat4f rotation = Mat3f::RotationAroundZ(M_PI / 2.f);
-    Mat4f scale = Mat4f::Scale(Vect3f(2.f, 1.f, 1.f));
+    Mat4f scale = Mat4f::Scale(Vec3f(2.f, 1.f, 1.f));
     Mat4f transformation = translation * rotation * scale;
     Mat4f expected{
         {std::cos(angle) * 2.f, std::sin(angle) * 2.f, 0.f, 0.f},

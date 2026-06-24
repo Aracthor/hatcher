@@ -6,7 +6,7 @@ template <typename T>
 struct Mat<3, T>
 {
     using Self = Mat<3, T>;
-    using Column = Vect<3, T>;
+    using Column = Vec<3, T>;
 
     constexpr Mat() = default;
     constexpr Mat(const Mat& other) = default;

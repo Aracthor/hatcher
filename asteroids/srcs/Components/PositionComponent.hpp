@@ -1,10 +1,10 @@
 #pragma once
 
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 
 struct PositionComponent
 {
-    hatcher::Vect2f position;
+    hatcher::Vec2f position;
     float angle;
-    hatcher::Vect2f speed;
+    hatcher::Vec2f speed;
 };

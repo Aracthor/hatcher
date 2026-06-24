@@ -9,10 +9,10 @@ constexpr Mat<4, T>::Mat(Column u0, Column u1, Column u2, Column u3)
 template <typename T>
 constexpr Mat<4, T>::Mat(const Mat<3, T>& mat3)
     : columns{
-          Vect<4, T>(mat3[0], 0.f),
-          Vect<4, T>(mat3[1], 0.f),
-          Vect<4, T>(mat3[2], 0.f),
-          Vect<4, T>(0.f, 0.f, 0.f, 1.f),
+          Vec<4, T>(mat3[0], 0.f),
+          Vec<4, T>(mat3[1], 0.f),
+          Vec<4, T>(mat3[2], 0.f),
+          Vec<4, T>(0.f, 0.f, 0.f, 1.f),
       }
 {
 }
@@ -143,7 +143,7 @@ constexpr Mat<4, T> Mat<4, T>::Identity()
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::Translation(Vect<3, T> translation)
+constexpr Mat<4, T> Mat<4, T>::Translation(Vec<3, T> translation)
 {
     return {
         {T(1), T(0), T(0), T(0)},
@@ -156,11 +156,11 @@ constexpr Mat<4, T> Mat<4, T>::Translation(Vect<3, T> translation)
 template <typename T>
 constexpr Mat<4, T> Mat<4, T>::Scale(T scale)
 {
-    return Scale(Vect<3, T>(scale, scale, scale));
+    return Scale(Vec<3, T>(scale, scale, scale));
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::Scale(Vect<3, T> scale)
+constexpr Mat<4, T> Mat<4, T>::Scale(Vec<3, T> scale)
 {
     return {
         {scale.x, T(0), T(0), T(0)},
@@ -211,11 +211,11 @@ constexpr Mat<4, T> Mat<4, T>::Orthographic(T left, T right, T bottom, T top, T 
 }
 
 template <typename T>
-constexpr Mat<4, T> Mat<4, T>::LookAt(Vect<3, T> position, Vect<3, T> target, Vect<3, T> up)
+constexpr Mat<4, T> Mat<4, T>::LookAt(Vec<3, T> position, Vec<3, T> target, Vec<3, T> up)
 {
-    const Vect<3, T> zaxis = (target - position).Normalized();
-    const Vect<3, T> xaxis = Cross(zaxis, up).Normalized();
-    const Vect<3, T> yaxis = Cross(xaxis, zaxis);
+    const Vec<3, T> zaxis = (target - position).Normalized();
+    const Vec<3, T> xaxis = Cross(zaxis, up).Normalized();
+    const Vec<3, T> yaxis = Cross(xaxis, zaxis);
     return {
         {xaxis.x, yaxis.x, -zaxis.x, T(0)},
         {xaxis.y, yaxis.y, -zaxis.y, T(0)},
@@ -225,17 +225,17 @@ constexpr Mat<4, T> Mat<4, T>::LookAt(Vect<3, T> position, Vect<3, T> target, Ve
 }
 
 template <typename T>
-constexpr Vect<3, T> Mat<4, T>::Unproject(Vect<3, T> winCoords, const Self& modelView, const Self& projection,
-                                          Vect<4, T> viewport)
+constexpr Vec<3, T> Mat<4, T>::Unproject(Vec<3, T> winCoords, const Self& modelView, const Self& projection,
+                                         Vec<4, T> viewport)
 {
     const Self inverse = (projection * modelView).Inverse();
 
-    Vect<4, T> temp(winCoords, T(1));
+    Vec<4, T> temp(winCoords, T(1));
     temp.x = (temp.x - viewport.x) / viewport.z;
     temp.y = (temp.y - viewport.y) / viewport.w;
-    temp = temp * T(2) - Vect<4, T>(T(1), T(1), T(1), T(1));
+    temp = temp * T(2) - Vec<4, T>(T(1), T(1), T(1), T(1));
 
-    Vect<4, T> result = inverse * temp;
+    Vec<4, T> result = inverse * temp;
     result /= result.w;
 
     return result.xyz();

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hatcher/Maths/Vect.hpp"
+#include "hatcher/Maths/Vec.hpp"
 #include "hatcher/unique_ptr.hpp"
 
 #include <vector>
@@ -20,7 +20,7 @@ public:
     BasicTextDrawer(hatcher::MaterialFactory* materialFactory);
     ~BasicTextDrawer();
 
-    void AddTextToDraw(const char* text, hatcher::Vect2f position, hatcher::Vect2f size);
+    void AddTextToDraw(const char* text, hatcher::Vec2f position, hatcher::Vec2f size);
     void Draw(hatcher::IFrameRenderer& frameRenderer);
 
 private:

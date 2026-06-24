@@ -37,7 +37,7 @@ private:
                 do
                 {
                     positionComponent->position =
-                        Vect2i{randomDirector->RandomInt(0, 800 - 1), randomDirector->RandomInt(0, 600 - 1)};
+                        Vec2i{randomDirector->RandomInt(0, 800 - 1), randomDirector->RandomInt(0, 600 - 1)};
                 } while (centerBox.Contains(positionComponent->position));
                 positionComponent->angle = randomDirector->RandomAngle();
                 const float speedMin = 1.f;

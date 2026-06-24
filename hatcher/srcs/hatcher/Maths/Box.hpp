@@ -2,7 +2,7 @@
 
 #include <array>
 
-#include "Vect.hpp"
+#include "Vec.hpp"
 
 namespace hatcher
 {
@@ -14,45 +14,45 @@ private:
     constexpr static int _pow2(std::size_t n);
     const static int CornerCount = _pow2(L);
 
-    using Vec = Vect<L, T>;
+    using VecType = Vec<L, T>;
 
 public:
     constexpr Box();
-    constexpr Box(const Vec& point);
-    constexpr Box(const Vec& min, const Vec& max);
+    constexpr Box(const VecType& point);
+    constexpr Box(const VecType& min, const VecType& max);
     template <class Iterator>
     constexpr Box(Iterator first, Iterator last);
 
-    void AddPoint(const Vec& point);
+    void AddPoint(const VecType& point);
     void Add(const Box<L, T>& box);
-    Box Translated(const Vec& translation) const;
+    Box Translated(const VecType& translation) const;
     Box Scaled(float scale) const;
 
     bool IsEmpty() const;
     bool IsPoint() const;
-    bool Contains(const Vec& point) const;
+    bool Contains(const VecType& point) const;
     bool Contains(const Box<L, T>& box) const;
     bool Touches(const Box<L, T>& box) const;
 
-    const Vec& Min() const { return m_min; }
-    const Vec& Max() const { return m_max; }
+    const VecType& Min() const { return m_min; }
+    const VecType& Max() const { return m_max; }
 
-    Vec& Min() { return m_min; }
-    Vec& Max() { return m_max; }
+    VecType& Min() { return m_min; }
+    VecType& Max() { return m_max; }
 
-    void SetMin(const Vec& min) { m_min = min; }
-    void SetMax(const Vec& max) { m_max = max; }
+    void SetMin(const VecType& min) { m_min = min; }
+    void SetMax(const VecType& max) { m_max = max; }
 
-    Vec Extents() const { return m_max - m_min; }
-    Vec Center() const { return (m_max + m_min) / static_cast<T>(2); }
-    std::array<Vec, CornerCount> GetCorners() const;
+    VecType Extents() const { return m_max - m_min; }
+    VecType Center() const { return (m_max + m_min) / static_cast<T>(2); }
+    std::array<VecType, CornerCount> GetCorners() const;
 
     bool operator==(const Box& other) const;
     bool operator!=(const Box& other) const;
 
 private:
-    Vec m_min;
-    Vec m_max;
+    VecType m_min;
+    VecType m_max;
 };
 
 using Box2i = Box<2, int>;
