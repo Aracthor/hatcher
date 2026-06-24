@@ -25,13 +25,13 @@ public:
     virtual Updater* Create() const = 0;
 };
 
-void RegisterUpdater(const IUpdaterCreator* creator);
+void RegisterUpdater(const IUpdaterCreator* creator, int order);
 
 template <class UpdaterClass>
 class UpdaterRegisterer final : public IUpdaterCreator
 {
 public:
-    UpdaterRegisterer() { RegisterUpdater(this); }
+    UpdaterRegisterer(int order = 0) { RegisterUpdater(this, order); }
 
     Updater* Create() const override { return new UpdaterClass(); }
 };

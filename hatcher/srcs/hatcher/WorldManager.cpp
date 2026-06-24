@@ -20,9 +20,11 @@ namespace hatcher
 
 namespace
 {
-std::vector<const IUpdaterCreator*>& UpdaterCreators()
+using TSortedUpdaterCreators = std::map<int, std::vector<const IUpdaterCreator*>>;
+
+TSortedUpdaterCreators& UpdaterCreators()
 {
-    static std::vector<const IUpdaterCreator*> updaterCreators;
+    static TSortedUpdaterCreators updaterCreators;
     return updaterCreators;
 }
 
@@ -69,9 +71,9 @@ EntityDescriptorCatalog* GetEntityDescriptorCatalog()
 
 } // namespace
 
-void RegisterUpdater(const IUpdaterCreator* creator)
+void RegisterUpdater(const IUpdaterCreator* creator, int order)
 {
-    UpdaterCreators().push_back(creator);
+    UpdaterCreators()[order].push_back(creator);
 }
 
 void RegisterRenderUpdater(const IRenderUpdaterCreator* creator, int order)
@@ -108,9 +110,12 @@ void RegisterEntityDescriptor(EntityDescriptorID id, IEntityDescriptor* descript
 
 WorldManager::WorldManager()
 {
-    for (auto creator : UpdaterCreators())
+    for (auto it : UpdaterCreators())
     {
-        m_updaters.emplace_back(creator->Create());
+        for (auto creator : it.second)
+        {
+            m_updaters.emplace_back(creator->Create());
+        }
     }
 }
 
