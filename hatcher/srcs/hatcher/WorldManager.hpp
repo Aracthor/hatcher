@@ -15,6 +15,7 @@ class IApplication;
 class IFrameRenderer;
 class IRendering;
 class RenderUpdater;
+class InterfaceUpdater;
 class Updater;
 class World;
 
@@ -38,6 +39,7 @@ private:
     std::vector<unique_ptr<Updater>> m_updaters;
 
     unique_ptr<EventUpdater> m_eventUpdater;
+    std::vector<unique_ptr<InterfaceUpdater>> m_interfaceUpdaters;
     std::vector<unique_ptr<RenderUpdater>> m_renderUpdaters;
 };
 

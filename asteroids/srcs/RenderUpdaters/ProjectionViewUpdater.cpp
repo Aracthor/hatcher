@@ -11,8 +11,8 @@ class ProjectionViewUpdater final : public RenderUpdater
 public:
     ProjectionViewUpdater(const IRendering* rendering) {}
 
-    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
-                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
+    void Update(const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
+                IFrameRenderer& frameRenderer) override
     {
         const Vec2i resolution = frameRenderer.Resolution();
         frameRenderer.SetProjectionMatrix(Mat4f::Orthographic(0.f, float(resolution.x), 0.f, float(resolution.y)));

@@ -42,8 +42,8 @@ public:
         m_lifeMesh->SetIndices(indices, std::size(indices));
     }
 
-    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
-                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
+    void Update(const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
+                IFrameRenderer& frameRenderer) override
     {
         frameRenderer.PrepareSceneDraw(m_material.get());
 

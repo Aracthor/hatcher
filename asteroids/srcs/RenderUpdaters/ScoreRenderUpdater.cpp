@@ -22,8 +22,8 @@ public:
     {
     }
 
-    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
-                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
+    void Update(const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
+                IFrameRenderer& frameRenderer) override
     {
         const Vec2f textSize = {16, 16};
         const Vec2f textPosition = {20.f, frameRenderer.Resolution().y - textSize.y - 20.f};

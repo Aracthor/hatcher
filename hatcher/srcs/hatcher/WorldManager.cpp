@@ -12,6 +12,7 @@
 
 #include "Graphics/EventUpdater.hpp"
 #include "Graphics/IEventListener.hpp"
+#include "Graphics/InterfaceUpdater.hpp"
 #include "Graphics/RenderUpdater.hpp"
 
 namespace hatcher
@@ -31,6 +32,12 @@ TSortedRenderUpdaterCreators& RenderUpdaterCreators()
 {
     static TSortedRenderUpdaterCreators renderUpdaterCreators;
     return renderUpdaterCreators;
+}
+
+std::vector<const IInterfaceUpdaterCreator*>& InterfaceUpdaterCreators()
+{
+    static std::vector<const IInterfaceUpdaterCreator*> interfaceUpdaterCreators;
+    return interfaceUpdaterCreators;
 }
 
 std::vector<const IEventListenerCreator*>& EventListenerCreators()
@@ -70,6 +77,11 @@ void RegisterUpdater(const IUpdaterCreator* creator)
 void RegisterRenderUpdater(const IRenderUpdaterCreator* creator, int order)
 {
     RenderUpdaterCreators()[order].push_back(creator);
+}
+
+void RegisterInterfaceUpdater(const IInterfaceUpdaterCreator* creator)
+{
+    InterfaceUpdaterCreators().push_back(creator);
 }
 
 void RegisterEventListener(const IEventListenerCreator* creator)
@@ -113,6 +125,10 @@ void WorldManager::CreateRenderUpdaters(const IRendering* rendering)
         {
             m_renderUpdaters.emplace_back(creator->Create(rendering));
         }
+    }
+    for (auto creator : InterfaceUpdaterCreators())
+    {
+        m_interfaceUpdaters.emplace_back(creator->Create());
     }
     for (auto creator : EventListenerCreators())
     {
@@ -208,8 +224,13 @@ void WorldManager::UpdateRendering(IApplication* application, World* world, IFra
     EntityManager* entityManager = world->GetEntityManager();
     for (unique_ptr<RenderUpdater>& renderUpdater : m_renderUpdaters)
     {
-        renderUpdater->Update(application, entityManager->GetComponentAccessor(),
-                              entityManager->GetRenderingComponentAccessor(), frameRenderer);
+        renderUpdater->Update(entityManager->GetComponentAccessor(), entityManager->GetRenderingComponentAccessor(),
+                              frameRenderer);
+    }
+    for (unique_ptr<InterfaceUpdater>& interfaceUpdater : m_interfaceUpdaters)
+    {
+        interfaceUpdater->Update(application, world->GetCommandManager(), entityManager->GetComponentAccessor(),
+                                 entityManager->GetRenderingComponentAccessor());
     }
 }
 

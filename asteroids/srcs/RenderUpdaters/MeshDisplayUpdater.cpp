@@ -162,8 +162,8 @@ public:
         }
     }
 
-    void Update(IApplication* application, const ComponentAccessor* componentAccessor,
-                ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) override
+    void Update(const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
+                IFrameRenderer& frameRenderer) override
     {
         frameRenderer.PrepareSceneDraw(m_basicMaterial.get());
 

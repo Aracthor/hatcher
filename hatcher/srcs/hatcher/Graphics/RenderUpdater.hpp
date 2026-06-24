@@ -5,8 +5,6 @@
 namespace hatcher
 {
 class ComponentAccessor;
-class IApplication;
-class IEventUpdater;
 class IFrameRenderer;
 class IRendering;
 
@@ -15,8 +13,8 @@ class RenderUpdater
 public:
     virtual ~RenderUpdater() = default;
 
-    virtual void Update(IApplication* application, const ComponentAccessor* componentAccessor,
-                        ComponentAccessor* renderComponentAccessor, IFrameRenderer& frameRenderer) = 0;
+    virtual void Update(const ComponentAccessor* componentAccessor, ComponentAccessor* renderComponentAccessor,
+                        IFrameRenderer& frameRenderer) = 0;
     virtual void OnCreateEntity(Entity entity, const ComponentAccessor* componentAccessor,
                                 ComponentAccessor* renderComponentAccessor)
     {
